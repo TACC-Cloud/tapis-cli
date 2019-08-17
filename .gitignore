@@ -1,0 +1,8 @@
+.env
+env/
+*__pycache__/*
+*.pyc
+.vscode/
+*egg-info/*
+htmlcov
+.coverage
