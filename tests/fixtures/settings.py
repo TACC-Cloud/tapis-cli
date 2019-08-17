@@ -1,12 +1,9 @@
 import pytest
+from ..data import settings
 
 __all__ = ['testing_envs']
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def testing_envs(monkeypatch):
-    monkeypatch.setenv("PAGE_SIZE", "10")
-    monkeypatch.setenv("LOG_LEVEL", "DEBUG")
-    monkeypatch.setenv("RESPONSE_FORMAT", "json")
-    monkeypatch.setenv("TENANT_DNS_DOMAIN", "tacc.dev")
-    monkeypatch.setenv("RESPONSE_FORMAT", "json")
-    monkeypatch.setenv("TACC_PROJECT_NAME", "SANDBOX")
+    for k, v in settings.ENVS_AND_VALS:
+        monkeypatch.setenv(k, v)
