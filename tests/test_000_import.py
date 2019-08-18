@@ -5,6 +5,15 @@ def test_can_import_mod():
     import tapis_cli
 
 @pytest.mark.smoketest
-def test_datacalog_about_version():
-    from tapis_cli import __about__ as about
-    assert about.__version__ is not None
+@pytest.mark.parametrize('attribute,accept_none,expect_exception', [
+    ('title', False, False),
+    ('url', False, True)
+])
+def test_about(attribute, accept_none, expect_exception):
+    from tapis_cli import About
+
+    def test_code():
+        a = About()
+        val = getattr(a, attribute)
+        if val is None and not accept_none:
+            raise ValueError('{} cannot be None'.format(attribute))

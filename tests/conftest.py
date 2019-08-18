@@ -3,17 +3,14 @@ from .fixtures import *
 
 def pytest_addoption(parser):
     parser.addoption('--smoketest', action='store_true', dest='smoketest',
-                     default=False, help='Run developer smoktests')
-    parser.addoption('--networked', action='store_true', dest='networked',
-                     default=False, help='Run tests that require external network access')
+                     default=False, help='Run only developer smoketests')
     parser.addoption('--longrun', action='store_true', dest='longrun',
-                     default=False, help='Run tests that might take a long time')
+                     default=False, help='Run tests that can take a long time')
 
 def pytest_runtest_setup(item):
-    if 'smoketest' in item.keywords and not item.config.getvalue('smoketest'):
-        pytest.skip('needs --smoketest option to run')
-    if 'networked' in item.keywords and not item.config.getvalue('networked'):
-        pytest.skip('needs --networked option to run')
+    if item.config.getvalue('smoketest') is True:
+        if 'smoketest' not in item.keywords:
+            pytest.skip('not a smoketest')
     if 'longrun' in item.keywords and not item.config.getvalue('longrun'):
         pytest.skip('needs --longrun option to run')
 

@@ -1,7 +1,7 @@
 import pytest
 from .data import settings as settings_data
 
-@pytest.mark.smoktest
+@pytest.mark.smoketest
 def test_envs_are_settings(testing_envs):
     from tapis_cli import settings
     for k, v in settings_data.ENVS_AND_VALS:

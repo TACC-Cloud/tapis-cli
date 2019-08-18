@@ -6,20 +6,23 @@ from cliff.app import App
 from cliff.commandmanager import CommandManager
 from pbr.version import VersionInfo
 
-from . import __about__ as about
+from .__about__ import About
 from . import settings
 
-version_info = VersionInfo('dc_cli')
+PKG_NAME = 'tapis_cli'
+about_info = About(PKG_NAME)
+version_info = VersionInfo(PKG_NAME)
 
 class Tapis_App(App):
 
     logger = logging.getLogger(__name__)
-    if settings.LOGLEVEL is not None:
-        logging.basicConfig(level=settings.LOGLEVEL)
+    if settings.LOG_LEVEL is not None:
+        logging.basicConfig(level=settings.LOG_LEVEL)
 
     def __init__(self):
         super(Tapis_App, self).__init__(
-            description=about.__project__,
+            description='{0}: {1}. For support contact {2}'.format(
+                about_info.project, about_info.summary, about_info.help),
             version=version_info.version_string(),
             command_manager=CommandManager('tapis.cli'),
             deferred_help=True,

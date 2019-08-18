@@ -1,52 +1,53 @@
 import os.path
+import re
+from pkg_resources import get_distribution
+from . import githelper
 
-# As per https://packaging.python.org/guides/single-sourcing-package-version/
-# Example 3, warehouse
-# https://github.com/pypa/warehouse/blob/64ca42e42d5613c8339b3ec5e1cb7765c6b23083/warehouse/__about__.py
-
-__all__ = [
-    "__title__",
-    "__project__",
-    "__summary__",
-    "__uri__",
-    "__version__",
-    "__sub_version__",
-    "__commit__",
-    "__author__",
-    "__email__",
-    "__license__",
-    "__copyright__",
+MAPPINGS = [
+    ('Name', 'title'),
+    ('Summary', 'summary'),
+    ('Home-page', 'uri'),
+    ('Author', 'author'),
+    ('Author-email', 'email'),
+    ('Maintainer-email', 'help')
 ]
 
-try:
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-except NameError:
-    base_dir = None
+OTHERS = [
+    ('Copyright', '2019 Texas Advanced Computing Center'),
+    ('License', 'BSD-3'),
+    ('Project', 'Tapis CLI')
+]
 
-__title__ = 'tapis_cli'
-__project__ = 'Tapis CLI'
-__summary__ = 'Command line tools to support TACC Tapis {}'.format(__project__)
-__uri__ = 'https://github.com/TACC-Cloud/tapis-cli-ng'
-__version__ = '0.0.1'
-__sub_version__ = '-dev'
+__all__ = ['About']
 
-if base_dir is not None and os.path.exists(os.path.join(base_dir, ".commit")):
-    with open(os.path.join(base_dir, ".commit")) as fp:
-        __commit__ = fp.read().strip()
-else:
-    __commit__ = None
+class About(object):
+    def __init__(self, name='tapis_cli'):
+        # Read from setup.cfg [metadata]
+        dst = get_distribution(name)
+        lines = dst.get_metadata_lines(dst.PKG_INFO)
+        found = list()
+        for line in lines:
+            for metadata_name, attribute in MAPPINGS:
+                if re.match('{}:'.format(metadata_name), line):
+                    name, value = line.split(':', 1)
+                    setattr(self, attribute, value.strip())
+                    found.append(metadata_name)
+                    break
+                elif metadata_name not in found:
+                    setattr(self, attribute, None)
+        # extension metadata
+        for other_name, value in OTHERS:
+            setattr(self, other_name.lower() , value)
+        # git commit if available
+        try:
+            commit = githelper.get_git_revision_short_hash()
+        except Exception:
+            commit = None
+        setattr(self, 'git_commit', commit)
+        # git remote if available
+        try:
+            remote = githelper.get_git_remote()
+        except Exception:
+            remote = None
+        setattr(self, 'git_uri', remote)
 
-__author__ = ','.join([
-    'Matthew Vaughn',
-    'Erik Ferlanti',
-    'John Fonner',
-    'William Allen']
-)
-__email__ = "tapis-help@tacc.cloud"
-
-__license__ = "BSD-3"
-__copyright__ = "2019- %s" % __author__
-
-
-def version(*args, **kwargs):
-    return __title__ + '.' + str(__version__)
