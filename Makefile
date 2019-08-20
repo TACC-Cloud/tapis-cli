@@ -17,8 +17,13 @@ format-code:
 format-tests:
 	yapf --recursive --style pep8 -i tests
 
-.PHONY: docs
-docs: docs-clean docs-autodoc docs-text
+.PHONY: docs docs/requirements.txt
+
+docs: docs-clean docs-autodoc docs-text docs/requirements.txt
+
+docs/requirements.txt:
+	cat requirements.txt > docs/requirements.txt
+	cat requirements-dev.txt >> docs/requirements.txt
 
 docs-text:
 	cd docs && make html && make man
