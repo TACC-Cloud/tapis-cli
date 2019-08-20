@@ -16,3 +16,15 @@ format-code:
 
 format-tests:
 	yapf --recursive --style pep8 -i tests
+
+.PHONY: docs
+docs: docs-clean docs-autodoc docs-text
+
+docs-text:
+	cd docs && make html && make man
+
+docs-autodoc:
+# 	cd docs && sphinx-apidoc --maxdepth 1 -M -H "API Reference" -f -o source ../tapis_cli
+
+docs-clean:
+	cd docs && make clean

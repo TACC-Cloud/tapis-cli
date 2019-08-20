@@ -6,3 +6,5 @@ env/
 *egg-info/*
 htmlcov
 .coverage
+.DS_Store
+docs/_build

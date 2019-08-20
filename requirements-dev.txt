@@ -8,3 +8,7 @@ pytest-runner>=5.1
 Sphinx>=2.1.2
 sphinxcontrib-napoleon>=0.7
 yapf>=0.28.0
+sphinx-autobuild
+sphinx-rtd-theme
+sphinx-fontawesome
+stevedore

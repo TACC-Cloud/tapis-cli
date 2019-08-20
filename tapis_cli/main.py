@@ -7,9 +7,9 @@ from cliff.commandmanager import CommandManager
 from pbr.version import VersionInfo
 
 from .__about__ import About
+from . import PKG_NAME
 from . import settings
 
-PKG_NAME = 'tapis_cli'
 about_info = About(PKG_NAME)
 version_info = VersionInfo(PKG_NAME)
 
