@@ -15,11 +15,6 @@ version_info = VersionInfo(PKG_NAME)
 
 
 class Tapis_App(App):
-
-    logger = logging.getLogger(__name__)
-    if settings.LOG_LEVEL is not None:
-        logging.basicConfig(level=settings.LOG_LEVEL)
-
     def __init__(self):
         super(Tapis_App, self).__init__(
             description='{0}: {1}. For support contact {2}'.format(
@@ -28,6 +23,32 @@ class Tapis_App(App):
             command_manager=CommandManager('tapis.cli'),
             deferred_help=True,
         )
+
+    def prepare_to_run_command(self, cmd):
+        """Prepares to run the command
+
+        Checks if the minimal parameters are provided and creates the
+        client interface.
+        This is inherited from the framework.
+        """
+        self.configure_logging()
+
+    def configure_logging(self):
+        """Create logging handlers for any log output."""
+
+        try:  # Python 2.7
+            from logging import NullHandler
+        except ImportError:
+
+            class NullHandler(logging.Handler):
+                def emit(self, record):
+                    pass
+
+        self.logger = logging.getLogger(__name__)
+        self.logger.addHandler(NullHandler())
+        if settings.LOG_LEVEL is not None:
+            logging.basicConfig(level=settings.LOG_LEVEL)
+        return
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc
     def build_option_parser(self, description, version):
