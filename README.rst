@@ -1,8 +1,8 @@
 Tapis CLI
 =========
 
-Install
--------
+Installation
+------------
 
 .. code-block:: shell
 
@@ -42,3 +42,45 @@ by tabbing.
 
     **Mac OS X Users**: One may need to install autocomplete support before
     this works. Using Homebrew, do ``brew install bash-completion``.
+
+Configuration
+-------------
+
+The Tapis CLI uses Python's ``dotenv`` module for configuration via environment
+variables. Briefly, the CLI will look for a file ``.env`` containing
+``KEY=VALUE`` pairs starting in the current working directory and working up
+the parent directory tree. If it still cannot find an environment file, it
+looks in ``$HOME/.env`` for one. Any variable defined in the environment
+file can be overridden by setting an environment variable in the shell where
+the CLI was launched. Some options can be further overridden at run-time via
+command-line option.
+
+Here's an example: The number of results returned from list-type
+commands is defined by the variable ``PAGE_SIZE`` and defaults to **100**. All
+CLI list-type commands support a ``--pagesize`` option, which will be used if
+specified. If no option is passed, the CLI will look for variable ``PAGE_SIZE``
+first in the environment, then in a ``.env`` file.
+
+Development
+-----------
+
+Install developer dependencies::
+
+    pip install -r requirements-dev.txt
+
+Run all the tests::
+
+    python -m pytest
+
+Documentation
+-------------
+
+The project uses Sphinx plus the Napoleon extension, which is configured to
+support Google-style documentation strings.
+
+Regenerate the documentation::
+
+    make docs
+
+Contributing
+------------
