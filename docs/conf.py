@@ -18,9 +18,7 @@ import sys
 import pbr.version
 
 sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..')))
-
-from tapis_cli import About, PKG_NAME
+    os.path.join(os.path.dirname(__file__), '..', '..')))
 
 # -- RTD configuration ----------------------------------------------------
 # sys.path.insert(0, os.path.abspath('.'))
@@ -35,11 +33,11 @@ autoprogram_cliff_ignored = [
 
 # -- Project information -----------------------------------------------------
 
-a = About(PKG_NAME)
-project = a.title
-copyright = a.copyright
-author = a.author
-version_info = pbr.version.VersionInfo(PKG_NAME)
+project = 'Tapis CLI'
+copyright = '2019, Texas Advanced Computiong Center'
+author = 'TACC Open Source'
+
+version_info = pbr.version.VersionInfo('tapis_cli')
 # The short X.Y version.
 version = version_info.version_string()
 # The full version, including alpha/beta/rc tags.
