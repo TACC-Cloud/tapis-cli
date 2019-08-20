@@ -1,1 +1,14 @@
-../requirements-dev.txt
+flake8>=3.7.8
+pycodestyle>=2.5.0
+pyflakes>=2.1.1
+Pygments>=2.4.2
+pytest>=5.1.0
+pytest-cov>=2.7.1
+pytest-runner>=5.1
+Sphinx>=2.1.2
+sphinxcontrib-napoleon>=0.7
+yapf>=0.28.0
+sphinx-autobuild
+sphinx-rtd-theme
+sphinx-fontawesome
+stevedore
