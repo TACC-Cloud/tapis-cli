@@ -55,11 +55,18 @@ file can be overridden by setting an environment variable in the shell where
 the CLI was launched. Some options can be further overridden at run-time via
 command-line option.
 
-Here's an example: The number of results returned from list-type
-commands is defined by the variable ``PAGE_SIZE`` and defaults to **100**. All
-CLI list-type commands support a ``--pagesize`` option, which will be used if
-specified. If no option is passed, the CLI will look for variable ``PAGE_SIZE``
-first in the environment, then in a ``.env`` file.
+Example
+^^^^^^^
+
+The number of results returned from list-type commands is defined by the
+variable ``PAGE_SIZE`` and defaults to **100**. All CLI list-type commands
+support a ``--pagesize`` option, which will be used if specified. If no option
+is passed, the CLI will look for variable ``PAGE_SIZE`` first in the shell
+environment, then in a ``.env`` file.
+
+Briefly restated::
+
+    --pagesize > os.environ['PAGE_SIZE'] > ./.env > $HOME.env
 
 Development
 -----------
