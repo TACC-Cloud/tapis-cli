@@ -7,6 +7,7 @@ Tapis CLI documentation
 
    index
    usage
+   source/modules
 
 Indices and tables
 ==================

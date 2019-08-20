@@ -11,6 +11,7 @@ Subpackages
 
 .. toctree::
 
+   tapis_cli.mocks
    tapis_cli.settings
 
 Submodules

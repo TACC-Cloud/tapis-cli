@@ -29,7 +29,7 @@ docs-text:
 	cd docs && make html && make man
 
 docs-autodoc:
-# 	cd docs && sphinx-apidoc --maxdepth 1 -M -H "API Reference" -f -o source ../tapis_cli
+	cd docs && sphinx-apidoc --maxdepth 1 -M -H "API Reference" -f -o source ../tapis_cli
 
 docs-clean:
 	cd docs && make clean
