@@ -6,6 +6,7 @@ Tapis CLI documentation
    :caption: Introduction
 
    index
+   usage
 
 Indices and tables
 ==================

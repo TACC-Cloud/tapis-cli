@@ -7,3 +7,4 @@ env/
 htmlcov
 .coverage
 .DS_Store
+docs/_build/*
