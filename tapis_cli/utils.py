@@ -2,6 +2,7 @@ import os
 import six
 from dateutil.parser import parse
 
+
 def ts_to_isodate(date_string, include_time=False):
     """Convert a datetime string (UTC) into a date string in ISO format"""
 

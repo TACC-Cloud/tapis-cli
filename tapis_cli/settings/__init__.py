@@ -34,4 +34,3 @@ def all_settings():
                 and not isinstance(item, ModuleType):
             settings[name] = item
     return settings
-

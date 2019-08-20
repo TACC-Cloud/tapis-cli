@@ -3,8 +3,11 @@ import os
 BOOLEAN_TRUE_STRINGS = ('true', 'on', 'ok', 'y', 'yes', '1')
 BOOLEAN_FALSE_STRINGS = ('no', 'false', 'off', '0', 'none')
 
-__all__ = ['fix_assets_path', 'array_from_string',
-           'set_from_string', 'parse_boolean', 'int_or_none']
+__all__ = [
+    'fix_assets_path', 'array_from_string', 'set_from_string', 'parse_boolean',
+    'int_or_none'
+]
+
 
 def fix_assets_path(path):
     fullpath = os.path.join(os.path.dirname(__file__), "../", path)

@@ -13,6 +13,7 @@ PKG_NAME = 'tapis_cli'
 about_info = About(PKG_NAME)
 version_info = VersionInfo(PKG_NAME)
 
+
 class Tapis_App(App):
 
     logger = logging.getLogger(__name__)
@@ -30,13 +31,14 @@ class Tapis_App(App):
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc
     def build_option_parser(self, description, version):
-        parser = super(Tapis_App, self).build_option_parser(
-            description, version)
+        parser = super(Tapis_App,
+                       self).build_option_parser(description, version)
         return parser
 
     def initialize_app(self, argv):
         super(Tapis_App, self).initialize_app(argv)
         self.logger.debug('Starting app, options: {}'.format(self.options))
+
 
 def main(argv=sys.argv[1:]):
     catalogApp = Tapis_App()

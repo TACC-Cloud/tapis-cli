@@ -1,6 +1,7 @@
 import pytest
 from .data import settings as settings_data
 
+
 @pytest.mark.smoketest
 def test_envs_are_settings(testing_envs):
     from tapis_cli import settings
