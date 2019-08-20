@@ -30,70 +30,155 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .in \\n[rst2man-indent\\n[rst2man-indent-level]]u
 ..
-Tapis CLI: Command line tools to support the TACC Tapis platform. For support contact “TACC Help” <\fI\%cli\-help@tacc.cloud\fP>
+.SH TAPIS CLI
+.SS Installation
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-tapis_cli [\-\-version] [\-v | \-q] [\-\-log\-file LOG_FILE] [\-\-debug]
+$ git clone https://github.com/TACC\-Cloud/tapis_cli_ng.git
+$ cd tapis_cli_ng
+$ pip install \-\-user \-e .
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
-.INDENT 0.0
-.TP
-.B \-\-version
-show program’s version number and exit
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-v, \-\-verbose
-Increase verbosity of output. Can be repeated.
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-q, \-\-quiet
-Suppress output except warnings and errors.
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-\-log\-file <LOG_FILE>
-Specify a file to log output. Disabled by default.
-.UNINDENT
-.INDENT 0.0
-.TP
-.B \-\-debug
-Show tracebacks on errors.
-.UNINDENT
+.SS Getting Started
 .sp
-Show API statuses
+The CLI features extensive contextual help, which should help you learn to use
+it. To start, a listing of supported commands and global options can be shown with \fB\-\-help\fP:
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-tapis statuses
+$ tapis \-\-help
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .sp
-This command is provided by the tapis\-cli plugin.
-.sp
-Show API versions
+There is also a \fBhelp\fP command for any for specific command:
 .INDENT 0.0
 .INDENT 3.5
 .sp
 .nf
 .ft C
-tapis versions
+$ tapis help versions
+$ tapis versions \-\-help
 .ft P
 .fi
 .UNINDENT
 .UNINDENT
 .sp
-This command is provided by the tapis\-cli plugin.
+(Optional) One may install bash command line completion to get command hints
+by tabbing.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+$ tapis complete >> ~/.bash_aliases
+$ . ~/.bash_aliases  # add to ~/.bashrc or ~/.bash_profile to always load (Ubuntu distros already load it)
+$ tapis <tab>
+    complete     help         statuses     versions
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
+\fBMac OS X Users\fP: One may need to install autocomplete support before
+this works. Using Homebrew, do \fBbrew install bash\-completion\fP\&.
+.UNINDENT
+.UNINDENT
+.SS Configuration
+.sp
+The Tapis CLI uses Python’s \fBdotenv\fP module for configuration via environment
+variables. Briefly, the CLI will look for a file \fB\&.env\fP containing
+\fBKEY=VALUE\fP pairs starting in the current working directory and working up
+the parent directory tree. If it still cannot find an environment file, it
+looks in \fB$HOME/.env\fP for one. Any variable defined in the environment
+file can be overridden by setting an environment variable in the shell where
+the CLI was launched. Some options can be further overridden at run\-time via
+command\-line option.
+.SS Example
+.sp
+The number of results returned from list\-type commands is defined by the
+variable \fBPAGE_SIZE\fP and defaults to \fB100\fP\&. All CLI list\-type commands
+support a \fB\-\-pagesize\fP option, which will be used if specified. If no option
+is passed, the CLI will look for variable \fBPAGE_SIZE\fP first in the shell
+environment, then in a \fB\&.env\fP file.
+.sp
+Briefly restated:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+\-\-pagesize > os.environ[\(aqPAGE_SIZE\(aq] > ./.env > $HOME.env
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Development
+.sp
+Install developer dependencies:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+pip install \-r requirements\-dev.txt
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.sp
+Run all the tests:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+python \-m pytest
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Documentation
+.sp
+The project uses Sphinx plus the Napoleon extension, which is configured to
+support Google\-style documentation strings.
+.sp
+Regenerate the documentation:
+.INDENT 0.0
+.INDENT 3.5
+.sp
+.nf
+.ft C
+make docs
+.ft P
+.fi
+.UNINDENT
+.UNINDENT
+.SS Contributing
+.sp
+The project code style is pretty vanilla PEP8, as configured by the
+\fB[flake8]\fP section of \fBsetup.cfg\fP\&. Use of \fByapf\fP autoformatter is
+supported and encouraged to maintain the codebase, and is available via the
+\fBmake format\fP Makefile target.
+.INDENT 0.0
+.IP \(bu 2
+genindex
+.IP \(bu 2
+modindex
+.IP \(bu 2
+search
+.UNINDENT
 .SH AUTHOR
 TACC Open Source
 .SH COPYRIGHT

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>statuses &mdash; Tapis CLI 0.0.2 documentation</title>
+  <title>Tapis CLI &mdash; Tapis CLI 0.0.2 documentation</title>
   
 
   
@@ -34,7 +34,8 @@
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Tapis CLI documentation" href="contents.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -48,7 +49,7 @@
           
 
           
-            <a href="#" class="icon icon-home"> Tapis CLI
+            <a href="contents.html" class="icon icon-home"> Tapis CLI
           
 
           
@@ -82,12 +83,22 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">statuses</a></li>
-<li><a class="reference internal" href="#versions">versions</a></li>
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tapis CLI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#development">Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a></li>
+</ul>
+</li>
+</ul>
+
             
           
         </div>
@@ -100,7 +111,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">Tapis CLI</a>
+          <a href="contents.html">Tapis CLI</a>
         
       </nav>
 
@@ -129,9 +140,9 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#">Docs</a> &raquo;</li>
+      <li><a href="contents.html">Docs</a> &raquo;</li>
         
-      <li>statuses</li>
+      <li>Tapis CLI</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -150,55 +161,92 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>Tapis CLI: Command line tools to support the TACC Tapis platform. For support contact “TACC Help” &lt;<a class="reference external" href="mailto:cli-help&#37;&#52;&#48;tacc&#46;cloud">cli-help<span>&#64;</span>tacc<span>&#46;</span>cloud</a>&gt;</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tapis_cli <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-v <span class="p">|</span> -q<span class="o">]</span> <span class="o">[</span>--log-file LOG_FILE<span class="o">]</span> <span class="o">[</span>--debug<span class="o">]</span>
+  <div class="section" id="tapis-cli">
+<h1>Tapis CLI<a class="headerlink" href="#tapis-cli" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/TACC-Cloud/tapis_cli_ng.git
+$ <span class="nb">cd</span> tapis_cli_ng
+$ pip install --user -e .
 </pre></div>
 </div>
-<dl class="option">
-<dt id="cmdoption-tapis-cli-version">
-<code class="sig-name descname">--version</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-tapis-cli-version" title="Permalink to this definition">¶</a></dt>
-<dd><p>show program’s version number and exit</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="cmdoption-tapis-cli-v">
-<code class="sig-name descname">-v</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--verbose</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-tapis-cli-v" title="Permalink to this definition">¶</a></dt>
-<dd><p>Increase verbosity of output. Can be repeated.</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="cmdoption-tapis-cli-q">
-<code class="sig-name descname">-q</code><code class="sig-prename descclassname"></code><code class="sig-prename descclassname">, </code><code class="sig-name descname">--quiet</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-tapis-cli-q" title="Permalink to this definition">¶</a></dt>
-<dd><p>Suppress output except warnings and errors.</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="cmdoption-tapis-cli-log-file">
-<code class="sig-name descname">--log-file</code><code class="sig-prename descclassname"> &lt;LOG_FILE&gt;</code><a class="headerlink" href="#cmdoption-tapis-cli-log-file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Specify a file to log output. Disabled by default.</p>
-</dd></dl>
-
-<dl class="option">
-<dt id="cmdoption-tapis-cli-debug">
-<code class="sig-name descname">--debug</code><code class="sig-prename descclassname"></code><a class="headerlink" href="#cmdoption-tapis-cli-debug" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show tracebacks on errors.</p>
-</dd></dl>
-
-<div class="section" id="statuses">
-<h1>statuses<a class="headerlink" href="#statuses" title="Permalink to this headline">¶</a></h1>
-<p>Show API statuses</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tapis statuses
+</div>
+<div class="section" id="getting-started">
+<h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>The CLI features extensive contextual help, which should help you learn to use
+it. To start, a listing of supported commands and global options can be shown with <code class="docutils literal notranslate"><span class="pre">--help</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ tapis --help
 </pre></div>
 </div>
-<p>This command is provided by the tapis-cli plugin.</p>
-</div>
-<div class="section" id="versions">
-<h1>versions<a class="headerlink" href="#versions" title="Permalink to this headline">¶</a></h1>
-<p>Show API versions</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tapis versions
+<p>There is also a <code class="docutils literal notranslate"><span class="pre">help</span></code> command for any for specific command:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ tapis <span class="nb">help</span> versions
+$ tapis versions --help
 </pre></div>
 </div>
-<p>This command is provided by the tapis-cli plugin.</p>
+<p>(Optional) One may install bash command line completion to get command hints
+by tabbing.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ tapis <span class="nb">complete</span> &gt;&gt; ~/.bash_aliases
+$ . ~/.bash_aliases  <span class="c1"># add to ~/.bashrc or ~/.bash_profile to always load (Ubuntu distros already load it)</span>
+$ tapis &lt;tab&gt;
+    <span class="nb">complete</span>     <span class="nb">help</span>         statuses     versions
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>Mac OS X Users</strong>: One may need to install autocomplete support before
+this works. Using Homebrew, do <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">bash-completion</span></code>.</p>
+</div>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>The Tapis CLI uses Python’s <code class="docutils literal notranslate"><span class="pre">dotenv</span></code> module for configuration via environment
+variables. Briefly, the CLI will look for a file <code class="docutils literal notranslate"><span class="pre">.env</span></code> containing
+<code class="docutils literal notranslate"><span class="pre">KEY=VALUE</span></code> pairs starting in the current working directory and working up
+the parent directory tree. If it still cannot find an environment file, it
+looks in <code class="docutils literal notranslate"><span class="pre">$HOME/.env</span></code> for one. Any variable defined in the environment
+file can be overridden by setting an environment variable in the shell where
+the CLI was launched. Some options can be further overridden at run-time via
+command-line option.</p>
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>The number of results returned from list-type commands is defined by the
+variable <code class="docutils literal notranslate"><span class="pre">PAGE_SIZE</span></code> and defaults to <strong>100</strong>. All CLI list-type commands
+support a <code class="docutils literal notranslate"><span class="pre">--pagesize</span></code> option, which will be used if specified. If no option
+is passed, the CLI will look for variable <code class="docutils literal notranslate"><span class="pre">PAGE_SIZE</span></code> first in the shell
+environment, then in a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file.</p>
+<p>Briefly restated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>--pagesize &gt; os.environ[&#39;PAGE_SIZE&#39;] &gt; ./.env &gt; $HOME.env
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="development">
+<h2>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h2>
+<p>Install developer dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">-</span><span class="n">dev</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Run all the tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pytest</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>The project uses Sphinx plus the Napoleon extension, which is configured to
+support Google-style documentation strings.</p>
+<p>Regenerate the documentation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">docs</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h2>
+<p>The project code style is pretty vanilla PEP8, as configured by the
+<code class="docutils literal notranslate"><span class="pre">[flake8]</span></code> section of <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>. Use of <code class="docutils literal notranslate"><span class="pre">yapf</span></code> autoformatter is
+supported and encouraged to maintain the codebase, and is available via the
+<code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">format</span></code> Makefile target.</p>
+</div>
 </div>
 
 
@@ -206,6 +254,13 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="contents.html" class="btn btn-neutral float-left" title="Tapis CLI documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
