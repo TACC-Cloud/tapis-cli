@@ -1,0 +1,2 @@
+"""Notifications service commands
+"""

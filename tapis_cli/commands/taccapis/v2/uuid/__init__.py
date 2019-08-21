@@ -1,0 +1,2 @@
+"""UUID service commands
+"""
