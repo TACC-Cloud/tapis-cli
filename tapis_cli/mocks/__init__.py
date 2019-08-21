@@ -6,7 +6,7 @@ __all__ = ['FormatOne', 'FormatMany']
 
 
 class FormatOne(ShowOne):
-    """Mock Record Display
+    """Generic Record Display
     """
     def get_parser(self, prog_name):
         parser = super(FormatOne, self).get_parser(prog_name)
@@ -17,7 +17,7 @@ class FormatOne(ShowOne):
 
 
 class FormatMany(Lister):
-    """Mock Records Listing
+    """Generic Records Listing
     """
     def get_parser(self, prog_name):
         parser = super(FormatMany, self).get_parser(prog_name)
