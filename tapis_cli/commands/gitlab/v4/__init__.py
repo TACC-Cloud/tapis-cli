@@ -1,2 +1,2 @@
-"""On-premises Gitlab services
+"""Gitlab v4 commands
 """

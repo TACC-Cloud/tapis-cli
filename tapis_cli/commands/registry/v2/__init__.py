@@ -1,2 +1,2 @@
-"""Container registry commands
+"""Registry v2 commands
 """
