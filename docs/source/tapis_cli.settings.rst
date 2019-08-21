@@ -6,32 +6,15 @@ tapis\_cli.settings package
    :undoc-members:
    :show-inheritance:
 
+Subpackages
+-----------
+
+.. toctree::
+
+   tapis_cli.settings.taccapis
+
 Submodules
 ----------
-
-tapis\_cli.settings.abaco module
---------------------------------
-
-.. automodule:: tapis_cli.settings.abaco
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-tapis\_cli.settings.agave module
---------------------------------
-
-.. automodule:: tapis_cli.settings.agave
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-tapis\_cli.settings.aloe module
--------------------------------
-
-.. automodule:: tapis_cli.settings.aloe
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 tapis\_cli.settings.debug module
 --------------------------------
