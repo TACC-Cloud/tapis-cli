@@ -2,14 +2,14 @@ from ..http import HTTPFormatOne, HTTPFormatMany
 
 __all__ = ['NonceHTTPFormatOne', 'NonceHTTPFormatMany']
 
+
 def add_common_arguments(parser):
-    parser.add_argument(
-        '--x-nonce',
-        dest='x_nonce',
-        type=str,
-        help="Tapis nonce"
-    )
+    parser.add_argument('--x-nonce',
+                        dest='x_nonce',
+                        type=str,
+                        help="Tapis nonce")
     return parser
+
 
 class NonceHTTPFormatOne(HTTPFormatOne):
     """HTTP+Nonce Record Display
@@ -21,6 +21,7 @@ class NonceHTTPFormatOne(HTTPFormatOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class NonceHTTPFormatMany(HTTPFormatMany):
     """HTTP+Nonce Records Listing

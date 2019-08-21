@@ -1,21 +1,19 @@
 from ..http import HTTPFormatOne, HTTPFormatMany
 from ..basic import BasicHTTPFormatOne, BasicHTTPFormatMany
 
-__all__ = ['KeySecretBasicFormatOne', 'KeySecretBasicFormatMany',
-           'KeySecretOnlyFormatOne', 'KeySecretOnlyFormatMany']
+__all__ = [
+    'KeySecretBasicFormatOne', 'KeySecretBasicFormatMany',
+    'KeySecretOnlyFormatOne', 'KeySecretOnlyFormatMany'
+]
+
 
 def add_common_arguments(parser):
-    parser.add_argument(
-        '--client-key',
-        type=str,
-        help="Tapis client key"
-    )
-    parser.add_argument(
-        '--client-secret',
-        type=str,
-        help="Tapis client secret"
-    )
+    parser.add_argument('--client-key', type=str, help="Tapis client key")
+    parser.add_argument('--client-secret',
+                        type=str,
+                        help="Tapis client secret")
     return parser
+
 
 class KeySecretBasicFormatOne(BasicHTTPFormatOne):
     """HTTP+KeySecret+Basic Record Display
@@ -28,6 +26,7 @@ class KeySecretBasicFormatOne(BasicHTTPFormatOne):
     def take_action(self, parsed_args):
         return ((), ())
 
+
 class KeySecretBasicFormatMany(BasicHTTPFormatMany):
     """HTTP+KeySecret+Basic Records Listing
     """
@@ -39,6 +38,7 @@ class KeySecretBasicFormatMany(BasicHTTPFormatMany):
     def take_action(self, parsed_args):
         return ((), ())
 
+
 class KeySecretOnlyFormatOne(HTTPFormatOne):
     """HTTP+KeySecret Only Record Display
     """
@@ -49,6 +49,7 @@ class KeySecretOnlyFormatOne(HTTPFormatOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class KeySecretOnlyFormatMany(HTTPFormatMany):
     """HTTP+KeySecret+Basic Records Listing

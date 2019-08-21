@@ -2,20 +2,18 @@ from ..http import HTTPFormatOne, HTTPFormatMany
 
 __all__ = ['BasicHTTPFormatOne', 'BasicHTTPFormatMany']
 
+
 def add_common_arguments(parser):
-    parser.add_argument(
-        '--username',
-        dest='username',
-        type=str,
-        help="Tapis username"
-    )
-    parser.add_argument(
-        '--password',
-        dest='password',
-        type=str,
-        help="Tapis password"
-    )
+    parser.add_argument('--username',
+                        dest='username',
+                        type=str,
+                        help="Tapis username")
+    parser.add_argument('--password',
+                        dest='password',
+                        type=str,
+                        help="Tapis password")
     return parser
+
 
 class BasicHTTPFormatOne(HTTPFormatOne):
     """HTTP+Basic Record Display
@@ -27,6 +25,7 @@ class BasicHTTPFormatOne(HTTPFormatOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class BasicHTTPFormatMany(HTTPFormatMany):
     """HTTP+Basic Records Listing

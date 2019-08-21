@@ -5,14 +5,14 @@ from cliff.show import ShowOne
 
 __all__ = ['HTTPFormatOne', 'HTTPFormatMany']
 
+
 def add_common_arguments(parser):
-    parser.add_argument(
-        '--verify',
-        dest='verify_ssl',
-        type=bool,
-        help="Verify SSL certificates"
-    )
+    parser.add_argument('--verify',
+                        dest='verify_ssl',
+                        type=bool,
+                        help="Verify SSL certificates")
     return parser
+
 
 class HTTPFormatOne(ShowOne):
     """HTTP Record Display
@@ -24,6 +24,7 @@ class HTTPFormatOne(ShowOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class HTTPFormatMany(Lister):
     """HTTP Records Listing
