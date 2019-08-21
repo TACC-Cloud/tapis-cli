@@ -1,12 +1,20 @@
 import os
+from . import ENV_PREFIX
 
 BOOLEAN_TRUE_STRINGS = ('true', 'on', 'ok', 'y', 'yes', '1')
 BOOLEAN_FALSE_STRINGS = ('no', 'false', 'off', '0', 'none')
 
 __all__ = [
-    'fix_assets_path', 'array_from_string', 'set_from_string', 'parse_boolean',
-    'int_or_none'
+    'ns_os_environ_get', 'fix_assets_path', 'array_from_string',
+    'set_from_string', 'parse_boolean', 'int_or_none'
 ]
+
+
+def ns_os_environ_get(env_var_name, default, prefix=ENV_PREFIX):
+    if prefix is not None:
+        if not prefix.endswith('_'):
+            prefix = prefix + '_'
+    return os.environ.get('{}{}'.format(prefix, env_var_name), default)
 
 
 def fix_assets_path(path):

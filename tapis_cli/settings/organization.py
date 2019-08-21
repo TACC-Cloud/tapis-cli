@@ -1,5 +1,5 @@
 import os
-from .helpers import parse_boolean
+from .helpers import (parse_boolean, ns_os_environ_get)
 
 __all__ = [
     'TENANT_DNS_DOMAIN', 'TACC_PROJECT_NAME', 'TACC_PROJECT_ID',

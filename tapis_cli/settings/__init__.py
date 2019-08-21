@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 from dateutil.parser import parse
 # from . import constants
 
-BOOLEAN_TRUE_STRINGS = ('true', 'on', 'ok', 'y', 'yes', '1')
+ENV_PREFIX = 'TAPIS_CLI'
 
 with warnings.catch_warnings():
     warnings.simplefilter('ignore')
@@ -18,11 +18,8 @@ from .debug import *
 from .display import *
 from .organization import *
 
-from .abaco import *
-from .agave import *
-from .aloe import *
-from .gitlab import *
-from .jupyter import *
+from .taccapis.v1 import *
+from .taccapis.v2 import *
 
 
 def all_settings():
