@@ -6,3 +6,5 @@ requests
 six
 agavepy
 dateparser
+agavepy==0.9.4
+

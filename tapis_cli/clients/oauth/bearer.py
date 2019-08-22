@@ -1,16 +1,16 @@
-from .keysecret import KeySecretOnlyFormatOne, KeySecretOnlyFormatMany
+from ..http import HTTPFormatOne, HTTPFormatMany
 
 __all__ = ['BearerTokenFormatOne', 'BearerTokenFormatMany']
 
 
 def add_common_arguments(parser):
-    parser.add_argument('--access-token',
+    parser.add_argument('--token',
                         type=str,
-                        help="Tapis Oauth access token")
+                        help="Oauth access token")
     return parser
 
 
-class BearerTokenFormatOne(KeySecretOnlyFormatOne):
+class BearerTokenFormatOne(HTTPFormatOne):
     """HTTP+Bearer Token Record Display
     """
     def get_parser(self, prog_name):
@@ -22,7 +22,7 @@ class BearerTokenFormatOne(KeySecretOnlyFormatOne):
         return ((), ())
 
 
-class BearerTokenFormatMany(KeySecretOnlyFormatMany):
+class BearerTokenFormatMany(HTTPFormatMany):
     """HTTP+Bearer Token Records Listing
     """
     def get_parser(self, prog_name):

@@ -7,11 +7,11 @@ def add_common_arguments(parser):
     parser.add_argument('--username',
                         dest='username',
                         type=str,
-                        help="Tapis username")
+                        help="Username")
     parser.add_argument('--password',
                         dest='password',
                         type=str,
-                        help="Tapis password")
+                        help="Password")
     return parser
 
 
