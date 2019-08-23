@@ -2,8 +2,10 @@ from ....basic import BasicHTTPFormatOne, BasicHTTPFormatMany
 
 __all__ = ['TaccApisFormatOne', 'TaccApisFormatMany']
 
+
 def add_common_arguments(parser):
     return parser
+
 
 class TaccApisFormatOne(BasicHTTPFormatOne):
     """TACC APIs HTTP+Basic Record Display
@@ -15,6 +17,7 @@ class TaccApisFormatOne(BasicHTTPFormatOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class TaccApisFormatMany(BasicHTTPFormatMany):
     """TACC APIs HTTP+Basic Records Listing

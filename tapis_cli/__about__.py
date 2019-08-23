@@ -35,7 +35,7 @@ class About(object):
         try:
             commit = githelper.get_git_revision_short_hash()
         except Exception:
-            commit = None
+            commit = 'latest'
         setattr(self, 'git_commit', commit)
         # git remote if available
         try:

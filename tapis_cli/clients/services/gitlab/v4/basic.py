@@ -2,8 +2,10 @@ from ....basic import BasicHTTPFormatOne
 
 __all__ = ['GitlabBasicFormatOne']
 
+
 def add_common_arguments(parser):
     return parser
+
 
 class GitlabBasicFormatOne(BasicHTTPFormatOne):
     """Gitlab HTTP+Basic Record Display

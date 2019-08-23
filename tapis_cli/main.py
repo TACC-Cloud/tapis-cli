@@ -10,6 +10,8 @@ from .__about__ import About
 from . import PKG_NAME
 from . import settings
 
+from agavepy.agave import Agave
+
 about_info = About(PKG_NAME)
 version_info = VersionInfo(PKG_NAME)
 
@@ -53,17 +55,10 @@ class Tapis_App(App):
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc
     def build_option_parser(self, description, version):
 
-        argparse_kwargs = {'conflict_handler': 'resolve'}
         parser = super(Tapis_App,
-                       self).build_option_parser(
-                           description, version, argparse_kwargs=argparse_kwargs)
+                       self).build_option_parser(description, version)
 
-        parser.add_argument(
-            '-U',
-            metavar='BASEURL',
-            dest='baseurl',
-            help='API Base URL'
-        )
+        parser.add_argument('-U', dest='baseurl', help='API Server')
 
         return parser
 

@@ -7,10 +7,11 @@ __all__ = ['HTTPFormatOne', 'HTTPFormatMany']
 
 
 def add_common_arguments(parser):
-    parser.add_argument('--verify',
+    parser.add_argument('-V',
+                        '--no-verify',
                         dest='verify_ssl',
-                        type=bool,
-                        help="Verify SSL certificates")
+                        action='store_false',
+                        help="Skip SSL cert verification")
     return parser
 
 

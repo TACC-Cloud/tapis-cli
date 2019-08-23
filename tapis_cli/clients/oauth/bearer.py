@@ -4,9 +4,7 @@ __all__ = ['BearerTokenFormatOne', 'BearerTokenFormatMany']
 
 
 def add_common_arguments(parser):
-    parser.add_argument('--token',
-                        type=str,
-                        help="Oauth access token")
+    parser.add_argument('--token', type=str, help="Oauth access token")
     return parser
 
 

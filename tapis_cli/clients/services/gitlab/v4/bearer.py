@@ -2,8 +2,10 @@ from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany
 
 __all__ = ['GitlabTokenFormatOne', 'GitlabTokenFormatMany']
 
+
 def add_common_arguments(parser):
     return parser
+
 
 class GitlabTokenFormatOne(BearerTokenFormatOne):
     """Gitlab HTTP+Token Record Display
@@ -15,6 +17,7 @@ class GitlabTokenFormatOne(BearerTokenFormatOne):
 
     def take_action(self, parsed_args):
         return ((), ())
+
 
 class GitlabTokenFormatMany(BearerTokenFormatMany):
     """Gitlab HTTP+Token Records Listing
