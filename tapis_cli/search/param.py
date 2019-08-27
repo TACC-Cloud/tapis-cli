@@ -6,8 +6,10 @@ from . import argmod, argtype, optionize, propertize, tapisize
 
 __all__ = ['WebParam', 'SearchWebParam']
 
+
 class WebParam(dict):
     pass
+
 
 class SearchWebParam(SearchArg):
     """Implements that render param=value for passing to a web service
@@ -134,4 +136,3 @@ class SearchWebParam(SearchArg):
     #     if self.field_type is not argtype.DATETIME:
     #         raise TypeError('"before" may only be used for dates and times')
     #     return self.query_lt(value)
-

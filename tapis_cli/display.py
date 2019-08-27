@@ -3,6 +3,7 @@
 
 __all__ = ['Verbosity']
 
+
 class Verbosity:
     BRIEF = 0
     LISTING = 1

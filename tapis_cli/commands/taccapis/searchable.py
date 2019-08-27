@@ -1,5 +1,6 @@
 __all__ = ['SearchableCommand']
 
+
 class SearchableCommand:
     search_args = dict()
 

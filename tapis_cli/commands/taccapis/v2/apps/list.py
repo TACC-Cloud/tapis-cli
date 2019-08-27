@@ -6,8 +6,8 @@ from . import API_NAME, SERVICE_VERSION
 from .app import App
 from .formatters import AppsFormatOne, AppsFormatMany
 
-
 __all__ = ['AppsList']
+
 
 class AppsList(AppsFormatMany):
     """List the Apps catalog
@@ -35,4 +35,3 @@ class AppsList(AppsFormatMany):
                 record.append(val)
             records.append(record)
         return (tuple(headers), tuple(records))
-

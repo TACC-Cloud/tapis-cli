@@ -11,15 +11,19 @@ __all__ = ['MongoQuery', 'SearchMongoQuery']
 class MongoQuery(dict):
     pass
 
-class SearchMongoQuery(SearchArg):
 
+class SearchMongoQuery(SearchArg):
     def query_eq(self, value):
         # EQUALS
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            return MongoQuery({self.field: {'$gte': value.smart_floor(),
-                                            '$lt': value.smart_ceil()}})
+            return MongoQuery({
+                self.field: {
+                    '$gte': value.smart_floor(),
+                    '$lt': value.smart_ceil()
+                }
+            })
         else:
             return MongoQuery({self.field: value})
 
@@ -28,9 +32,14 @@ class SearchMongoQuery(SearchArg):
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            return MongoQuery({self.field: {'$not': {
-                '$gte': value.smart_floor(),
-                '$lt': value.smart_ceil()}}})
+            return MongoQuery({
+                self.field: {
+                    '$not': {
+                        '$gte': value.smart_floor(),
+                        '$lt': value.smart_ceil()
+                    }
+                }
+            })
         else:
             return MongoQuery({self.field: {'$ne': value}})
 
@@ -90,8 +99,10 @@ class SearchMongoQuery(SearchArg):
         # DOESN'T START WITH
         if isinstance(value, list):
             value = value[0]
-        return MongoQuery({self.field: {'$not': Regex(
-            '^' + value + '.*', 'i')}})
+        return MongoQuery(
+            {self.field: {
+                '$not': Regex('^' + value + '.*', 'i')
+            }})
 
     def query_end(self, value):
         # ENDS WITH
@@ -103,8 +114,10 @@ class SearchMongoQuery(SearchArg):
         # DOESN'T END WITH
         if isinstance(value, list):
             value = value[0]
-        return MongoQuery({self.field: {'$not': Regex(
-            '*.' + value + '$', 'i')}})
+        return MongoQuery(
+            {self.field: {
+                '$not': Regex('*.' + value + '$', 'i')
+            }})
 
     def query_like(self, value):
         # WILDCARD CONTAINS
@@ -116,8 +129,10 @@ class SearchMongoQuery(SearchArg):
         # WILDCARD NOT CONTAINS
         if isinstance(value, list):
             value = value[0]
-        return MongoQuery({self.field: {'$not': Regex(
-            '.*' + value + '.*', 'i')}})
+        return MongoQuery(
+            {self.field: {
+                '$not': Regex('.*' + value + '.*', 'i')
+            }})
 
     def query_on(self, value):
         if self.field_type is not argtype.DATETIME:
@@ -133,4 +148,3 @@ class SearchMongoQuery(SearchArg):
         if self.field_type is not argtype.DATETIME:
             raise TypeError('"before" may only be used for dates and times')
         return self.query_lt(value)
-

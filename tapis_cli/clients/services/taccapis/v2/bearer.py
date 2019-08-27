@@ -17,6 +17,7 @@ def add_common_arguments(parser):
 class TaccApisBase(object):
     pass
 
+
 class TaccApisFormatOne(BearerTokenFormatOne):
     """TACC APIs HTTP+Token Record Display
     """

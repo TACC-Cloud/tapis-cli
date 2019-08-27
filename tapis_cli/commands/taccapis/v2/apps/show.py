@@ -7,6 +7,7 @@ from .formatters import AppsFormatOne
 
 __all__ = ['AppsShow']
 
+
 class AppsShow(AppsFormatOne):
     """Show a single app record
     """

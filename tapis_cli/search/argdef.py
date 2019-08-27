@@ -4,8 +4,11 @@ import stringcase
 
 __all__ = ['Argdef', 'optionize', 'propertize', 'tapisize']
 
-Argdef = collections.namedtuple('Argdef',
-    'param_name param_type verbosity mod_types default_mod choices override_option searchable')
+Argdef = collections.namedtuple(
+    'Argdef',
+    'param_name param_type verbosity mod_types default_mod choices override_option searchable'
+)
+
 
 def optionize(fieldKeyName):
     """Transforms a string into an argparse option
@@ -16,10 +19,12 @@ def optionize(fieldKeyName):
     cased = re.sub('^(-){1,}', '', cased)
     return '--{0}'.format(cased)
 
+
 def propertize(fieldKeyName):
     """Transforms a string into an Python parameter name
     """
     return stringcase.snakecase(fieldKeyName)
+
 
 def tapisize(fieldKeyName):
     """Transforms a string into a Tapis query parameter

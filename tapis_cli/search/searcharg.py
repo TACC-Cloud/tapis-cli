@@ -11,16 +11,16 @@ DATETIME = 'datetime'
 
 Argument = namedtuple('Argument', 'argument, attributes')
 
+
 class SearchArg(object):
     """Uses metadata to generate argparse and param views of a search term
     """
-    PARAMS = [
-        ('argument', False, 'argument', 'str', None),
-        ('field', False, 'field', 'str', None),
-        ('destination', False, 'destination', None, None),
-        ('choices', False, 'choices', None, None),
-        ('mods', False, 'mods', 'list', [argmod.EQUALS]),
-        ('default_mod', False, 'default_mod', 'str', argmod.EQUALS)]
+    PARAMS = [('argument', False, 'argument', 'str', None),
+              ('field', False, 'field', 'str', None),
+              ('destination', False, 'destination', None, None),
+              ('choices', False, 'choices', None, None),
+              ('mods', False, 'mods', 'list', [argmod.EQUALS]),
+              ('default_mod', False, 'default_mod', 'str', argmod.EQUALS)]
 
     def __init__(self, field_type=argtype.STRING, **kwargs):
         setattr(self, 'field_type', field_type)
@@ -100,16 +100,16 @@ class SearchArg(object):
             try:
                 return field_type(value)
             except ValueError:
-                raise Exception(
-                    'Unable to cast {} to {}'.format(value, field_type))
+                raise Exception('Unable to cast {} to {}'.format(
+                    value, field_type))
 
     @classmethod
     def parse_datetime(cls, value, span=None):
         """Transform a human date or time string to a Python UTC datetime
         """
         factory = arrow.ArrowFactory(ArrowSpan)
-        dta = factory.get(dateparser.parse(
-            value, settings={'TIMEZONE': 'UTC'}))
+        dta = factory.get(dateparser.parse(value, settings={'TIMEZONE':
+                                                            'UTC'}))
         dta.setup(value)
         return dta
 

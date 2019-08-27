@@ -6,8 +6,8 @@ from . import API_NAME, SERVICE_VERSION
 from .app import App
 from .formatters import AppsFormatOne, AppsFormatMany
 
-
 __all__ = ['AppsSearch']
+
 
 class AppsSearch(AppsFormatMany, SearchableCommand):
     """Search the Apps catalog
@@ -19,15 +19,13 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
         parser = super(AppsFormatMany, self).get_parser(prog_name)
         for f in App().fields:
             if f.searchable:
-                sarg = SearchWebParam(
-                    argument=f.param_name,
-                    field_type=f.param_type,
-                    mods=f.mod_types,
-                    default_mod=f.default_mod)
+                sarg = SearchWebParam(argument=f.param_name,
+                                      field_type=f.param_type,
+                                      mods=f.mod_types,
+                                      default_mod=f.default_mod)
                 self.cache_sarg(sarg)
                 sargp = sarg.get_argparse()
-                parser.add_argument(sargp.argument,
-                                    **sargp.attributes)
+                parser.add_argument(sargp.argument, **sargp.attributes)
         return parser
 
     def take_action(self, parsed_args):
@@ -40,8 +38,7 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
         filters = list()
         for sarg_name, sarg in self.search_args.items():
             # raise SystemError(sarg.destination)
-            parsed_args_val = getattr(
-                parsed_args, sarg.destination, None)
+            parsed_args_val = getattr(parsed_args, sarg.destination, None)
             if parsed_args_val:
                 filt = sarg.get_param(parsed_args_val)
                 filters.append(filt)

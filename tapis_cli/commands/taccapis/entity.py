@@ -2,6 +2,7 @@ from tapis_cli.search import Argdef, argmod, argtype, optionize
 
 __all__ = ['TapisEntity']
 
+
 class TapisEntity(object):
     """Base class for any Tapis primitive
     """
@@ -11,14 +12,19 @@ class TapisEntity(object):
     SEARCH_ARGS = []
     fields = []
 
-    def add_field(self, param_name, param_type, only_detail, mods_allowed,
-                  default_mod, value_choices=None, param_opt=None,
+    def add_field(self,
+                  param_name,
+                  param_type,
+                  only_detail,
+                  mods_allowed,
+                  default_mod,
+                  value_choices=None,
+                  param_opt=None,
                   searchable=False):
         """Add a searchable field
         """
-        arg = Argdef(
-            param_name, param_type, only_detail, mods_allowed,
-            default_mod, value_choices, param_opt, searchable)
+        arg = Argdef(param_name, param_type, only_detail, mods_allowed,
+                     default_mod, value_choices, param_opt, searchable)
         if arg not in self.fields:
             self.fields.append(arg)
         return self

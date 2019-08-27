@@ -15,6 +15,7 @@ DEFAULT = STRING
 
 __all__ = ['param_type_repr', 'format_allows_param_type']
 
+
 def param_type_repr(param_type):
     if param_type == STRING:
         repr = 'string'
@@ -29,6 +30,7 @@ def param_type_repr(param_type):
     else:
         repr = ''
     return repr.upper()
+
 
 def format_allows_param_type(argdef, formatter='table'):
     """Filter (mostly structured) un-formattable arguments

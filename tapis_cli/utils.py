@@ -37,10 +37,12 @@ def ts_to_date(date_string):
 
     return date_rep
 
+
 def datetime_to_isodate(date_obj):
     """Convert a Python datetime object to ISO-8601
     """
     return arrow.get(date_obj).format('YYYY-MM-DDTHH:mm:ss.SSSZZ')
+
 
 def datetime_to_human(date_obj):
     """Convert a Python datetime object to a human-friendly string

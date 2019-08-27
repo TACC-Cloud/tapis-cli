@@ -2,6 +2,7 @@ import arrow
 
 __all__ = ['ArrowSpan']
 
+
 class ArrowSpan(arrow.Arrow):
     """Subclass of Arrow with upgraded span() capability used to generate MongoDB date ranges for queries
     """
