@@ -20,17 +20,21 @@ class AppsBase(TaccApisBase):
 
     def render_value(self, value):
         if isinstance(value, datetime.datetime):
-            value = datetime_to_isodate(value)
+            if self.formatter_default == 'table':
+                # TODO - figure out why this only works for the ShowOne
+                value = datetime_to_human(value)
+            else:
+                value = datetime_to_isodate(value)
         return value
 
 
-class AppsFormatOne(AppsBase, TaccApisFormatOne):
+class AppsFormatOne(TaccApisFormatOne, AppsBase):
     def take_action_defaults(self, parsed_args):
         super().take_action_defaults(parsed_args)
         return self
 
 
-class AppsFormatMany(AppsBase, TaccApisFormatMany):
+class AppsFormatMany(TaccApisFormatMany, AppsBase):
     def take_action_defaults(self, parsed_args):
         super().take_action_defaults(parsed_args)
         self.post_payload['limit'] = parsed_args.limit

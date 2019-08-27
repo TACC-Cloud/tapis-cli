@@ -20,9 +20,9 @@ class App(TapisEntity):
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("name", argtype.STRING, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+        ("name", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("version", argtype.STRING, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+        ("version", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("revision", argtype.INTEGER, Verbosity.LISTING,
          argmod.NUMBER_DEFAULTS, argmod.DEFAULT, None, None, True),
