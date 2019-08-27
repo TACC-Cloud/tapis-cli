@@ -9,7 +9,7 @@ __all__ = ['SystemsShow']
 
 
 class SystemsShow(SystemsFormatOne):
-    """Show a single app record
+    """Show a single system record
     """
     VERBOSITY = Verbosity.RECORD
 
