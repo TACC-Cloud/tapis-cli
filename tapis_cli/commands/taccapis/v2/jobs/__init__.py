@@ -1,4 +1,8 @@
 """Jobs service commands
 """
 from .. import SERVICE_VERSION
-API_NAME = 'jobs'
+from .job import Job, API_NAME
+from .show import JobsShow
+from .list import JobsList
+from .search import JobsSearch
+# from .history import JobsHistory
