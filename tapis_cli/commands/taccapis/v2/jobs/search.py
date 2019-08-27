@@ -10,7 +10,7 @@ __all__ = ['JobsSearch']
 
 
 class JobsSearch(JobsFormatMany, SearchableCommand):
-    """Search registered Jobs
+    """Search and display job records
     """
     VERBOSITY = Verbosity.LISTING
     id_display_name = None
