@@ -10,7 +10,7 @@ __all__ = ['JobsList']
 
 
 class JobsList(JobsFormatMany):
-    """List registered Jobs
+    """List job records
     """
     VERBOSITY = Verbosity.BRIEF
     id_display_name = None
