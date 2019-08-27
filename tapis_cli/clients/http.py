@@ -7,11 +7,11 @@ __all__ = ['HTTPFormatOne', 'HTTPFormatMany']
 
 
 def add_common_arguments(parser):
-    parser.add_argument('-V',
+    parser.add_argument('-k',
                         '--no-verify',
                         dest='verify_ssl',
                         action='store_false',
-                        help="Skip SSL cert verification")
+                        help="Allow insecure server connections when using SSL")
     return parser
 
 
@@ -34,6 +34,12 @@ class HTTPFormatMany(Lister):
         parser = super(HTTPFormatMany, self).get_parser(prog_name)
         parser = add_common_arguments(parser)
         return parser
+
+    # def run(self, parsed_args):
+    #     raise SystemError(dir(self.formatter_default))
+    #     #self.formatter_default = 'json'
+    #     # setattr(self, 'formatter_default', 'json')
+    #     return super(HTTPFormatMany, self).run(parsed_args)
 
     def take_action(self, parsed_args):
         return ((), ())

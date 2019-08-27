@@ -1,79 +1,38 @@
-from . import App
-from . import AppsFormatMany
-from . import SERVICE_VERSION, API_NAME
+from tapis_cli.display import Verbosity
+from tapis_cli.search import SearchWebParam
+from tapis_cli.commands.taccapis import SearchableCommand
+
+from . import API_NAME, SERVICE_VERSION
+from .app import App
+from .formatters import AppsFormatOne, AppsFormatMany
+
 
 __all__ = ['AppsList']
 
-
 class AppsList(AppsFormatMany):
+    """List the Apps catalog
+    """
+    VERBOSITY = Verbosity.BRIEF
+    id_display_name = None
+
     def get_parser(self, prog_name):
         parser = super(AppsFormatMany, self).get_parser(prog_name)
-        # parser.add_argument(
-        #     '--name',
-        #     type=str,
-        #     help='Filter to apps with <NAME>'
-        # )
-        # TODO - build parser arguments from schema.
-        # TODO - convert camelCase -> camel_case -> --camel-case
-        # TODO - Support --field (modifier) value like in Data Catalog
-
-        parser.add_argument('-Q',
-                            '--private',
-                            action='store_false',
-                            dest='public',
-                            help='Only return private apps')
-        parser.add_argument('-P',
-                            '--public',
-                            action='store_true',
-                            dest='public',
-                            help='Only return public apps')
-        # parser.add_argument(
-        #     '--system',
-        #     type=str,
-        #     help='Filter to apps on <SYSTEM>'
-        # )
         return parser
-
-    def take_action_swaggerpy(self, parsed_args):
-        super().take_action(parsed_args)
-        results = self.tapis_client.apps.list(
-            limit=parsed_args.limit,
-            offset=parsed_args.offset,
-            publicOnly=parsed_args.publicOnly)
-        # TODO - define this programmatically
-        headers = [
-            'id', 'name', 'version', 'revision', 'executionSystem',
-            'shortDescription', 'isPublic', 'label', 'lastModified'
-        ]
-        records = []
-        for rec in results:
-            record = []
-            for key in headers:
-                record.append(rec.get(key, None))
-            records.append(record)
-
-        return (tuple(headers), tuple(records))
 
     def take_action(self, parsed_args):
         super().take_action(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        PARAMS = [('limit', 'limit'), ('offset', 'offset'),
-                  ('public', 'public')]
-        payload = {}
-        for param, arg in PARAMS:
-            val = getattr(parsed_args, arg, None)
-            if val is not None:
-                payload[param] = val
-        results = self.requests_client.get_data(params=payload)
-        # TODO - define this programmatically or at least w some degree of inheritance
-        headers = [
-            'id', 'name', 'version', 'revision', 'executionSystem',
-            'shortDescription', 'isPublic', 'label', 'lastModified'
-        ]
+        self.take_action_defaults(parsed_args)
+
+        results = self.requests_client.get_data(params=self.post_payload)
+        headers = App().get_headers(self.VERBOSITY)
+
         records = []
         for rec in results:
             record = []
             for key in headers:
-                record.append(rec.get(key, None))
+                val = self.render_value(rec.get(key, None))
+                record.append(val)
             records.append(record)
         return (tuple(headers), tuple(records))
+
