@@ -3,7 +3,7 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
-from .job import Job
+from .models import Job
 from .formatters import JobsFormatOne, JobsFormatMany
 
 __all__ = ['JobsList']
@@ -16,7 +16,7 @@ class JobsList(JobsFormatMany):
     id_display_name = None
 
     def get_parser(self, prog_name):
-        parser = super(JobsFormatMany, self).get_parser(prog_name)
+        parser = super(JobsList, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):

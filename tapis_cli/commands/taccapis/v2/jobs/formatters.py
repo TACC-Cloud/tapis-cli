@@ -4,7 +4,7 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany)
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
-from .job import Job
+from .models import Job
 
 __all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']
 

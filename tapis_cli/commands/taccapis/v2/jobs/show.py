@@ -2,7 +2,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 
 from . import API_NAME, SERVICE_VERSION
-from .job import Job
+from .models import Job
 from .formatters import JobsFormatOne
 
 __all__ = ['JobsShow']

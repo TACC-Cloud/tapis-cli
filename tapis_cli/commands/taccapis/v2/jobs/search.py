@@ -3,7 +3,7 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
-from .job import Job
+from .models import Job
 from .formatters import JobsFormatOne, JobsFormatMany
 
 __all__ = ['JobsSearch']
