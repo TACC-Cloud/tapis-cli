@@ -1,9 +1,9 @@
 """Data model and functions for Tapis apps
 """
+from .. import SERVICE_VERSION
 from tapis_cli.commands.taccapis import TapisEntity
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
-from . import SERVICE_VERSION
 
 __all__ = ['App', 'API_NAME', 'SERVICE_VERSION']
 

@@ -3,7 +3,7 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
-from .app import App
+from .models import App
 from .formatters import AppsFormatOne, AppsFormatMany
 
 __all__ = ['AppsSearch']

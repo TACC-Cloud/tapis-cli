@@ -2,7 +2,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 
 from . import API_NAME, SERVICE_VERSION
-from .app import App
+from .models import App
 from .formatters import AppsFormatOne
 
 __all__ = ['AppsShow']

@@ -4,7 +4,7 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany)
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
-from .app import App
+from .models import App
 
 
 class AppsBase(TaccApisBase):
