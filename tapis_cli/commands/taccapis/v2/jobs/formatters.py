@@ -6,7 +6,7 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .job import Job
 
-__all__ = ['JobsFormatOne', 'JobsFormatMany']
+__all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']
 
 
 class JobsBase(TaccApisBase):
@@ -41,4 +41,10 @@ class JobsFormatMany(TaccApisFormatMany, JobsBase):
         super().take_action_defaults(parsed_args)
         self.post_payload['limit'] = parsed_args.limit
         self.post_payload['offset'] = parsed_args.offset
+        return self
+
+
+class JobsHistoryFormatMany(TaccApisFormatMany, JobsBase):
+    def take_action_defaults(self, parsed_args):
+        super().take_action_defaults(parsed_args)
         return self

@@ -15,7 +15,8 @@ def add_common_arguments(parser):
 
 
 class TaccApisBase(object):
-    pass
+    VERBOSITY = None
+    EXTRA_VERBOSITY = None
 
 
 class TaccApisFormatOne(BearerTokenFormatOne):
@@ -55,6 +56,10 @@ class TaccApisFormatMany(BearerTokenFormatMany):
     def get_parser(self, prog_name):
         parser = super(TaccApisFormatMany, self).get_parser(prog_name)
         parser = add_common_arguments(parser)
+        if self.id_display_name is not None:
+            parser.add_argument('identifier',
+                                type=str,
+                                help=self.id_display_name)
         parser.add_argument('-l',
                             '--limit',
                             dest='limit',
@@ -83,6 +88,8 @@ class TaccApisFormatMany(BearerTokenFormatMany):
         if self.app.options.verbose_level > 1:
             # raise SystemError(dir(self.app.options))
             parsed_args.formatter = 'json'
+            if self.EXTRA_VERBOSITY is not None:
+                self.VERBOSITY = self.EXTRA_VERBOSITY
             # raise SystemError(parsed_args)
         super().take_action(parsed_args)
         # for requests made via AgavePy's swaggerpy client

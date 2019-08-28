@@ -9,7 +9,7 @@ __all__ = ['JobsShow']
 
 
 class JobsShow(JobsFormatOne):
-    """Show a specific job record
+    """Show a specific job
     """
     VERBOSITY = Verbosity.RECORD
 

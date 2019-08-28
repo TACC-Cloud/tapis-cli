@@ -22,8 +22,8 @@ class Job(TapisEntity):
          argmod.DEFAULT, None, 'links', False),
         ("accepted", argtype.DATETIME, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("appId", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
-         argmod.DEFAULT, None, None, True),
+        ("appId", argtype.STRING, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("appUuid", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("archive", argtype.BOOLEAN, Verbosity.RECORD, argmod.BOOL_DEFAULTS,
@@ -111,3 +111,23 @@ class Job(TapisEntity):
                 if argtype.format_allows_param_type(f, formatter):
                     headers.append(f.param_name)
         return headers
+
+
+class JobHistory(Job):
+
+    id_display_name = 'JOB_ID'
+    payload = dict()
+
+    SEARCH_ARGS = [
+        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+        ("status", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
+        ("created", argtype.DATETIME, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
+        ("createdBy", argtype.STRING, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("description", argtype.STRING, Verbosity.LISTING,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("progress", argtype.STRING, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False)
+    ]
