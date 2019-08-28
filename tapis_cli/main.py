@@ -1,5 +1,6 @@
 import argparse
 import logging
+import os
 import sys
 
 from cliff.app import App
@@ -25,6 +26,9 @@ class Tapis_App(App):
             command_manager=CommandManager('tapis.cli'),
             deferred_help=True,
         )
+        # Force table formatting to fit window width
+        if settings.FIT_WIDTH:
+            os.environ['CLIFF_FIT_WIDTH'] = '1'
 
     def prepare_to_run_command(self, cmd):
         """Prepares to run the command
