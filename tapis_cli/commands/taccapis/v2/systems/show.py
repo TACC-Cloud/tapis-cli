@@ -2,7 +2,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 
 from . import API_NAME, SERVICE_VERSION
-from .system import System
+from .models import System
 from .formatters import SystemsFormatOne
 
 __all__ = ['SystemsShow']
@@ -14,7 +14,7 @@ class SystemsShow(SystemsFormatOne):
     VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatOne, self).get_parser(prog_name)
+        parser = super(SystemsShow, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):

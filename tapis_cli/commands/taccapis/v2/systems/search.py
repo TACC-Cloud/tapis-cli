@@ -3,7 +3,7 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
-from .system import System
+from .models import System
 from .formatters import SystemsFormatOne, SystemsFormatMany
 
 __all__ = ['SystemsSearch']
@@ -16,7 +16,7 @@ class SystemsSearch(SystemsFormatMany, SearchableCommand):
     id_display_name = None
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = super(SystemsSearch, self).get_parser(prog_name)
         for f in System().fields:
             if f.searchable:
                 sarg = SearchWebParam(argument=f.param_name,

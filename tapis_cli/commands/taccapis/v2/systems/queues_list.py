@@ -3,29 +3,36 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
-from .models import System
+from .models import SystemQueue
 from .formatters import SystemsFormatOne, SystemsFormatMany
 
-__all__ = ['SystemsList']
+__all__ = ['SystemsQueuesList']
+
+# TODO - systems queue stats will display the 'load' record for a single queue
+# SystemsQueuesStats
 
 
-class SystemsList(SystemsFormatMany):
-    """List registered Systems
+class SystemsQueuesList(SystemsFormatMany):
+    """List roles on a specific system
     """
     VERBOSITY = Verbosity.BRIEF
-    id_display_name = None
+    EXTRA_VERBOSITY = Verbosity.EXPANDED
+    id_display_name = 'SYSTEM_ID'
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = super(SystemsQueuesList, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
         super().take_action(parsed_args)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        api_resource = '{0}/queues'.format(parsed_args.identifier)
+        self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
+        # raise SystemError(self.requests_client.build_url())
         self.take_action_defaults(parsed_args)
 
+        headers = SystemQueue().get_headers(verbosity_level=self.VERBOSITY)
         results = self.requests_client.get_data(params=self.post_payload)
-        headers = System().get_headers(self.VERBOSITY)
+        # raise SystemError(results)
 
         records = []
         for rec in results:

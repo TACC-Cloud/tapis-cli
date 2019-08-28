@@ -3,7 +3,7 @@
 from tapis_cli.commands.taccapis import TapisEntity
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
-from . import SERVICE_VERSION
+from .. import SERVICE_VERSION
 
 __all__ = ['System', 'API_NAME', 'SERVICE_VERSION']
 
