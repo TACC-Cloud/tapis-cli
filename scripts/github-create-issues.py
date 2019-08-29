@@ -12,7 +12,7 @@ LABEL_PREFIX = 'service.'
 gh = Github(os.environ.get('GITHUB_API_KEY').strip())
 repo = gh.get_repo(PROJECT)
 
-issues_raw = repo.get_issues()
+issues_raw = repo.get_issues(state='all')
 issue_titles = [u.title for u in issues_raw]
 
 for cmd in tapis_cli.utils.command_set():
