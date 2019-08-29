@@ -13,10 +13,19 @@ Subpackages
 
    tapis_cli.clients
    tapis_cli.mocks
+   tapis_cli.search
    tapis_cli.settings
 
 Submodules
 ----------
+
+tapis\_cli.display module
+-------------------------
+
+.. automodule:: tapis_cli.display
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 tapis\_cli.githelper module
 ---------------------------
@@ -34,26 +43,10 @@ tapis\_cli.main module
    :undoc-members:
    :show-inheritance:
 
-tapis\_cli.statuses module
---------------------------
-
-.. automodule:: tapis_cli.statuses
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 tapis\_cli.utils module
 -----------------------
 
 .. automodule:: tapis_cli.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-tapis\_cli.versions module
---------------------------
-
-.. automodule:: tapis_cli.versions
    :members:
    :undoc-members:
    :show-inheritance:

@@ -6,10 +6,14 @@ requests
 six
 agavepy
 dateparser
+agavepy==0.9.3
+stringcase
+arrow
 flake8>=3.7.8
 pycodestyle>=2.5.0
 pyflakes>=2.1.1
 Pygments>=2.4.2
+PyGithub>=1.43.8
 pytest>=5.1.0
 pytest-cov>=2.7.1
 pytest-runner>=5.1

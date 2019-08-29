@@ -11,9 +11,11 @@ Subpackages
 
 .. toctree::
 
+   tapis_cli.clients.api
    tapis_cli.clients.basic
    tapis_cli.clients.nonce
    tapis_cli.clients.oauth
+   tapis_cli.clients.services
 
 Submodules
 ----------
