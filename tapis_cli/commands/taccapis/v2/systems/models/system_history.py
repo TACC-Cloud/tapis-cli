@@ -12,6 +12,8 @@ class SystemHistory(System):
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
+        ("id", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
         ("status", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("created", argtype.DATETIME, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
