@@ -33,3 +33,6 @@ docs-autodoc:
 
 docs-clean:
 	cd docs && make clean
+
+issues:
+	python scripts/github-create-issues.py
