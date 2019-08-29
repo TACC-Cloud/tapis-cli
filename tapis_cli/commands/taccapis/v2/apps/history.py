@@ -40,4 +40,3 @@ class AppsHistory(AppsFormatMany):
             records.append(record)
 
         return (tuple(headers), tuple(records))
-

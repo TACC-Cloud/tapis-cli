@@ -17,9 +17,8 @@ class AppsEnable(AppsFormatOne):
     def take_action(self, parsed_args):
         super().take_action(parsed_args)
         headers = App().get_headers(self.VERBOSITY, parsed_args.formatter)
-        rec = self.tapis_client.apps.manage(
-            appId=parsed_args.identifier,
-            body={'action': 'enable'})
+        rec = self.tapis_client.apps.manage(appId=parsed_args.identifier,
+                                            body={'action': 'enable'})
         data = []
         for key in headers:
             val = self.render_value(rec.get(key, None))
