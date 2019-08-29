@@ -5,6 +5,7 @@ import six
 
 from dateutil.parser import parse
 
+
 def ts_to_isodate(date_string, include_time=False):
     """Convert a datetime string (UTC) into a date string in ISO format"""
 
@@ -49,6 +50,7 @@ def datetime_to_human(date_obj):
     """Convert a Python datetime object to a human-friendly string
     """
     return arrow.get(date_obj).humanize()
+
 
 def command_set():
     FILTERED = ('complete', 'help')
