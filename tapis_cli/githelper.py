@@ -1,4 +1,4 @@
-"""Get details about project's git repository at runtime"""
+"""Functions for inspecting Git repository details at runtime"""
 import subprocess
 # Portable and does not introduce any dependencies
 

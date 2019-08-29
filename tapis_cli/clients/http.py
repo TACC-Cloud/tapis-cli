@@ -1,3 +1,5 @@
+"""Basic HTTP requests client
+"""
 import argparse
 from cliff.display import DisplayCommandBase
 from cliff.lister import Lister

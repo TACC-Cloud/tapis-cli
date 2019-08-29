@@ -1,3 +1,5 @@
+"""Exposes project and package metadata in a rationalized form
+"""
 import os.path
 import re
 from pkg_resources import get_distribution

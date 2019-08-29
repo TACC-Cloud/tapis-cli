@@ -1,3 +1,5 @@
+"""Public, low-dependency helper functions
+"""
 import arrow
 import os
 import pkg_resources

@@ -1,3 +1,5 @@
+"""Mockup formatters
+"""
 import argparse
 from cliff.lister import Lister
 from cliff.show import ShowOne

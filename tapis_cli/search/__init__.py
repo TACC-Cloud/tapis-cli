@@ -1,3 +1,5 @@
+"""Methods and classes for building CLI-driven search and filtering
+"""
 # from .argument import SearchArg
 from .argdef import Argdef, optionize, propertize, tapisize
 from .searcharg import SearchArg

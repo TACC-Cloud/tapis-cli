@@ -1,3 +1,6 @@
+"""Provides a consistent environment- and file-driven approach to run-time
+application configuration.
+"""
 import os
 import warnings
 # from .helpers import (fix_assets_path, array_from_string, parse_boolean,
