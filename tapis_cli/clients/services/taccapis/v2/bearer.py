@@ -15,11 +15,27 @@ def add_common_arguments(parser):
 
 
 class TaccApisBase(object):
+    pass
+
+
+class AppVerboseLevel:
+
     VERBOSITY = None
     EXTRA_VERBOSITY = None
 
+    @property
+    def app_verbose_level(self):
+        """Exposes the app-scoped verbosity level as a formatter property
+        """
+        vlevel = 1
+        try:
+            vlevel = self.app_args.verbose_level
+        except Exception:
+            pass
+        return vlevel
 
-class TaccApisFormatOne(BearerTokenFormatOne):
+
+class TaccApisFormatOne(AppVerboseLevel, BearerTokenFormatOne):
     """TACC APIs HTTP+Token Record Display
     """
     def get_parser(self, prog_name):
@@ -35,7 +51,7 @@ class TaccApisFormatOne(BearerTokenFormatOne):
     def formatter_default(self):
         """Overrides formatter_default to return JSON when -v is passed
         """
-        if self.app_args.verbose_level > 1:
+        if self.app_verbose_level > 1:
             return 'json'
         else:
             return 'table'
@@ -50,7 +66,28 @@ class TaccApisFormatOne(BearerTokenFormatOne):
         return ((), ())
 
 
-class TaccApisFormatMany(BearerTokenFormatMany):
+class TaccApisActionFormatOne(TaccApisFormatOne):
+    """TACC APIs HTTP+Token Record Action
+    """
+    pass
+
+
+class TaccApisUploadFile(TaccApisActionFormatOne):
+    """TACC APIs HTTP+Token Record Action Accepting a File
+    """
+    def get_parser(self, prog_name):
+        parser = super(TaccApisUploadFile, self).get_parser(prog_name)
+        parser.add_argument('-F',
+                            '--file',
+                            dest='json_file',
+                            help='JSON payload file')
+        return parser
+
+    def handle_upload(self):
+        pass
+
+
+class TaccApisFormatMany(AppVerboseLevel, BearerTokenFormatMany):
     """TACC APIs HTTP+Token Records Listing
     """
     def get_parser(self, prog_name):
@@ -78,14 +115,14 @@ class TaccApisFormatMany(BearerTokenFormatMany):
     def formatter_default(self):
         """Overrides formatter_default to return JSON when -v is passed
         """
-        if self.app_args.verbose_level > 1:
+        if self.app_verbose_level > 1:
             return 'json'
         else:
             return 'table'
 
     def take_action(self, parsed_args):
         # This needs to be more sophisticated - does not allow overrides etc
-        if self.app.options.verbose_level > 1:
+        if self.app_verbose_level > 1:
             # raise SystemError(dir(self.app.options))
             parsed_args.formatter = 'json'
             if self.EXTRA_VERBOSITY is not None:
