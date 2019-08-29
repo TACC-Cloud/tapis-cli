@@ -9,3 +9,4 @@ from .list import AppsList
 from .search import AppsSearch
 from .enable import AppsEnable
 from .disable import AppsDisable
+from .history import AppsHistory
