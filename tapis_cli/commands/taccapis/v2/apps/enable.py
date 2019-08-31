@@ -1,5 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
+from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -8,8 +9,8 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsEnable']
 
 
-class AppsEnable(AppsFormatOne):
-    """Enable an app for usage
+class AppsEnable(TapisServiceIdentifier, AppsFormatOne):
+    """Restore an app if disabled
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

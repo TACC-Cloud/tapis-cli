@@ -34,7 +34,7 @@ class System(TapisEntity):
          argmod.BOOL_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("lastUpdated", argtype.DATETIME, Verbosity.BRIEF,
+        ("lastModified", argtype.DATETIME, Verbosity.LISTING,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("login", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),

@@ -10,3 +10,5 @@ from .search import AppsSearch
 from .enable import AppsEnable
 from .disable import AppsDisable
 from .history import AppsHistory
+from .create import AppsCreate
+from .update import AppsUpdate

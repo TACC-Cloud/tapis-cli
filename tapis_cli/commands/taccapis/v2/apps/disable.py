@@ -1,5 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
+from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -8,7 +9,7 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsDisable']
 
 
-class AppsDisable(AppsFormatOne):
+class AppsDisable(TapisServiceIdentifier, AppsFormatOne):
     """Disable an app for usage
     """
     VERBOSITY = Verbosity.LISTING

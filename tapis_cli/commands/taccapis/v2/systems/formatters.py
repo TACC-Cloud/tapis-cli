@@ -6,6 +6,8 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .models import System
 
+__all__ = ['SystemsFormatOne', 'SystemsFormatMany']
+
 
 class SystemsBase(TaccApisBase):
     id_display_name = System.id_display_name
@@ -14,9 +16,9 @@ class SystemsBase(TaccApisBase):
     def take_action_defaults(self, parsed_args):
         return self
 
-    def take_action(self, parsed_args):
-        super().take_action(parsed_args)
-        return ((), ())
+    # def take_action(self, parsed_args):
+    #     super().take_action(parsed_args)
+    #     return ((), ())
 
     def render_value(self, value):
         if isinstance(value, datetime.datetime):
@@ -29,9 +31,7 @@ class SystemsBase(TaccApisBase):
 
 
 class SystemsFormatOne(TaccApisFormatOne, SystemsBase):
-    def take_action_defaults(self, parsed_args):
-        super().take_action_defaults(parsed_args)
-        return self
+    pass
 
 
 class SystemsFormatMany(TaccApisFormatMany, SystemsBase):

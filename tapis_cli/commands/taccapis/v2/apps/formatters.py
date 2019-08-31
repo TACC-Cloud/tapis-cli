@@ -6,6 +6,8 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .models import App
 
+__all__ = ['AppsFormatOne', 'AppsFormatMany']
+
 
 class AppsBase(TaccApisBase):
     id_display_name = App.id_display_name
@@ -29,9 +31,7 @@ class AppsBase(TaccApisBase):
 
 
 class AppsFormatOne(TaccApisFormatOne, AppsBase):
-    def take_action_defaults(self, parsed_args):
-        super().take_action_defaults(parsed_args)
-        return self
+    pass
 
 
 class AppsFormatMany(TaccApisFormatMany, AppsBase):

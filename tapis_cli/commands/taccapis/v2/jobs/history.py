@@ -1,6 +1,7 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import JobHistory
@@ -9,17 +10,13 @@ from .formatters import JobsFormatMany
 __all__ = ['JobsFormatMany']
 
 
-class JobsHistory(JobsFormatMany):
+class JobsHistory(TapisServiceIdentifier, JobsFormatMany):
     """List history for a specific job
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     id_display_name = 'JOB_ID'
-
-    def get_parser(self, prog_name):
-        parser = super(JobsHistory, self).get_parser(prog_name)
-        return parser
 
     def take_action(self, parsed_args):
         super().take_action(parsed_args)

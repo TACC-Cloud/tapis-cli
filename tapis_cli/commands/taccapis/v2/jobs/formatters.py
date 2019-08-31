@@ -16,9 +16,9 @@ class JobsBase(TaccApisBase):
     def take_action_defaults(self, parsed_args):
         return self
 
-    def take_action(self, parsed_args):
-        super().take_action(parsed_args)
-        return ((), ())
+    # def take_action(self, parsed_args):
+    #     super().take_action(parsed_args)
+    #     return ((), ())
 
     def render_value(self, value):
         if isinstance(value, datetime.datetime):
@@ -31,9 +31,7 @@ class JobsBase(TaccApisBase):
 
 
 class JobsFormatOne(TaccApisFormatOne, JobsBase):
-    def take_action_defaults(self, parsed_args):
-        super().take_action_defaults(parsed_args)
-        return self
+    pass
 
 
 class JobsFormatMany(TaccApisFormatMany, JobsBase):

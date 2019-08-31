@@ -1,6 +1,7 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import AppHistory
@@ -9,15 +10,11 @@ from .formatters import AppsFormatMany
 __all__ = ['AppsHistory']
 
 
-class AppsHistory(AppsFormatMany):
+class AppsHistory(TapisServiceIdentifier, AppsFormatMany):
     """List history for a specific app
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
-
-    def get_parser(self, prog_name):
-        parser = super(AppsHistory, self).get_parser(prog_name)
-        return parser
 
     def take_action(self, parsed_args):
         super().take_action(parsed_args)
