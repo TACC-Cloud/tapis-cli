@@ -14,7 +14,7 @@ __all__ = ['SystemsQueuesList']
 
 
 class SystemsQueuesList(TapisServiceIdentifier, SystemsFormatMany):
-    """List roles on a specific system
+    """List queues on a system
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.EXPANDED

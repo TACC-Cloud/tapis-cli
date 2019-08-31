@@ -10,7 +10,7 @@ __all__ = ['SystemsList']
 
 
 class SystemsList(SystemsFormatMany):
-    """List registered Systems
+    """List registered systems
     """
     VERBOSITY = Verbosity.BRIEF
     id_display_name = None

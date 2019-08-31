@@ -11,7 +11,7 @@ __all__ = ['SystemsRolesList']
 
 
 class SystemsRolesList(TapisServiceIdentifier, SystemsFormatMany):
-    """List roles on a specific system
+    """List roles on a system
     """
     VERBOSITY = Verbosity.BRIEF
 

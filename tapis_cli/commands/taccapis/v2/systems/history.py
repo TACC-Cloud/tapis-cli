@@ -11,7 +11,7 @@ __all__ = ['SystemsHistory']
 
 
 class SystemsHistory(TapisServiceIdentifier, SystemsFormatMany):
-    """List history for a specific system
+    """List history of a system
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

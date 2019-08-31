@@ -10,7 +10,7 @@ __all__ = ['SystemsShow']
 
 
 class SystemsShow(TapisServiceIdentifier, SystemsFormatOne):
-    """Show a single system record
+    """Show a details about a system
     """
     VERBOSITY = Verbosity.RECORD
 

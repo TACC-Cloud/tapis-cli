@@ -10,7 +10,7 @@ __all__ = ['SystemsSearch']
 
 
 class SystemsSearch(SystemsFormatMany, SearchableCommand):
-    """Search registered Systems
+    """Search registered systems
     """
     VERBOSITY = Verbosity.LISTING
     id_display_name = None
