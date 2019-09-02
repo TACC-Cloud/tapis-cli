@@ -1,5 +1,6 @@
 import arrow
 import dateparser
+from bson import Regex
 from datetime import datetime
 from .searcharg import SearchArg
 from .arrowspan import ArrowSpan

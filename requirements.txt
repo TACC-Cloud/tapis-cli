@@ -9,3 +9,4 @@ dateparser
 agavepy==0.9.3
 stringcase
 arrow
+PyMongo
