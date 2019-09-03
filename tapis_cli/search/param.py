@@ -4,15 +4,26 @@ from .searcharg import SearchArg
 from .arrowspan import ArrowSpan
 from . import argmod, argtype, optionize, propertize, tapisize
 
-__all__ = ['WebParam', 'SearchWebParam']
+__all__ = ['WebParam', 'SearchWebParam', 'SearchWebParamEqualsOnly']
 
 
 class WebParam(dict):
     pass
 
 
+class SearchWebParamEqualsOnly(SearchArg):
+    """Renders param=value for passing to a web service
+    """
+    def query_eq(self, value):
+        # EQUALS
+        if isinstance(value, list):
+            value = value[0]
+        key = '{}'.format(self.field)
+        return WebParam({key: value})
+
+
 class SearchWebParam(SearchArg):
-    """Implements that render param=value for passing to a web service
+    """Renders param.mod=value for passing to a web service
     """
     def query_eq(self, value):
         # EQUALS

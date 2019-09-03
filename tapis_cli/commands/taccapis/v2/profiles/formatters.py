@@ -31,4 +31,8 @@ class ProfilesFormatOne(TaccApisFormatOne, ProfilesBase):
 
 
 class ProfilesFormatMany(TaccApisFormatMany, ProfilesBase):
-    pass
+    def take_action_defaults(self, parsed_args):
+        super().take_action_defaults(parsed_args)
+        self.post_payload['limit'] = parsed_args.limit
+        self.post_payload['offset'] = parsed_args.offset
+        return self
