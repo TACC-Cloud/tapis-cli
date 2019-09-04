@@ -23,6 +23,7 @@ from .organization import *
 
 from .taccapis.v1 import *
 from .taccapis.v2 import *
+from .gitlab import *
 
 
 def all_settings():
