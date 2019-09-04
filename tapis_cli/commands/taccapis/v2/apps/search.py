@@ -13,7 +13,6 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
     """Search the Apps catalog
     """
     VERBOSITY = Verbosity.LISTING
-    id_display_name = None
 
     def get_parser(self, prog_name):
         parser = super(AppsFormatMany, self).get_parser(prog_name)
