@@ -32,8 +32,40 @@ There is also a ``help`` command for any for specific command:
     $ tapis help versions
     $ tapis versions --help
 
-(Optional) One may install bash command line completion to get command hints
-by tabbing.
+Example
+^^^^^^^
+
+The following illustrates use of one of the **search** commands to find apps
+named *word-count*. The equality operator **eq** will constrain the results to
+exact matches. Other operators include **neq** and **like**.
+
+.. code-block:: shell
+
+    $ tapis apps search --name eq "word-count"
+
+    +---------------+----------+------------+---------------+------------------+----------+-----------------+
+    | id            | revision | label      | lastModified  | shortDescription | isPublic | executionSystem |
+    +---------------+----------+------------+---------------+------------------+----------+-----------------+
+    | word-         |       29 | Word Count | 2019-08-31T06 | How many words   | False    | hpc-tacc-       |
+    | count-0.1     |          |            | :21:20.000-05 | are in a file?   |          | jetstream       |
+    |               |          |            | :00           | Guess randomly   |          |                 |
+    |               |          |            |               | or use ADVanCEd  |          |                 |
+    |               |          |            |               | aNalYTIcaL       |          |                 |
+    |               |          |            |               | tECHnIqUES to    |          |                 |
+    |               |          |            |               | figure it out.   |          |                 |
+    | word-         |        1 | Word Count | 2019-02-21T17 | How many words   | True     | hpc-tacc-       |
+    | count-0.1u1   |          |            | :56:14.000-06 | are in a file?   |          | maverick        |
+    |               |          |            | :00           | Guess randomly   |          |                 |
+    |               |          |            |               | or use ADVanCEd  |          |                 |
+    |               |          |            |               | aNalYTIcaL       |          |                 |
+    |               |          |            |               | tECHnIqUES to    |          |                 |
+    |               |          |            |               | figure it out.   |          |                 |
+    +---------------+----------+------------+---------------+------------------+----------+-----------------+
+
+Shell completion
+^^^^^^^^^^^^^^^^
+
+One may install bash command line completion to get command hints by tabbing.
 
 .. code-block:: shell
 
