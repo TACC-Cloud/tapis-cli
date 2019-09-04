@@ -30,7 +30,7 @@ def all_settings():
     from types import ModuleType
 
     settings = {}
-    for name, item in globals().iteritems():
+    for name, item in globals().items():
         if not callable(item) and not name.startswith("__") \
                 and not isinstance(item, ModuleType):
             settings[name] = item

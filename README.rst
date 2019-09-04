@@ -154,6 +154,39 @@ Briefly restated::
 
     --pagesize > os.environ['PAGE_SIZE'] > ./.env > $HOME.env
 
+The Settings Command
+^^^^^^^^^^^^^^^^^^^^
+
+One may view the current settings for the Tapis CLI as documented below. It is
+not yet possible to  edit settings in the CLI directly.
+
+.. code-block:: shell
+
+    $ tapis settings list
+    +-----------------------------+-------------------------------------+
+    | Setting                     | Value                               |
+    +-----------------------------+-------------------------------------+
+    | ENV_PREFIX                  | TAPIS_CLI                           |
+    | DEBUG_MODE                  | False                               |
+    | DATE_FORMAT                 | YYYYMMDDTHHmmssZZ                   |
+    | LOG_LEVEL                   | INFO                                |
+    | PAGE_SIZE                   | 30                                  |
+    | RESPONSE_FORMAT             | None                                |
+    | FIT_WIDTH                   | True                                |
+    | TENANT_DNS_DOMAIN           | tacc.utexas.edu                     |
+    | TACC_PROJECT_NAME           | TAPIS_SANDBOX                       |
+    | TACC_PROJECT_ID             | 65536                               |
+    | TACC_TENANT_ID              | tacc.prod                           |
+    | TACC_PROJECT_GROUP          | 131072                              |
+    | TACC_MANAGER_ACCOUNT        | tacolord                            |
+    | TACC_TENANTS_SERVER         | https://api.tacc.utexas.edu/tenants |
+    | TACC_API_SERVER             | https://api.tacc.utexas.edu/        |
+    | TACC_JUPYTER_SERVER         | https://jupyter.tacc.utexas.edu     |
+    | TACC_PRIMARY_STORAGE_SYSTEM | data-tapis-sandbox                  |
+    | TACC_GITLAB_SERVER          | git.tacc.utexas.edu                 |
+    | TACC_GITLAB_URI             | https://git.tacc.utexas.edu         |
+    +-----------------------------+-------------------------------------+
+
 Development
 -----------
 
