@@ -62,6 +62,56 @@ exact matches. Other operators include **neq** and **like**.
     |               |          |            |               | figure it out.   |          |                 |
     +---------------+----------+------------+---------------+------------------+----------+-----------------+
 
+Get details for one specific record using a **show** command, like so:
+
+.. code-block:: shell
+
+    $ tapis apps show word-count-0.1u1
+
+    +--------------------------+-------------------------------+
+    | Field                    | Value                         |
+    +--------------------------+-------------------------------+
+    | id                       | word-count-0.1u1              |
+    | name                     | word-count                    |
+    | version                  | 0.1                           |
+    | revision                 | 1                             |
+    | label                    | Word Count                    |
+    | lastModified             | 7 months ago                  |
+    | shortDescription         | How many words are in a file? |
+    |                          | Guess randomly or use         |
+    |                          | ADVanCEd aNalYTIcaL           |
+    |                          | tECHnIqUES to figure it out.  |
+    | longDescription          | Counts words in a file        |
+    | owner                    | sd2eadm                       |
+    | isPublic                 | True                          |
+    | executionType            | HPC                           |
+    | executionSystem          | hpc-tacc-maverick             |
+    | deploymentSystem         | data-sd2e-projects-users      |
+    | available                | True                          |
+    | parallelism              | SERIAL                        |
+    | defaultProcessorsPerNode | 1                             |
+    | defaultMemoryPerNode     | 1                             |
+    | defaultNodeCount         | 1                             |
+    | defaultMaxRunTime        | 00:05:00                      |
+    | defaultQueue             | None                          |
+    | helpURI                  | https://sd2e.org/develop/     |
+    | deploymentPath           | /.public-apps/word-           |
+    |                          | count-0.1u1.zip               |
+    | templatePath             | runner-template.sh            |
+    | testPath                 | tester.sh                     |
+    | checkpointable           | False                         |
+    | uuid                     | 4975805169073918441-242ac11a- |
+    |                          | 0001-005                      |
+    | icon                     | None                          |
+    +--------------------------+-------------------------------+
+
+Get the JSON representation for the record by passing the **verbose** flag:
+
+.. code-block:: shell
+
+    $ tapis apps show word-count-0.1u1 -v
+
+
 Shell completion
 ^^^^^^^^^^^^^^^^
 
