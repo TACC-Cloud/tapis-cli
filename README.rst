@@ -1,6 +1,8 @@
 Tapis CLI
 =========
 
+.. seealso:: The authentication subsystem is not yet implemented (9/4/2019). You will need to use the ``auth-tokens-*`` tools bundled with the Bash Tapis CLI to create and refresh Oauth2 access tokens.
+
 Installation
 ------------
 
