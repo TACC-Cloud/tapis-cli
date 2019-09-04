@@ -1,6 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System
@@ -9,7 +9,7 @@ from .formatters import SystemsFormatOne
 __all__ = ['SystemsPublish']
 
 
-class SystemsPublish(TapisServiceIdentifier, SystemsFormatOne):
+class SystemsPublish(ServiceIdentifier, SystemsFormatOne):
     """Publish a system (requires tenant administrator privileges)
     """
     VERBOSITY = Verbosity.LISTING

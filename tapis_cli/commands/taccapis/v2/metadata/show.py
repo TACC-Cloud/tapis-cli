@@ -1,6 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Metadata
@@ -9,7 +9,7 @@ from .formatters import MetadataFormatOne
 __all__ = ['MetadataShow']
 
 
-class MetadataShow(TapisServiceIdentifier, MetadataFormatOne):
+class MetadataShow(ServiceIdentifier, MetadataFormatOne):
     """Show a single metadata record
     """
     VERBOSITY = Verbosity.RECORD

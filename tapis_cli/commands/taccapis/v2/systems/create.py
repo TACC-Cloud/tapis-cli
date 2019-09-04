@@ -1,6 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.taccapis.v2.bearer import UploadJsonFile, TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import UploadJsonFile, ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System

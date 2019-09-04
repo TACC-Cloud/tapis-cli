@@ -7,14 +7,12 @@ from cliff.hooks import CommandHook
 from cliff.app import App
 from tapis_cli.display import Verbosity
 
+from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
+                       ServiceIdentifier)
 from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany
 from .request import Swaggerless
 
-__all__ = [
-    'TaccApisBase', 'TaccApisFormatOne', 'TaccApisFormatMany',
-    'AppVerboseLevel', 'JsonVerbose', 'UploadJsonFile',
-    'TapisServiceIdentifier'
-]
+__all__ = ['TaccApisBase', 'TaccApisFormatOne', 'TaccApisFormatMany']
 
 
 def add_common_arguments(parser):
@@ -29,77 +27,11 @@ class TaccApisBase(object):
     pass
 
 
-class AppVerboseLevel(object):
-    """Lets a client access the cliff App's verbosity level
-    """
-    VERBOSITY = None
-    EXTRA_VERBOSITY = None
-
-    @property
-    def app_verbose_level(self):
-        """Exposes the app-scoped verbosity level as a formatter property
-        """
-        vlevel = 1
-        try:
-            vlevel = self.app_args.verbose_level
-        except Exception:
-            pass
-        return vlevel
-
-
-class JsonVerbose(AppVerboseLevel):
-    """Configures a client to use JSON as formatter when verbose is requested
-    """
-    EXTRA_VERBOSITY = Verbosity.RECORD
-
-    @property
-    def formatter_default(self):
-        """Overrides formatter_default to return JSON when -v is passed
-        """
-        if self.app_verbose_level > 1:
-            return 'json'
-        else:
-            return 'table'
-
-
-class TapisServiceIdentifier(object):
-    """Configures a client to expect a mandatory identifier
-    """
-    def get_parser(self, prog_name):
-        parser = super().get_parser(prog_name)
-        id_name = getattr(self, 'id_display_name', None)
-        if id_name is not None:
-            parser.add_argument('identifier',
-                                type=str,
-                                help=self.id_display_name)
-        return parser
-
-
 class TasApiClient(object):
     def init_clients(self):
         self.tapis_client = Agave.restore()
         # for requests made directly via requests module
         self.requests_client = Swaggerless(self.tapis_client)
-
-
-class UploadJsonFile(object):
-    """Configures a client to accept and load a JSON file
-    """
-    json_loaded = dict()
-
-    def get_parser(self, prog_name):
-        parser = super().get_parser(prog_name)
-        parser.add_argument('-F',
-                            '--file',
-                            dest='json_file_name',
-                            type=str,
-                            help='JSON payload file')
-        return parser
-
-    def handle_file_upload(self, parsed_args):
-        with open(parsed_args.json_file_name, 'rb') as jfile:
-            payload = json.load(jfile)
-            setattr(self, 'json_file_contents', payload)
 
 
 class TaccApisFormatOne(JsonVerbose, TasApiClient, BearerTokenFormatOne):

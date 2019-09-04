@@ -1,7 +1,7 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
-from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import SystemRole
@@ -10,7 +10,7 @@ from .formatters import SystemsFormatOne, SystemsFormatMany
 __all__ = ['SystemsRolesList']
 
 
-class SystemsRolesList(TapisServiceIdentifier, SystemsFormatMany):
+class SystemsRolesList(ServiceIdentifier, SystemsFormatMany):
     """List roles on a system
     """
     VERBOSITY = Verbosity.BRIEF

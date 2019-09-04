@@ -1,6 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.taccapis.v2.bearer import UploadJsonFile, TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import UploadJsonFile, ServiceIdentifier
 from .create import AppsCreate
 
 from . import API_NAME, SERVICE_VERSION
@@ -10,7 +10,7 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsUpdate']
 
 
-class AppsUpdate(UploadJsonFile, TapisServiceIdentifier, AppsFormatOne):
+class AppsUpdate(UploadJsonFile, ServiceIdentifier, AppsFormatOne):
     """Update an existing app
     """
     def take_action(self, parsed_args):

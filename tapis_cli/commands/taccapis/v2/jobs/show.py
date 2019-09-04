@@ -1,6 +1,6 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.taccapis.v2.bearer import TapisServiceIdentifier
+from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
@@ -9,7 +9,7 @@ from .formatters import JobsFormatOne
 __all__ = ['JobsShow']
 
 
-class JobsShow(TapisServiceIdentifier, JobsFormatOne):
+class JobsShow(ServiceIdentifier, JobsFormatOne):
     """Show a specific job
     """
     VERBOSITY = Verbosity.RECORD
