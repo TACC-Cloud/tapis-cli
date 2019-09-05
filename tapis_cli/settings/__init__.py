@@ -3,11 +3,8 @@ application configuration.
 """
 import os
 import warnings
-# from .helpers import (fix_assets_path, array_from_string, parse_boolean,
-#                       int_or_none, set_from_string)
 from dotenv import load_dotenv, find_dotenv
 from dateutil.parser import parse
-# from . import constants
 
 ENV_PREFIX = 'TAPIS_CLI'
 
@@ -27,10 +24,13 @@ from .gitlab import *
 
 
 def all_settings():
+    """Returns name and value of all properties resembling settings
+    """
     from types import ModuleType
 
     settings = {}
     for name, item in globals().items():
+        # Ignore callables and private properties
         if not callable(item) and not name.startswith("__") \
                 and not isinstance(item, ModuleType):
             settings[name] = item
