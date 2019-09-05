@@ -5,12 +5,12 @@ from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import JobHistory
-from .formatters import JobsFormatMany
+from .formatters import JobsHistoryFormatMany
 
-__all__ = ['JobsFormatMany']
+__all__ = ['JobsHistory']
 
 
-class JobsHistory(ServiceIdentifier, JobsFormatMany):
+class JobsHistory(ServiceIdentifier, JobsHistoryFormatMany):
     """List history for a specific job
     """
     VERBOSITY = Verbosity.LISTING

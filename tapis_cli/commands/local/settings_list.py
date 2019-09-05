@@ -1,10 +1,10 @@
 from tapis_cli.mocks import FormatMany
 from tapis_cli import settings
 
+
 class SettingsList(FormatMany):
     """List current Tapis CLI settings
     """
-
     def take_action(self, parsed_args):
         super().take_action(parsed_args)
         headers = ['Setting', 'Value']

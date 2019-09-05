@@ -5,12 +5,12 @@ from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import SystemHistory
-from .formatters import SystemsFormatMany
+from .formatters import SystemsHistoryFormatMany
 
 __all__ = ['SystemsHistory']
 
 
-class SystemsHistory(ServiceIdentifier, SystemsFormatMany):
+class SystemsHistory(ServiceIdentifier, SystemsHistoryFormatMany):
     """List history of a system
     """
     VERBOSITY = Verbosity.LISTING
@@ -20,7 +20,6 @@ class SystemsHistory(ServiceIdentifier, SystemsFormatMany):
         super().take_action(parsed_args)
         api_resource = '{0}/history'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
-        # raise SystemError(self.requests_client.build_url())
         self.take_action_defaults(parsed_args)
 
         headers = SystemHistory().get_headers(verbosity_level=self.VERBOSITY)

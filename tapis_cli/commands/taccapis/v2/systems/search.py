@@ -12,8 +12,8 @@ __all__ = ['SystemsSearch']
 class SystemsSearch(SystemsFormatMany, SearchableCommand):
     """Search registered systems
     """
-    VERBOSITY = Verbosity.LISTING
-    id_display_name = None
+    VERBOSITY = Verbosity.BRIEF
+    EXTRA_VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
         parser = super(SystemsSearch, self).get_parser(prog_name)
