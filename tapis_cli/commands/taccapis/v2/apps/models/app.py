@@ -36,7 +36,7 @@ class App(TapisEntity):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("owner", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("isPublic", argtype.BOOLEAN, Verbosity.LISTING, argmod.BOOL_DEFAULTS,
+        ("public", argtype.BOOLEAN, Verbosity.LISTING, argmod.BOOL_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("executionType", argtype.STRING, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
