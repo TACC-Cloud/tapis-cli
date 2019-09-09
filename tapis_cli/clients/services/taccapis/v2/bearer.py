@@ -11,12 +11,12 @@ from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier)
-from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany
+from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany, RefreshBearerTokenFormatOne
 from .request import Swaggerless
 
 __all__ = [
     'TaccApisBase', 'TaccApisFormatOne', 'TaccApisFormatMany',
-    'TaccApisFormatManyUnlimited'
+    'TaccApisFormatManyUnlimited', 'TaccApisWithRefreshFormatOne'
 ]
 
 
@@ -53,14 +53,14 @@ class TaccApisBase(object):
         return value
 
 
-class TasApiClient(object):
+class TaccApiClient(object):
     def init_clients(self):
         self.tapis_client = Agave.restore()
         # for requests made directly via requests module
         self.requests_client = Swaggerless(self.tapis_client)
 
 
-class TaccApisFormatOne(JsonVerbose, TasApiClient, BearerTokenFormatOne):
+class TaccApisFormatOne(JsonVerbose, TaccApiClient, BearerTokenFormatOne):
     """TACC APIs HTTP+Token Record Display
     """
     def get_parser(self, prog_name):
@@ -74,7 +74,12 @@ class TaccApisFormatOne(JsonVerbose, TasApiClient, BearerTokenFormatOne):
         # return super().take_action(parsed_args)
 
 
-class TaccApisFormatMany(JsonVerbose, TasApiClient, BearerTokenFormatMany):
+class TaccApisWithRefreshFormatOne(TaccApisFormatOne,
+                                   RefreshBearerTokenFormatOne):
+    pass
+
+
+class TaccApisFormatMany(JsonVerbose, TaccApiClient, BearerTokenFormatMany):
     """TACC APIs HTTP+Token Records Listing
     """
     def get_parser(self, prog_name):
