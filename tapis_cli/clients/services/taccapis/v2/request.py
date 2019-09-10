@@ -51,14 +51,17 @@ class Swaggerless(object):
     def get(self, path=None):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
+        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def get_data(self, path=None, params={}):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers, params=params)
+        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def post(self, path=None):
         url = self.build_url(path)
         resp = requests.post(url, headers=self.headers)
+        resp.raise_for_status()
         return resp.json().get('result', {})

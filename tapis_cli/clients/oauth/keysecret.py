@@ -8,10 +8,10 @@ __all__ = [
 
 
 def add_common_arguments(parser):
-    parser.add_argument('--client-key', type=str, help="Tapis client key")
+    parser.add_argument('--client-key', type=str, help="Oauth client key")
     parser.add_argument('--client-secret',
                         type=str,
-                        help="Tapis client secret")
+                        help="Oauth client secret")
     return parser
 
 

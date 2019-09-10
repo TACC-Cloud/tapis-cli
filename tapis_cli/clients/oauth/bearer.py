@@ -1,10 +1,20 @@
 from ..http import HTTPFormatOne, HTTPFormatMany
+# from .keysecret import KeySecretOnlyFormatOne, KeySecretOnlyFormatMany
 
 __all__ = ['BearerTokenFormatOne', 'BearerTokenFormatMany']
 
 
 def add_common_arguments(parser):
-    parser.add_argument('--token', type=str, help="Oauth access token")
+    parser.add_argument('-z',
+                        '--access-token',
+                        dest='access_token',
+                        type=str,
+                        help="Oauth access token")
+    parser.add_argument('-H',
+                        '--api-server',
+                        dest='api_server',
+                        type=str,
+                        help="API server base URL")
     return parser
 
 

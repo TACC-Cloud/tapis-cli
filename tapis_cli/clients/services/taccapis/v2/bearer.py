@@ -8,10 +8,12 @@ from cliff.hooks import CommandHook
 from cliff.app import App
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
+from .apiclient import TaccApiClient
 
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier)
-from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany, RefreshBearerTokenFormatOne
+from ....oauth import (BearerTokenFormatOne, BearerTokenFormatMany,
+                       RefreshBearerTokenFormatOne)
 from .request import Swaggerless
 
 __all__ = [
@@ -53,13 +55,6 @@ class TaccApisBase(object):
         return value
 
 
-class TaccApiClient(object):
-    def init_clients(self):
-        self.tapis_client = Agave.restore()
-        # for requests made directly via requests module
-        self.requests_client = Swaggerless(self.tapis_client)
-
-
 class TaccApisFormatOne(JsonVerbose, TaccApiClient, BearerTokenFormatOne):
     """TACC APIs HTTP+Token Record Display
     """
@@ -69,7 +64,7 @@ class TaccApisFormatOne(JsonVerbose, TaccApiClient, BearerTokenFormatOne):
         return parser
 
     def take_action(self, parsed_args):
-        self.init_clients()
+        self.init_clients(parsed_args)
         return ((), ())
         # return super().take_action(parsed_args)
 
@@ -111,7 +106,7 @@ class TaccApisFormatMany(JsonVerbose, TaccApiClient, BearerTokenFormatMany):
 
     def take_action(self, parsed_args):
         # This needs to be more sophisticated - does not allow overrides etc
-        self.init_clients()
+        self.init_clients(parsed_args)
         if self.app_verbose_level > 1:
             # raise SystemError(dir(self.app.options))
             parsed_args.formatter = 'json'
