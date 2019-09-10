@@ -14,12 +14,7 @@ __all__ = [
 ]
 
 
-class ParserExtender(object):
-    def extend_parser(self, parser):
-        return parser
-
-
-class AppVerboseLevel(ParserExtender):
+class AppVerboseLevel(object):
     """Configures a Command to access the parent cliff App's verbosity level
 
     The calling App's verbose_level is made available via method
@@ -43,9 +38,6 @@ class AppVerboseLevel(ParserExtender):
             pass
         return vlevel
 
-    def extend_parser(self, parser):
-        return parser
-
 
 class JsonVerbose(AppVerboseLevel):
     """Configures a Command to use JSON as formatter when verbose is requested
@@ -66,27 +58,15 @@ class JsonVerbose(AppVerboseLevel):
         else:
             return 'table'
 
-    def extend_parser(self, parser):
-        return parser
 
-    def verbosify_parsed_args(self, parsed_args):
-        if self.app_verbose_level > 1:
-            # raise SystemError(dir(self.app.options))
-            parsed_args.formatter = 'json'
-            if self.EXTRA_VERBOSITY is not None:
-                self.VERBOSITY = self.EXTRA_VERBOSITY
-        return parsed_args
-
-
-class ServiceIdentifier(ParserExtender):
+class ServiceIdentifier(object):
     """Configures a Command to require a mandatory 'identifier' positional param
 
     Adds a positional parameter to the Command parser. The value for the
     parameter's 'metavar' is set by the Command.id_display_name property.
     """
-    id_display_name = 'IDENTIFIER'
-
-    def extend_parser(self, parser):
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
         id_name = getattr(self, 'id_display_name', 'IDENTIFIER')
         if id_name is not None:
             parser.add_argument('identifier',
@@ -95,7 +75,7 @@ class ServiceIdentifier(ParserExtender):
         return parser
 
 
-class UploadJsonFile(ParserExtender):
+class UploadJsonFile(object):
     """Configures a client to accept and load a JSON file
 
     Adds -F and --file to a Command's parser. To load the designated file,
@@ -104,7 +84,8 @@ class UploadJsonFile(ParserExtender):
     """
     json_loaded = dict()
 
-    def extend_parser(self, parser):
+    def get_parser(self, prog_name):
+        parser = super().get_parser(prog_name)
         parser.add_argument('-F',
                             '--file',
                             dest='json_file_name',

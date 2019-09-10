@@ -4,45 +4,45 @@ import argparse
 from cliff.display import DisplayCommandBase
 from cliff.lister import Lister
 from cliff.show import ShowOne
+from tapis_cli import constants
 
 __all__ = ['HTTPFormatOne', 'HTTPFormatMany']
 
 
-def add_common_arguments(parser):
-    parser.add_argument(
-        '-k',
-        '--no-verify',
-        dest='verify_ssl',
-        action='store_false',
-        help="Allow insecure server connections when using SSL")
-    return parser
-
-
-class HTTPFormatOne(ShowOne):
-    """HTTP Record Display
+class HTTPCommandBase(object):
+    """A base class for building HTTP-based comands
     """
-    def get_parser(self, prog_name):
-        parser = super(HTTPFormatOne, self).get_parser(prog_name)
-        parser = add_common_arguments(parser)
+    constants = constants
+
+    def add_common_parser_arguments(self, parser):
+        # Derived classes must call the parent's super()
+        # print('HTTPCommandBase')
+        try:
+            parser.add_argument(
+                '--no-verify',
+                dest='verify_ssl',
+                action='store_false',
+                help="Allow insecure server connections when using SSL")
+        except Exception:
+            pass
         return parser
 
-    def take_action(self, parsed_args):
-        return ((), ())
+
+class HTTPFormatOne(ShowOne, HTTPCommandBase):
+    """HTTP Single Record Display
+    """
+
+    # def get_parser(self, prog_name):
+    #     # Child classes must call super() to inherit this
+    #     parser = super(HTTPFormatOne, self).get_parser(prog_name)
+    #     parser = self.add_common_parser_arguments(parser)
+    #     return parser
 
 
-class HTTPFormatMany(Lister):
+class HTTPFormatMany(Lister, HTTPCommandBase):
     """HTTP Records Listing
     """
-    def get_parser(self, prog_name):
-        parser = super(HTTPFormatMany, self).get_parser(prog_name)
-        parser = add_common_arguments(parser)
-        return parser
-
-    # def run(self, parsed_args):
-    #     raise SystemError(dir(self.formatter_default))
-    #     #self.formatter_default = 'json'
-    #     # setattr(self, 'formatter_default', 'json')
-    #     return super(HTTPFormatMany, self).run(parsed_args)
-
-    def take_action(self, parsed_args):
-        return ((), ())
+    # def get_parser(self, prog_name):
+    #     parser = super(HTTPFormatMany, self).get_parser(prog_name)
+    #     parser = self.add_common_parser_arguments(parser)
+    #     return parser

@@ -4,13 +4,13 @@ from tapis_cli.display import Verbosity
 
 from . import SERVICE_VERSION
 from .models import Token
-from .formatters import TokenFormatOne
+from .formatters import CreateTokenFormatOne
 
-__all__ = ['TokenRefresh']
+__all__ = ['TokenCreate']
 
 
-class TokenRefresh(TokenFormatOne):
-    """Refresh the current Tapis access token
+class TokenCreate(CreateTokenFormatOne):
+    """Create a Tapis access/refresh token pair
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

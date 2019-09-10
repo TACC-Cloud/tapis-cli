@@ -5,7 +5,7 @@ from ....oauth import BearerTokenFormatOne, BearerTokenFormatMany
 __all__ = ['GitlabTokenFormatOne', 'GitlabTokenFormatMany']
 
 
-def add_common_parser_arguments(parser):
+def add_common_arguments(parser):
     return parser
 
 
@@ -14,7 +14,7 @@ class GitlabTokenFormatOne(BearerTokenFormatOne):
     """
     def get_parser(self, prog_name):
         parser = super(GitlabTokenFormatOne, self).get_parser(prog_name)
-        parser = add_common_parser_arguments(parser)
+        parser = add_common_arguments(parser)
         return parser
 
     def take_action(self, parsed_args):
@@ -26,7 +26,7 @@ class GitlabTokenFormatMany(BearerTokenFormatMany):
     """
     def get_parser(self, prog_name):
         parser = super(GitlabTokenFormatMany, self).get_parser(prog_name)
-        parser = add_common_parser_arguments(parser)
+        parser = add_common_arguments(parser)
         return parser
 
     def take_action(self, parsed_args):

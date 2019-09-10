@@ -1,31 +1,24 @@
-from ....basic import BasicHTTPFormatOne, BasicHTTPFormatMany
+from .base import TaccApisCommandBase
 
-__all__ = ['TaccApisFormatOne', 'TaccApisFormatMany']
-
-
-def add_common_arguments(parser):
-    return parser
+__all__ = ['TaccApisOnlyBasic']
 
 
-class TaccApisFormatOne(BasicHTTPFormatOne):
-    """TACC APIs HTTP+Basic Record Display
+class TaccApisOnlyBasic(TaccApisCommandBase):
+    """Base class for Tapis API commands accepting only HTTP Basic Authentication
     """
-    def get_parser(self, prog_name):
-        parser = super(TaccApisFormatOne, self).get_parser(prog_name)
-        parser = add_common_arguments(parser)
+    def add_common_parser_arguments(self, parser):
+        parser = super(TaccApisOnlyBasic,
+                       self).add_common_parser_arguments(parser)
+        parser.add_argument('-u',
+                            '--username',
+                            dest='username',
+                            type=str,
+                            help="{0} username".format(
+                                self.constants.PLATFORM))
+        parser.add_argument('-p',
+                            '--password',
+                            dest='password',
+                            type=str,
+                            help="{0} password".format(
+                                self.constants.PLATFORM))
         return parser
-
-    def take_action(self, parsed_args):
-        return ((), ())
-
-
-class TaccApisFormatMany(BasicHTTPFormatMany):
-    """TACC APIs HTTP+Basic Records Listing
-    """
-    def get_parser(self, prog_name):
-        parser = super(TaccApisFormatMany, self).get_parser(prog_name)
-        parser = add_common_arguments(parser)
-        return parser
-
-    def take_action(self, parsed_args):
-        return ((), ())

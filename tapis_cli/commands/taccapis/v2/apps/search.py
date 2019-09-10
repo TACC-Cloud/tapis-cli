@@ -13,25 +13,16 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
     """Search the Apps catalog
     """
     VERBOSITY = Verbosity.LISTING
+    EXTRA_VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
         parser = super(AppsFormatMany, self).get_parser(prog_name)
-        for f in App().fields:
-            if f.searchable:
-                sarg = SearchWebParam(argument=f.param_name,
-                                      field_type=f.param_type,
-                                      mods=f.mod_types,
-                                      default_mod=f.default_mod)
-                self.cache_sarg(sarg)
-                sargp = sarg.get_argparse()
-                parser.add_argument(sargp.argument, **sargp.attributes)
+        parser = SearchableCommand.extend_parser(self, parser, App)
         return parser
 
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
+        parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        # Set up default search query payload (at minimum: limits, offset)
-        self.take_action_defaults(parsed_args)
 
         # Map properties set in parsed_args to a query payload for search
         filters = list()
@@ -47,8 +38,8 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
             v = f[k]
             self.post_payload[k] = v
 
+        headers = SearchableCommand.headers(self, App, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
-        headers = App().get_headers(self.VERBOSITY, parsed_args.formatter)
 
         records = []
         for rec in results:

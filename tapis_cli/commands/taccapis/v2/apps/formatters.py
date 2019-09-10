@@ -1,6 +1,7 @@
 """Formatters customized for app records and listings
 """
-from tapis_cli.clients.services.taccapis import (TaccApisBase,
+from tapis_cli.mocks import FormatMany
+from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany)
 from .models import App
@@ -8,13 +9,13 @@ from .models import App
 __all__ = ['AppsFormatOne', 'AppsFormatMany']
 
 
-class AppsBase(TaccApisBase):
+class AppsBase(TaccApisCommandBase):
     id_display_name = App.id_display_name
 
 
-class AppsFormatOne(TaccApisFormatOne, AppsBase):
+class AppsFormatOne(AppsBase, TaccApisFormatOne):
     pass
 
 
-class AppsFormatMany(TaccApisFormatMany, AppsBase):
+class AppsFormatMany(AppsBase, TaccApisFormatMany):
     pass

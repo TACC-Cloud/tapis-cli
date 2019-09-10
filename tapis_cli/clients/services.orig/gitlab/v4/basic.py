@@ -3,7 +3,7 @@ from ....basic import BasicHTTPFormatOne
 __all__ = ['GitlabBasicFormatOne']
 
 
-def add_common_parser_arguments(parser):
+def add_common_arguments(parser):
     return parser
 
 
@@ -12,7 +12,7 @@ class GitlabBasicFormatOne(BasicHTTPFormatOne):
     """
     def get_parser(self, prog_name):
         parser = super(GitlabBasicFormatOne, self).get_parser(prog_name)
-        parser = add_common_parser_arguments(parser)
+        parser = add_common_arguments(parser)
         return parser
 
     def take_action(self, parsed_args):

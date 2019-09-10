@@ -4,7 +4,7 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
-from .formatters import AppsFormatOne, AppsFormatMany
+from .formatters import AppsFormatMany
 
 __all__ = ['AppsList']
 
@@ -13,19 +13,14 @@ class AppsList(AppsFormatMany):
     """List the Apps catalog
     """
     VERBOSITY = Verbosity.BRIEF
-    id_display_name = None
-
-    def get_parser(self, prog_name):
-        parser = super(AppsFormatMany, self).get_parser(prog_name)
-        return parser
+    EXTRA_VERBOSITY = Verbosity.LISTING
 
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
+        parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
 
+        headers = SearchableCommand.headers(self, App, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
-        headers = App().get_headers(self.VERBOSITY)
 
         records = []
         for rec in results:

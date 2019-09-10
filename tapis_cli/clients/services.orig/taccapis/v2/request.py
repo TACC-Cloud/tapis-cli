@@ -2,12 +2,12 @@ from tapis_cli.main import PKG_NAME, About, VersionInfo
 import requests
 from agavepy.agave import Agave
 
-__all__ = ['Swaggerless']
+__all__ = ['TaccApiDirectClient']
 
 # TODO - Consider whether this should be a Formatter like the contents of bearer and basic
 
 
-class Swaggerless(object):
+class TaccApiDirectClient(object):
     """Requests client bootstrapped from a Tapis API client
 
     The intended use is to implement methods not expressed by the

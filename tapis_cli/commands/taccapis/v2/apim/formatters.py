@@ -5,6 +5,8 @@ from tapis_cli.clients.services.taccapis import (TaccApisBase,
                                                  TaccApisFormatMany,
                                                  TaccApisFormatManyUnlimited,
                                                  TaccApisWithRefreshFormatOne)
+
+from tapis_cli.clients.services.taccapis import TaccApisBasicFormatOne
 # RefreshBearerTokenFormatOne
 
 from .models import Token
@@ -17,4 +19,8 @@ class TokensBase(object):
 
 
 class TokenFormatOne(TaccApisWithRefreshFormatOne):
+    pass
+
+
+class CreateTokenFormatOne(TaccApisBasicFormatOne):
     pass

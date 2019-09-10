@@ -1,3 +1,3 @@
 """On-premise Gitlab clients
 """
-# from .v4 import *
+from .v4 import *

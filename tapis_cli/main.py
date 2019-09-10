@@ -58,12 +58,8 @@ class Tapis_App(App):
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc
     def build_option_parser(self, description, version):
-
         parser = super(Tapis_App,
                        self).build_option_parser(description, version)
-
-        parser.add_argument('-U', dest='baseurl', help='API Server')
-
         return parser
 
     def initialize_app(self, argv):
