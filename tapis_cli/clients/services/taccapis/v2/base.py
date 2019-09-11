@@ -32,3 +32,6 @@ class TaccApisCommandBase(TaccApiClient):
         # Derived classes must call the parent's super()
         self.init_clients(parsed_args)
         return ((), ())
+
+    def take_action_defaults(self, parsed_args):
+        return self

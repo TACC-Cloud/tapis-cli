@@ -29,7 +29,10 @@ class SearchableCommand(object):
                                       field_type=f.param_type,
                                       mods=f.mod_types,
                                       default_mod=f.default_mod)
-                self._cache_sarg(sarg)
+                try:
+                    self._cache_sarg(sarg)
+                except Exception:
+                    pass
                 sargp = sarg.get_argparse()
                 search_group.add_argument(sargp.argument, **sargp.attributes)
         return parser

@@ -5,7 +5,9 @@ from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
 
 __all__ = ['TaccApisFormatManyUnlimited', 'TaccApisFormatMany']
 
-class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisOnlyBearer):
+
+class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany,
+                                  TaccApisOnlyBearer):
     def get_parser(self, prog_name):
         parser = HTTPFormatMany.get_parser(self, prog_name)
         parser = HTTPFormatMany.add_common_parser_arguments(self, parser)
@@ -21,6 +23,7 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisOnlyBeare
                 self.VERBOSITY = self.EXTRA_VERBOSITY
         # self.take_action_defaults(parsed_args)
         return parsed_args
+
 
 class TaccApisFormatMany(TaccApisFormatManyUnlimited):
     """TACC APIs HTTP+Token Records Listing
