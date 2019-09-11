@@ -1,7 +1,7 @@
 """Data model and functions for Tapis apps
 """
 from .. import SERVICE_VERSION
-from tapis_cli.commands.taccapis import TapisEntity
+from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
@@ -10,10 +10,10 @@ __all__ = ['App', 'API_NAME', 'SERVICE_VERSION']
 API_NAME = 'apps'
 
 
-class App(TapisEntity):
+class App(TapisModel):
     """Model of a Tapis application
     """
-    id_display_name = 'APP_ID'
+    service_id_type = 'App'
     payload = dict()
 
     SEARCH_ARGS = [

@@ -10,7 +10,7 @@ __all__ = ['AppsFormatOne', 'AppsFormatMany']
 
 
 class AppsBase(TaccApisCommandBase):
-    id_display_name = App.id_display_name
+    service_id_type = App.service_id_type
 
 
 class AppsFormatOne(AppsBase, TaccApisFormatOne):
