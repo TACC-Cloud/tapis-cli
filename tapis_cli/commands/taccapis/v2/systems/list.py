@@ -4,28 +4,28 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System
-from .formatters import SystemsFormatOne, SystemsFormatMany
+from .formatters import SystemsFormatMany
 
 __all__ = ['SystemsList']
 
 
 class SystemsList(SystemsFormatMany):
-    """List registered systems
+    """List registered Systems
     """
     VERBOSITY = Verbosity.BRIEF
-    id_display_name = None
+    EXTRA_VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
         parser = super(SystemsFormatMany, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
+        parsed_args = SystemsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
+        headers = SearchableCommand.headers(self, System, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
-        headers = System().get_headers(self.VERBOSITY)
 
         records = []
         for rec in results:

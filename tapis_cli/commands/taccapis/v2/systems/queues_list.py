@@ -5,7 +5,7 @@ from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import SystemQueue
-from .formatters import SystemsFormatOne, SystemsFormatMany
+from .formatters import SystemsFormatMany
 
 __all__ = ['SystemsQueuesList']
 
@@ -13,23 +13,25 @@ __all__ = ['SystemsQueuesList']
 # SystemsQueuesStats
 
 
-class SystemsQueuesList(ServiceIdentifier, SystemsFormatMany):
-    """List queues on a system
+class SystemsQueuesList(SystemsFormatMany, ServiceIdentifier):
+    """List virtual queues on a System
     """
     VERBOSITY = Verbosity.BRIEF
-    EXTRA_VERBOSITY = Verbosity.EXPANDED
-    id_display_name = 'SYSTEM_ID'
+    EXTRA_VERBOSITY = Verbosity.RECORD
+
+    def get_parser(self, prog_name):
+        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = ServiceIdentifier.extend_parser(self, parser)
+        return parser
 
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
-        api_resource = '{0}/queues'.format(parsed_args.identifier)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
-        # raise SystemError(self.requests_client.build_url())
+        parsed_args = SystemsFormatMany.before_take_action(self, parsed_args)
+        API_PATH = '{0}/queues'.format(parsed_args.identifier)
+        self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
         self.take_action_defaults(parsed_args)
 
-        headers = SystemQueue().get_headers(verbosity_level=self.VERBOSITY)
+        headers = SearchableCommand.headers(self, SystemQueue, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
-        # raise SystemError(results)
 
         records = []
         for rec in results:

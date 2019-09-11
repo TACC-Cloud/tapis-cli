@@ -9,6 +9,7 @@ __all__ = ['SystemsStatus']
 
 
 class SystemsStatus(SystemsShow):
-    """Show status of a system
+    """Show status of a System
     """
     VERBOSITY = Verbosity.BRIEF
+    EXTRA_VERBOSITY = Verbosity.BRIEF

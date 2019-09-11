@@ -1,6 +1,6 @@
 """Data model and functions for Tapis systems
 """
-from tapis_cli.commands.taccapis import TapisEntity
+from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 from .. import SERVICE_VERSION
@@ -10,17 +10,17 @@ __all__ = ['System', 'API_NAME', 'SERVICE_VERSION']
 API_NAME = 'systems'
 
 
-class System(TapisEntity):
+class System(TapisModel):
     """Model of a Tapis system
     """
-    id_display_name = 'SYSTEM_ID'
+    service_id_type = 'System'
     payload = dict()
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False),
-        ("available", argtype.BOOLEAN, Verbosity.RECORD, argmod.BOOL_DEFAULTS,
+        ("available", argtype.BOOLEAN, Verbosity.LISTING, argmod.BOOL_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("default", argtype.BOOLEAN, Verbosity.RECORD, argmod.BOOL_DEFAULTS,
          argmod.DEFAULT, None, None, True),
