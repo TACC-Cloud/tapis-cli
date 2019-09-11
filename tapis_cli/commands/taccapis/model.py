@@ -1,12 +1,12 @@
 from tapis_cli.search import Argdef, argmod, argtype, optionize
 
-__all__ = ['TapisEntity']
+__all__ = ['TapisModel']
 
 
-class TapisEntity(object):
-    """Base class for any Tapis primitive
+class TapisModel(object):
+    """Base class for Tapis models
     """
-    id_display_name = 'ID'
+
     format_many = False
 
     SEARCH_ARGS = []

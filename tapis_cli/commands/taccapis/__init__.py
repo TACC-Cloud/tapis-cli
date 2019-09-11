@@ -1,2 +1,2 @@
-from .entity import TapisEntity
+from .model import TapisModel
 from .searchable import SearchableCommand

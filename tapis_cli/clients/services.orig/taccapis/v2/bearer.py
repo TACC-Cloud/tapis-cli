@@ -79,10 +79,10 @@ class TaccApisFormatMany(JsonVerbose, TaccApiClient, BearerTokenFormatMany):
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
         parser = add_common_arguments(parser)
-        # if self.id_display_name is not None:
+        # if self.service_id_type is not None:
         #     parser.add_argument('identifier',
         #                         type=str,
-        #                         help=self.id_display_name)
+        #                         help=self.service_id_type)
         parser.add_argument('-l',
                             '--limit',
                             dest='limit',

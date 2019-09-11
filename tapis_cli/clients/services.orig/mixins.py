@@ -63,15 +63,15 @@ class ServiceIdentifier(object):
     """Configures a Command to require a mandatory 'identifier' positional param
 
     Adds a positional parameter to the Command parser. The value for the
-    parameter's 'metavar' is set by the Command.id_display_name property.
+    parameter's 'metavar' is set by the Command.service_id_type property.
     """
     def get_parser(self, prog_name):
         parser = super().get_parser(prog_name)
-        id_name = getattr(self, 'id_display_name', 'IDENTIFIER')
+        id_name = getattr(self, 'service_id_type', 'IDENTIFIER')
         if id_name is not None:
             parser.add_argument('identifier',
                                 type=str,
-                                help=self.id_display_name)
+                                help=self.service_id_type)
         return parser
 
 
