@@ -58,8 +58,11 @@ class TaccApiDirectClient(object):
         resp.raise_for_status()
         return resp.json().get('result', {})
 
-    def post(self, path=None):
+    def post(self, path=None, content_type=None):
         url = self.build_url(path)
-        resp = requests.post(url, headers=self.headers)
+        post_headers = self.headers
+        if content_type is not None:
+            post_headers['Content-type'] = content_type
+        resp = requests.post(url, headers=post_headers)
         resp.raise_for_status()
         return resp.json().get('result', {})

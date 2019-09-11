@@ -3,8 +3,26 @@ from .bearer import TaccApisOnlyBearer
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier)
 
+__all__ = ['TaccApisFormatManyUnlimited', 'TaccApisFormatMany']
 
-class TaccApisFormatMany(JsonVerbose, HTTPFormatMany, TaccApisOnlyBearer):
+class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisOnlyBearer):
+    def get_parser(self, prog_name):
+        parser = HTTPFormatMany.get_parser(self, prog_name)
+        parser = HTTPFormatMany.add_common_parser_arguments(self, parser)
+        parser = TaccApisOnlyBearer.add_common_parser_arguments(self, parser)
+        return parser
+
+    def before_take_action(self, parsed_args):
+        self.init_clients(parsed_args)
+        if self.app_verbose_level > 1:
+            # raise SystemError(dir(self.app.options))
+            parsed_args.formatter = 'json'
+            if self.EXTRA_VERBOSITY is not None:
+                self.VERBOSITY = self.EXTRA_VERBOSITY
+        # self.take_action_defaults(parsed_args)
+        return parsed_args
+
+class TaccApisFormatMany(TaccApisFormatManyUnlimited):
     """TACC APIs HTTP+Token Records Listing
     """
     def get_parser(self, prog_name):
@@ -13,9 +31,7 @@ class TaccApisFormatMany(JsonVerbose, HTTPFormatMany, TaccApisOnlyBearer):
         # order because relying Python MRO will fail
 
         # print('TaccApisFormatMany.get_parser')
-        parser = HTTPFormatMany.get_parser(self, prog_name)
-        parser = HTTPFormatMany.add_common_parser_arguments(self, parser)
-        parser = TaccApisOnlyBearer.add_common_parser_arguments(self, parser)
+        parser = TaccApisFormatManyUnlimited.get_parser(self, prog_name)
         parser.add_argument('-l',
                             '--limit',
                             dest='limit',
@@ -35,15 +51,6 @@ class TaccApisFormatMany(JsonVerbose, HTTPFormatMany, TaccApisOnlyBearer):
         self.post_payload['offset'] = parsed_args.offset
         return self
 
-    def before_take_action(self, parsed_args):
-        self.init_clients(parsed_args)
-        if self.app_verbose_level > 1:
-            # raise SystemError(dir(self.app.options))
-            parsed_args.formatter = 'json'
-            if self.EXTRA_VERBOSITY is not None:
-                self.VERBOSITY = self.EXTRA_VERBOSITY
-        self.take_action_defaults(parsed_args)
-        return parsed_args
         #     # raise SystemError(parsed_args)
         # # super().take_action(parsed_args)
         # # for requests made via AgavePy's swaggerpy client

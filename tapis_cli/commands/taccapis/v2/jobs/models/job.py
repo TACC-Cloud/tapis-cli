@@ -59,7 +59,7 @@ class Job(TapisModel):
         ("nodeCount", argtype.INTEGER, Verbosity.RECORD,
          argmod.NUMBER_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("owner", argtype.STRING, Verbosity.LISTING, argmod.STRING_DEFAULTS,
-         argmod.DEFAULT, None, None, False),
+         argmod.DEFAULT, None, None, True),
         ("parameters", argtype.OBJECT, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("processorsPerNode", argtype.INTEGER, Verbosity.RECORD,

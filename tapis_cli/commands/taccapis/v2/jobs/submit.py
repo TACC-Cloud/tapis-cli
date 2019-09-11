@@ -1,32 +1,33 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import UploadJsonFile
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
 from .formatters import JobsFormatOne
 
-__all__ = ['JobsShow']
+__all__ = ['JobsSubmit']
 
 
-class JobsShow(JobsFormatOne, ServiceIdentifier):
-    """Show a specific Job
+class JobsSubmit(UploadJsonFile, JobsFormatOne):
+    """Submit a new compute Job
     """
-    VERBOSITY = Verbosity.RECORD
-    EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
+    VERBOSITY = Verbosity.BRIEF
+    EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = JobsFormatOne.get_parser(self, prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = UploadJsonFile.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = JobsFormatOne.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.handle_file_upload(parsed_args)
 
         headers = SearchableCommand.headers(self, Job, parsed_args)
-        rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)
+        rec = self.tapis_client.jobs.submit(body=self.json_file_contents)
 
         data = []
         for key in headers:
