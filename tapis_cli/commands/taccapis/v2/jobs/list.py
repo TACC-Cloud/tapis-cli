@@ -17,12 +17,13 @@ class JobsList(JobsFormatMany):
 
     def get_parser(self, prog_name):
         parser = super(JobsFormatMany, self).get_parser(prog_name)
-        parser = SearchableCommand.extend_parser(self, parser, Job)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = JobsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.take_action_defaults(parsed_args)
+
         headers = SearchableCommand.headers(self, Job, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 

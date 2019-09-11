@@ -4,7 +4,7 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
-from .formatters import JobsFormatOne, JobsFormatMany
+from .formatters import JobsFormatMany
 
 __all__ = ['JobsSearch']
 
@@ -23,6 +23,7 @@ class JobsSearch(JobsFormatMany, SearchableCommand):
     def take_action(self, parsed_args):
         parsed_args = JobsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.take_action_defaults(parsed_args)
 
         # Map properties set in parsed_args to a query payload for search
         filters = list()

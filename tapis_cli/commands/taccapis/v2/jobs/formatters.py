@@ -1,5 +1,6 @@
 """Formatters customized for job records and listings
 """
+
 from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany,
@@ -15,6 +16,7 @@ class JobsBase(TaccApisCommandBase):
 
 class JobsFormatOne(JobsBase, TaccApisFormatOne):
     pass
+
 
 class JobsFormatMany(JobsBase, TaccApisFormatMany):
     pass

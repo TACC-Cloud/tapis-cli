@@ -24,6 +24,7 @@ class JobsShow(JobsFormatOne, ServiceIdentifier):
     def take_action(self, parsed_args):
         parsed_args = JobsFormatOne.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.take_action_defaults(parsed_args)
 
         headers = SearchableCommand.headers(self, Job, parsed_args)
         rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)

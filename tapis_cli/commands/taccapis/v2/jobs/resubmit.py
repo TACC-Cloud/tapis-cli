@@ -11,7 +11,7 @@ __all__ = ['JobsResubmit']
 
 
 class JobsResubmit(JobsFormatOne, ServiceIdentifier):
-    """Resubmit a job using the same inputs and parameters
+    """Resubmit a Job using the same inputs and parameters
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
