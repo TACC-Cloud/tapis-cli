@@ -23,6 +23,7 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
     def take_action(self, parsed_args):
         parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.take_action_defaults(parsed_args)
 
         # Map properties set in parsed_args to a query payload for search
         filters = list()

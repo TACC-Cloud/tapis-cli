@@ -1,6 +1,5 @@
 """Formatters customized for app records and listings
 """
-from tapis_cli.mocks import FormatMany
 from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany)

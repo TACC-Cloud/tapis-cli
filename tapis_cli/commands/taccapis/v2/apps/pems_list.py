@@ -25,6 +25,8 @@ class AppsPemsList(AppsFormatMany, ServiceIdentifier):
         parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
         headers = AppPermission.get_headers(self, self.VERBOSITY,
                                             parsed_args.formatter)
+        self.take_action_defaults(parsed_args)
+
         results = self.tapis_client.apps.listPermissions(
             appId=parsed_args.identifier)
 
