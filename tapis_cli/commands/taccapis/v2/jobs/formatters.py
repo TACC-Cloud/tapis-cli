@@ -1,6 +1,6 @@
 """Formatters customized for job records and listings
 """
-from tapis_cli.clients.services.taccapis import (TaccApisBase,
+from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany,
                                                  TaccApisFormatManyUnlimited)
@@ -9,17 +9,15 @@ from .models import Job
 __all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']
 
 
-class JobsBase(TaccApisBase):
-    id_display_name = Job.id_display_name
+class JobsBase(TaccApisCommandBase):
+    service_id_type = Job.service_id_type
 
 
-class JobsFormatOne(TaccApisFormatOne, JobsBase):
+class JobsFormatOne(JobsBase, TaccApisFormatOne):
     pass
 
-
-class JobsFormatMany(TaccApisFormatMany, JobsBase):
+class JobsFormatMany(JobsBase, TaccApisFormatMany):
     pass
 
-
-class JobsHistoryFormatMany(TaccApisFormatManyUnlimited, JobsBase):
+class JobsHistoryFormatMany(JobsBase, TaccApisFormatManyUnlimited):
     pass

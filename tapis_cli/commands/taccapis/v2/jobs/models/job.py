@@ -1,6 +1,6 @@
 """Data model and functions for Tapis jobs
 """
-from tapis_cli.commands.taccapis import TapisEntity
+from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 from .. import SERVICE_VERSION
@@ -10,10 +10,10 @@ __all__ = ['Job', 'API_NAME', 'SERVICE_VERSION']
 API_NAME = 'jobs'
 
 
-class Job(TapisEntity):
+class Job(TapisModel):
     """Model of a Tapis job
     """
-    id_display_name = 'JOB_ID'
+    service_id_type = 'Job'
     payload = dict()
 
     SEARCH_ARGS = [
@@ -76,9 +76,9 @@ class Job(TapisEntity):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("remoteStatusChecks", argtype.INTEGER, Verbosity.RECORD,
          argmod.NUMBER_DEFAULTS, argmod.DEFAULT, None, None, True),
-        ("remoteSubmitted", argtype.DATETIME, Verbosity.LISTING,
+        ("remoteSubmitted", argtype.DATETIME, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("roles", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+        ("roles", argtype.ARRAY, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("schedulerJobId", argtype.STRING, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
