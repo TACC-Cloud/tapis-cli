@@ -1,3 +1,4 @@
+from agavepy.agave import AgaveError
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
@@ -7,11 +8,11 @@ from . import API_NAME, SERVICE_VERSION
 from .models import SystemRole
 from .formatters import SystemsFormatMany
 
-__all__ = ['SystemsRolesList']
+__all__ = ['SystemsRolesDrop']
 
 
-class SystemsRolesList(SystemsFormatMany, ServiceIdentifier):
-    """List roles on a System
+class SystemsRolesDrop(SystemsFormatMany, ServiceIdentifier):
+    """Drop all granted roles from a System
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -26,6 +27,13 @@ class SystemsRolesList(SystemsFormatMany, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
+        drop_result = self.tapis_client.systems.deleteRoles(
+            systemId=parsed_args.identifier)
+        if drop_result is not None:
+            raise AgaveError('Failed to drop roles on {0}'.format(
+                systemId=parsed_args.identifier))
+
+        # Go ahead and list - should only return owner's role
         headers = SearchableCommand.headers(self, SystemRole, parsed_args)
         results = self.tapis_client.systems.listRoles(
             systemId=parsed_args.identifier)

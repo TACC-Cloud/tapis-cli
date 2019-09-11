@@ -28,7 +28,8 @@ class SystemsCreate(UploadJsonFile, SystemsFormatOne):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = headers = SearchableCommand.headers(self, System, parsed_args)
+        headers = headers = SearchableCommand.headers(self, System,
+                                                      parsed_args)
         rec = self.tapis_client.systems.add(body=self.json_file_contents)
 
         data = []

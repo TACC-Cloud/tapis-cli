@@ -17,3 +17,7 @@ from .enable import SystemsEnable
 from .disable import SystemsDisable
 from .publish import SystemsPublish
 from .unpublish import SystemsUnpublish
+from .roles_grant import SystemsRolesGrant
+from .roles_revoke import SystemsRolesRevoke
+from .roles_drop import SystemsRolesDrop
+from .roles_show import SystemsRolesShow

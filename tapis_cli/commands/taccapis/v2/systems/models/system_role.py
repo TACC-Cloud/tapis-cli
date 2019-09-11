@@ -8,6 +8,8 @@ __all__ = ['SystemRole']
 class SystemRole(System):
     """Model of a Tapis system role
     """
+    NAMES = ['GUEST', 'USER', 'PUBLISHER', 'ADMIN', 'OWNER']
+
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
