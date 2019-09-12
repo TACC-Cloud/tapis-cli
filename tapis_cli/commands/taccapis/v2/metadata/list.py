@@ -15,12 +15,16 @@ class MetadataList(MetadataFormatMany):
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
+    def get_parser(self, prog_name):
+        parser = super(MetadataFormatMany, self).get_parser(prog_name)
+        return parser
+
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
+        parsed_args = MetadataFormatMany.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.take_action_defaults(parsed_args)
 
-        headers = Metadata().get_headers(self.VERBOSITY)
+        headers = SearchableCommand.headers(self, Metadata, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

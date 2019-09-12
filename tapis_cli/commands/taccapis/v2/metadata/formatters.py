@@ -1,6 +1,6 @@
 """Formatters customized for metadata records and listings
 """
-from tapis_cli.clients.services.taccapis import (TaccApisBase,
+from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany,
                                                  TaccApisFormatManyUnlimited)
@@ -9,13 +9,13 @@ from .models import Metadata
 __all__ = ['MetadataFormatOne', 'MetadataFormatMany']
 
 
-class MetadataBase(TaccApisBase):
-    id_display_name = Metadata.id_display_name
+class MetadataBase(TaccApisCommandBase):
+    service_id_type = Metadata.service_id_type
 
 
-class MetadataFormatOne(TaccApisFormatOne, MetadataBase):
+class MetadataFormatOne(MetadataBase, TaccApisFormatOne):
     pass
 
 
-class MetadataFormatMany(TaccApisFormatMany, MetadataBase):
+class MetadataFormatMany(MetadataBase, TaccApisFormatMany):
     pass

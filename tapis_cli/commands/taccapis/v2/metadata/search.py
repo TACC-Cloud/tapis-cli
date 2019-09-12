@@ -23,26 +23,36 @@ class MetadataSearch(MetadataFormatMany, SearchableCommand):
 
     def get_parser(self, prog_name):
         parser = super(MetadataFormatMany, self).get_parser(prog_name)
-        parser.add_argument('--privileged',
-                            dest='privileged',
-                            action='store_false',
-                            help='Display or act with privilege')
-
+        search_group = parser.add_argument_group('Search arguments')
+        # Dont use the SearchableCommand method. Instead, build up
+        # query manually since the metadata service is the only example of
+        # this dialect for querying the backing MongoDB
         for f in Metadata().fields:
             if f.searchable:
                 sarg = SearchMongoQuery(argument=f.param_name,
                                         field_type=f.param_type,
                                         mods=f.mod_types,
                                         default_mod=f.default_mod)
-                self.cache_sarg(sarg)
+                self._cache_sarg(sarg)
                 sargp = sarg.get_argparse()
-                parser.add_argument(sargp.argument, **sargp.attributes)
+                search_group.add_argument(sargp.argument, **sargp.attributes)
+
+        parser.add_argument('--privileged',
+                                  dest='privileged',
+                                  action='store_false',
+                                  help='Display or act with privilege')
         return parser
 
-    def take_action(self, parsed_args):
-        super().take_action(parsed_args)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
+    def take_action_defaults(self, parsed_args):
+        # Override inherited take_action_defaults to add --privileged
+        super().take_action_defaults(parsed_args)
         self.post_payload['privileged'] = parsed_args.privileged
+        return self
+
+    def take_action(self, parsed_args):
+        parsed_args = MetadataFormatMany.before_take_action(self, parsed_args)
+        self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
+        self.take_action_defaults(parsed_args)
 
         # Map properties set in parsed_args to a payload for the 'q' param
         # Note that this is different from how we usually construct the
@@ -61,9 +71,7 @@ class MetadataSearch(MetadataFormatMany, SearchableCommand):
             mongoql_els[k] = v
         self.post_payload['q'] = json.dumps(mongoql_els)
 
-        self.take_action_defaults(parsed_args)
-
-        headers = Metadata().get_headers(self.VERBOSITY, parsed_args.formatter)
+        headers = SearchableCommand.headers(self, Metadata, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

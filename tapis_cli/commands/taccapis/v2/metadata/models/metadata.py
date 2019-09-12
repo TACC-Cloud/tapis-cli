@@ -1,7 +1,7 @@
 """Data model and functions for Tapis apps
 """
 from .. import SERVICE_VERSION
-from tapis_cli.commands.taccapis import TapisEntity
+from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
@@ -10,10 +10,10 @@ __all__ = ['Metadata', 'API_NAME', 'SERVICE_VERSION']
 API_NAME = 'meta'
 
 
-class Metadata(TapisEntity):
+class Metadata(TapisModel):
     """Model of a Tapis metadata record
     """
-    id_display_name = 'UUID'
+    service_id_type = 'Unique'
     payload = dict()
 
     SEARCH_ARGS = [
