@@ -38,9 +38,9 @@ class MetadataSearch(MetadataFormatMany, SearchableCommand):
                 search_group.add_argument(sargp.argument, **sargp.attributes)
 
         parser.add_argument('--privileged',
-                                  dest='privileged',
-                                  action='store_false',
-                                  help='Display or act with privilege')
+                            dest='privileged',
+                            action='store_false',
+                            help='Display or act with privilege')
         return parser
 
     def take_action_defaults(self, parsed_args):
