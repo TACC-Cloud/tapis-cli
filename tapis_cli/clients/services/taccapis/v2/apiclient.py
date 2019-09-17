@@ -51,6 +51,7 @@ class TaccApiClient(object):
         # TODO - only populate this if there is an access_token
         # TODO - Come back and re-enable overrides via CLI option
         self.tapis_client = Agave.restore()
+        self.tapis_client.token.refresh()
         self.requests_client = TaccApiDirectClient(self.tapis_client)
         return self
 

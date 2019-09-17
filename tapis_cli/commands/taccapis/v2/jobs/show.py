@@ -19,6 +19,11 @@ class JobsShow(JobsFormatOne, ServiceIdentifier):
     def get_parser(self, prog_name):
         parser = JobsFormatOne.get_parser(self, prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
+        parser.add_argument('-T',
+                            '--template',
+                            dest='job_template',
+                            action='store_true',
+                            help='Job template from verbose')
         return parser
 
     def take_action(self, parsed_args):
@@ -26,8 +31,18 @@ class JobsShow(JobsFormatOne, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, Job, parsed_args)
         rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)
+
+        if not parsed_args.job_template:
+            headers = SearchableCommand.headers(self, Job, parsed_args)
+        else:
+            if self.formatter_default != 'json':
+                raise ValueError(
+                    'JSON output must be specified with --format json or -v option'
+                )
+            else:
+                headers = Job.TEMPLATE_KEYS
+                rec = Job.transform_response(rec)
 
         data = []
         for key in headers:

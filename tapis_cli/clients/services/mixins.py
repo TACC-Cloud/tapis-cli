@@ -86,14 +86,27 @@ class ServiceIdentifier(ParserExtender):
     """
     service_id_type = 'Service'
 
+    @classmethod
+    def arg_display(cls, id_value):
+        return '<{0}_id>'.format(id_value).lower()
+
+    @classmethod
+    def arg_metavar(cls, id_value):
+        return cls.arg_display(id_value)
+
+    @classmethod
+    def arg_help(cls, id_value):
+        return '{0} identifer'.format(id_value)
+
     def extend_parser(self, parser):
         id_value = getattr(self, 'service_id_type')
         if id_value is not None:
             arg_display = '<{0}_id>'.format(id_value).lower()
-            parser.add_argument('identifier',
-                                metavar=arg_display,
-                                type=str,
-                                help='{0} identifer'.format(id_value))
+            if id_value is not None:
+                parser.add_argument('identifier',
+                                    type=str,
+                                    metavar=self.arg_metavar(id_value),
+                                    help=self.arg_help(id_value))
         return parser
 
 

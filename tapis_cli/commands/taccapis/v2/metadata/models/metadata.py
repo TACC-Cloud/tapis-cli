@@ -14,7 +14,6 @@ class Metadata(TapisModel):
     """Model of a Tapis metadata record
     """
     service_id_type = 'Unique'
-    payload = dict()
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
@@ -39,17 +38,3 @@ class Metadata(TapisModel):
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]
-
-    def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
-
-    def get_headers(self, verbosity_level=None, formatter='table'):
-        if verbosity_level is None:
-            verbosity_level = Verbosity.LISTING
-        headers = list()
-        for f in self.fields:
-            # print('{}: {}> = {}'.format(f, verbosity_level, f.verbosity))
-            if verbosity_level >= f.verbosity:
-                if argtype.format_allows_param_type(f, formatter):
-                    headers.append(f.param_name)
-        return headers

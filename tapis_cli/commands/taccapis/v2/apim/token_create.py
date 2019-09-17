@@ -1,3 +1,4 @@
+import getpass
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
@@ -30,6 +31,12 @@ class TokenCreate(CreateTokenFormatOne):
             self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
+
+        # Allow prompt for password when not specified
+        passwd = parsed_args.tapis_password
+        if passwd is None:
+            passwd = getpass.getpass('{0} password:'.format(PLATFORM))
+        self.tapis_client.token.password = passwd
 
         headers = SearchableCommand.headers(self, Token, parsed_args)
         try:

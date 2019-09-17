@@ -5,12 +5,12 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Metadata
-from .formatters import MetadataFormatOne
+from .formatters import MetadataFormatOne, MetadataIdentifier
 
 __all__ = ['MetadataShow']
 
 
-class MetadataShow(MetadataFormatOne, ServiceIdentifier):
+class MetadataShow(MetadataFormatOne, MetadataIdentifier):
     """Show a single Metadata record
     """
     VERBOSITY = Verbosity.LISTING

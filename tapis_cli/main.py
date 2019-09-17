@@ -53,8 +53,8 @@ class Tapis_App(App):
         self.logger = logging.getLogger(__name__)
         self.logger.addHandler(NullHandler())
         self.logger.setLevel(settings.LOG_LEVEL)
-        # if settings.LOG_LEVEL is not None:
-        #     logging.basicConfig(level=settings.LOG_LEVEL)
+        if settings.LOG_LEVEL is not None:
+            logging.basicConfig(level=settings.LOG_LEVEL)
         return
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc

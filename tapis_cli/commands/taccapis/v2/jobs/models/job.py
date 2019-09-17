@@ -1,5 +1,7 @@
 """Data model and functions for Tapis jobs
 """
+import math
+from datetime import timedelta
 from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
@@ -14,7 +16,6 @@ class Job(TapisModel):
     """Model of a Tapis job
     """
     service_id_type = 'Job'
-    payload = dict()
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
@@ -98,16 +99,43 @@ class Job(TapisModel):
          argmod.DEFAULT, None, None, False)
     ]
 
-    def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
+    TEMPLATE_KEYS = [
+        'appId', 'archive', 'archiveSystem', 'maxRunTime', 'inputs',
+        'memoryPerNode', 'name', 'nodeCount', 'parameters', 'processorsPerNode'
+    ]
 
-    def get_headers(self, verbosity_level=None, formatter='table'):
-        if verbosity_level is None:
-            verbosity_level = Verbosity.LISTING
-        headers = list()
-        for f in self.fields:
-            # print('{}: {}> = {}'.format(f, verbosity_level, f.verbosity))
-            if verbosity_level >= f.verbosity:
-                if argtype.format_allows_param_type(f, formatter):
-                    headers.append(f.param_name)
-        return headers
+    # def __init__(self):
+    #     self.add_fields(self.SEARCH_ARGS)
+
+    # def get_headers(self, verbosity_level=None, formatter='table'):
+    #     if verbosity_level is None:
+    #         verbosity_level = Verbosity.LISTING
+    #     headers = list()
+    #     for f in self.fields:
+    #         # print('{}: {}> = {}'.format(f, verbosity_level, f.verbosity))
+    #         if verbosity_level >= f.verbosity:
+    #             if argtype.format_allows_param_type(f, formatter):
+    #                 headers.append(f.param_name)
+    #     return headers
+
+    def get_template_headers(self, verbosity_level=None, formatter='table'):
+        """Return only submittable Job fields
+        """
+        return self.TEMPLATE_KEYS
+
+    @classmethod
+    def render_key_value(cls, key, value):
+        """Rules for transforming key names and values
+        """
+        if key == 'memoryPerNode':
+            return key, str(math.ceil(value))
+        elif key == 'maxHours':
+            return 'maxRunTime', maxhours_to_hhmmss(value)
+        return key, value
+
+
+def maxhours_to_hhmmss(max_hours=0.5):
+    """Convert Aloe maxHours to Agave-style HH:MM:SS
+    """
+    d = timedelta(0, hours=max_hours)
+    return str(d)

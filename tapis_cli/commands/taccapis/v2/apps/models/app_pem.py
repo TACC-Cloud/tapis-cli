@@ -15,7 +15,7 @@ API_NAME = 'apps'
 class AppPermission(App):
     """Model of a Tapis application permission
     """
-    payload = dict()
+
     NAMES = [
         'ALL', 'READ', 'WRITE', 'READ_WRITE', 'EXECUTE', 'READ_EXECUTE',
         'WRITE_EXECUTE', 'NONE'
@@ -31,11 +31,8 @@ class AppPermission(App):
          argmod.DEFAULT, None, 'links', False)
     ]
 
-    def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
-
     def get_headers(self, verbosity_level=1, formatter='table'):
-        """Get headers by verbosity for the AppPermission class
+        """Custom headers by verbosity for AppPermission
         """
         if verbosity_level is None:
             verbosity_level = Verbosity.LISTING

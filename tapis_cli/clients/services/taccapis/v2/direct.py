@@ -19,6 +19,8 @@ class TaccApiDirectClient(object):
         vers = VersionInfo(PKG_NAME)
         # TODO - Catch when client is missing properties
         # token = agave_client.token.token_info['access_token']
+        # Always refresh when using a requests call
+        # agave_client.token.refresh()
         token = agave_client._token
         self.headers = {
             'authorization':

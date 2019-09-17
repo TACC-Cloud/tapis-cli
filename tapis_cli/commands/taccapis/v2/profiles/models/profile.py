@@ -14,7 +14,6 @@ class Profile(TapisEntity):
     """Model of a Tapis user profile
     """
     id_display_name = 'USERNAME'
-    payload = dict()
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
@@ -41,17 +40,3 @@ class Profile(TapisEntity):
         ("create_time", argtype.DATETIME, Verbosity.RECORD_VERBOSE,
          [argmod.EQUALS], argmod.DEFAULT, None, None, False),
     ]
-
-    def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
-
-    def get_headers(self, verbosity_level=None, formatter='table'):
-        if verbosity_level is None:
-            verbosity_level = Verbosity.LISTING
-        headers = list()
-        for f in self.fields:
-            # print('{}: {}> = {}'.format(f, verbosity_level, f.verbosity))
-            if verbosity_level >= f.verbosity:
-                if argtype.format_allows_param_type(f, formatter):
-                    headers.append(f.param_name)
-        return headers

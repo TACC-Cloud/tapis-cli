@@ -30,17 +30,3 @@ class Token(TapisModel):
         ("refresh_token", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False)
     ]
-
-    def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
-
-    def get_headers(self, verbosity_level=None, formatter='table'):
-        if verbosity_level is None:
-            verbosity_level = Verbosity.BRIEF
-        headers = list()
-        for f in self.fields:
-            # print('{}: {}> = {}'.format(f, verbosity_level, f.verbosity))
-            if verbosity_level >= f.verbosity:
-                if argtype.format_allows_param_type(f, formatter):
-                    headers.append(f.param_name)
-        return headers
