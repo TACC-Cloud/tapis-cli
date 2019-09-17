@@ -1,26 +1,22 @@
 """Formatters customized for token, client, and client subscription responses
 """
-from tapis_cli.clients.services.taccapis import (TaccApisBase,
+from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany,
-                                                 TaccApisFormatManyUnlimited,
-                                                 TaccApisWithRefreshFormatOne)
-
-from tapis_cli.clients.services.taccapis import TaccApisBasicFormatOne
-# RefreshBearerTokenFormatOne
+                                                 TaccApisFormatOneNoBearer)
 
 from .models import Token
 
-__all__ = ['TokenFormatOne']
+__all__ = ['TokenFormatOne', 'CreateTokenFormatOne']
 
 
-class TokensBase(object):
+class TokensBase(TaccApisCommandBase):
     id_display_name = Token.id_display_name
 
 
-class TokenFormatOne(TaccApisWithRefreshFormatOne):
+class TokenFormatOne(TokensBase, TaccApisFormatOne):
     pass
 
 
-class CreateTokenFormatOne(TaccApisBasicFormatOne):
+class CreateTokenFormatOne(TokensBase, TaccApisFormatOneNoBearer):
     pass

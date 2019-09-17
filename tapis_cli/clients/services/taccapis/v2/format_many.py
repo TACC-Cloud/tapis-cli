@@ -1,5 +1,5 @@
 from tapis_cli.clients.http import HTTPFormatMany
-from .bearer import TaccApisOnlyBearer
+from .bearer import TaccApisBearer
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier)
 
@@ -7,11 +7,11 @@ __all__ = ['TaccApisFormatManyUnlimited', 'TaccApisFormatMany']
 
 
 class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany,
-                                  TaccApisOnlyBearer):
+                                  TaccApisBearer):
     def get_parser(self, prog_name):
         parser = HTTPFormatMany.get_parser(self, prog_name)
         parser = HTTPFormatMany.add_common_parser_arguments(self, parser)
-        parser = TaccApisOnlyBearer.add_common_parser_arguments(self, parser)
+        parser = TaccApisBearer.add_common_parser_arguments(self, parser)
         return parser
 
     def before_take_action(self, parsed_args):

@@ -33,21 +33,24 @@ class TaccApiClient(object):
         # 2. Process overrides from parser args
         # 3. Init the client(s)
         # TODO - use Agavepy public API for getting this
-        current = json.load(open(os.path.expanduser('~/.agave/current'), 'r'))
-        config = dict()
-        for e, k, p in self.PROPS:
-            parsed_arg = getattr(parsed_args, p, None)
-            current_arg = current.get(k, None)
-            if parsed_arg is not None:
-                config[e] = parsed_arg
-            elif current_arg is not None:
-                config[e] = current_arg
+        # current = json.load(open(os.path.expanduser('~/.agave/current'), 'r'))
+        # config = dict()
+        # for e, k, p in self.PROPS:
+        #     parsed_arg = getattr(parsed_args, p, None)
+        #     current_arg = current.get(k, None)
+        #     if parsed_arg is not None:
+        #         config[e] = parsed_arg
+        #     elif current_arg is not None:
+        #         config[e] = current_arg
 
-        ag = Agave(**config)
-        self.tapis_client = ag
+        # ag = Agave(**config)
+        # self.tapis_client = ag
+        # self.tapis_client.token.refresh()
         #        self.tapis_client = Agave.restore()
         # for requests made directly via requests module
         # TODO - only populate this if there is an access_token
+        # TODO - Come back and re-enable overrides via CLI option
+        self.tapis_client = Agave.restore()
         self.requests_client = TaccApiDirectClient(self.tapis_client)
         return self
 

@@ -4,9 +4,8 @@ python-dateutil
 python-dotenv
 requests
 six
-agavepy
 dateparser
-agavepy==0.9.3
 stringcase
 arrow
 PyMongo
+agavepy@git+https://github.com/TACC/agavepy.git@cli

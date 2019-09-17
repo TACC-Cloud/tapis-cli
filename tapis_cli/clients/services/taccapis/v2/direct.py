@@ -18,7 +18,8 @@ class TaccApiDirectClient(object):
         ab = About(PKG_NAME)
         vers = VersionInfo(PKG_NAME)
         # TODO - Catch when client is missing properties
-        token = agave_client.token.token_info['access_token']
+        # token = agave_client.token.token_info['access_token']
+        token = agave_client._token
         self.headers = {
             'authorization':
             'Bearer {}'.format(token),

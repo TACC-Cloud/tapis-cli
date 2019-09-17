@@ -1,8 +1,9 @@
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
+from tapis_cli.commands.taccapis import SearchableCommand
 
-from . import SERVICE_VERSION
+from . import API_NAME, SERVICE_VERSION
 from .models import Token
 from .formatters import TokenFormatOne
 
@@ -15,9 +16,17 @@ class TokenRefresh(TokenFormatOne):
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
+    def get_parser(self, prog_name):
+        # TODO - accept refresh token
+        parser = TokenFormatOne.get_parser(self, prog_name)
+        return parser
+
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
-        headers = Token().get_headers(self.VERBOSITY, parsed_args.formatter)
+        parsed_args = TokenFormatOne.before_take_action(self, parsed_args)
+        self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.take_action_defaults(parsed_args)
+
+        headers = SearchableCommand.headers(self, Token, parsed_args)
         try:
             result = self.tapis_client.token.refresh()
         except HTTPError as h:

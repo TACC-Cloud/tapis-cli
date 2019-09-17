@@ -1,9 +1,9 @@
 from .base import TaccApisCommandBase
 
-__all__ = ['TaccApisOnlyBearer']
+__all__ = ['TaccApisNoBearer']
 
 
-class TaccApisOnlyBearer(TaccApisCommandBase):
+class TaccApisBearer(TaccApisCommandBase):
     """Base class for Tapis API commands that accept only an access token
     """
     def add_common_parser_arguments(self, parser):
@@ -14,4 +14,11 @@ class TaccApisOnlyBearer(TaccApisCommandBase):
                             type=str,
                             help="{0} {1}".format(self.constants.PLATFORM,
                                                   self.constants.ACCESS_TOKEN))
+        return parser
+
+class TaccApisNoBearer(TaccApisCommandBase):
+    """Base class for Tapis API commands that accept only an access token
+    """
+    def add_common_parser_arguments(self, parser):
+        parser = super().add_common_parser_arguments(parser)
         return parser

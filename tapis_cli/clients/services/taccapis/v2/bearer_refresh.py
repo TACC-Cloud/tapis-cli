@@ -1,13 +1,13 @@
-from .bearer import TaccApisOnlyBearer
+from .bearer import TaccApisBearer
 
 __all__ = ['TaccApisBearerRefresh']
 
 
-class TaccApisBearerRefresh(TaccApisOnlyBearer):
+class TaccApisBearerRefresh(TaccApisBearer):
     """Base class for Tapis API commands both an access token and a refresh token
     """
     def add_common_parser_arguments(self, parser):
-        parser = super(TaccApisOnlyBearer,
+        parser = super(TaccApisBearer,
                        self).add_common_parser_arguments(parser)
         parser.add_argument(
             '-z',
