@@ -6,8 +6,7 @@ from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
 __all__ = ['TaccApisFormatManyUnlimited', 'TaccApisFormatMany']
 
 
-class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany,
-                                  TaccApisBearer):
+class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
     def get_parser(self, prog_name):
         parser = HTTPFormatMany.get_parser(self, prog_name)
         parser = HTTPFormatMany.add_common_parser_arguments(self, parser)

@@ -26,7 +26,8 @@ class TokenCreate(CreateTokenFormatOne):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = CreateTokenFormatOne.before_take_action(self, parsed_args)
+        parsed_args = CreateTokenFormatOne.before_take_action(
+            self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
@@ -38,8 +39,7 @@ class TokenCreate(CreateTokenFormatOne):
         except HTTPError as h:
             if str(h).startswith('400'):
                 raise AgaveError(
-                    'Failed to create a token pair: {0}'.format(h)
-                )
+                    'Failed to create a token pair: {0}'.format(h))
             else:
                 raise AgaveError(str(h))
         result = list()

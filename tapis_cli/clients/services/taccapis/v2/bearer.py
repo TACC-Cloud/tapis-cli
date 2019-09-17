@@ -16,6 +16,7 @@ class TaccApisBearer(TaccApisCommandBase):
                                                   self.constants.ACCESS_TOKEN))
         return parser
 
+
 class TaccApisNoBearer(TaccApisCommandBase):
     """Base class for Tapis API commands that accept only an access token
     """

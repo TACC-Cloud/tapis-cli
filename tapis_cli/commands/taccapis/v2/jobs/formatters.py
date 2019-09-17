@@ -21,5 +21,6 @@ class JobsFormatOne(JobsBase, TaccApisFormatOne):
 class JobsFormatMany(JobsBase, TaccApisFormatMany):
     pass
 
+
 class JobsHistoryFormatMany(JobsBase, TaccApisFormatManyUnlimited):
     pass

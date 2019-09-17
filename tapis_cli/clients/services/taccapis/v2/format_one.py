@@ -30,6 +30,7 @@ class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
         self.take_action_defaults(parsed_args)
         return parsed_args
 
+
 class TaccApisFormatOneNoBearer(JsonVerbose, HTTPFormatOne):
     """TACC APIs HTTP+Token Record Display
     """
