@@ -1,9 +1,13 @@
 """Public, low-dependency helper functions
 """
 import arrow
+import getpass
 import os
 import pkg_resources
 import six
+from requests import get
+from requests.exceptions import ConnectTimeout
+from socket import getfqdn
 
 from dateutil.parser import parse
 
@@ -65,3 +69,54 @@ def command_set():
         cset.append(ename)
     cset.sort()
     return cset
+
+
+def fmtcols(mylist, cols):
+    lines = ("\t".join(mylist[i:i + cols])
+             for i in range(0, len(mylist), cols))
+    return '\n'.join(lines)
+
+
+def prompt(body, default=None, secret=False):
+    if default is not None:
+        if secret is False:
+            fdefault = default
+        else:
+            # Mask out all but first and last two chars of secret value
+            fdefault = default[0:2] + '*' * (len(default) - 2) + default[-3:-1]
+        qtext = '{0} [{1}]: '.format(body, fdefault)
+    else:
+        qtext = '{0}: '.format(body)
+
+    if not secret:
+        response = input(qtext)
+    else:
+        response = getpass.getpass(qtext)
+
+    if (response is None or response == '') and default is not None:
+        response = default
+    else:
+        response = response.strip()
+    return response
+
+
+def get_hostname():
+    """Returns the fully-qualified domain name for current localhost
+    """
+    return getfqdn().lower()
+
+
+def get_public_ip():
+    """Returns localhost's public IP address (or NAT gateway address)
+    """
+    try:
+        ip = get('https://api.ipify.org', timeout=0.1).text
+        return ip
+    except ConnectTimeout:
+        return '127.0.0.1'
+
+
+def get_local_username():
+    """Returns local system username
+    """
+    return getpass.getuser()
