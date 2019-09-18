@@ -4,6 +4,8 @@ from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
 from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
+from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
+                             get_local_username)
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -35,12 +37,11 @@ class TokenCreate(CreateTokenFormatOne):
         # Allow prompt for password when not specified
         passwd = parsed_args.tapis_password
         if passwd is None:
-            passwd = getpass.getpass('{0} password:'.format(PLATFORM))
-        self.tapis_client.token.password = passwd
+            passwd = prompt('Password', passwd, secret=True)
 
         headers = SearchableCommand.headers(self, Token, parsed_args)
         try:
-            self.tapis_client.token.password = parsed_args.tapis_password
+            self.tapis_client.token.password = passwd
             result = self.tapis_client.token.create()
             self.tapis_client.token.password = None
         except HTTPError as h:
