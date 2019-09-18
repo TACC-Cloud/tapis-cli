@@ -23,10 +23,7 @@ class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
 
     def before_take_action(self, parsed_args):
         self.init_clients(parsed_args)
-        if self.app_verbose_level > 1:
-            parsed_args.formatter = 'json'
-            if self.EXTRA_VERBOSITY is not None:
-                self.VERBOSITY = self.EXTRA_VERBOSITY
+        parsed_args = super().before_take_action(parsed_args)
         self.take_action_defaults(parsed_args)
         return parsed_args
 
@@ -49,9 +46,6 @@ class TaccApisFormatOneNoBearer(JsonVerbose, HTTPFormatOne):
 
     def before_take_action(self, parsed_args):
         self.init_clients(parsed_args)
-        if self.app_verbose_level > 1:
-            parsed_args.formatter = 'json'
-            if self.EXTRA_VERBOSITY is not None:
-                self.VERBOSITY = self.EXTRA_VERBOSITY
+        parsed_args = super().before_take_action(parsed_args)
         self.take_action_defaults(parsed_args)
         return parsed_args

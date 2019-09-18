@@ -13,14 +13,20 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
         parser = TaccApisBearer.add_common_parser_arguments(self, parser)
         return parser
 
+    # def before_take_action(self, parsed_args):
+    #     self.init_clients(parsed_args)
+    #     if self.app_verbose_level > 1:
+    #         # raise SystemError(dir(self.app.options))
+    #         parsed_args.formatter = 'json'
+    #         if self.EXTRA_VERBOSITY is not None:
+    #             self.VERBOSITY = self.EXTRA_VERBOSITY
+    #     # self.take_action_defaults(parsed_args)
+    #     return parsed_args
+
     def before_take_action(self, parsed_args):
         self.init_clients(parsed_args)
-        if self.app_verbose_level > 1:
-            # raise SystemError(dir(self.app.options))
-            parsed_args.formatter = 'json'
-            if self.EXTRA_VERBOSITY is not None:
-                self.VERBOSITY = self.EXTRA_VERBOSITY
-        # self.take_action_defaults(parsed_args)
+        parsed_args = super().before_take_action(parsed_args)
+        self.take_action_defaults(parsed_args)
         return parsed_args
 
 
@@ -53,10 +59,8 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
         self.post_payload['offset'] = parsed_args.offset
         return self
 
-        #     # raise SystemError(parsed_args)
-        # # super().take_action(parsed_args)
-        # # for requests made via AgavePy's swaggerpy client
-        # # self.tapis_client = Agave.restore()
-        # # # for requests made directly via requests module
-        # # self.requests_client = Swaggerless(self.tapis_client)
-        # return ((), ())
+    def before_take_action(self, parsed_args):
+        self.init_clients(parsed_args)
+        parsed_args = super().before_take_action(parsed_args)
+        self.take_action_defaults(parsed_args)
+        return parsed_args

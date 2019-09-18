@@ -18,6 +18,9 @@ class ParserExtender(object):
     def extend_parser(self, parser):
         return parser
 
+    def before_take_action(self, parsed_args):
+        return parsed_args
+
 
 class AppVerboseLevel(ParserExtender):
     """Configures a Command to access the parent cliff App's verbosity level
@@ -72,6 +75,14 @@ class JsonVerbose(AppVerboseLevel):
     def verbosify_parsed_args(self, parsed_args):
         if self.app_verbose_level > 1:
             # raise SystemError(dir(self.app.options))
+            parsed_args.formatter = 'json'
+            if self.EXTRA_VERBOSITY is not None:
+                self.VERBOSITY = self.EXTRA_VERBOSITY
+        return parsed_args
+
+    def before_take_action(self, parsed_args):
+        parsed_args = super().before_take_action(parsed_args)
+        if self.app_verbose_level > 1:
             parsed_args.formatter = 'json'
             if self.EXTRA_VERBOSITY is not None:
                 self.VERBOSITY = self.EXTRA_VERBOSITY
