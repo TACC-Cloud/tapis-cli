@@ -5,3 +5,6 @@ env
 .vscode/
 htmlcov
 .coverage
+*.egg-info
+build
+.eggs/

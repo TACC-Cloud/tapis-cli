@@ -9,3 +9,4 @@ htmlcov
 .DS_Store
 docs/_build/*
 build/*
+.eggs/
