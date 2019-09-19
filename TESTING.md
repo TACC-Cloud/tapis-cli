@@ -142,3 +142,13 @@ records is not implemented, nor are permissions or metadata JSON schemas.
 
 ## Profiles
 
+Viewing of another user's profile as well as that of the currently logged-in
+user is supported. List and search are not implemented at present.
+
+## Notifications
+
+No notifications commands are ready to test
+
+## Postits
+
+No postits commands are ready to test
