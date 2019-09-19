@@ -187,16 +187,21 @@ not yet possible to  edit settings in the CLI directly.
     | TACC_GITLAB_URI             | https://git.tacc.utexas.edu         |
     +-----------------------------+-------------------------------------+
 
-Development
------------
+Hacking
+-------
 
-Install developer dependencies::
+Install CLI in editable mode::
 
-    pip install -r requirements-dev.txt
+    pip install -e .
 
 Run all the tests::
 
     python -m pytest
+
+Run tests with tox::
+
+    pip install tox
+    tox
 
 Documentation
 -------------
@@ -211,7 +216,7 @@ Regenerate the documentation::
 Contributing
 ------------
 
-The project code style is pretty vanilla PEP8, as configured by the
+The project code style is vanilla PEP8, as configured by the
 ``[flake8]`` section of ``setup.cfg``. Use of ``yapf`` autoformatter is
 supported and encouraged to maintain the codebase, and is available via the
 ``make format`` Makefile target.

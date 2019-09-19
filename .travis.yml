@@ -1,0 +1,20 @@
+---
+language: python
+
+python:
+  - "2.7"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python -m pytest tests
+
+before_install:
+  - pip install sphinx>=1.6.3
+  - pip install pytest
+  # - pip install mock
+  - python setup.py install
