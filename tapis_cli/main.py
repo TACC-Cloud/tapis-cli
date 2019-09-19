@@ -50,11 +50,13 @@ class Tapis_App(App):
                 def emit(self, record):
                     pass
 
+        logging.getLogger('stevedore.extension').setLevel(logging.WARNING)
+        logging.getLogger(__name__).setLevel(logging.WARNING)
         self.logger = logging.getLogger(__name__)
         self.logger.addHandler(NullHandler())
-        self.logger.setLevel(settings.LOG_LEVEL)
-        if settings.LOG_LEVEL is not None:
-            logging.basicConfig(level=settings.LOG_LEVEL)
+
+        # if settings.LOG_LEVEL is not None:
+        #     logging.basicConfig(level=settings.LOG_LEVEL)
         return
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc

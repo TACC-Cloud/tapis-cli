@@ -56,7 +56,7 @@ COPY docker/pip.conf /etc/pip.conf
 
 COPY . /install
 WORKDIR /install
-RUN pip install --upgrade .
+RUN python setup.py sdist && pip install --upgrade .
 RUN echo 'source docker/.dockerprompt' >> /home/.bashrc
 
 ENV TAPIS_CACHE_DIR=/home/.agave

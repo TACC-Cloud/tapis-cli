@@ -12,180 +12,216 @@ Installation
 
     $ git clone https://github.com/TACC-Cloud/tapis_cli_ng.git
     $ cd tapis_cli_ng
-    $ pip install --user -e .
+    $ pip install --user .
 
 Getting Started
 ---------------
 
-The CLI features extensive contextual help, which should help you learn to use
-it. To start, a listing of supported commands and global options can be \
-shown with ``--help``:
+The CLI features extensive contextual help. To start, one may get a listing of
+supported commands and global options via  ``--help``.
 
 .. code-block:: shell
 
     $ tapis --help
 
-There is also a ``help`` command for any for specific command:
+Find available subcommands:
+
+    $ tapis apps --help
+    Command "apps" matches:
+    apps create
+    apps disable
+    apps enable
+    apps history
+    apps list
+    apps pems grant
+    apps pems list
+    apps pems revoke
+    apps pems show
+    apps publish
+    apps search
+    apps show
+    apps unpublish
+    apps update
+
+Get Help:
 
 .. code-block:: shell
 
-    $ tapis help versions
-    $ tapis versions --help
+    $ tapis --help
 
-Example
-^^^^^^^
-
-The following illustrates use of one of the **search** commands to find apps
-named *word-count*. The equality operator **eq** will constrain the results to
-exact matches. Other operators include **neq** and **like**.
+There is a ``--help`` flag for each command.
 
 .. code-block:: shell
 
-    $ tapis apps search --name eq "word-count"
+    $ tapis help apps list
+    $ # or
+    $ tapis apps list --help
 
-    +---------------+----------+------------+---------------+------------------+----------+-----------------+
-    | id            | revision | label      | lastModified  | shortDescription | isPublic | executionSystem |
-    +---------------+----------+------------+---------------+------------------+----------+-----------------+
-    | word-         |       29 | Word Count | 2019-08-31T06 | How many words   | False    | hpc-tacc-       |
-    | count-0.1     |          |            | :21:20.000-05 | are in a file?   |          | jetstream       |
-    |               |          |            | :00           | Guess randomly   |          |                 |
-    |               |          |            |               | or use ADVanCEd  |          |                 |
-    |               |          |            |               | aNalYTIcaL       |          |                 |
-    |               |          |            |               | tECHnIqUES to    |          |                 |
-    |               |          |            |               | figure it out.   |          |                 |
-    | word-         |        1 | Word Count | 2019-02-21T17 | How many words   | True     | hpc-tacc-       |
-    | count-0.1u1   |          |            | :56:14.000-06 | are in a file?   |          | maverick        |
-    |               |          |            | :00           | Guess randomly   |          |                 |
-    |               |          |            |               | or use ADVanCEd  |          |                 |
-    |               |          |            |               | aNalYTIcaL       |          |                 |
-    |               |          |            |               | tECHnIqUES to    |          |                 |
-    |               |          |            |               | figure it out.   |          |                 |
-    +---------------+----------+------------+---------------+------------------+----------+-----------------+
+Initializing a Tapis Client
+---------------------------
 
-Get details for one specific record using a **show** command, like so:
+This release marks the debut of a simplified scheme in which a single
+host-specific client is generated and maintained for each combination of
+tenant and username. To initialize a host to use Tapis, simply run
+``tapis auth init`` command.
 
 .. code-block:: shell
 
-    $ tapis apps show word-count-0.1u1
+    $ tapis auth init
+    Available Tenants
+    =================
+    3dem	agave.prod	araport.org	bridge	designsafe
+    iplantc.org	irec	portals	sd2e	sgci
+    tacc.prod	vdjserver.org
+    Enter a tenant name: tacc.prod
+    Username: tacotron
+    Password for tacotron:
+    +--------------+---------------------------------+
+    | Field        | Value                           |
+    +--------------+---------------------------------+
+    | tenant_id    | tacc.prod                       |
+    | username     | tacotron                        |
+    | client_name  | _cli-tacc.prod-tacotron-macbook |
+    | api_key      | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
+    | access_token | a31c66cfaa45451c95df6fd473ffd4b |
+    | expires_at   | Thu Sep 19 14:08:37 2019        |
+    +--------------+---------------------------------+
 
-    +--------------------------+-------------------------------+
-    | Field                    | Value                         |
-    +--------------------------+-------------------------------+
-    | id                       | word-count-0.1u1              |
-    | name                     | word-count                    |
-    | version                  | 0.1                           |
-    | revision                 | 1                             |
-    | label                    | Word Count                    |
-    | lastModified             | 7 months ago                  |
-    | shortDescription         | How many words are in a file? |
-    |                          | Guess randomly or use         |
-    |                          | ADVanCEd aNalYTIcaL           |
-    |                          | tECHnIqUES to figure it out.  |
-    | longDescription          | Counts words in a file        |
-    | owner                    | sd2eadm                       |
-    | isPublic                 | True                          |
-    | executionType            | HPC                           |
-    | executionSystem          | hpc-tacc-maverick             |
-    | deploymentSystem         | data-sd2e-projects-users      |
-    | available                | True                          |
-    | parallelism              | SERIAL                        |
-    | defaultProcessorsPerNode | 1                             |
-    | defaultMemoryPerNode     | 1                             |
-    | defaultNodeCount         | 1                             |
-    | defaultMaxRunTime        | 00:05:00                      |
-    | defaultQueue             | None                          |
-    | helpURI                  | https://sd2e.org/develop/     |
-    | deploymentPath           | /.public-apps/word-           |
-    |                          | count-0.1u1.zip               |
-    | templatePath             | runner-template.sh            |
-    | testPath                 | tester.sh                     |
-    | checkpointable           | False                         |
-    | uuid                     | 4975805169073918441-242ac11a- |
-    |                          | 0001-005                      |
-    | icon                     | None                          |
-    +--------------------------+-------------------------------+
+Re-running without changing tenant or username will display the current auth
+context, while changing either tenant or username (or specifying
+``--interactive`` mode) will re-initialize the host to use the specified
+tenant/username combination. Explicitly switching between profiles
+(``tapis auth switch``) is not currently supported.
 
-Get the JSON representation for the record by passing the **verbose** flag:
+Usage Examples
+--------------
+
+The following illustrate basic patterns implemented in each Tapis CLI command.
+Explore their help documents to learn more details.
+
+List
+^^^^
+
+Simply list resources (apps, in this case) known to an API. List commands
+support **limit** and **offset** arguments.
 
 .. code-block:: shell
 
-    $ tapis apps show word-count-0.1u1 -v
+    $ tapis apps list --limit 3
+    +-------------------------------+------------------+
+    | id                            | label            |
+    +-------------------------------+------------------+
+    | tapis.app.imageclassify-1.0u1 | Image Classifier |
+    | vina-ls5-1.1.2u3              | Autodock Vina    |
+    | vina-ls5-1.1.2u2              | Autodock Vina    |
+    +-------------------------------+------------------+
 
+Search
+^^^^^^
 
-Shell completion
-^^^^^^^^^^^^^^^^
+It is possible to search for resources matching specific fields. Rather than
+require a user to remember complicated query syntax, searchable fields are
+presented as command line options. Search modifiers are supported. The
+following illustrates a simple search for an app with a specific name. The
+equality (**eq**) will constrain the result to identical matches, while
+**like** would allow the search term to a substring.
 
-One may install bash command line completion to get command hints by tabbing.
 
 .. code-block:: shell
 
-    $ tapis complete >> ~/.bash_aliases
-    $ . ~/.bash_aliases  # add to ~/.bashrc or ~/.bash_profile to always load (Ubuntu distros already load it)
-    $ tapis <tab>
-        complete     help         statuses     versions
+    $ tapis apps search --name eq vina-ls5
+    +------------------+----------+---------------+--------------------+--------+------------------+
+    | id               | revision | label         | shortDescription   | public | executionSystem  |
+    +------------------+----------+---------------+--------------------+--------+------------------+
+    | vina-ls5-1.1.2u3 |        3 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
+    |                  |          |               | an open-source     |        |                  |
+    |                  |          |               | program for doing  |        |                  |
+    |                  |          |               | molecular docking  |        |                  |
+    | vina-ls5-1.1.2u2 |        2 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
+    |                  |          |               | an open-source     |        |                  |
+    |                  |          |               | program for doing  |        |                  |
+    |                  |          |               | molecular docking  |        |                  |
+    | vina-ls5-1.1.2u1 |        1 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
+    |                  |          |               | an open-source     |        |                  |
+    |                  |          |               | program for doing  |        |                  |
+    |                  |          |               | molecular docking  |        |                  |
+    +------------------+----------+---------------+--------------------+--------+------------------+
+    $ tapis apps search --name eq image
+    (None)
+    $ tapis apps search --name like image
+    +------------------+----------+------------------+------------------+--------+---------------------+
+    | id               | revision | label            | shortDescription | public | executionSystem     |
+    +------------------+----------+------------------+------------------+--------+---------------------+
+    | tapis.app.imagec |        3 | Image Classifier | Classify an      | None   | tapis.execution.sys |
+    | lassify-1.0u3    |          |                  | image using a    |        | tem                 |
+    |                  |          |                  | small ImageNet   |        |                     |
+    |                  |          |                  | model            |        |                     |
+    | tapis.app.imagec |        2 | Image Classifier | Classify an      | None   | tapis.execution.sys |
+    | lassify-1.0u2    |          |                  | image using a    |        | tem                 |
+    |                  |          |                  | small ImageNet   |        |                     |
+    |                  |          |                  | model            |        |                     |
+    | tapis.app.imagec |        1 | Image Classifier | Classify an      | None   | tapis.execution.sys |
+    | lassify-1.0u1    |          |                  | image using a    |        | tem                 |
+    |                  |          |                  | small ImageNet   |        |                     |
+    |                  |          |                  | model            |        |                     |
+    +------------------+----------+------------------+------------------+--------+---------------------+
 
-.. note::
+Show
+^^^^
 
-    **Mac OS X Users**: One may need to install autocomplete support before
-    this works. Using Homebrew, do ``brew install bash-completion``.
-
-Configuration
--------------
-
-The Tapis CLI uses Python's ``dotenv`` module for configuration via environment
-variables. Briefly, the CLI will look for a file ``.env`` containing
-``KEY=VALUE`` pairs starting in the current working directory and working up
-the parent directory tree. If it still cannot find an environment file, it
-looks in ``$HOME/.env`` for one. Any variable defined in the environment
-file can be overridden by setting an environment variable in the shell where
-the CLI was launched. Some options can be further overridden at run-time via
-command-line option.
-
-Example
-^^^^^^^
-
-The number of results returned from list-type commands is defined by the
-variable ``PAGE_SIZE`` and defaults to **100**. All CLI list-type commands
-support a ``--pagesize`` option, which will be used if specified. If no option
-is passed, the CLI will look for variable ``PAGE_SIZE`` first in the shell
-environment, then in a ``.env`` file.
-
-Briefly restated::
-
-    --pagesize > os.environ['PAGE_SIZE'] > ./.env > $HOME.env
-
-The Settings Command
-^^^^^^^^^^^^^^^^^^^^
-
-One may view the current settings for the Tapis CLI as documented below. It is
-not yet possible to  edit settings in the CLI directly.
+Drill down into the details for a specific application using a show command.
 
 .. code-block:: shell
 
-    $ tapis settings list
-    +-----------------------------+-------------------------------------+
-    | Setting                     | Value                               |
-    +-----------------------------+-------------------------------------+
-    | ENV_PREFIX                  | TAPIS_CLI                           |
-    | DEBUG_MODE                  | False                               |
-    | DATE_FORMAT                 | YYYYMMDDTHHmmssZZ                   |
-    | LOG_LEVEL                   | INFO                                |
-    | PAGE_SIZE                   | 30                                  |
-    | RESPONSE_FORMAT             | None                                |
-    | FIT_WIDTH                   | True                                |
-    | TENANT_DNS_DOMAIN           | tacc.utexas.edu                     |
-    | TACC_PROJECT_NAME           | TAPIS_SANDBOX                       |
-    | TACC_PROJECT_ID             | 65536                               |
-    | TACC_TENANT_ID              | tacc.prod                           |
-    | TACC_PROJECT_GROUP          | 131072                              |
-    | TACC_MANAGER_ACCOUNT        | tacolord                            |
-    | TACC_TENANTS_SERVER         | https://api.tacc.utexas.edu/tenants |
-    | TACC_API_SERVER             | https://api.tacc.utexas.edu/        |
-    | TACC_JUPYTER_SERVER         | https://jupyter.tacc.utexas.edu     |
-    | TACC_PRIMARY_STORAGE_SYSTEM | data-tapis-sandbox                  |
-    | TACC_GITLAB_SERVER          | git.tacc.utexas.edu                 |
-    | TACC_GITLAB_URI             | https://git.tacc.utexas.edu         |
-    +-----------------------------+-------------------------------------+
+    $ tapis apps show tapis.app.imageclassify-1.0u3
+    +--------------------------+------------------------------------------------------------------+
+    | Field                    | Value                                                            |
+    +--------------------------+------------------------------------------------------------------+
+    | id                       | tapis.app.imageclassify-1.0u3                                    |
+    | name                     | tapis.app.imageclassify                                          |
+    | version                  | 1.0                                                              |
+    | revision                 | 3                                                                |
+    | label                    | Image Classifier                                                 |
+    | lastModified             | 6 days ago                                                       |
+    | shortDescription         | Classify an image using a small ImageNet model                   |
+    | longDescription          |                                                                  |
+    | owner                    | cicsvc                                                           |
+    | public                   | None                                                             |
+    | executionType            | CLI                                                              |
+    | executionSystem          | tapis.execution.system                                           |
+    | deploymentSystem         | docking.storage                                                  |
+    | available                | True                                                             |
+    | parallelism              | SERIAL                                                           |
+    | defaultProcessorsPerNode | 1                                                                |
+    | defaultMemoryPerNode     | 1                                                                |
+    | defaultNodeCount         | 1                                                                |
+    | defaultMaxRunTime        | None                                                             |
+    | defaultQueue             | None                                                             |
+    | helpURI                  |                                                                  |
+    | deploymentPath           | /home/docking/api/v2/prod/apps/tapis.app.imageclassify-1.0u3.zip |
+    | templatePath             | wrapper.sh                                                       |
+    | testPath                 | test/test.sh                                                     |
+    | checkpointable           | False                                                            |
+    | uuid                     | 3162334876895875561-242ac119-0001-005                            |
+    | icon                     | None                                                             |
+    +--------------------------+------------------------------------------------------------------+
+
+One can get a JSON representation of the record by passing the **verbose** flag:
+
+.. code-block:: shell
+
+    $ tapis apps show tapis.app.imageclassify-1.0u3 -v
+
+Update
+------
+
+Assume one is the author (or an authorized contributor) to
+**tapis.app.imageclassify**: The Tapis metadata for the app can be updated
+usng ``tapis apps update <app_id>``. Here's an example:
+
+.. code-block:: shell
+
+    $ tapis apps update -F imageclassif.json tapis.app.imageclassify-1.0
 
 Hacking
 -------
@@ -200,6 +236,7 @@ Run all the tests::
 
 Run tests with tox::
 
+    # Note tox is not included in requirements.txt
     pip install tox
     tox
 

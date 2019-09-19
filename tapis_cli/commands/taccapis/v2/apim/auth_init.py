@@ -19,6 +19,7 @@ from .formatters import CreateTokenFormatOne
 
 __all__ = ['AuthInit']
 
+logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 CLIENT_PREFIX = '_cli'

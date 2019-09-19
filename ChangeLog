@@ -1,6 +1,9 @@
 CHANGES
 =======
 
+* Getting tox to work and a Docker image to build
+* WIP: Build working Docker image
+* Automated AUTHORS and ChangeLog from setuptools and pbr
 * Working version of 'tapis auth init' and 'tapis auth show'. Fixed 'tapis auth tokens create' to use utils#prompt() for password
 * Added some utils to help with client generation and auth init workflow
 * Moved before\_take\_action into ParserExtender then implemented verbose->json behavior in JsonVerbose using super()

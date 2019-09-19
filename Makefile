@@ -53,4 +53,4 @@ issues:
 image: public-image-py3
 
 public-image-py3:
-	docker build --no-cache $(DOCKER_BUILD_ARGS) --build-arg CLI_VERSION=$(CLI_VERSION) -f $(DOCKERFILE) -t $(PUBLIC_DOCKER_IMAGE) .
+	docker build $(DOCKER_BUILD_ARGS) --build-arg CLI_VERSION=$(CLI_VERSION) -f $(DOCKERFILE) -t $(PUBLIC_DOCKER_IMAGE) .
