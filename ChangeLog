@@ -1,0 +1,135 @@
+CHANGES
+=======
+
+* Working version of 'tapis auth init' and 'tapis auth show'. Fixed 'tapis auth tokens create' to use utils#prompt() for password
+* Added some utils to help with client generation and auth init workflow
+* Moved before\_take\_action into ParserExtender then implemented verbose->json behavior in JsonVerbose using super()
+* Jobs-show can now emit a submittable JSON doc. Clients create can now prompt for a password. Small refactor of TapisModel and its subs to de-duplicate code
+* Stubbed in auth commands
+* YAPF
+* Working token create and refresh (tho the class setups are bit funky)
+* Yapf formatting
+* Enabled metadata list, show, search after refactor
+* Updated setup to include all systems commands
+* Refactor systems-\* commands to use new TapisEntity and SearchableCommand APIs. Added all role management commands
+* Fixes to some base classes re: inheritance behavior
+* A few fixes to apps commands uncovered while implementing systems and jobs commands
+* Refactored jobs commands to use new TapisEntity and formatter APIs. Added resubmit
+* Refactored systems commands to use new TapisEntity and formatter APIs
+* Refactored Jobs\* commands. Implemented jobs-submit, jobs-resubmit
+* Refactor Jobs classes and formatters to use new TapisEntity API
+* Activated various apps commands
+* Closes #15
+* Closes #12
+* Closes #161
+* Closes #10
+* Closes #160
+* Closes #159
+* Implemented app pems drop (but disabled as the API call is broken)
+* Rebuilt apps.formatters and implemeted updated apps.models
+* Completed refactor of TapisEntity and SearchableCommand to support various apps use cases
+* Refactored Command classes, Mix-Ins, and API client base classes
+* Enable loading Agave client from local cache, with overrides allowed via parsed args
+* Added "sessions token refresh" to update current access token
+* Added new TaccApis base class TaccApisWithRefreshFormatOne which includes a --refresh-token option in the command
+* Now including the actual Tapis classes
+* Refactored commands.taccapis.v2.<command>.formatters
+* Fixed name of JSON field defining public apps and now search works
+* Commented settings#all\_settings()
+* Implemented the 'settings list' command
+* Added example show command and usage of -v to get JSON response
+* Example apps search result
+* Added warning about auth subsystem
+* Updated home-page field in setup.cfg to point at TACC-Cloud version of the repository
+* Added warning about auth subsystem
+* Groundwork for Gitlab
+* Refactored commands to use tapis\_cli.clients.services.mixins classes
+* Moved common Command mixins to their own module
+* Removed redundant setting of id\_display\_name
+* Changed to correct API name for metadata
+* Implemented profiles-search and profiles-list
+* Closes #125 Closes #150
+* Implemented metadata-list save for its query for associationIds. Closes #91, #92, and #87
+* Stubbed in more commands
+* Ran yapf
+* Implemented systems-publish and systems-unpublish
+* Implemented systems-enable and systems-disable
+* Added systems-create and systems-update
+* Added test data for apps create/update
+* Refactor to implement JSON uploads, requirement for a service identifier, and automatic expansion to JSON in verbose mode using multiple inheritance
+* Added actors init
+
+0.0.4
+-----
+
+* Updated docs. Still erroring tho
+* Documented more modules and packages
+* Stubbed in additional command definitions
+* Moved government perpetual license to a NOTICE file so the license is unpolluted
+* Added full complement of command stubs
+* Added a check to avoid creating closed issues of identical title
+* Apps enable, disable, history commands
+* Added a utility script to populate Github with new commands as they are defined in setup.cfg
+* Added a utility script to populate Github with new commands as they are defined in setup.cfg
+* Added helper to quickly return all active entrypoints
+* Revised how app-level verbosity is detected at formatting time, making it a property of the formatter
+* Added 'id' field to systems history model
+* Implemented apps-history
+* Example simple management action
+* Stubbed in subpackages for each service's models
+* Updated to reflect latest implemented command set
+* Laid groundwork for files APIs with some model work
+* Refactored to use a models subpackage. Added jobs-history and jobs-pems-list commands
+* Refactored to use a models subpackage
+* Refactored systems to use a models subpackage. Implemented systems-queues-list, systems-history, systems-roles-list commands
+* Added jobs-history
+* Default to using --fit-width
+* Merged in systems
+* Added systems status for consistency w job status. Returns brief form of one record
+* Added import for JobsStatus
+* jobs-status
+* Improved command help string
+* Working instance of jobs list, search, show
+* Fixed help test for systems commands
+* Added systems list, search, show
+* Debugging why humanize is not working in list/search table views
+* Reformatted
+* The apps search, list, and show functions are largely done
+* WIP
+* WIP
+* Commented placeholders for other commands in setup.cfg
+* Just like that. Stubbed in vocabulary currently used by the tacclab CLI
+* Make BSD 3-Clause recognizable by Github's parser
+* Updated command module help strings to reflect their scope and service versions in a consistent fashion
+* Updated command module help strings to reflect their scope and service versions in a consistent fashion
+* Client-side commands moved to commands directory
+* Regenerated Python API docs to reflect commands structure and updates to settings
+* Implemented commands directory organization
+* Reformatted commmands module with yapf
+* Added namespaced Tapis CLI variables
+* Move back to command names that map to service names
+* Break out types of HTTP Clients
+* Enabled Python API documentaion to build as well
+* Moved cliff autodocs to their own doc page
+* Stubbed in mocks for sessions, apps, jobs
+* Try build again
+* Generate docs/requirements.txt
+* Back out dynamic title, authors, etc from docs/config.py
+* Changed module import path
+* RTFD
+* Standalone docs/requirements file
+* Add back docs
+* Sphinx support
+* Added yapf section to setup.cfg
+* YAPF support
+* Updated README some more
+* Updated README some more
+
+0.0.2
+-----
+
+* Improved README w getting started details
+* Refactored to use metadata in setup.cfg
+* Does not use metadata 2.0 standard and thus pbr and setuptools cannot build a CLI. This is a commit of work before trying a refactor to resolve the issue
+* Demo unit tests
+* Define application skeleton
