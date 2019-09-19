@@ -1,10 +1,6 @@
 from ..http import HTTPFormatOne, HTTPFormatMany
-from .keysecret import KeySecretFormatOne, KeySecretFormatMany
 
-__all__ = [
-    'BearerTokenFormatOne', 'BearerTokenFormatMany',
-    'BearerTokenCreateFormatOne'
-]
+__all__ = ['BearerTokenFormatOne', 'BearerTokenFormatMany']
 
 
 def add_common_arguments(parser):
@@ -22,18 +18,6 @@ def add_common_arguments(parser):
 
 
 class BearerTokenFormatOne(HTTPFormatOne):
-    """HTTP+Bearer Token Record Display
-    """
-    def get_parser(self, prog_name):
-        parser = super(BearerTokenFormatOne, self).get_parser(prog_name)
-        parser = add_common_arguments(parser)
-        return parser
-
-    def take_action(self, parsed_args):
-        return ((), ())
-
-
-class BearerTokenCreateFormatOne(HTTPFormatOne, KeySecretFormatOne):
     """HTTP+Bearer Token Record Display
     """
     def get_parser(self, prog_name):
