@@ -14,8 +14,10 @@ DOCKER_ORG ?= tacc
 PUBLIC_DOCKER_IMAGE ?= $(DOCKER_ORG)/$(IMAGE_BASENAME):latest
 
 DOCKERFILE ?= Dockerfile
-DOCKER_BUILD_ARGS ?= --force-rm --build-arg CLI_BRANCH=$(CLI_BRANCH)
-DOCKER_MOUNT_AUTHCACHE ?= -v $(HOME)/.agave:/home/.agave
+DOCKER_BUILD_ARGS ?= --force-rm --build-arg CLI_BRANCH=$(CLI_BRANCH) --build-arg CLI_VERSION=$(CLI_VERSION)
+DOCKER_MOUNT_AUTHCACHE ?= -v $(HOME)/.agave:/root/.agave
+PUBLIC_DOCKER_MOUNT ?= -v $(CURDIR):/work
+PUBLIC_DOCKER_CLI ?= docker run --rm -it $(PUBLIC_DOCKER_MOUNT) $(DOCKER_MOUNT_AUTHCACHE)
 
 .PHONY: tests
 tests:
@@ -54,3 +56,6 @@ image: public-image-py3
 
 public-image-py3:
 	docker build $(DOCKER_BUILD_ARGS) --build-arg CLI_VERSION=$(CLI_VERSION) -f $(DOCKERFILE) -t $(PUBLIC_DOCKER_IMAGE) .
+
+interactive:
+	$(PUBLIC_DOCKER_CLI) $(PUBLIC_DOCKER_IMAGE) bash

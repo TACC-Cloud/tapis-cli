@@ -1,5 +1,6 @@
 FROM ubuntu:cosmic
 
+ARG CLI_VERSION=latest
 ARG CLI_BRANCH=master
 ARG PYTHON_PIP_VERSION=19.2.3
 ARG PYTHON_VIRTUALENV_VERSION=16.7.0
@@ -56,14 +57,16 @@ COPY docker/pip.conf /etc/pip.conf
 
 COPY . /install
 WORKDIR /install
-RUN python setup.py sdist && pip install --upgrade .
-RUN echo 'source docker/.dockerprompt' >> /home/.bashrc
+RUN pip install -q --upgrade .
 
-ENV TAPIS_CACHE_DIR=/home/.agave
-ENV AGAVE_CACHE_DIR=/home/.agave
+ENV TAPIS_CACHE_DIR=/root/.agave
+ENV AGAVE_CACHE_DIR=/root/.agave
+ENV TAPIS_CLI_VERSION=$CLI_VERSION
 
 # Set command prompt
-RUN echo 'source /home/etc/.dockerprompt' >> /home/.bashrc
+COPY 'docker/.dockerprompt' /home/.dockerprompt
+
+RUN echo 'source /home/.dockerprompt' >> /root/.bashrc
 CMD ["/bin/bash"]
 
 WORKDIR /work

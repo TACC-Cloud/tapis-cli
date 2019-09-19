@@ -14,6 +14,20 @@ Installation
     $ cd tapis_cli_ng
     $ pip install --user .
 
+Docker Container Image
+^^^^^^^^^^^^^^^^^^^^^^
+
+As an alternative to local installation, the CLI is available as a public
+Docker image ``tacc/tapis-cli-ng:latest``. Run it like so:
+
+.. code-block:: shell
+
+    docker run --rm -it -v ${PWD}:/work -v ${HOME}/.agave:/root/.agave \
+        tacc/tapis-cli-ng:latest bash
+
+A local build of the image can be created and launched using ``make image``
+followed by ``make interactive``.
+
 Getting Started
 ---------------
 
