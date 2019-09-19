@@ -26,6 +26,8 @@ supported commands and global options via  ``--help``.
 
 Find available subcommands:
 
+.. code-block:: shell
+
     $ tapis apps --help
     Command "apps" matches:
     apps create
@@ -121,8 +123,71 @@ Search
 
 It is possible to search for resources matching specific fields. Rather than
 require a user to remember complicated query syntax, searchable fields are
-presented as command line options. Search modifiers are supported. The
-following illustrates a simple search for an app with a specific name. The
+presented as command line options. Search modifiers are supported.
+
+This is an example of what the help looks like for a search command.
+
+.. code-block:: shell
+
+    $ tapis apps search -h
+    usage: tapis apps search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
+                            [--quote {all,minimal,none,nonnumeric}] [--noindent]
+                            [--max-width <integer>] [--fit-width] [--print-empty]
+                            [--sort-column SORT_COLUMN] [--no-verify]
+                            [-H API_SERVER] [-z ACCESS_TOKEN] [-l LIMIT]
+                            [-o OFFSET] [--id mod STRING] [--name mod STRING]
+                            [--version mod STRING] [--revision mod INT]
+                            [--label mod STRING] [--short-description mod STRING]
+                            [--long-description mod STRING] [--owner mod STRING]
+                            [--public mod TRUE] [--execution-type mod STRING]
+                            [--execution-system mod STRING]
+                            [--deployment-system mod STRING]
+                            [--available mod TRUE] [--parallelism mod STRING]
+                            [--default-processors-per-node mod INT]
+                            [--default-memory-per-node mod INT]
+                            [--default-node-count mod INT]
+                            [--default-max-run-time mod STRING]
+                            [--default-queue mod STRING]
+
+    Search the Apps catalog
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    --no-verify           Allow insecure server connections when using SSL
+    -H API_SERVER, --api-server API_SERVER
+                            Tapis API server
+    -z ACCESS_TOKEN, --token ACCESS_TOKEN
+                            Tapis access_token
+    -l LIMIT, --limit LIMIT
+                            Limit to L records
+    -o OFFSET, --offset OFFSET
+                            Skip first O records
+
+    Search arguments:
+    --id mod STRING
+    --name mod STRING
+    --version mod STRING
+    --revision mod INT
+    --label mod STRING
+    --short-description mod STRING
+    --long-description mod STRING
+    --owner mod STRING
+    --public mod TRUE
+    --execution-type mod STRING
+    --execution-system mod STRING
+    --deployment-system mod STRING
+    --available mod TRUE
+    --parallelism mod STRING
+    --default-processors-per-node mod INT
+    --default-memory-per-node mod INT
+    --default-node-count mod INT
+    --default-max-run-time mod STRING
+    --default-queue mod STRING
+
+This help tells you that any named field (**id**, **parallelism**, **owner**,
+etc.) can be searched.
+
+The following illustrates a simple search for an app with a specific name. The
 equality (**eq**) will constrain the result to identical matches, while
 **like** would allow the search term to a substring.
 
@@ -240,8 +305,29 @@ Run tests with tox::
     pip install tox
     tox
 
+Code structure
+^^^^^^^^^^^^^^
+
+API commands are implemented as clients implemented in the ``clients``
+submodule. There are essentially two kinds of clients: A ``Lister`` and
+a ``ShowOne`` client, where the lister handles multiple responses and single
+records are handled by ``ShowOne``. Clients can be extended through the use of
+classes defined in ``clients.services.mixins``
+
+Each new command is implemented in a TitleCased class in a snake_case
+submodule organized by platform and service under ``commands``. For instance,
+the ``apps list`` command is defined by ``tapis_cli.commands.taccapis.v2.apps:AppsList``.
+
+The CLI uses setuptools entrypoints to establish command line functions
+available in a user's shell. See the ``[entry_points]`` section of ``setup.cfg``
+for details. Note the location of ``tapis_cli.commands.taccapis.v2.apps:AppsList`` in
+this document.
+
+Very limited unit tests are implemented in the `tests` directory. Linting and
+code coverage are included in the automated test process.
+
 Documentation
--------------
+^^^^^^^^^^^^^
 
 The project uses Sphinx plus the Napoleon extension, which is configured to
 support Google-style documentation strings.
@@ -250,10 +336,15 @@ Regenerate the documentation::
 
     make docs
 
-Contributing
-------------
+Code Style
+^^^^^^^^^^
 
 The project code style is vanilla PEP8, as configured by the
 ``[flake8]`` section of ``setup.cfg``. Use of ``yapf`` autoformatter is
 supported and encouraged to maintain the codebase, and is available via the
 ``make format`` Makefile target.
+
+Issue Management
+^^^^^^^^^^^^^^^^
+
+Please file and track issues on the project issues page.

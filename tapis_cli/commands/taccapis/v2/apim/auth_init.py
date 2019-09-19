@@ -12,6 +12,7 @@ from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
                              get_local_username)
+from tapis_cli.settings import DEFAULT_TENANT_ID
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -95,6 +96,8 @@ class AuthInit(CreateTokenFormatOne):
         # If interactive OR cannot establish tenant_id, prompt for it
         temp_tenant_id = ag_context.get('tenant_id', None)
         if temp_tenant_id is None or parsed_args.interactive:
+            if temp_tenant_id is None:
+                temp_tenant_id = DEFAULT_TENANT_ID
             tl = [t.get('code') for t in agavepy.tenants.list_tenants()]
             print('Available Tenants\n=================')
             print(fmtcols(tl, 5))

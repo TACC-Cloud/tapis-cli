@@ -1,7 +1,7 @@
 """Data model and functions for Tapis profiles
 """
 from .. import SERVICE_VERSION
-from tapis_cli.commands.taccapis import TapisEntity
+from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
@@ -10,10 +10,10 @@ __all__ = ['Profile', 'API_NAME', 'SERVICE_VERSION']
 API_NAME = 'profiles'
 
 
-class Profile(TapisEntity):
+class Profile(TapisModel):
     """Model of a Tapis user profile
     """
-    id_display_name = 'USERNAME'
+    service_id_type = 'User'
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable

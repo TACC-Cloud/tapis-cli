@@ -110,9 +110,9 @@ def get_public_ip():
     """Returns localhost's public IP address (or NAT gateway address)
     """
     try:
-        ip = get('https://api.ipify.org', timeout=0.1).text
+        ip = get('https://api.ipify.org', timeout=1.0).text
         return ip
-    except ConnectTimeout:
+    except Exception:
         return '127.0.0.1'
 
 

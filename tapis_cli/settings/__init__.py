@@ -14,6 +14,7 @@ with warnings.catch_warnings():
         if not load_dotenv(find_dotenv(usecwd=True)):
             load_dotenv(os.path.join(os.path.expanduser('~'), '.env'))
 
+from .auth import *
 from .debug import *
 from .display import *
 from .organization import *
@@ -21,6 +22,7 @@ from .organization import *
 from .taccapis.v1 import *
 from .taccapis.v2 import *
 from .gitlab import *
+from .jupyter import *
 
 
 def all_settings():
