@@ -13,8 +13,8 @@ def get_git_revision_hash():
 
 
 def get_git_revision_short_hash():
-    return subprocess.check_output(['git', 'rev-parse', '--short',
-                                    'HEAD']).decode().strip()
+    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'],
+                                   stderr=subprocess.DEVNULL).decode().strip()
 
 
 def get_git_remote(name='origin'):
