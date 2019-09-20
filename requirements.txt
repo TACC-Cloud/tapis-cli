@@ -11,7 +11,7 @@ PyMongo
 flake8
 pycodestyle
 pyflakes
-Pygments
+Pygments>=2.4.2
 PyGithub
 pytest==4.6.5
 pytest-cov
