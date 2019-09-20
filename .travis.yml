@@ -1,6 +1,9 @@
 ---
 language: python
 
+services:
+  - docker
+
 python:
   - "2.7"
   - "3.5"
@@ -14,7 +17,15 @@ script:
   - python -m pytest tests
 
 before_install:
+  - docker build -t tacc/tapis-cli-ng:latest .
   - pip install sphinx>=1.6.3
   - pip install pytest
   # - pip install mock
   - python setup.py install
+
+deploy:
+  provider: script
+  script: bash docker/docker_push.sh
+  on:
+    branch: master
+    python: "3.7"

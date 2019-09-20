@@ -60,5 +60,5 @@ public-image-py3:
 interactive:
 	$(PUBLIC_DOCKER_CLI) $(PUBLIC_DOCKER_IMAGE) bash
 
-release-image:
+image-release: image
 	docker push $(PUBLIC_DOCKER_IMAGE)
