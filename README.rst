@@ -6,8 +6,8 @@ Installation
 
 .. code-block:: shell
 
-    $ git clone https://github.com/TACC-Cloud/tapis_cli_ng.git
-    $ cd tapis_cli_ng
+    $ git clone https://github.com/TACC-Cloud/tapis-cli-ng.git
+    $ cd tapis-cli-ng
     $ pip install --user .
 
 Docker Container Image
