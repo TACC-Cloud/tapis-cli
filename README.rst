@@ -70,7 +70,7 @@ There is a ``--help`` flag for each command.
     $ tapis apps list --help
 
 Initializing a Tapis Client
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This release marks the debut of a simplified scheme in which a single
 host-specific client is generated and maintained for each combination of
@@ -102,8 +102,9 @@ tenant and username. To initialize a host to use Tapis, simply run
 Re-running without changing tenant or username will display the current auth
 context, while changing either tenant or username (or specifying
 ``--interactive`` mode) will re-initialize the host to use the specified
-tenant/username combination. Explicitly switching between profiles
-(``tapis auth switch``) is not currently supported.
+tenant/username combination.
+
+Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
 
 Usage Examples
 --------------
@@ -133,9 +134,10 @@ Search
 
 It is possible to search for resources matching specific fields. Rather than
 require a user to remember complicated query syntax, searchable fields are
-presented as command line options. Search modifiers are supported.
+presented as command line options. Search modifiers are supported. Search
+commands also support **limit** and **offset** arguments.
 
-This is an example of what the help looks like for a search command.
+This is an example of help for a search command.
 
 .. code-block:: shell
 
@@ -194,13 +196,11 @@ This is an example of what the help looks like for a search command.
     --default-max-run-time mod STRING
     --default-queue mod STRING
 
-This help tells you that any named field (**id**, **parallelism**, **owner**,
-etc.) can be searched.
-
-The following illustrates a simple search for an app with a specific name. The
-equality (**eq**) will constrain the result to identical matches, while
-**like** would allow the search term to a substring.
-
+Any named field (**id**, **parallelism**, **owner**, etc.) can be searched.
+Here is an illustration of searching for an app by specific **name**. The
+equality (**eq**) modifier constrains the result to identical matches. Using
+**like** allows the search term to a match a substring. Wildcards or
+regular expressions are not (currently) supported.
 
 .. code-block:: shell
 
@@ -244,7 +244,10 @@ equality (**eq**) will constrain the result to identical matches, while
 Show
 ^^^^
 
-Drill down into the details for a specific application using a show command.
+A show command replicates the original CLI behavior where
+``<service>> list <<identifier>>`` would return a detailed display of one
+specific Tapis entity. The new CLI separates this out into its own verb for
+the sake of clarity.
 
 .. code-block:: shell
 
@@ -288,7 +291,7 @@ One can get a JSON representation of the record by passing the **verbose** flag:
     $ tapis apps show tapis.app.imageclassify-1.0u3 -v
 
 Update
-------
+^^^^^^
 
 Assume one is the author (or an authorized contributor) to
 **tapis.app.imageclassify**: The Tapis metadata for the app can be updated
@@ -316,30 +319,75 @@ Run tests with tox::
     tox
 
 Code structure
-^^^^^^^^^^^^^^
+--------------
 
-API commands are implemented as clients implemented in the ``clients``
-submodule. There are essentially two kinds of clients: A ``Lister`` and
-a ``ShowOne`` client, where the lister handles multiple responses and single
-records are handled by ``ShowOne``. Clients can be extended through the use of
-classes defined in ``clients.services.mixins``
+API commands are implemented as subclasses of ``TaccApisCommandBase``, which
+handles Oauth client setup, and either ``TaccApisFormatOne`` or
+``TaccApisFormatMany``, which are in turn subclassed from cliff's ``Lister``
+and ``FormatMany`` classes. This design reflects two kinds of responses: a
+list of records or a single record (or response to a CRUD action).
 
-Each new command is implemented in a TitleCased class in a snake_case
-submodule organized by platform and service under ``commands``. For instance,
-the ``apps list`` command is defined by ``tapis_cli.commands.taccapis.v2.apps:AppsList``.
+Each command is implemented as a TitleCased class in a snake_cased module,
+which in turn are organized by platform, version, and service under the
+``commands`` subpackage. Consider the ``tapis apps list`` command. It is one
+of the Tapis APIs, the command being implemented is specific to the **v2**
+version of TACC APIs, and is a command pertaining to the **apps** service.
+Thus, the it is defined in class ``AppsList`` in ``tapis_cli.commands.taccapis.v2.apps.apps_list``.
 
-The CLI uses setuptools entrypoints to establish command line functions
-available in a user's shell. See the ``[entry_points]`` section of ``setup.cfg``
-for details. Note the location of ``tapis_cli.commands.taccapis.v2.apps:AppsList`` in
-this document.
+This code structure reflects two requirements. The first is that the cliff
+package uses setuptools entrypoints to establish command line functions. The
+second is that the Tapis CLI will integrate multiple platforms and versions of
+TACC-hosted services. There is space marked out in the CLI design for **v3**
+of Tapis, management functions for hosted Gitlab and Container registry, and
+eventual public release of the TACC SSH Keys service.
 
-Very limited unit tests are implemented in the `tests` directory. Linting and
-code coverage are included in the automated test process.
+Returning to the setuptools topic: Each command is defined in ``setup.cfg``
+by defining a command and pointing to the implementing class. The ``apps list``
+command is defined as shown below.
+
+Example setuptools entrypoint::
+
+    [entry_points]
+    console_scripts =
+        tapis = tapis_cli.main:main
+    tapis.cli =
+        apps_list = tapis_cli.commands.taccapis.v2.apps:AppsList
+
+This combination of mixture of code namespacing and configuration is intended
+to support migration of specific services to new versions, while maintaining
+code and capability to support earlier versions.
+
+Commands are further constructed using mix-in classes. These are all (for now)
+defined in ``tapis_cli.clients.services.mixins``. Examples include a class
+``ServiceIdentifier`` which makes a command require an identifier to be
+specified as a positional parameter, and ``JsonVerbose`` which extends cliff's
+``-v`` flag to automatically turn up the number of fields reported to the
+maximum allowed by the command and to force a switch to the JSON formatter.
+
+Within the service-level package for each command is a ``models`` sub-package
+where the "data model (or models)" for the service are defined. In **apps**,
+one has ``App``, ``AppPermission``, and ``AppHistory``.
+
+Model classes aren't really models in the strict sense of the word, as they
+don't encode any knowledge of how the underlying API code works. Instead, their
+primary role is to define the top-level fields returned by each service, in
+what context the field is returned, and whether the field is searchable.
+They also encode rules for how to render specific fields for display. For
+example, there is a rule defined in the ``File`` model to humanize display of
+file sizes when the display formatter is anything but JSON, and another one
+to transform "Agave" style permissions (``READ_WRITE``) to be better aligned
+with the UNIX shell environment (``rw-``).
+
+Very limited unit tests are implemented in the `tests` directory, which make
+extensive use of fixtures to minimize duplication of text code.
+
+Automated code linting (to PEP8) and code coverage analysis are included in
+all PyTest runs to encourage sustainable development practices.
 
 Documentation
-^^^^^^^^^^^^^
+-------------
 
-The project uses Sphinx plus the Napoleon extension, which is configured to
+The project uses Sphinx and the Napoleon extension, which is configured to
 support Google-style documentation strings.
 
 Regenerate the documentation::
@@ -347,7 +395,7 @@ Regenerate the documentation::
     make docs
 
 Code Style
-^^^^^^^^^^
+----------
 
 The project code style is vanilla PEP8, as configured by the
 ``[flake8]`` section of ``setup.cfg``. Use of ``yapf`` autoformatter is
@@ -355,6 +403,6 @@ supported and encouraged to maintain the codebase, and is available via the
 ``make format`` Makefile target.
 
 Issue Management
-^^^^^^^^^^^^^^^^
+----------------
 
 Please file and track issues on the project issues page.
