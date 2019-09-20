@@ -21,10 +21,8 @@ before_install:
   - pip install pytest
   # - pip install mock
   - python setup.py install
-
-deploy:
-  provider: script
-  script: bash docker/docker_push.sh
-  on:
-    branch: master
-    python: "3.7"
+# deploy:
+#   provider: script
+#   script: bash docker/docker_push.sh
+#   on:
+#     branch: master

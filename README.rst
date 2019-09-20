@@ -107,6 +107,11 @@ tenant/username combination.
 
 Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
 
+**NOTE** If you have a configured, but expired Agave client in
+``~/.agave/current``, the ``init`` command may fail to detect the expiration
+and may skip a key step. If you get a message ``Tapis client appears invalid``
+re-run with ``tapis auth init --interactive`` and follow the prompts.
+
 Usage Examples
 --------------
 
