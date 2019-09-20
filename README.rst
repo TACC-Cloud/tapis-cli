@@ -22,7 +22,8 @@ Docker image ``tacc/tapis-cli-ng:latest``. Run it like so:
         tacc/tapis-cli-ng:latest bash
 
 A local build of the image can be created and launched using ``make image``
-followed by ``make interactive``.
+followed by ``make interactive``. Previous builds are available on
+[Docker Hub](https://hub.docker.com/r/tacc/tapis-cli-ng).
 
 Getting Started
 ---------------
@@ -402,7 +403,16 @@ The project code style is vanilla PEP8, as configured by the
 supported and encouraged to maintain the codebase, and is available via the
 ``make format`` Makefile target.
 
-Issue Management
-----------------
+Roadmap and Issue Tracker
+-------------------------
 
-Please file and track issues on the project issues page.
+Major functional objectives are bundled into Milestones with due dates in the
+future. This provides a way to organize the work and have a public road map
+for functionality.
+
+**[Milestones](https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open)**
+
+All work proceeds through at least one reported issue. Please file and track
+progress on issues using Github issues.
+
+**[Issues](https://github.com/TACC-Cloud/tapis-cli-ng/issues)**
