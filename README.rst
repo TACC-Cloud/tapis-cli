@@ -333,7 +333,8 @@ which in turn are organized by platform, version, and service under the
 ``commands`` subpackage. Consider the ``tapis apps list`` command. It is one
 of the Tapis APIs, the command being implemented is specific to the **v2**
 version of TACC APIs, and is a command pertaining to the **apps** service.
-Thus, the it is defined in class ``AppsList`` in ``tapis_cli.commands.taccapis.v2.apps.apps_list``.
+Thus, the command is defined in class ``AppsList`` in
+``tapis_cli.commands.taccapis.v2.apps.apps_list``.
 
 This code structure reflects two requirements. The first is that the cliff
 package uses setuptools entrypoints to establish command line functions. The
@@ -406,13 +407,11 @@ supported and encouraged to maintain the codebase, and is available via the
 Roadmap and Issue Tracker
 -------------------------
 
-Major functional objectives are bundled into Milestones with due dates in the
+Major functional objectives are bundled into Milestones_ with due dates in the
 future. This provides a way to organize the work and have a public road map
 for functionality.
 
-**[Milestones](https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open)**
+All work should proceed through at least one or more reported Issues_.
 
-All work proceeds through at least one reported issue. Please file and track
-progress on issues using Github issues.
-
-**[Issues](https://github.com/TACC-Cloud/tapis-cli-ng/issues)**
+.. _Milestones: https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open
+.. _Issues: https://github.com/TACC-Cloud/tapis-cli-ng/issues
