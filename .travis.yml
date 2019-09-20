@@ -17,7 +17,6 @@ script:
   - python -m pytest tests
 
 before_install:
-  - docker build -t tacc/tapis-cli-ng:latest .
   - pip install sphinx>=1.6.3
   - pip install pytest
   # - pip install mock
