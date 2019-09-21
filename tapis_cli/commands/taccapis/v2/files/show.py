@@ -1,7 +1,7 @@
 import os
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import AgaveURI
+from tapis_cli.clients.services.mixins import ServiceIdentifier, AgaveURI
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
@@ -17,6 +17,7 @@ class FilesShow(FilesFormatOne, AgaveURI):
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 
+    # TODO - add formatting and sorting options
     def get_parser(self, prog_name):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = AgaveURI.extend_parser(self, parser)
@@ -36,7 +37,7 @@ class FilesShow(FilesFormatOne, AgaveURI):
         if isinstance(rec, list):
             rec = rec[0]
         else:
-            raise ValueError
+            raise ValueError('No files listing was returned')
 
         # Fixes issue where the name of the listed file/directory is not
         # returned by the files service

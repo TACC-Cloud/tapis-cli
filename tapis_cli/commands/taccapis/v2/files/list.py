@@ -31,25 +31,29 @@ class FilesList(FilesFormatMany, AgaveURI):
 
         headers = SearchableCommand.headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
-        rec = self.tapis_client.files.list(systemId=storage_system,
-                                           filePath=file_path,
-                                           limit=parsed_args.limit,
-                                           offset=parsed_args.offset)
+        recs = self.tapis_client.files.list(systemId=storage_system,
+                                            filePath=file_path,
+                                            limit=parsed_args.limit,
+                                            offset=parsed_args.offset)
 
-        if not isinstance(rec, list):
-            raise ValueError
+        if not isinstance(recs, list):
+            raise ValueError('No files listing was returned')
+
+        data = []
 
         # Fixes issue where the name of the listed file/directory is not
         # returned by the files service
-        if rec['name'] == '.':
-            rec['name'] = os.path.basename(rec['path'])
+        for rec in recs:
+            row = []
+            if rec['name'] == '.':
+                rec['name'] = os.path.basename(rec['path'])
 
-        data = []
-        for key in headers:
-            try:
-                val = rec[key]
-            except KeyError:
-                val = None
-            data.append(self.render_value(val))
+            for key in headers:
+                try:
+                    val = rec[key]
+                except KeyError:
+                    val = None
+                row.append(self.render_value(val))
+            data.append(row)
 
         return (tuple(headers), tuple(data))

@@ -10,15 +10,17 @@ from cliff.app import App
 from tapis_cli.display import Verbosity
 
 __all__ = [
-    'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile'
+    'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI'
 ]
 
 
 class ParserExtender(object):
     def extend_parser(self, parser):
+        # When sublcassing: DO NOT FORGET TO RETURN PARSER
         return parser
 
     def before_take_action(self, parsed_args):
+        # When sublcassing: DO NOT FORGET TO RETURN PARSED_ARGS
         return parsed_args
 
 
@@ -46,9 +48,6 @@ class AppVerboseLevel(ParserExtender):
             pass
         return vlevel
 
-    def extend_parser(self, parser):
-        return parser
-
 
 class JsonVerbose(AppVerboseLevel):
     """Configures a Command to use JSON as formatter when verbose is requested
@@ -69,8 +68,6 @@ class JsonVerbose(AppVerboseLevel):
         else:
             return 'table'
 
-    def extend_parser(self, parser):
-        return parser
 
     def verbosify_parsed_args(self, parsed_args):
         if self.app_verbose_level > 1:
@@ -120,6 +117,33 @@ class ServiceIdentifier(ParserExtender):
                                     help=self.arg_help(id_value))
         return parser
 
+class AgaveURI(ParserExtender):
+    """Configures a Command to require a mandatory 'agave uri'
+    positional parameter
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('agave_uri',
+                            type=str,
+                            metavar='<agave_uri>',
+                            help='Agave files URI (agave://)')
+        return parser
+
+    @classmethod
+    def parse_url(cls, url):
+        """Parse an Agave files resource URI into storageSystem and filePath
+        """
+        # TODO - Move implementation down to agavepy.utils
+        # Agave URI
+        if url.startswith('agave://'):
+            url = url.replace('agave://', '', 1)
+            parts = url.split('/')
+            return parts[0], '/' + '/'.join(parts[1:])
+        # Agave media URL
+        elif url.startswith('https://'):
+            url = url.replace('https://', '')
+            parts = url.split('/')
+            if parts[1] == 'files' and parts[3] == 'media':
+                return parts[5], '/'.join(parts[6:])
 
 class UploadJsonFile(ParserExtender):
     """Configures a client to accept and load a JSON file
