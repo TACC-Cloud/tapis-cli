@@ -1,0 +1,20 @@
+"""Globals pertaining to the Tapis ``files`` API
+"""
+
+__all__ = [
+    'FILES_API_TYPES', 'FILE_TYPES', 'DIRECTORY_TYPES', 'TYPE_KEY', 'NAME_KEY',
+    'PATH_KEY', 'PAGE_SIZE', 'DEFAULT_PEM_GRANTEE', 'DEFAULT_PEM_LEVEL'
+]
+
+FILE_TYPES = ('file')
+DIRECTORY_TYPES = ('dir')
+FILES_API_TYPES = FILE_TYPES + DIRECTORY_TYPES
+
+TYPE_KEY = 'type'
+NAME_KEY = 'name'
+PATH_KEY = 'path'
+
+PAGE_SIZE = 100
+
+DEFAULT_PEM_GRANTEE = 'world'
+DEFAULT_PEM_LEVEL = 'READ'
