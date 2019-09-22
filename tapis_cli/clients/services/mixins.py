@@ -10,7 +10,8 @@ from cliff.app import App
 from tapis_cli.display import Verbosity
 
 __all__ = [
-    'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI'
+    'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile',
+    'AgaveURI'
 ]
 
 
@@ -68,7 +69,6 @@ class JsonVerbose(AppVerboseLevel):
         else:
             return 'table'
 
-
     def verbosify_parsed_args(self, parsed_args):
         if self.app_verbose_level > 1:
             # raise SystemError(dir(self.app.options))
@@ -117,6 +117,7 @@ class ServiceIdentifier(ParserExtender):
                                     help=self.arg_help(id_value))
         return parser
 
+
 class AgaveURI(ParserExtender):
     """Configures a Command to require a mandatory 'agave uri'
     positional parameter
@@ -144,6 +145,7 @@ class AgaveURI(ParserExtender):
             parts = url.split('/')
             if parts[1] == 'files' and parts[3] == 'media':
                 return parts[5], '/'.join(parts[6:])
+
 
 class UploadJsonFile(ParserExtender):
     """Configures a client to accept and load a JSON file
