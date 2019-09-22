@@ -1,15 +1,39 @@
 """Public, low-dependency helper functions
 """
 import arrow
+import datetime
 import getpass
 import os
 import pkg_resources
+import re
 import six
 from requests import get
 from requests.exceptions import ConnectTimeout
 from socket import getfqdn
 
 from dateutil.parser import parse
+
+
+def current_time():
+    """Current UTC time
+    Returns:
+        A ``datetime`` object rounded to millisecond precision
+    """
+    return datetime.datetime.fromtimestamp(
+        int(datetime.datetime.utcnow().timestamp() * 1000) / 1000)
+
+
+def microseconds():
+    """Current time in microseconds as ``int``
+    """
+    return int(round(datetime.datetime.utcnow().timestamp() * 1000 * 1000))
+
+
+def nanoseconds():
+    """Current time in nanoseconds as ``int``
+    """
+    return int(
+        round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
 
 
 def ts_to_isodate(date_string, include_time=False):
@@ -120,3 +144,58 @@ def get_local_username():
     """Returns local system username
     """
     return getpass.getuser()
+
+
+def normalize(file_path):
+    """Trim leading slash or slashes from a path
+
+    Arguments:
+        file_path (str): Path to normalize
+
+    Returns:
+        str: Normalized file_path
+    """
+    fp = re.sub('^(/)+', '', file_path)
+    fp = re.sub('(/)+$', '', fp)
+    return fp
+
+
+def relpath(file_path, root='/'):
+    """Returns path relative to start
+    """
+    fp = re.sub('^(' + root + ')', '', file_path)
+    return fp
+
+
+def normpath(file_path):
+    """Collapse duplicate leading slashes and resolve relative references
+    in a path
+
+    Arguments:
+        file_path (str): Path to process
+
+    Returns:
+        str: Processed file_path
+    """
+    # Consolidate redundant slashes and relative references
+    fp = os.path.normpath(file_path)
+    # Tapis filePaths should always be absolute
+    if not fp.startswith('/'):
+        fp = '/' + fp
+    # Strip trailing slash
+    fp = re.sub('(/)+$', '', fp)
+    return os.path.normpath(fp)
+
+
+def abspath(file_path, root='/'):
+    """Safely combine a relative (which might not actually
+    be relative) and base path.
+
+    Arguments:
+        file_path (str): Relative path
+        root_dir (str, optional): Base path for file_path
+
+    Returns:
+        str: Processed file_path
+    """
+    return os.path.join(root, relpath(file_path))

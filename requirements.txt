@@ -13,13 +13,14 @@ pycodestyle
 pyflakes
 Pygments
 PyGithub
-pytest==4.6.5
+Sphinx==1.8.5 # pinned for Python 2.7.x support
+pytest==4.6.5 # pinned for Python 2.7.x support
 pytest-cov
 pytest-runner
-Sphinx==1.8.5
 sphinxcontrib-napoleon
 yapf
 sphinx-rtd-theme
 sphinx-fontawesome
 stevedore
+tenacity
 agavepy@git+https://github.com/TACC/agavepy.git@cli
