@@ -24,6 +24,9 @@ class ParserExtender(object):
         # When sublcassing: DO NOT FORGET TO RETURN PARSED_ARGS
         return parsed_args
 
+    def render_field(self, key, value, formatter=None):
+        return key, value
+
 
 class AppVerboseLevel(ParserExtender):
     """Configures a Command to access the parent cliff App's verbosity level

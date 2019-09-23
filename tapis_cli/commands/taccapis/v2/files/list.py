@@ -5,13 +5,14 @@ from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
+from .helpers.walk import listdir
 from .models import File
-from .formatters import FilesFormatMany
+from .formatters import FilesFormatMany, FilesOptions
 
 __all__ = ['FilesList']
 
 
-class FilesList(FilesFormatMany, AgaveURI):
+class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
     """Lists a Files path
     """
     VERBOSITY = Verbosity.LISTING
@@ -22,6 +23,7 @@ class FilesList(FilesFormatMany, AgaveURI):
     def get_parser(self, prog_name):
         parser = FilesFormatMany.get_parser(self, prog_name)
         parser = AgaveURI.extend_parser(self, parser)
+        parser = FilesOptions.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
@@ -31,10 +33,13 @@ class FilesList(FilesFormatMany, AgaveURI):
 
         headers = SearchableCommand.headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
-        recs = self.tapis_client.files.list(systemId=storage_system,
-                                            filePath=file_path,
-                                            limit=parsed_args.limit,
-                                            offset=parsed_args.offset)
+        recs = listdir(file_path,
+                       system_id=storage_system,
+                       agave=self.tapis_client)
+        # recs = self.tapis_client.files.list(systemId=storage_system,
+        #                                     filePath=file_path,
+        #                                     limit=parsed_args.limit,
+        #                                     offset=parsed_args.offset)
 
         if not isinstance(recs, list):
             raise ValueError('No files listing was returned')
@@ -53,7 +58,19 @@ class FilesList(FilesFormatMany, AgaveURI):
                     val = rec[key]
                 except KeyError:
                     val = None
-                row.append(self.render_value(val))
+                row.append(val)
             data.append(row)
+
+        # Sort must happen before humanize since it will affect sort order
+        if parsed_args.ls_sort_time:
+            sort_header = 'lastModified'
+        elif parsed_args.ls_sort_size:
+            sort_header = 'length'
+        else:
+            sort_header = 'name'
+        data = self.sort_table(data,
+                               headers,
+                               header=sort_header,
+                               reverse=parsed_args.ls_sort_reverse)
 
         return (tuple(headers), tuple(data))

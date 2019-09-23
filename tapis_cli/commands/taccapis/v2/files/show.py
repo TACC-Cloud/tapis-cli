@@ -6,12 +6,12 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import File
-from .formatters import FilesFormatOne
+from .formatters import FilesFormatOne, FileOptions
 
 __all__ = ['FilesShow']
 
 
-class FilesShow(FilesFormatOne, AgaveURI):
+class FilesShow(FilesFormatOne, AgaveURI, FileOptions):
     """Show a single Files record
     """
     VERBOSITY = Verbosity.RECORD
@@ -21,6 +21,7 @@ class FilesShow(FilesFormatOne, AgaveURI):
     def get_parser(self, prog_name):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = AgaveURI.extend_parser(self, parser)
+        parser = FileOptions.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

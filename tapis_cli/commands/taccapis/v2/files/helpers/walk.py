@@ -15,8 +15,6 @@ from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, microseconds, abspath, normpath,
                              relpath)
 
-# from .. import settings
-# from ..utils import nanoseconds, microseconds, normalize, normpath, rooted_path
 from .constants import (FILE_TYPES, DIRECTORY_TYPES, NAME_KEY, PATH_KEY,
                         TYPE_KEY)
 from .stat import exists
@@ -99,7 +97,7 @@ def _walk(directory_path,
                 if f[TYPE_KEY] in \
                         FILE_TYPES or directories is True:
                     if not exclude_dotfile:
-                        listing.append(f[PATH_KEY])
+                        listing.append(f)
                 # Recurse into found directories
                 if f[TYPE_KEY] in DIRECTORY_TYPES and recurse is True:
                     logger.debug('_walk: descend into {}'.format(f[PATH_KEY]))
@@ -138,7 +136,7 @@ def walk(directory_path,
         agave (Agave, optional): Tapis (Agave) API client
 
     Returns:
-        list: List of Tapis-canonical absolute paths
+        list: List of Tapis-canonical absolute paths as AnnotatedFile objects
 
     Raises:
        TapisOperationFailed: An exception or error happened
@@ -207,10 +205,11 @@ def listdir(directory_path,
         directory_path_filter = directory_path + '/'
     else:
         directory_path_filter = directory_path
-    listing = [f.replace(directory_path_filter, '') for f in resp]
 
-    if sort:
-        listing.sort()
+    listing = []
+    for r in resp:
+        r[PATH_KEY] = r[PATH_KEY].replace(directory_path_filter, '')
+        listing.append(r)
 
     end_time = nanoseconds()
     elapsed = int((end_time - start_time) / 1000 / 1000)
