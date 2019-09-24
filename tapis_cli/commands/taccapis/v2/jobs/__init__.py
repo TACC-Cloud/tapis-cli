@@ -11,3 +11,4 @@ from .search import JobsSearch
 from .show import JobsShow
 from .status import JobsStatus
 from .submit import JobsSubmit
+from .outputs_list import JobsOutputsList
