@@ -7,7 +7,8 @@ import requests
 import shutil
 
 from tapis_cli import settings
-from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath)
+from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
+                             print_stderr)
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
@@ -131,15 +132,17 @@ def download(source,
              progress=False,
              agave=None):
 
+    downloaded, skipped, errors, runtime = ([], [], [], None)
+
     if progress:
-        print('Walking remote resource...')
+        print_stderr('Walking remote resource...')
     start_time = seconds()
     all_targets = walk(source, system_id=system_id, recurse=True, agave=agave)
-    elapsed = seconds() - start_time
-    msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed)
+    elapsed_walk = seconds() - start_time
+    msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)
     logger.debug(msg)
     if progress:
-        print(msg)
+        print_stderr(msg)
 
     # Filters that build up list of paths to create and files to download
     abs_names = [f['path'] for f in all_targets]
@@ -163,16 +166,25 @@ def download(source,
     start_time_all = seconds()
     for src, dest in downloads:
         if progress:
-            print('Downloading {0}...'.format(os.path.basename(src)))
-        _download(src,
-                  system_id,
-                  dest=dest,
-                  atomic=False,
-                  force=force,
-                  agave=agave)
+            print_stderr('Downloading {0}...'.format(os.path.basename(src)))
+        try:
+            _download(src,
+                      system_id,
+                      dest=dest,
+                      atomic=False,
+                      force=force,
+                      agave=agave)
+            downloaded.append(src)
+        except FileExistsError:
+            skipped.append(src)
+        except Exception as err:
+            errors.append(err)
 
-    elapsed_all = seconds() - start_time_all
-    msg = 'Downloaded {0} files in {1}s'.format(len(abs_names), elapsed_all)
+    elapsed_download = seconds() - start_time_all
+    msg = 'Downloaded {0} files in {1}s'.format(len(abs_names),
+                                                elapsed_download)
     logger.debug(msg)
     if progress:
-        print(msg)
+        print_stderr(msg)
+
+    return downloaded, skipped, errors, elapsed_walk + elapsed_download
