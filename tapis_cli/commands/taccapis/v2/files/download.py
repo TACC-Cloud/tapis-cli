@@ -29,7 +29,7 @@ class FilesDownload(FilesFormatOne, AgaveURI):
             '--sync',
             dest='sync',
             action='store_true',
-            help='Overwrite only if timestamp or size is different')
+            help='Overwrite only when timestamp or size differs')
         parser.add_argument('--atomic',
                             dest='atomic',
                             action='store_true',
@@ -38,6 +38,11 @@ class FilesDownload(FilesFormatOne, AgaveURI):
                             dest='progress',
                             action='store_true',
                             help='Report progress to STDERR')
+        parser.add_argument('--exclude',
+                            nargs='+',
+                            metavar='filename',
+                            help='One or more files to exclude from download')
+
         # TODO - options (force, atomic, sync, parallel, etc)
         return parser
 
@@ -52,7 +57,9 @@ class FilesDownload(FilesFormatOne, AgaveURI):
             file_path,
             storage_system,
             destination='.',
+            excludes=parsed_args.exclude,
             force=parsed_args.overwrite,
+            sync=parsed_args.sync,
             progress=parsed_args.progress,
             atomic=parsed_args.atomic,
             agave=self.tapis_client)

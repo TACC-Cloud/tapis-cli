@@ -8,7 +8,7 @@ import shutil
 
 from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
-                             print_stderr)
+                             print_stderr, datestring_to_epoch)
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
@@ -85,18 +85,52 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     return file_name, temp_file_name
 
 
+def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
+    """Determine whether to write (or overwrite) a local file
+    """
+    relative_excludes = []
+    for e in excludes:
+        if not e.startswith('./'):
+            relative_excludes.append('./' + e)
+        else:
+            relative_excludes.append(e)
+
+    if filename in relative_excludes:
+        return False
+    if not os.path.exists(filename) or force is True:
+        return True
+    else:
+        if sync is False:
+            return True
+
+        # TODO - May need to factor in local filesystem blocksize
+        local_size = os.path.getsize(filename)
+        # Timestamp comaprison is done at the second level
+        # TODO - Do we need to consider time zone?
+        local_timestamp = round(os.path.getmtime(filename))
+        if (timestamp > local_timestamp) or (size != local_size):
+            return True
+        else:
+            return False
+
+
 def _download(src,
               system_id,
+              size=None,
+              timestamp=None,
+              excludes=None,
               dest=None,
               block_size=4096,
               atomic=False,
               force=True,
+              sync=False,
               agave=None):
     # rsp = agave.files.download(filePath=src, systemId=system_id)
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
-    if os.path.exists(local_filename) and force is False:
+    if not _check_write(local_filename, size, timestamp, excludes, force,
+                        sync):
         raise FileExistsError(
             'Local {0} exists. Download with "force=True" to overwrite.'.
             format(local_filename))
@@ -127,12 +161,17 @@ def _download(src,
 def download(source,
              system_id,
              destination='.',
+             excludes=None,
              force=True,
+             sync=False,
              atomic=False,
              progress=False,
              agave=None):
 
     downloaded, skipped, errors, runtime = ([], [], [], None)
+
+    if excludes is None:
+        excludes = []
 
     if progress:
         print_stderr('Walking remote resource...')
@@ -146,6 +185,8 @@ def download(source,
 
     # Filters that build up list of paths to create and files to download
     abs_names = [f['path'] for f in all_targets]
+    sizes = [f['length'] for f in all_targets]
+    mods = [datestring_to_epoch(f['lastModified']) for f in all_targets]
     dest_names = [f.replace(source, '.') for f in abs_names]
     dest_paths = [f.replace('./', '') for f in dest_names]
     dest_paths = [
@@ -162,17 +203,21 @@ def download(source,
     for p in create_paths:
         os.makedirs(p, exist_ok=True)
 
-    downloads = [list(a) for a in zip(abs_names, dest_names)]
+    downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]
     start_time_all = seconds()
-    for src, dest in downloads:
+    for src, size, mod, dest in downloads:
         if progress:
             print_stderr('Downloading {0}...'.format(os.path.basename(src)))
         try:
             _download(src,
                       system_id,
+                      size=size,
+                      timestamp=mod,
                       dest=dest,
+                      excludes=excludes,
                       atomic=False,
                       force=force,
+                      sync=sync,
                       agave=agave)
             downloaded.append(src)
         except FileExistsError:

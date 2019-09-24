@@ -95,6 +95,12 @@ def datetime_to_human(date_obj):
     return arrow.get(date_obj).humanize()
 
 
+def datestring_to_epoch(date_string):
+    """Convert a date string to UNIX epoch
+    """
+    return arrow.get(date_string).timestamp
+
+
 def command_set():
     FILTERED = ('complete', 'help')
     cset = list()
