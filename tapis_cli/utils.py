@@ -7,6 +7,7 @@ import os
 import pkg_resources
 import re
 import six
+import sys
 from requests import get
 from requests.exceptions import ConnectTimeout
 from socket import getfqdn
@@ -223,3 +224,8 @@ def humanize_bytes(bytesize, precision=2):
         if bytesize >= factor:
             break
     return '%.*f %s' % (precision, bytesize / factor, suffix)
+
+
+def print_stderr(message):
+    # TODO - Support Python2 implementation
+    print('{0}'.format(message), file=sys.stderr)
