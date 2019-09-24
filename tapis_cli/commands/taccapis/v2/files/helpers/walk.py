@@ -21,7 +21,7 @@ from .stat import exists
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
 
-logging.getLogger(__name__).setLevel(logging.WARNING)
+logging.getLogger(__name__).setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 __all__ = ['walk', 'listdir']
@@ -59,7 +59,7 @@ def _files_list(directory_path,
 
 
 def _walk(directory_path,
-          current_listing=[],
+          current_listing=None,
           system_id=DEFAULT_SYSTEM_ID,
           root_dir='/',
           directories=False,
@@ -71,11 +71,15 @@ def _walk(directory_path,
           **kwargs):
     """Private function to emulate ``os.walk()`` using ``files-list``
     """
+    if current_listing is None:
+        current_listing = []
+    # This is probably redundant
+    listing = current_listing
     logger.info('_walk: agave://{}{}'.format(system_id, directory_path))
     # If current_listing is not cloned, it will grow without bounds each
     # time _walk is called.
-    listing = copy.copy(current_listing)
-    logger.info('_walk: current_listing has {} elements'.format(len(listing)))
+    # listing = copy.copy(current_listing)
+    # print('_walk: current_listing has {} elements'.format(len(listing)))
     keeplisting = True
     skip = 0
     while keeplisting:
@@ -85,11 +89,11 @@ def _walk(directory_path,
                               limit=page_size,
                               offset=skip,
                               agave=agave)
-        logger.debug('_walk: sublist has {} elements'.format(len(sublist)))
+        # print('_walk: sublist has {} elements'.format(len(sublist)))
         skip = skip + page_size
         if len(sublist) < page_size:
             keeplisting = False
-            logger.debug('_walk: recursion has ended')
+            # print('_walk: recursion has ended')
         for f in sublist:
             if f[NAME_KEY] != '.':
                 exclude_dotfile = f[NAME_KEY].startswith('.') \
@@ -97,10 +101,11 @@ def _walk(directory_path,
                 if f[TYPE_KEY] in \
                         FILE_TYPES or directories is True:
                     if not exclude_dotfile:
+                        # print('KEEP {0}'.format(f))
                         listing.append(f)
                 # Recurse into found directories
                 if f[TYPE_KEY] in DIRECTORY_TYPES and recurse is True:
-                    logger.debug('_walk: descend into {}'.format(f[PATH_KEY]))
+                    # print('_walk: descend into {}'.format(f[PATH_KEY]))
                     _walk(f[PATH_KEY],
                           current_listing=listing,
                           system_id=system_id,
