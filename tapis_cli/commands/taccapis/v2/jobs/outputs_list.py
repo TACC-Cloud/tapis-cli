@@ -10,6 +10,7 @@ from .helpers.walk import listdir
 
 from . import API_NAME, SERVICE_VERSION
 
+
 class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions):
     """Lists a Jobs output directory
     """

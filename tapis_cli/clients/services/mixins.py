@@ -149,6 +149,7 @@ class AgaveURI(ParserExtender):
             if parts[1] == 'files' and parts[3] == 'media':
                 return parts[5], '/'.join(parts[6:])
 
+
 class JobsUUID(ParserExtender):
     """Configures a Command to require a mandatory Tapis job UUID
     """
@@ -158,16 +159,19 @@ class JobsUUID(ParserExtender):
                             help='Tapis job UUID')
         return parser
 
+
 class FilePath(ParserExtender):
     """Configures a Command to accept an optional file path
     """
     def extend_parser(self, parser):
-        parser.add_argument('file_path',
-                            default='.',
-                            nargs='?',
-                            metavar='<file_path>',
-                            help='Optional file path relative to output directory')
+        parser.add_argument(
+            'file_path',
+            default='.',
+            nargs='?',
+            metavar='<file_path>',
+            help='Optional file path relative to output directory')
         return parser
+
 
 class UploadJsonFile(ParserExtender):
     """Configures a client to accept and load a JSON file

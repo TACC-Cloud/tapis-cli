@@ -1,4 +1,4 @@
-"""Web service implementations of files ``sync`` operations.
+"""Web service implementations of jobs-output ``sync`` operations.
 """
 import copy
 import logging
@@ -28,12 +28,12 @@ DEFAULT_SYSTEM_ID = 'data-tacc-sandbox'
 DEFAULT_PAGE_SIZE = 100
 
 
-class FileExistsError(IOError):
+class OutputFileExistsError(IOError):
     pass
 
 
 def __download(src,
-               system_id,
+               job_uuid,
                dest=None,
                block_size=4096,
                atomic=False,
@@ -46,7 +46,7 @@ def __download(src,
     headers = {'authorization': 'Bearer {}'.format(token)}
     api_server = agave.api_server
     download_url = '{0}/files/v2/media/system/{1}/{2}'.format(
-        api_server, system_id, src)
+        api_server, job_uuid, src)
     rsp = requests.get(download_url, headers=headers)
     rsp.raise_for_status()
 
@@ -115,7 +115,7 @@ def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
 
 
 def _download(src,
-              system_id,
+              job_uuid,
               size=None,
               timestamp=None,
               excludes=None,
@@ -125,18 +125,18 @@ def _download(src,
               force=True,
               sync=False,
               agave=None):
-    # rsp = agave.files.download(filePath=src, systemId=system_id)
+    # rsp = agave.files.download(filePath=src, systemId=job_uuid)
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
     if not _check_write(local_filename, size, timestamp, excludes, force,
                         sync):
-        raise FileExistsError(
+        raise OutputFileExistsError(
             'Local {0} exists. Download with "force=True" to overwrite.'.
             format(local_filename))
 
     try:
-        rsp = agave.files.download(filePath=src, systemId=system_id)
+        rsp = agave.jobs.downloadOutput(filePath=src, jobId=job_uuid)
         if isinstance(rsp, dict):
             raise TapisOperationFailed("Failed to download {}".format(src))
         with open(tmp_local_filename, 'wb') as dest_file:
@@ -159,7 +159,7 @@ def _download(src,
 
 
 def download(source,
-             system_id,
+             job_uuid,
              destination='.',
              excludes=None,
              force=True,
@@ -176,7 +176,7 @@ def download(source,
     if progress:
         print_stderr('Walking remote resource...')
     start_time = seconds()
-    all_targets = walk(source, system_id=system_id, recurse=True, agave=agave)
+    all_targets = walk(source, job_uuid=job_uuid, recurse=True, agave=agave)
     elapsed_walk = seconds() - start_time
     msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)
     logger.debug(msg)
@@ -210,7 +210,7 @@ def download(source,
             print_stderr('Downloading {0}...'.format(os.path.basename(src)))
         try:
             _download(src,
-                      system_id,
+                      job_uuid,
                       size=size,
                       timestamp=mod,
                       dest=dest,
