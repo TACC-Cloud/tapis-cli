@@ -33,7 +33,7 @@ class File(TapisModel):
          argmod.DEFAULT, None, None, False),
         ("type", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
-        ("system", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+        ("system", argtype.STRING, Verbosity.RECORD_VERBOSE, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False)
     ]
 
