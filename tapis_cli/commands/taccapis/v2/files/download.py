@@ -20,6 +20,10 @@ class FilesDownload(FilesFormatOne, AgaveURI):
     def get_parser(self, prog_name):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = AgaveURI.extend_parser(self, parser)
+        parser.add_argument('--exclude',
+                            nargs='+',
+                            metavar='filename',
+                            help='One or more files to exclude from download')
         syncmode = parser.add_mutually_exclusive_group(required=False)
         syncmode.add_argument('--force',
                               dest='overwrite',
@@ -30,18 +34,14 @@ class FilesDownload(FilesFormatOne, AgaveURI):
             dest='sync',
             action='store_true',
             help='Overwrite only when timestamp or size differs')
-        parser.add_argument('--atomic',
-                            dest='atomic',
-                            action='store_true',
-                            help='Download atomically')
+        # parser.add_argument('--atomic',
+        #                     dest='atomic',
+        #                     action='store_true',
+        #                     help='Download atomically')
         parser.add_argument('--progress',
                             dest='progress',
                             action='store_true',
                             help='Report progress to STDERR')
-        parser.add_argument('--exclude',
-                            nargs='+',
-                            metavar='filename',
-                            help='One or more files to exclude from download')
 
         # TODO - options (force, atomic, sync, parallel, etc)
         return parser
