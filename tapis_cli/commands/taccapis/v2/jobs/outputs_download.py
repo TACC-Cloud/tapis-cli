@@ -24,10 +24,6 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, FilePath):
             dest='use_cwd',
             action='store_true',
             help="Download to '.' instead of a job-specific subdirectory")
-        parser.add_argument('--exclude',
-                            nargs='+',
-                            metavar='filename',
-                            help='One or more files to exclude from download')
         syncmode = parser.add_mutually_exclusive_group(required=False)
         syncmode.add_argument('--force',
                               dest='overwrite',
@@ -46,8 +42,10 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, FilePath):
                             dest='progress',
                             action='store_true',
                             help='Report progress to STDERR')
-
-        # TODO - options (force, atomic, sync, parallel, etc)
+        parser.add_argument('--exclude',
+                            nargs='+',
+                            metavar='filename',
+                            help='One or more files to exclude from download')
         return parser
 
     def take_action(self, parsed_args):
@@ -60,21 +58,21 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, FilePath):
         if parsed_args.use_cwd:
             dest_dir = '.'
         else:
-            os.path.makedirs(dest_dir, exist_ok=True)
+            os.makedirs(dest_dir, exist_ok=True)
 
         headers = SearchableCommand.headers(self, File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
-            file_path=parsed_args.file_path,
-            job_uuid=parsed_args.job_uuid,
+            parsed_args.file_path,
+            parsed_args.job_uuid,
             destination=dest_dir,
             excludes=parsed_args.exclude,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,
             progress=parsed_args.progress,
-            atomic=parsed_args.atomic,
+            atomic=False,
             agave=self.tapis_client)
 
-        headers = ['downloaded', 'skipped', 'errors', 'elapsed_sec']
+        headers = ['downloaded', 'skipped', 'warnings', 'elapsed_sec']
         if parsed_args.formatter in ('json', 'yaml'):
             data = [downloaded, skipped, [str(e) for e in exceptions], elapsed]
         else:

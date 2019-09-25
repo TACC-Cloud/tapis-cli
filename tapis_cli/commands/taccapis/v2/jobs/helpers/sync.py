@@ -3,12 +3,17 @@
 import copy
 import logging
 import os
+import re
 import requests
 import shutil
+
+import datetime
+from dateutil.tz import tzoffset
 
 from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
                              print_stderr, datestring_to_epoch)
+from tapis_cli.clients.services.taccapis.v2 import TaccApiDirectClient
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
@@ -37,7 +42,7 @@ def __download(src,
                dest=None,
                block_size=4096,
                atomic=False,
-               force=True,
+               force=False,
                agave=None):
     """WIP: Function for implementing threaded downloads
     """
@@ -82,10 +87,12 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
         temp_file_name = '{0}-{1}'.format(file_name, nanoseconds())
     else:
         temp_file_name = file_name
+    if temp_file_name.startswith('/'):
+        temp_file_name = temp_file_name[1:]
     return file_name, temp_file_name
 
 
-def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
+def _check_write(filename, size, timestamp, excludes, sync=False, force=False):
     """Determine whether to write (or overwrite) a local file
     """
     relative_excludes = []
@@ -95,14 +102,19 @@ def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
         else:
             relative_excludes.append(e)
 
+    # Is filename in the list of exlcudes? Don't write it
     if filename in relative_excludes:
         return False
-    if not os.path.exists(filename) or force is True:
-        return True
-    else:
-        if sync is False:
-            return True
 
+    # Does the filename not exist? OK, write it
+    if not os.path.exists(filename):
+        return True
+
+    # Force is True. Write it.
+    if force is True:
+        return True
+
+    if sync is True:
         # TODO - May need to factor in local filesystem blocksize
         local_size = os.path.getsize(filename)
         # Timestamp comaprison is done at the second level
@@ -110,8 +122,8 @@ def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
         local_timestamp = round(os.path.getmtime(filename))
         if (timestamp > local_timestamp) or (size != local_size):
             return True
-        else:
-            return False
+
+    return False
 
 
 def _download(src,
@@ -122,21 +134,29 @@ def _download(src,
               dest=None,
               block_size=4096,
               atomic=False,
-              force=True,
+              force=False,
               sync=False,
               agave=None):
-    # rsp = agave.files.download(filePath=src, systemId=job_uuid)
+
+    # raise SystemError('force={0} sync={1} atomic={2}'.format(force, sync, atomic))
+
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
-    if not _check_write(local_filename, size, timestamp, excludes, force,
-                        sync):
+    if not _check_write(
+            local_filename, size, timestamp, excludes, sync=sync, force=force):
         raise OutputFileExistsError(
-            'Local {0} exists. Download with "force=True" to overwrite.'.
-            format(local_filename))
+            'Local {0} exists and was not different from remote'.format(
+                local_filename))
 
     try:
-        rsp = agave.jobs.downloadOutput(filePath=src, jobId=job_uuid)
+        client = TaccApiDirectClient(agave)
+        # jobs/v2/9e74b852-0e1f-4363-8c09-5ab9f5299797-007/outputs/media/20190221t174839.out
+        url_path = '{0}/outputs/media'.format(job_uuid)
+        client.setup('jobs', 'v2', url_path)
+        # raise SystemError(client.build_url(src[1:]))
+        rsp = client.get_bytes(src[1:])
+        #rsp = agave.jobs.downloadOutput(filePath=src, jobId=job_uuid)
         if isinstance(rsp, dict):
             raise TapisOperationFailed("Failed to download {}".format(src))
         with open(tmp_local_filename, 'wb') as dest_file:
@@ -160,9 +180,9 @@ def _download(src,
 
 def download(source,
              job_uuid,
-             destination='.',
+             destination=None,
              excludes=None,
-             force=True,
+             force=False,
              sync=False,
              atomic=False,
              progress=False,
@@ -172,62 +192,76 @@ def download(source,
 
     if excludes is None:
         excludes = []
+    if destination is None:
+        dest_dir = str(job_uuid)
+    else:
+        dest_dir = destination
 
     if progress:
         print_stderr('Walking remote resource...')
     start_time = seconds()
+    # Try to avoid timeouts since walk is already pretty slow
+    agave.token.refresh()
     all_targets = walk(source, job_uuid=job_uuid, recurse=True, agave=agave)
     elapsed_walk = seconds() - start_time
+
     msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)
     logger.debug(msg)
     if progress:
         print_stderr(msg)
 
-    # Filters that build up list of paths to create and files to download
-    abs_names = [f['path'] for f in all_targets]
+    # Extract absolute names
+    # Under jobs, paths all begin with /
+    paths = [f['path'] for f in all_targets]
+    # Tapis Jobs returns a spurious "null/" at the start of each file's path
+    # This is a temporary workaround
+    paths = [re.sub('null/', '/', p) for p in paths]
     sizes = [f['length'] for f in all_targets]
     mods = [datestring_to_epoch(f['lastModified']) for f in all_targets]
-    dest_names = [f.replace(source, '.') for f in abs_names]
-    dest_paths = [f.replace('./', '') for f in dest_names]
-    dest_paths = [
-        os.path.join(destination, os.path.dirname(f)) for f in dest_paths
-    ]
-    # Remove references to current working directory and any redundant dir names
-    create_paths = []
-    create_paths = [
-        f for f in dest_paths
-        if f != './' and '{0}/'.format(destination) not in create_paths
-    ]
 
+    # Create local destination paths
+    dirs = [os.path.dirname(p) for p in paths]
+    make_dirs = [
+        os.path.join(dest_dir, relpath(p)) for p in dirs
+        if p not in ('/', './')
+    ]
     # Create destinations
-    for p in create_paths:
-        os.makedirs(p, exist_ok=True)
+    for dir in make_dirs:
+        os.makedirs(dir, exist_ok=True)
 
-    downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]
+    # Local filenames including destination directory
+    rel_paths = [os.path.join(dest_dir, relpath(p)) for p in paths]
+
+    downloads = [list(a) for a in zip(paths, sizes, mods, rel_paths)]
     start_time_all = seconds()
+    # Try to avoid timeouts since walk is already pretty slow
+    agave.token.refresh()
     for src, size, mod, dest in downloads:
         if progress:
             print_stderr('Downloading {0}...'.format(os.path.basename(src)))
         try:
+            # TODO - refresh token is size > threshold
             _download(src,
                       job_uuid,
                       size=size,
                       timestamp=mod,
                       dest=dest,
                       excludes=excludes,
-                      atomic=False,
+                      atomic=atomic,
                       force=force,
                       sync=sync,
                       agave=agave)
             downloaded.append(src)
-        except FileExistsError:
-            skipped.append(src)
-        except Exception as err:
-            errors.append(err)
+        except OutputFileExistsError as ofe:
+            if sync:
+                skipped.append(src)
+            else:
+                errors.append(ofe)
+        except Exception as exc:
+            errors.append(exc)
 
     elapsed_download = seconds() - start_time_all
-    msg = 'Downloaded {0} files in {1}s'.format(len(abs_names),
-                                                elapsed_download)
+    msg = 'Downloaded {0} files in {1}s'.format(len(paths), elapsed_download)
     logger.debug(msg)
     if progress:
         print_stderr(msg)
