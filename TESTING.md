@@ -146,10 +146,11 @@ command:
 
 The following downloads outputs from a designated job to the current working
 directory, ignoring any files that seem to have already been downloaded. The
-command reports a table, as shown below.
+command reports a table, as shown below. One of the source files (`wc-sample.txt`)
+has already been downloaded so will be intentionally skipped.
 
 ```shell
-tapis jobs outputs download 9e74b852-0e1f-4363-8c09-5ab9f5299797-007 --cwd --sync
+$ tapis jobs outputs download 9e74b852-0e1f-4363-8c09-5ab9f5299797-007 --cwd --sync
 +-------------+-------+
 | Field       | Value |
 +-------------+-------+
@@ -164,13 +165,14 @@ The `-v` verbose view enumerates each the outcome of each attempted download.
 
 ```json
 {
-  "downloaded": [],
-  "skipped": [
+  "downloaded": [
     "/20190221t174839.err",
     "/20190221t174839.out",
     "/20190221t174839.pid",
-    "/wc-sample.txt",
     "/wc_out/output.txt"
+  ],
+  "skipped": [
+    "/wc-sample.txt"
   ],
   "warnings": [],
   "elapsed_sec": 1
@@ -184,7 +186,51 @@ request document that can be used to submit a similar job.
 
 ## Files
 
-27-09-2017 | File listing, inspection, and downloads (including recursive) are now implemented.
+27-09-2017 | File listing, inspection, and downloads (including recursive) are
+now implemented. Below is an example of a list operation.
+
+```shell
+$ tapis files list agave://data-sd2e-community/sample/tacc-cloud
++----------------------------------+---------------------------+--------+
+| name                             | lastModified              | length |
++----------------------------------+---------------------------+--------+
+| 0R56K8E3WTJJVEV8ZBR31LYTJFDWRKYC | 2019-08-07 10:18:54-05:00 |   4096 |
+| README.rst                       | 2019-06-27 15:43:05-05:00 |   1516 |
+| S49HDZ458N75SD46AXPA8TJTCO02UBFH | 2019-08-07 10:18:53-05:00 |   4096 |
+| agavehelpers                     | 2019-09-23 13:00:32-05:00 |   4096 |
+| compat-upload                    | 2019-07-16 15:11:43-05:00 |   4096 |
+| dawnofman.jpg                    | 2019-08-07 07:18:49-05:00 | 119974 |
+| issue15                          | 2019-08-07 10:19:02-05:00 |   4096 |
+| sampleset                        | 2019-06-05 14:55:30-05:00 |   4096 |
+| wc-sample.txt                    | 2019-08-07 07:19:02-05:00 |   2846 |
+| yakshave.png                     | 2019-07-16 15:11:41-05:00 | 426008 |
++----------------------------------+---------------------------+--------+
+```
+
+Here is an example of the download function:
+
+```shell
+$ tapis files download --progress agave://data-sd2e-community/sample/tacc-cloud
+Walking remote resource...
+Found 8 file(s) in 11s
+Downloading jazzcat.jpg...
+Downloading hello.txt...
+Downloading yakshave.png...
+Downloading dawnofman.jpg...
+Downloading README.rst...
+Downloading samples_nc.json...
+Downloading wc-sample.txt...
+Downloading yakshave.png...
+Downloaded 8 files in 10s
++-------------+-------+
+| Field       | Value |
++-------------+-------+
+| downloaded  | 8     |
+| skipped     | 0     |
+| warnings    | 0     |
+| elapsed_sec | 21    |
++-------------+-------+
+```
 
 ## Systems
 

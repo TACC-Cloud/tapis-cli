@@ -61,10 +61,10 @@ class FilesDownload(FilesFormatOne, AgaveURI):
             force=parsed_args.overwrite,
             sync=parsed_args.sync,
             progress=parsed_args.progress,
-            atomic=parsed_args.atomic,
+            atomic=False,
             agave=self.tapis_client)
 
-        headers = ['downloaded', 'skipped', 'errors', 'elapsed_sec']
+        headers = ['downloaded', 'skipped', 'warnings', 'elapsed_sec']
         if parsed_args.formatter in ('json', 'yaml'):
             data = [downloaded, skipped, [str(e) for e in exceptions], elapsed]
         else:

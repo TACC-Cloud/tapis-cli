@@ -37,7 +37,7 @@ def __download(src,
                dest=None,
                block_size=4096,
                atomic=False,
-               force=True,
+               force=False,
                agave=None):
     """WIP: Function for implementing threaded downloads
     """
@@ -122,17 +122,17 @@ def _download(src,
               dest=None,
               block_size=4096,
               atomic=False,
-              force=True,
+              force=False,
               sync=False,
               agave=None):
-    # rsp = agave.files.download(filePath=src, systemId=system_id)
+
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
-    if not _check_write(local_filename, size, timestamp, excludes, force,
-                        sync):
+    if not _check_write(local_filename, size, timestamp, excludes, force=force,
+                        sync=sync):
         raise FileExistsError(
-            'Local {0} exists. Download with "force=True" to overwrite.'.
+            'Local {0} exists and was not different from remote.'.
             format(local_filename))
 
     try:
@@ -162,7 +162,7 @@ def download(source,
              system_id,
              destination='.',
              excludes=None,
-             force=True,
+             force=False,
              sync=False,
              atomic=False,
              progress=False,
@@ -178,6 +178,7 @@ def download(source,
     start_time = seconds()
     all_targets = walk(source, system_id=system_id, recurse=True, agave=agave)
     elapsed_walk = seconds() - start_time
+
     msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)
     logger.debug(msg)
     if progress:
@@ -215,15 +216,18 @@ def download(source,
                       timestamp=mod,
                       dest=dest,
                       excludes=excludes,
-                      atomic=False,
                       force=force,
                       sync=sync,
+                      atomic=False,
                       agave=agave)
             downloaded.append(src)
-        except FileExistsError:
-            skipped.append(src)
-        except Exception as err:
-            errors.append(err)
+        except FileExistsError as fxerr:
+            if sync or force:
+                skipped.append(src)
+            else:
+                errors.append(fxerr)
+        except Exception as exc:
+            errors.append(exc)
 
     elapsed_download = seconds() - start_time_all
     msg = 'Downloaded {0} files in {1}s'.format(len(abs_names),
