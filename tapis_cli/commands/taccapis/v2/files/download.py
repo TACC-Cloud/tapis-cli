@@ -3,6 +3,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier, AgaveURI
 from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.utils import humanize_bytes
 
 from . import API_NAME, SERVICE_VERSION
 from .models import File
@@ -53,7 +54,7 @@ class FilesDownload(FilesFormatOne, AgaveURI):
 
         headers = SearchableCommand.headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
-        downloaded, skipped, exceptions, elapsed = download(
+        downloaded, skipped, exceptions, dl_bytes, elapsed = download(
             file_path,
             storage_system,
             destination='.',
@@ -64,9 +65,17 @@ class FilesDownload(FilesFormatOne, AgaveURI):
             atomic=False,
             agave=self.tapis_client)
 
-        headers = ['downloaded', 'skipped', 'warnings', 'elapsed_sec']
+        headers = ['downloaded', 'skipped', 'warnings', 'data', 'elapsed_sec']
         if parsed_args.formatter in ('json', 'yaml'):
-            data = [downloaded, skipped, [str(e) for e in exceptions], elapsed]
+            data = [
+                downloaded, skipped, [str(e) for e in exceptions], dl_bytes,
+                elapsed
+            ]
         else:
-            data = [len(downloaded), len(skipped), len(exceptions), elapsed]
+            data = [
+                len(downloaded),
+                len(skipped),
+                len(exceptions),
+                humanize_bytes(dl_bytes), elapsed
+            ]
         return (tuple(headers), tuple(data))

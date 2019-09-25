@@ -129,11 +129,11 @@ def _download(src,
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
-    if not _check_write(local_filename, size, timestamp, excludes, force=force,
-                        sync=sync):
+    if not _check_write(
+            local_filename, size, timestamp, excludes, force=force, sync=sync):
         raise FileExistsError(
-            'Local {0} exists and was not different from remote.'.
-            format(local_filename))
+            'Local {0} exists and was not different from remote.'.format(
+                local_filename))
 
     try:
         rsp = agave.files.download(filePath=src, systemId=system_id)
@@ -168,7 +168,7 @@ def download(source,
              progress=False,
              agave=None):
 
-    downloaded, skipped, errors, runtime = ([], [], [], None)
+    downloaded, skipped, errors, dl_bytes, runtime = ([], [], [], 0, None)
 
     if excludes is None:
         excludes = []
@@ -221,6 +221,8 @@ def download(source,
                       atomic=False,
                       agave=agave)
             downloaded.append(src)
+            # Track cumulative data size
+            dl_bytes = dl_bytes + size
         except FileExistsError as fxerr:
             if sync or force:
                 skipped.append(src)
@@ -236,4 +238,4 @@ def download(source,
     if progress:
         print_stderr(msg)
 
-    return downloaded, skipped, errors, elapsed_walk + elapsed_download
+    return downloaded, skipped, errors, dl_bytes, elapsed_walk + elapsed_download
