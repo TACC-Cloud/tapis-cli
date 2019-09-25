@@ -6,13 +6,15 @@ functionality (such as with permissions), the command structure is
 `tapis <service> <entity> <sub-entity> <action>`.
 
   - Search and discovery actions:
-
       - list - generic list of known entities
       - search - parameterized search of known entities
       - show - display full record for one known entity
 
-  - Management actions:
+  - File management:
+    - download - fetch Tapis remote asset(s) to local storage
+    - upload - send asset(s) to Tapis from local storage
 
+  - Management actions:
       - create - create a new entity
       - update - update an existing entity by identifier
       - delete - delete an entity by identifier
@@ -22,7 +24,6 @@ functionality (such as with permissions), the command structure is
       - unpublish - remove a resource from public use
 
   - Permissions and roles:
-
       - list - list entitlements for entity by identifier
       - show - display a specific entitlement by identifier and username
       - grant - assign a role or permission for a username to an entity
@@ -33,17 +34,15 @@ functionality (such as with permissions), the command structure is
 
 This tool is designed to completely (and quickly - by Q42019) replace
 our legacy Bash tooling. So, our general request is to get in there an
-exercise it like you would the legacy CLI. But, there are some specific
-points that testers are encouraged to visit upon, which are laid out,
-organized by service, below.
+exercise it like you would the legacy CLI. But, specific new features
+that testers can help review on are laid out below by service.
 
 ## Known Issues
 
-First of all, the following are **known issues** and will be addressed
-soon:
+The following are **known issues** and will be addressed in future work periods:
 
 > 1.  Python 2.7.x is not supported (but will be)
-> 2.  No **files** commands are implemented
+> 2.  ~~No **files** commands are implemented~~
 > 3.  No **actors** or **tacclab** commands are implemented
 > 4.  The **watch** function from the old jobs-submit is gone and will
 >     never return
@@ -60,17 +59,18 @@ soon:
 
 ## Installation
 
-  -   - The CLI must be installable from git checkout.
+20-09-2019 | The CLI is installable from git checkout
+  - It must be installable in **editable** mode (`pip install -e
+    .`)
+  - It must be installable in a virtual environment
+  - It must be installable using setuptools (`python setup.py
+    install`)
+  - It must be installable under Python 3.5, 3.6, and 3.7
+    (Python 2.7 support is forthcoming)
 
-          - It must be installable in **editable** mode (`pip install -e
-            .`)
-          - It must be installable in a virtual environment
-          - It must be installable using setuptools (`python setup.py
-            install`)
-          - It must be installable under Python 3.5, 3.6, and 3.7
-            (Python 2.7 support is forthcoming)
-
-## Configuration
+Please test the CLI under your favorite Python enviroment
+management practices so we can make sure it's relatively robust for
+the end user communities that will use it.
 
 ## General CLI Capabilities
 
@@ -95,9 +95,17 @@ soon:
     via the `-H` option
   - The CLI must fail gracefully when networking is not available
 
+## Configuration
+
+20-09-2019 |The CLI uses .env files and environment variables to configuring
+some persistent settings. This will be described in more detail in
+future testing sessions.
+
 ## Auth
 
-This release marks debut of a simplified authentication workflow
+27-09-2019 | No changes
+
+20-09-2019 | This release marks debut of a simplified authentication workflow
 targeted at end users. In the new approach, one host-specific client is
 generated and maintained for each combination of tenant and username. To
 initialize a host to use Tapis, simply run the `tapis auth init`
@@ -120,35 +128,94 @@ supported.
 
 ## Apps
 
-Feel free to exercise the entire *apps* lifecycle. Creation, updating, publishing,
-search & discovery, and sharing are all implemented.
+27-09-2019 | No changes
+
+20-09-2019 | Feel free to exercise the entire *apps* lifecycle save for cloning. Creation,
+updating, publishing, search & discovery, and sharing are all implemented.
 
 ## Jobs
 
-All key Aloe *jobs* functions are implemented save for permission management,
+27-09-2019 | Implementations of the legacy `jobs-output-list` and `jobs-output-get` commands
+are now available. Note the added flexibility in the `tapis jobs outputs download`
+command:
+* Download to the current directory via `--cwd` option
+* Force overwrite of local files with `--force`
+* Overwrite local files only of different with `--sync`
+* Report progress to STDERR with `--progress`
+* Specify remote files to skip with the `--exclude` option
+
+The following downloads outputs from a designated job to the current working
+directory, ignoring any files that seem to have already been downloaded. The
+command reports a table, as shown below.
+
+```shell
+tapis jobs outputs download 9e74b852-0e1f-4363-8c09-5ab9f5299797-007 --cwd --sync
++-------------+-------+
+| Field       | Value |
++-------------+-------+
+| downloaded  | 4     |
+| skipped     | 1     |
+| warnings    | 0     |
+| elapsed_sec | 5     |
++-------------+-------+
+```
+
+The `-v` verbose view enumerates each the outcome of each attempted download.
+
+```json
+{
+  "downloaded": [],
+  "skipped": [
+    "/20190221t174839.err",
+    "/20190221t174839.out",
+    "/20190221t174839.pid",
+    "/wc-sample.txt",
+    "/wc_out/output.txt"
+  ],
+  "warnings": [],
+  "elapsed_sec": 1
+}
+```
+
+20-09-2019 | Key Aloe *jobs* functions are implemented save for permission management,
 hide, and unhide. One interesting new feature of `tapis jobs show` is the `-T`
 option, which will translate the verbose Aloe jobs output into a JSON
 request document that can be used to submit a similar job.
 
+## Files
+
+27-09-2017 | File listing, inspection, and downloads (including recursive) are now implemented.
+
 ## Systems
 
-Core Tapis *systems* functions are implemented. Queue management is still missing as
+27-09-2019 | No changes
+
+20-09-2019 | Core Tapis *systems* functions are implemented. Queue management is still missing as
 is the ability to atomically update a system's login inforamation.
 
 ## Metadata
 
-Metadata search and list are implemented. Creation and update of metadata
+27-09-2019 | No changes
+
+20-09-2019 | Metadata search and list are implemented. Creation and update of metadata
 records is not implemented, nor are permissions or metadata JSON schemas.
 
 ## Profiles
 
-Viewing of another user's profile as well as that of the currently logged-in
+27-09-2019 | No changes
+
+20-09-2019 | Viewing of another user's profile as well as that of the currently logged-in
 user is supported. List and search are not implemented at present.
 
 ## Notifications
 
-No notifications commands are ready to test
+27-09-2019 | No changes
+
+20-09-2019 | No notifications commands are ready to test
 
 ## Postits
 
-No postits commands are ready to test
+27-09-2019 | No changes
+
+20-09-2019 | No postits commands are ready to test
+
