@@ -17,6 +17,7 @@ class TaccApisCommandBase(TaccApiClient):
         parser.add_argument('-H',
                             '--api-server',
                             dest='api_server',
+                            metavar='<url>',
                             type=str,
                             help="{0} API server".format(
                                 self.constants.PLATFORM))

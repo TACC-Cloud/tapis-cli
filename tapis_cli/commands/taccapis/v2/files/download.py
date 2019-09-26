@@ -9,42 +9,28 @@ from . import API_NAME, SERVICE_VERSION
 from .models import File
 from .formatters import FilesFormatOne
 from .helpers.sync import download
+from .mixins import ExcludeFiles, FilesCallbackURI, OverwritePolicy, ReportProgress
 
 __all__ = ['FilesDownload']
 
 
-class FilesDownload(FilesFormatOne, AgaveURI):
-    """Download a file or directory to local host
+class FilesDownload(FilesFormatOne, AgaveURI, ExcludeFiles, OverwritePolicy,
+                    ReportProgress):
+    """Download a Tapis-managed file or directory to local host
     """
 
     # TODO - add formatting and sorting options
     def get_parser(self, prog_name):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = AgaveURI.extend_parser(self, parser)
-        parser.add_argument('--exclude',
-                            nargs='+',
-                            metavar='filename',
-                            help='One or more files to exclude from download')
-        syncmode = parser.add_mutually_exclusive_group(required=False)
-        syncmode.add_argument('--force',
-                              dest='overwrite',
-                              action='store_true',
-                              help='Always overwrite existing files')
-        syncmode.add_argument(
-            '--sync',
-            dest='sync',
-            action='store_true',
-            help='Overwrite only when timestamp or size differs')
-        # parser.add_argument('--atomic',
-        #                     dest='atomic',
-        #                     action='store_true',
-        #                     help='Download atomically')
-        parser.add_argument('--progress',
-                            dest='progress',
-                            action='store_true',
-                            help='Report progress to STDERR')
-
-        # TODO - options (force, atomic, sync, parallel, etc)
+        parser = ExcludeFiles.extend_parser(self, parser)
+        parser = OverwritePolicy.extend_parser(self, parser)
+        parser = ReportProgress.extend_parser(self, parser)
+        # Other options might include:
+        # --parallel : whether to attempt parallel downloads
+        # --retries : max retries before error
+        # --timeout : max elapsed time before error
+        # --destination : explicitly specify download destination
         return parser
 
     def take_action(self, parsed_args):

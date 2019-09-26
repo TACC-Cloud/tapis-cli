@@ -11,7 +11,7 @@ from tapis_cli.display import Verbosity
 
 __all__ = [
     'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile',
-    'AgaveURI', 'JobsUUID', 'FilePath'
+    'AgaveURI', 'JobsUUID', 'RemoteFilePath', 'LocalFilePath'
 ]
 
 
@@ -160,7 +160,7 @@ class JobsUUID(ParserExtender):
         return parser
 
 
-class FilePath(ParserExtender):
+class RemoteFilePath(ParserExtender):
     """Configures a Command to accept an optional file path
     """
     def extend_parser(self, parser):
@@ -170,6 +170,17 @@ class FilePath(ParserExtender):
             nargs='?',
             metavar='<file_path>',
             help='Optional file path relative to output directory')
+        return parser
+
+
+class LocalFilePath(ParserExtender):
+    """Configures a Command to accept a local file path
+    """
+    def extend_parser(self, parser):
+        parser.add_argument(
+            'local_file_path',
+            metavar='<file_path>',
+            help='File path relative to current working directory')
         return parser
 
 

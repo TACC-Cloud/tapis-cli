@@ -43,12 +43,14 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
         parser.add_argument('-l',
                             '--limit',
                             dest='limit',
+                            metavar='<int>',
                             default=36,
                             type=int,
                             help='Limit to L records')
         parser.add_argument('-o',
                             '--offset',
                             default=0,
+                            metavar='<int>',
                             dest='offset',
                             type=int,
                             help='Skip first O records')

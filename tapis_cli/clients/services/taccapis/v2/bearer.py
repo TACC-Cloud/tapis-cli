@@ -11,6 +11,7 @@ class TaccApisBearer(TaccApisCommandBase):
         parser.add_argument('-z',
                             '--token',
                             dest='access_token',
+                            metavar='<token>',
                             type=str,
                             help="{0} {1}".format(self.constants.PLATFORM,
                                                   self.constants.ACCESS_TOKEN))

@@ -1,5 +1,5 @@
 import os
-from tapis_cli.clients.services.mixins import JobsUUID, FilePath
+from tapis_cli.clients.services.mixins import JobsUUID, RemoteFilePath
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
@@ -10,7 +10,7 @@ from .helpers.sync import download
 __all__ = ['JobsOutputsDownload']
 
 
-class JobsOutputsDownload(FilesFormatOne, JobsUUID, FilePath):
+class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
     """Download a jobs output file or directory
     """
 
@@ -18,7 +18,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, FilePath):
     def get_parser(self, prog_name):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = JobsUUID.extend_parser(self, parser)
-        parser = FilePath.extend_parser(self, parser)
+        parser = RemoteFilePath.extend_parser(self, parser)
         parser.add_argument(
             '--cwd',
             dest='use_cwd',

@@ -6,7 +6,8 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import File
-from .formatters import FilesFormatOne, FileOptions
+from .formatters import FilesFormatOne
+from .mixins import FileOptions
 
 __all__ = ['FilesShow']
 
