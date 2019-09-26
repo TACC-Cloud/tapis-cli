@@ -88,11 +88,11 @@ class FilesOptions(FileOptions):
         return parser
 
     @classmethod
-    def sort_table(cls, data, headers, header='name', reverse=False):
+    def sort_table(cls, rows, headers, header='name', reverse=False):
         user_idx = headers.index(header)
         path_idx = headers.index('name')
         # This will be the same position in the 'data' list
-        sorted_data = sorted(data,
+        sorted_data = sorted(rows,
                              key=lambda x: (x[user_idx], x[path_idx]),
                              reverse=reverse)
         return sorted_data
