@@ -186,7 +186,7 @@ request document that can be used to submit a similar job.
 
 ## Files
 
-04-10-2019 | File deletion is now supported.
+04-10-2019 | File deletion is now supported. File history is now supported.
 
 27-09-2017 | File listing, inspection, and downloads (including recursive) are
 now implemented. File uploads are also working. Here is a sample list operation.
