@@ -3,7 +3,8 @@ from tapis_cli.display import Verbosity
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from ..files.models import File
-from ..files.formatters import FilesFormatMany, FilesOptions
+from ..files.formatters import FilesFormatMany
+from ..files.mixins import FilesOptions
 from tapis_cli.clients.services.mixins import JobsUUID, RemoteFilePath
 # Note - this is the jobs-outputs specific listdir!
 from .helpers.walk import listdir
