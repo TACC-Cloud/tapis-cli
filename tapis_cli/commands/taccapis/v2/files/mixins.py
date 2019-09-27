@@ -5,7 +5,7 @@ from tapis_cli.clients.services.mixins import ParserExtender
 
 __all__ = [
     'ExcludeFiles', 'FileOptions', 'FilesOptions', 'FilesCallbackURI',
-    'OverwritePolicy', 'ReportProgress'
+    'IncludeFiles', 'OverwritePolicy', 'ReportProgress'
 ]
 
 
@@ -15,10 +15,27 @@ class ExcludeFiles(ParserExtender):
     Sets 'parsed_args.exclude_files'
     """
     def extend_parser(self, parser):
-        parser.add_argument('--exclude_files',
-                            nargs='+',
-                            metavar='<file>',
-                            help='One or more files to exclude')
+        parser.add_argument(
+            '--exclude',
+            dest='exclude_files',
+            nargs='+',
+            metavar='<file>',
+            help='One or more Unix shell-style filename wildcards to exclude')
+        return parser
+
+
+class IncludeFiles(ParserExtender):
+    """Configures a Command to accept a list of files to include
+
+    Sets 'parsed_args.include_files'
+    """
+    def extend_parser(self, parser):
+        parser.add_argument(
+            '--include',
+            dest='include_files',
+            nargs='+',
+            metavar='<file>',
+            help='One or more Unix shell-style filename wildcards to include')
         return parser
 
 

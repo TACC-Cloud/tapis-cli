@@ -204,6 +204,7 @@ def download(source,
     for p in create_paths:
         os.makedirs(p, exist_ok=True)
 
+    # Do the downloads
     downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]
     start_time_all = seconds()
     for src, size, mod, dest in downloads:

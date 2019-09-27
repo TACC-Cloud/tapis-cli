@@ -2,6 +2,7 @@
 """
 import arrow
 import datetime
+import fnmatch
 import getpass
 import os
 import pkg_resources
@@ -235,3 +236,17 @@ def humanize_bytes(bytesize, precision=2):
 def print_stderr(message):
     # TODO - Support Python2 implementation
     print('{0}'.format(message), file=sys.stderr)
+
+
+def fnmatches(file_name, patterns=None):
+    """Check if a filename matches a member of patterns
+
+    Uses UNIX-style file wildcards
+    """
+    if patterns is None:
+        return True
+    else:
+        for p in patterns:
+            if fnmatch.fnmatch(file_name, p):
+                return True
+        return False
