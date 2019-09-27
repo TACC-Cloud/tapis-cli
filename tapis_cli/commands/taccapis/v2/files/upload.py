@@ -2,7 +2,8 @@ import os
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import (ServiceIdentifier, AgaveURI,
-                                               LocalFilePath)
+                                               LocalFilePath,
+                                               OptionNotImplemented)
 from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.utils import (datestring_to_epoch, humanize_bytes, relpath,
                              abspath, print_stderr)
@@ -57,6 +58,14 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
         parsed_args = FilesFormatOne.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
+
+        # Catch unimplemented options
+        if parsed_args.sync:
+            raise OptionNotImplemented('--sync is not implemented')
+        if parsed_args.overwrite:
+            raise OptionNotImplemented('--force is not implemented')
+        if parsed_args.files_callback_uri:
+            raise OptionNotImplemented('--callback is not implemented')
 
         local_file_path = parsed_args.local_file_path
         (storage_system,

@@ -10,9 +10,16 @@ from cliff.app import App
 from tapis_cli.display import Verbosity
 
 __all__ = [
-    'AppVerboseLevel', 'JsonVerbose', 'ServiceIdentifier', 'UploadJsonFile',
-    'AgaveURI', 'JobsUUID', 'RemoteFilePath', 'LocalFilePath'
+    'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
+    'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
+    'RemoteFilePath', 'LocalFilePath'
 ]
+
+
+class OptionNotImplemented(ValueError):
+    """Raised when an option that is only a placeholder is specified
+    """
+    pass
 
 
 class ParserExtender(object):
