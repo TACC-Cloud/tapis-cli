@@ -187,7 +187,7 @@ request document that can be used to submit a similar job.
 ## Files
 
 27-09-2017 | File listing, inspection, and downloads (including recursive) are
-now implemented. Below is an example of a list operation.
+now implemented. File uploads are also working. Here is a sample list operation.
 
 ```shell
 $ tapis files list agave://data-sd2e-community/sample/tacc-cloud
@@ -230,6 +230,46 @@ Downloaded 8 files in 10s
 | warnings    | 0     |
 | elapsed_sec | 21    |
 +-------------+-------+
+```
+
+Uploading to Tapis files is now much improved over the Bash CLI:
+* files and folders can be explicity included or excluded via named options
+  * wildcard characters are supported in the include and exclude options
+* total data movement and time elapsed are reported, just like downloads
+* recursive uploads are handled automatically now
+
+Here is an example upload command where an entire directory is uploaded,
+excluding files that match the string "ink".
+
+```shell
+$ tapis files upload agave://data-sd2e-community/sample/tacc-cloud \
+        tests/data/commands  -v --debug --exclude "*ink*" --progress
+Finding file(s) to upload...
+Found 4 file(s) in 0s
+Creating remote directory "commands"...
+Creating remote directory "commands/files"...
+Creating remote directory "commands/jobs"...
+Creating remote directory "commands/apps"...
+Uploading tests/data/commands/files/ink.jpg...
+Uploading tests/data/commands/jobs/word-count-job.json...
+Uploading tests/data/commands/apps/simple-app.json...
+Uploading tests/data/commands/apps/word-count-app.json...
+Uploaded 3 files in 2s
+{
+  "uploaded": [
+    "tests/data/commands/jobs/word-count-job.json",
+    "tests/data/commands/apps/simple-app.json",
+    "tests/data/commands/apps/word-count-app.json"
+  ],
+  "skipped": [
+    "tests/data/commands/files/ink.jpg"
+  ],
+  "warnings": [
+    "tests/data/commands/files/ink.jpg matched exclude filter"
+  ],
+  "data": 5483,
+  "elapsed_sec": 2
+}
 ```
 
 ## Systems
