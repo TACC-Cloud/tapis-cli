@@ -196,6 +196,7 @@ def download(source,
         dest_dir = str(job_uuid)
     else:
         dest_dir = destination
+    excludes = [os.path.join(dest_dir, e) for e in excludes]
 
     if progress:
         print_stderr('Walking remote resource...')
