@@ -46,6 +46,10 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
                             nargs='+',
                             metavar='filename',
                             help='One or more files to exclude from download')
+        parser.add_argument('--include',
+                            nargs='+',
+                            metavar='filename',
+                            help='One or more files to include')
         return parser
 
     def take_action(self, parsed_args):
@@ -66,6 +70,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
             parsed_args.job_uuid,
             destination=dest_dir,
             excludes=parsed_args.exclude,
+            includes=parsed_args.include,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,
             progress=parsed_args.progress,
