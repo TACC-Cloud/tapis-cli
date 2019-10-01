@@ -92,7 +92,7 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     return file_name, temp_file_name
 
 
-def _check_write(filename, size, timestamp, excludes, includes, sync=False, force=False):
+def _check_write(filename, size, timestamp, excludes, sync=False, force=False):
     """Determine whether to write (or overwrite) a local file
     """
     relative_excludes = []
@@ -131,7 +131,6 @@ def _download(src,
               size=None,
               timestamp=None,
               excludes=None,
-              includes=None,
               dest=None,
               block_size=4096,
               atomic=False,
@@ -145,7 +144,7 @@ def _download(src,
         src, dest, atomic)
 
     if not _check_write(
-            local_filename, size, timestamp, excludes, includes, sync=sync, force=force):
+            local_filename, size, timestamp, excludes, sync=sync, force=force):
         raise OutputFileExistsError(
             'Local {0} exists and was not different from remote'.format(
                 local_filename))
@@ -201,8 +200,7 @@ def download(source,
     else:
         dest_dir = destination
     excludes = [os.path.join(dest_dir, e) for e in excludes]
-    # TODO: generalize file path for files in nested dirs
-    includes = [os.path.basename(e) for e in includes]
+    includes = [os.path.join('/', i) for i in includes]
 
     if progress:
         print_stderr('Walking remote resource...')
@@ -221,10 +219,9 @@ def download(source,
     # Under jobs, paths all begin with /
     paths = [f['path'] for f in all_targets]
 
-    # Filter include files if they were provided
+    # Use only include files, if they were passed
     if includes:
-        paths = [p for p in paths
-                 if os.path.basename(p) in includes]
+        paths = [p for p in paths if p in includes]
 
     # Tapis Jobs returns a spurious "null/" at the start of each file's path
     # This is a temporary workaround
@@ -260,7 +257,6 @@ def download(source,
                       timestamp=mod,
                       dest=dest,
                       excludes=excludes,
-                      includes=includes,
                       atomic=atomic,
                       force=force,
                       sync=sync,
