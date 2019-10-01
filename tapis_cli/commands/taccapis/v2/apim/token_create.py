@@ -26,12 +26,18 @@ class TokenCreate(CreateTokenFormatOne):
         parser.add_argument('--password',
                             dest='tapis_password',
                             help='{0} password'.format(PLATFORM))
+
+        parser.add_argument(
+            '--token-username',
+            dest='token_username',
+            help=
+            'Username to impersonate with the returned token (requires admin privileges)'
+        )
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = CreateTokenFormatOne.before_take_action(
             self, parsed_args)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
         # Allow prompt for password when not specified
@@ -40,17 +46,38 @@ class TokenCreate(CreateTokenFormatOne):
             passwd = prompt('Password', passwd, secret=True)
 
         headers = SearchableCommand.headers(self, Token, parsed_args)
+        self.tapis_client.token.password = passwd
+
+        result = list()
         try:
-            self.tapis_client.token.password = passwd
-            result = self.tapis_client.token.create()
-            self.tapis_client.token.password = None
+            if parsed_args.token_username is None:
+                resp = self.tapis_client.token.create()
+                self.tapis_client.token.password = None
+                for h in headers:
+                    # DERP
+                    result.append(self.tapis_client.token.token_info.get(h))
+            else:
+                self.requests_client.setup(API_NAME, None)
+                data = {
+                    'token_username': parsed_args.token_username,
+                    'username': self.tapis_client.username,
+                    'password': passwd,
+                    'scope': 'PRODUCTION',
+                    'grant_type': 'admin_password'
+                }
+                resp = self.requests_client.post_data_basic(data)
+                headers.remove('expires_at')
+                for h in headers:
+                    # DERP
+                    result.append(resp.get(h))
         except HTTPError as h:
             if str(h).startswith('400'):
                 raise AgaveError(
                     'Failed to create a token pair: {0}'.format(h))
             else:
                 raise AgaveError(str(h))
-        result = list()
-        for h in headers:
-            result.append(self.tapis_client.token.token_info.get(h))
+        # result = list()
+        # for h in headers:
+        #     # DERP
+        #     result.append(self.tapis_client.token.token_info.get(h))
         return (tuple(headers), tuple(result))

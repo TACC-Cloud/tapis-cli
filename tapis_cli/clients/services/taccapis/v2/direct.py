@@ -1,5 +1,6 @@
 from tapis_cli.main import PKG_NAME, About, VersionInfo
 import requests
+from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
 
 __all__ = ['TaccApiDirectClient']
@@ -22,16 +23,18 @@ class TaccApiDirectClient(object):
         # Always refresh when using a requests call
         # agave_client.token.refresh()
         token = agave_client._token
-        self.headers = {
-            'authorization':
-            'Bearer {}'.format(token),
-            'user-agent':
-            '{}/{}#{}'.format(ab.title, vers.version_string(), ab.git_commit)
-        }
+        self.user_agent = '{}/{}#{}'.format(ab.title, vers.version_string(),
+                                            ab.git_commit)
         self.api_server = agave_client.api_server
+        self.api_key = agave_client.api_key
+        self.api_secret = agave_client.api_secret
         self.service_name = None
         self.service_version = None
         self.api_path = None
+        self.headers = {
+            'authorization': 'Bearer {}'.format(token),
+            'user-agent': self.user_agent
+        }
 
     def setup(self, service_name, service_version, api_path=None):
         setattr(self, 'service_version', service_version)
@@ -75,3 +78,19 @@ class TaccApiDirectClient(object):
         resp = requests.post(url, headers=post_headers)
         resp.raise_for_status()
         return resp.json().get('result', {})
+
+    def post_data_basic(self,
+                        data=None,
+                        auth=None,
+                        path=None,
+                        content_type=None):
+        url = self.build_url(path)
+        post_headers = {'user-agent': self.user_agent}
+        if content_type is not None:
+            post_headers['Content-type'] = content_type
+        if auth is None:
+            auth = (self.api_key, self.api_secret)
+
+        resp = requests.post(url, headers=post_headers, auth=auth, data=data)
+        resp.raise_for_status()
+        return resp.json()
