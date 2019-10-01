@@ -12,6 +12,7 @@ import sys
 from requests import get
 from requests.exceptions import ConnectTimeout
 from socket import getfqdn
+from colorama import Fore, Back, Style
 
 from dateutil.parser import parse
 
@@ -236,6 +237,29 @@ def humanize_bytes(bytesize, precision=2):
 def print_stderr(message):
     # TODO - Support Python2 implementation
     print('{0}'.format(message), file=sys.stderr)
+
+
+# Color and format text
+
+
+def fg_red(message):
+    return Fore.RED + message + Fore.RESET
+
+
+def fg_green(message):
+    return Fore.GREEN + message + Fore.RESET
+
+
+def fg_blue(message):
+    return Fore.BLUE + message + Fore.RESET
+
+
+def fg_bright(message):
+    return Style.BRIGHT + message + Style.RESET_ALL
+
+
+def fg_dim(message):
+    return Style.DIM + message + Style.RESET_ALL
 
 
 def fnmatches(file_name, patterns=None):
