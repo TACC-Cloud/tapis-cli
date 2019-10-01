@@ -46,7 +46,7 @@ The following are **known issues** and will be addressed in future work periods:
 > 3.  No **actors** or **tacclab** commands are implemented
 > 4.  The **watch** function from the old jobs-submit is gone and will
 >     never return
-> 5.  Impersonation token issuance is not yet implemented
+> 5.  ~~Impersonation token issuance is not yet implemented~~
 > 6.  The beloved `auth switch` is not yet implemented
 > 7.  Metadata schema and record management commands are not yet
 >     implemented
@@ -56,6 +56,7 @@ The following are **known issues** and will be addressed in future work periods:
 > 11. Creation of the Bash autocomplete config is broken
 > 12. Search on dates is broken
 > 12. Search on booleans can be broken (try `--boolean eq true`)
+> 13. ~~Access tokens passed via `-z` or `--token` are not honored~~
 
 ## Installation
 
@@ -102,6 +103,24 @@ some persistent settings. This will be described in more detail in
 future testing sessions.
 
 ## Auth
+
+04-10-2019 | It is now possible for users with the proper administrative role
+to generate impersonation tokens. The impersonation token is not written to
+the local credential cache. Here is an example:
+
+```shell
+$ tapis auth tokens create --token-username vaughn
+Password:
++--------------+---------------------------------+
+| Field        | Value                           |
++--------------+---------------------------------+
+| access_token | a207c7f0beec4757244e3b4460d917f |
+| username     | vaughn                          |
++--------------+---------------------------------+
+```
+
+Access tokens (both personal and impersonation) are now properly honored when
+passed to commands via the `-z` or `--token` option.
 
 27-09-2019 | No changes
 
