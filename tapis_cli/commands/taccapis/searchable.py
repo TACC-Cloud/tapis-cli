@@ -28,6 +28,7 @@ class SearchableCommand(object):
                 sarg = SearchWebParam(argument=f.param_name,
                                       field_type=f.param_type,
                                       mods=f.mod_types,
+                                      choices=f.choices,
                                       default_mod=f.default_mod)
                 try:
                     self._cache_sarg(sarg)
