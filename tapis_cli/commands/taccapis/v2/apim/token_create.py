@@ -5,7 +5,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
-                             get_local_username)
+                             get_local_username, fg_green, fg_bright)
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -30,9 +30,7 @@ class TokenCreate(CreateTokenFormatOne):
         parser.add_argument(
             '--token-username',
             dest='token_username',
-            help=
-            'Username to impersonate with the returned token (requires admin privileges)'
-        )
+            help='Impersonation username (requires admin privileges)')
         return parser
 
     def take_action(self, parsed_args):
@@ -66,18 +64,24 @@ class TokenCreate(CreateTokenFormatOne):
                     'grant_type': 'admin_password'
                 }
                 resp = self.requests_client.post_data_basic(data)
+                # Not returned by service
                 headers.remove('expires_at')
+                # Do not return - we want impersonation tokens to expire
+                headers.remove('refresh_token')
                 for h in headers:
                     # DERP
                     result.append(resp.get(h))
+
+                # Manually insert token username into response
+                headers.append('username')
+                # Nice feature - highlight the username
+                result.append(parsed_args.token_username)
+
         except HTTPError as h:
             if str(h).startswith('400'):
                 raise AgaveError(
                     'Failed to create a token pair: {0}'.format(h))
             else:
                 raise AgaveError(str(h))
-        # result = list()
-        # for h in headers:
-        #     # DERP
-        #     result.append(self.tapis_client.token.token_info.get(h))
+
         return (tuple(headers), tuple(result))
