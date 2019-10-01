@@ -46,11 +46,13 @@ class SearchArg(object):
     def get_argparse(self):
         """Generate an argparse argument for a MongoDB collection field
         """
-        param_type_text = argtype.param_type_repr(getattr(self, 'field_type'))
+        param_type_text = argtype.param_type_repr(getattr(
+            self, 'field_type')).lower()
+        modifier = '|'.join(self.mods)
         params = {
             'nargs': 2,
             'dest': self.destination,
-            'metavar': ('mod', param_type_text)
+            'metavar': (modifier, param_type_text)
         }
         if self.choices is not None:
             params['choices'] = self.choices

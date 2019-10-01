@@ -24,9 +24,9 @@ def param_type_repr(param_type):
     elif param_type in (DOUBLE, FLOAT):
         repr = 'decimal'
     elif param_type == DATETIME:
-        repr = 'date string'
+        repr = 'date_string'
     elif param_type == BOOLEAN:
-        repr = 'true'
+        repr = 'true|false'
     else:
         repr = ''
     return repr.upper()
