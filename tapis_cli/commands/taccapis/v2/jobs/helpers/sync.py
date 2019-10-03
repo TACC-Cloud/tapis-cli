@@ -182,6 +182,7 @@ def download(source,
              job_uuid,
              destination=None,
              excludes=None,
+             includes=None,
              force=False,
              sync=False,
              atomic=False,
@@ -192,11 +193,14 @@ def download(source,
 
     if excludes is None:
         excludes = []
+    if includes is None:
+        includes = []
     if destination is None:
         dest_dir = str(job_uuid)
     else:
         dest_dir = destination
     excludes = [os.path.join(dest_dir, e) for e in excludes]
+    includes = [os.path.join('/', i) for i in includes]
 
     if progress:
         print_stderr('Walking remote resource...')
@@ -214,6 +218,11 @@ def download(source,
     # Extract absolute names
     # Under jobs, paths all begin with /
     paths = [f['path'] for f in all_targets]
+
+    # Use only include files, if they were passed
+    if includes:
+        paths = [p for p in paths if p in includes]
+
     # Tapis Jobs returns a spurious "null/" at the start of each file's path
     # This is a temporary workaround
     paths = [re.sub('null/', '/', p) for p in paths]
