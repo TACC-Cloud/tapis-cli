@@ -33,7 +33,6 @@ class JobsSearch(JobsFormatMany, SearchableCommand):
             if parsed_args_val:
                 filt = sarg.get_param(parsed_args_val)
                 filters.append(filt)
-                print('FILTER {} -> {}'.format(parsed_args_val, filt))
 
         for f in filters:
             k = list(f.keys())[0]
