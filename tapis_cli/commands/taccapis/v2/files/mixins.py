@@ -18,9 +18,10 @@ class ExcludeFiles(ParserExtender):
         parser.add_argument(
             '--exclude',
             dest='exclude_files',
-            nargs='+',
-            metavar='<file>',
-            help='One or more Unix shell-style filename wildcards to exclude')
+            action='append',
+            # nargs='+',
+            metavar='<filename>',
+            help='Unix-style filename/wildcard (can be specified multiple times)')
         return parser
 
 
@@ -33,9 +34,10 @@ class IncludeFiles(ParserExtender):
         parser.add_argument(
             '--include',
             dest='include_files',
-            nargs='+',
-            metavar='<file>',
-            help='One or more Unix shell-style filename wildcards to include')
+            action='append',
+            # nargs='+',
+            metavar='<filename>',
+            help='Unix-style filename/wildcard (can be specified multiple times)')
         return parser
 
 
