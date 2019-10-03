@@ -21,8 +21,8 @@ class SearchMongoQuery(SearchArg):
         if self.field_type is argtype.DATETIME:
             return MongoQuery({
                 self.field: {
-                    '$gte': value.smart_floor(),
-                    '$lt': value.smart_ceil()
+                    '$gte': value.smart_floor().isoformat(),
+                    '$lt': value.smart_ceil().isoformat()
                 }
             })
         else:
@@ -36,8 +36,8 @@ class SearchMongoQuery(SearchArg):
             return MongoQuery({
                 self.field: {
                     '$not': {
-                        '$gte': value.smart_floor(),
-                        '$lt': value.smart_ceil()
+                        '$gte': value.smart_floor().isoformat(),
+                        '$lt': value.smart_ceil().isoformat()
                     }
                 }
             })
@@ -49,7 +49,7 @@ class SearchMongoQuery(SearchArg):
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            value = value.datetime
+            value = value.datetime.isoformat()
         return MongoQuery({self.field: {'$gt': value}})
 
     def query_gte(self, value):
@@ -57,7 +57,7 @@ class SearchMongoQuery(SearchArg):
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            value = value.datetime
+            value = value.datetime.isoformat()
         return MongoQuery({self.field: {'$gte': value}})
 
     def query_lt(self, value):
@@ -65,7 +65,7 @@ class SearchMongoQuery(SearchArg):
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            value = value.datetime
+            value = value.datetime.isoformat()
         return MongoQuery({self.field: {'$lt': value}})
 
     def query_lte(self, value):
@@ -73,7 +73,7 @@ class SearchMongoQuery(SearchArg):
         if isinstance(value, list):
             value = value[0]
         if self.field_type is argtype.DATETIME:
-            value = value.datetime
+            value = value.datetime.isoformat()
         return MongoQuery({self.field: {'$lte': value}})
 
     def query_in(self, values):

@@ -136,7 +136,6 @@ class SearchArg(object):
         dta = factory.get(dateparser.parse(value, settings={'TIMEZONE':
                                                             'UTC'}))
         dta.setup(value)
-        print(dta)
         return dta
 
     def to_values(self, value, delim=','):
