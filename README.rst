@@ -7,6 +7,9 @@ Tapis CLI
 .. image:: https://img.shields.io/pypi/l/Django.svg
     :target: https://raw.githubusercontent.com/TACC-Cloud/tapis-cli-ng/master/LICENSE.txt
 
+.. image:: https://zenodo.org/badge/203083094.svg
+   :target: https://zenodo.org/badge/latestdoi/203083094
+
 Installation
 ------------
 
