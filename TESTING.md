@@ -60,6 +60,11 @@ The following are **known issues** and will be addressed in future work periods:
 
 ## Installation
 
+04-10-2019 | The latest Docker image build of `master` is now always
+available as `tacc/tapis-cli-ng:latest` within 15-30 minutes after a commit
+is pushed to `master`. This is now accomplished via a Travis CLI workflow
+rather than by manual intervention by the developers.
+
 20-09-2019 | The CLI is installable from git checkout
   - It must be installable in **editable** mode (`pip install -e
     .`)
@@ -98,7 +103,18 @@ the end user communities that will use it.
 
 ## Configuration
 
-20-09-2019 |The CLI uses .env files and environment variables to configuring
+04-10-2019 | The CLI leverages `python-dotenv` for configuration via file.
+This is currently used to control a couple of features, outlined below. An
+example config file can be found in `.env.sample` in the Github repo. The
+config file must be named `.env` but can be placed in the current working
+directory or the user's `$HOME` directory.
+
+Two configuration options to note include `TAPIS_CLI_FIT_WIDTH` which sets
+whether the CLI automatically formats its tables to the current terminal
+width. The other is `TAPIS_PY_SHOW_CURL` which toggles live display of all
+API requests made by the CLI formatted as `cURL` commands.
+
+20-09-2019 | The CLI uses .env files and environment variables to configure
 some persistent settings. This will be described in more detail in
 future testing sessions.
 
@@ -156,8 +172,9 @@ supported.
 ## Apps
 
 04-10-2019 | Boolean search options are functional. Search arguments where
-there are a restricted set of choices are now indicated in the help. The
-preferred modifier for each argument is now highlighted. See below:
+there are a restricted set of choices are now indicated in the help. Note that
+Search on date fields is not supported. The preferred modifier for each
+argument is now highlighted. See example below:
 
 ```shell
 $ tapis apps search -h
@@ -207,6 +224,14 @@ $ tapis jobs search --status eq FINISHED -l 10 --created on yesterday
 $ tapis jobs search --status eq FAILED -l 10 --created before "Sep 30, 2019"
 # Jobs derived from the word-count-0.1 app template this year
 $ tapis jobs search --app-id eq word-count-0.1 --limit 5 --created after 1/1/2019
+```
+
+Wildcard support for selecting which output files to download is now
+available via the `--include` and `--exclude` options. Here is an example:
+
+```shell
+tapis jobs outputs download 8236380857915871721-242ac11d-0001-007 \
+      --sync --debug  --exclude "*.err" --exclude "*.out" --exclude "*.pid"
 ```
 
 27-09-2019 | Implementations of the legacy `jobs-output-list` and `jobs-output-get` commands
@@ -263,7 +288,8 @@ request document that can be used to submit a similar job.
 04-10-2019 | File deletion is now supported. File history is now supported.
 
 27-09-2017 | File listing, inspection, and downloads (including recursive) are
-now implemented. File uploads are also working. Here is a sample list operation.
+now implemented. File uploads are also working. Here is an example sample
+files list operation:
 
 ```shell
 $ tapis files list agave://data-sd2e-community/sample/tacc-cloud
@@ -351,8 +377,9 @@ Uploaded 3 files in 2s
 ## Systems
 
 04-10-2019 | Boolean search options are functional. Search arguments where
-there are a restricted set of choices are now indicated in the help. The
-preferred modifier for each argument is now highlighted. See below:
+there are a restricted set of choices are now indicated in the help. Searches
+on date fields is not supported. The preferred modifier for each argument is
+now highlighted. See example below:
 
 ```shell
 $ tapis systems search -h
