@@ -1,7 +1,10 @@
 from tapis_cli.main import PKG_NAME, About, VersionInfo
 import requests
+import curlify
 from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
+from tapis_cli.utils import print_stderr
+from tapis_cli.settings import SHOW_CURL
 
 __all__ = ['TaccApiDirectClient']
 
@@ -55,18 +58,21 @@ class TaccApiDirectClient(object):
     def get(self, path=None):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
+        show_curl(resp)
         resp.raise_for_status()
         return resp.json().get('result', {})
 
     def get_bytes(self, path=None):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
+        show_curl(resp)
         resp.raise_for_status()
         return resp
 
     def get_data(self, path=None, params={}):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers, params=params)
+        show_curl(resp)
         resp.raise_for_status()
         return resp.json().get('result', {})
 
@@ -76,6 +82,7 @@ class TaccApiDirectClient(object):
         if content_type is not None:
             post_headers['Content-type'] = content_type
         resp = requests.post(url, headers=post_headers)
+        show_curl(resp)
         resp.raise_for_status()
         return resp.json().get('result', {})
 
@@ -92,5 +99,12 @@ class TaccApiDirectClient(object):
             auth = (self.api_key, self.api_secret)
 
         resp = requests.post(url, headers=post_headers, auth=auth, data=data)
+        show_curl(resp)
+
         resp.raise_for_status()
         return resp.json()
+
+
+def show_curl(response_object):
+    if SHOW_CURL:
+        print_stderr(curlify.to_curl(response_object.request))
