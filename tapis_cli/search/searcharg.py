@@ -43,17 +43,42 @@ class SearchArg(object):
         if self.field is None:
             self.field = field
 
+    def _mod_help(self):
+        orig_mods = self.mods
+        mods = []
+        for o in orig_mods:
+            if o == self.default_mod:
+                mods.append(o + '*')
+            else:
+                mods.append(o)
+        modifier_help = '|'.join(mods)
+        return modifier_help
+
+    def _metavar_help(self):
+        if self.choices is not None:
+            metavar = '|'.join(sorted(self.choices))
+        else:
+            metavar = argtype.param_type_repr(getattr(self,
+                                                      'field_type')).lower()
+
+        return metavar
+
     def get_argparse(self):
         """Generate an argparse argument for a MongoDB collection field
         """
-        param_type_text = argtype.param_type_repr(getattr(self, 'field_type'))
+        param_type_text = argtype.param_type_repr(getattr(
+            self, 'field_type')).lower()
+        modifier = self._mod_help()
         params = {
             'nargs': 2,
             'dest': self.destination,
-            'metavar': ('mod', param_type_text)
+            'metavar': (modifier, self._metavar_help())
         }
-        if self.choices is not None:
-            params['choices'] = self.choices
+        # Using Argparse's choices param is not currently compatible
+        # with nargs:2 where arg.1 is the modifier
+        #
+        # if self.choices is not None:
+        #     params['choices'] = self.choices
         arg = Argument(self.argument, params)
         return arg
 

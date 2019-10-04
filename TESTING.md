@@ -46,7 +46,7 @@ The following are **known issues** and will be addressed in future work periods:
 > 3.  No **actors** or **tacclab** commands are implemented
 > 4.  The **watch** function from the old jobs-submit is gone and will
 >     never return
-> 5.  Impersonation token issuance is not yet implemented
+> 5.  ~~Impersonation token issuance is not yet implemented~~
 > 6.  The beloved `auth switch` is not yet implemented
 > 7.  Metadata schema and record management commands are not yet
 >     implemented
@@ -54,8 +54,9 @@ The following are **known issues** and will be addressed in future work periods:
 > 9.  The module is not yet available on PyPi
 > 10. Documentation builds are broken
 > 11. Creation of the Bash autocomplete config is broken
-> 12. Search on dates is broken
-> 12. Search on booleans can be broken (try `--boolean eq true`)
+> 12. ~~Search on dates is broken~~
+> 12. ~~Search on booleans can be broken (try `--boolean eq true`)~~
+> 13. ~~Access tokens passed via `-z` or `--token` are not honored~~
 
 ## Installation
 
@@ -101,7 +102,33 @@ the end user communities that will use it.
 some persistent settings. This will be described in more detail in
 future testing sessions.
 
+## Display Options
+
+04-10-2019 | New in this version is support for printing the curl equivalent
+for some commands to STDERR. This can be toggled on by setting
+`TAPIS_CLI_SHOW_CURL=1` in the environment or in the relevant `.env` file.
+Note that only commands that use the `TaccApiDirectClient` class to
+interact with Tapis currently have this capability.
+
 ## Auth
+
+04-10-2019 | It is now possible for users with the proper administrative role
+to generate impersonation tokens. The impersonation token is not written to
+the local credential cache. Here is an example:
+
+```shell
+$ tapis auth tokens create --token-username vaughn
+Password:
++--------------+---------------------------------+
+| Field        | Value                           |
++--------------+---------------------------------+
+| access_token | a207c7f0beec4757244e3b4460d917f |
+| username     | vaughn                          |
++--------------+---------------------------------+
+```
+
+Access tokens (both personal and impersonation) are now properly honored when
+passed to commands via the `-z` or `--token` option.
 
 27-09-2019 | No changes
 
@@ -128,12 +155,59 @@ supported.
 
 ## Apps
 
+04-10-2019 | Boolean search options are functional. Search arguments where
+there are a restricted set of choices are now indicated in the help. The
+preferred modifier for each argument is now highlighted. See below:
+
+```shell
+$ tapis apps search -h
+usage: tapis apps search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
+                         [--quote {all,minimal,none,nonnumeric}] [--noindent]
+                         [--max-width <integer>] [--fit-width] [--print-empty]
+                         [--sort-column SORT_COLUMN] [--no-verify]
+                         [-z <token>] [-l <int>] [-o <int>]
+                         [--id eq*|neq|start|end|like <string>]
+                         [--name eq*|neq|start|end|like <string>]
+                         [--version eq*|neq|start|end|like <string>]
+                         [--revision eq*|neq|gt|gte|lt|lte <int>]
+                         [--label eq*|neq|start|end|like <string>]
+                         [--short-description eq*|neq|start|end|like <string>]
+                         [--long-description eq*|neq|start|end|like <string>]
+                         [--owner eq*|neq|start|end|like <string>]
+                         [--public eq*|neq true|false]
+                         [--execution-type eq*|neq|start|end|like CLI|HPC]
+                         [--execution-system eq*|neq|start|end|like <string>]
+                         [--deployment-system eq*|neq|start|end|like <string>]
+                         [--available eq*|neq true|false]
+                         [--parallelism eq*|neq|start|end|like PARALLEL|SERIAL]
+                         [--default-processors-per-node eq*|neq|gt|gte|lt|lte <int>]
+                         [--default-memory-per-node eq*|neq|gt|gte|lt|lte <int>]
+                         [--default-node-count eq*|neq|gt|gte|lt|lte <int>]
+                         [--default-max-run-time eq*|neq|start|end|like <string>]
+                         [--default-queue eq*|neq|start|end|like <string>]
+```
+
 27-09-2019 | No changes
 
 20-09-2019 | Feel free to exercise the entire *apps* lifecycle save for cloning. Creation,
 updating, publishing, search & discovery, and sharing are all implemented.
 
 ## Jobs
+
+04-10-2019 | Boolean search options are functional. Search arguments where
+there are a restricted set of choices are now indicated in the help. The
+preferred modifier for each argument is now highlighted. Furthermore, date
+search, including support for semantic dates and humanized data strings is
+implemented. Some usage examples include:
+
+```shell
+# Show recent completed jobs launched yesterday
+$ tapis jobs search --status eq FINISHED -l 10 --created on yesterday
+# Show failed jobs created before yesterday (09/30/2019)
+$ tapis jobs search --status eq FAILED -l 10 --created before "Sep 30, 2019"
+# Jobs derived from the word-count-0.1 app template this year
+$ tapis jobs search --app-id eq word-count-0.1 --limit 5 --created after 1/1/2019
+```
 
 27-09-2019 | Implementations of the legacy `jobs-output-list` and `jobs-output-get` commands
 are now available. Note the added flexibility in the `tapis jobs outputs download`
@@ -185,6 +259,8 @@ option, which will translate the verbose Aloe jobs output into a JSON
 request document that can be used to submit a similar job.
 
 ## Files
+
+04-10-2019 | File deletion is now supported. File history is now supported.
 
 27-09-2017 | File listing, inspection, and downloads (including recursive) are
 now implemented. File uploads are also working. Here is a sample list operation.
@@ -273,6 +349,34 @@ Uploaded 3 files in 2s
 ```
 
 ## Systems
+
+04-10-2019 | Boolean search options are functional. Search arguments where
+there are a restricted set of choices are now indicated in the help. The
+preferred modifier for each argument is now highlighted. See below:
+
+```shell
+$ tapis systems search -h
+usage: tapis systems search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
+                            [--quote {all,minimal,none,nonnumeric}]
+                            [--noindent] [--max-width <integer>] [--fit-width]
+                            [--print-empty] [--sort-column SORT_COLUMN]
+                            [--no-verify] [-z <token>] [-l <int>] [-o <int>]
+                            [--available eq*|neq true|false]
+                            [--default eq*|neq true|false]
+                            [--description eq*|neq|start|end|like <string>]
+                            [--execution-type eq*|neq CLI|Condor|HPC]
+                            [--global-default eq*|neq true|false]
+                            [--id eq*|neq|start|end|like <string>]
+                            [--max-system-jobs eq*|neq|gt|gte|lt|lte <int>]
+                            [--max-system-jobs-per-user eq*|neq|gt|gte|lt|lte <int>]
+                            [--name eq*|neq|start|end|like <string>]
+                            [--owner eq*|neq|start|end|like <string>]
+                            [--public eq*|neq true|false]
+                            [--revision eq*|neq|gt|gte|lt|lte <int>]
+                            [--scheduler eq*|neq|start|end|like CONDOR|CUSTOM_SLURM|FORK|LSF|PBS|SGE|SLURM]
+                            [--status eq*|neq DOWN|MAINTENANCE|UNKNOWN|UP]
+                            [--type eq*|neq EXECUTION|STORAGE]
+```
 
 27-09-2019 | No changes
 

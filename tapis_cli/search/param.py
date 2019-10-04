@@ -133,17 +133,29 @@ class SearchWebParam(SearchArg):
         val = '*{}*'.format(value)
         return WebParam({key: val})
 
-    # def query_on(self, value):
-    #     if self.field_type is not argtype.DATETIME:
-    #         raise TypeError('"on" may only be used for dates and times')
-    #     return self.query_eq(value)
+    def query_on(self, value):
+        if self.field_type is not argtype.DATETIME:
+            raise TypeError('"on" may only be used for dates and times')
+        key = '{}.on'.format(self.field)
+        if isinstance(value, list):
+            value = value[0]
+        val = '{0}'.format(value.format('YYYY-MM-DD'))
+        return WebParam({key: val})
 
-    # def query_after(self, value):
-    #     if self.field_type is not argtype.DATETIME:
-    #         raise TypeError('"after" may only be used for dates and times')
-    #     return self.query_gt(value)
+    def query_after(self, value):
+        if self.field_type is not argtype.DATETIME:
+            raise TypeError('"after" may only be used for dates and times')
+        key = '{}.after'.format(self.field)
+        if isinstance(value, list):
+            value = value[0]
+        val = '{0}'.format(value.format('YYYY-MM-DD'))
+        return WebParam({key: val})
 
-    # def query_before(self, value):
-    #     if self.field_type is not argtype.DATETIME:
-    #         raise TypeError('"before" may only be used for dates and times')
-    #     return self.query_lt(value)
+    def query_before(self, value):
+        if self.field_type is not argtype.DATETIME:
+            raise TypeError('"before" may only be used for dates and times')
+        key = '{}.before'.format(self.field)
+        if isinstance(value, list):
+            value = value[0]
+        val = '{0}'.format(value.format('YYYY-MM-DD'))
+        return WebParam({key: val})

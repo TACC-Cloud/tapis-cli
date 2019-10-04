@@ -6,11 +6,14 @@ from . import API_NAME, SERVICE_VERSION
 from ..files.models import File
 from ..files.formatters import FilesFormatOne
 from .helpers.sync import download
+from ..files.mixins import ExcludeFiles, IncludeFiles, OverwritePolicy, ReportProgress
 
 __all__ = ['JobsOutputsDownload']
 
 
-class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
+class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
+                          ExcludeFiles, IncludeFiles, OverwritePolicy,
+                          ReportProgress):
     """Download a jobs output file or directory
     """
 
@@ -19,37 +22,16 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
         parser = FilesFormatOne.get_parser(self, prog_name)
         parser = JobsUUID.extend_parser(self, parser)
         parser = RemoteFilePath.extend_parser(self, parser)
+        parser = OverwritePolicy.extend_parser(self, parser)
+        parser = IncludeFiles.extend_parser(self, parser)
+        parser = ExcludeFiles.extend_parser(self, parser)
+        parser = ReportProgress.extend_parser(self, parser)
+
         parser.add_argument(
             '--cwd',
             dest='use_cwd',
             action='store_true',
             help="Download to '.' instead of a job-specific subdirectory")
-        syncmode = parser.add_mutually_exclusive_group(required=False)
-        syncmode.add_argument('--force',
-                              dest='overwrite',
-                              action='store_true',
-                              help='Always overwrite existing files')
-        syncmode.add_argument(
-            '--sync',
-            dest='sync',
-            action='store_true',
-            help='Overwrite only when timestamp or size differs')
-        # parser.add_argument('--atomic',
-        #                     dest='atomic',
-        #                     action='store_true',
-        #                     help='Download atomically')
-        parser.add_argument('--progress',
-                            dest='progress',
-                            action='store_true',
-                            help='Report progress to STDERR')
-        parser.add_argument('--exclude',
-                            nargs='+',
-                            metavar='filename',
-                            help='One or more files to exclude from download')
-        parser.add_argument('--include',
-                            nargs='+',
-                            metavar='filename',
-                            help='One or more files to include')
         return parser
 
     def take_action(self, parsed_args):
@@ -69,15 +51,15 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath):
             parsed_args.file_path,
             parsed_args.job_uuid,
             destination=dest_dir,
-            excludes=parsed_args.exclude,
-            includes=parsed_args.include,
+            excludes=parsed_args.exclude_files,
+            includes=parsed_args.include_files,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,
             progress=parsed_args.progress,
             atomic=False,
             agave=self.tapis_client)
 
-        headers = ['downloaded', 'skipped', 'warnings', 'elapsed_sec']
+        headers = ['downloaded', 'skipped', 'messages', 'elapsed_sec']
         if parsed_args.formatter in ('json', 'yaml'):
             data = [downloaded, skipped, [str(e) for e in exceptions], elapsed]
         else:

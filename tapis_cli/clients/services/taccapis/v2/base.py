@@ -14,13 +14,6 @@ class TaccApisCommandBase(TaccApiClient):
     def add_common_parser_arguments(self, parser):
         # print('TaccApisCommandBase.add_common_parser_arguments')
         # Derived classes must call the parent's super()
-        parser.add_argument('-H',
-                            '--api-server',
-                            dest='api_server',
-                            metavar='<url>',
-                            type=str,
-                            help="{0} API server".format(
-                                self.constants.PLATFORM))
         return parser
 
     def get_parser(self, prog_name):

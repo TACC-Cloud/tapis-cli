@@ -28,7 +28,7 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatMany.before_take_action(self, parsed_args)
+        parsed_args = super().before_take_action(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 

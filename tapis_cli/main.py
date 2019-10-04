@@ -3,6 +3,7 @@ import logging
 import os
 import sys
 
+from colorama import init, deinit
 from cliff.app import App
 from cliff.commandmanager import CommandManager
 from pbr.version import VersionInfo
@@ -71,7 +72,9 @@ class Tapis_App(App):
 
 
 def main(argv=sys.argv[1:]):
+    init(autoreset=True)
     catalogApp = Tapis_App()
+    deinit()
     return catalogApp.run(argv)
 
 

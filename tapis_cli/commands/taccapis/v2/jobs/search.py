@@ -26,7 +26,7 @@ class JobsSearch(JobsFormatMany, SearchableCommand):
         self.take_action_defaults(parsed_args)
 
         # Map properties set in parsed_args to a query payload for search
-        filters = list()
+        filters = []
         for sarg_name, sarg in self.search_args.items():
             # raise SystemError(sarg.destination)
             parsed_args_val = getattr(parsed_args, sarg.destination, None)
