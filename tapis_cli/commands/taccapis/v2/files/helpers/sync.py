@@ -8,12 +8,13 @@ import shutil
 
 from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
-                             print_stderr, datestring_to_epoch)
+                             print_stderr, datestring_to_epoch, fnmatches)
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
 from .stat import isdir, isfile
 from .walk import walk
+from ..mixins import FileExcludedError, FileExistsError
 
 from queue import Queue
 import threading
@@ -26,10 +27,6 @@ __all__ = ['download', 'FileExistsError']
 
 DEFAULT_SYSTEM_ID = 'data-tacc-sandbox'
 DEFAULT_PAGE_SIZE = 100
-
-
-class FileExistsError(IOError):
-    pass
 
 
 def __download(src,

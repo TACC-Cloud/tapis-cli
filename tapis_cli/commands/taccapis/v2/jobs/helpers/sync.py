@@ -11,8 +11,9 @@ import datetime
 from dateutil.tz import tzoffset
 
 from tapis_cli import settings
+from tapis_cli.commands.taccapis.v2.files.mixins import FileExcludedError, FileExistsError
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
-                             print_stderr, datestring_to_epoch)
+                             print_stderr, datestring_to_epoch, fnmatches)
 from tapis_cli.clients.services.taccapis.v2 import TaccApiDirectClient
 
 from .error import (read_tapis_http_error, handle_http_error,
@@ -82,7 +83,7 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     """
     file_name = dest_filename
     if file_name is None:
-        filename = os.path.basename(src_filename)
+        file_name = os.path.basename(src_filename)
     if atomic:
         temp_file_name = '{0}-{1}'.format(file_name, nanoseconds())
     else:
@@ -92,26 +93,12 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     return file_name, temp_file_name
 
 
-def _check_write(filename, size, timestamp, excludes, sync=False, force=False):
+def _check_write(filename, size, timestamp, sync=False, force=False):
     """Determine whether to write (or overwrite) a local file
     """
-    relative_excludes = []
-    for e in excludes:
-        if not e.startswith('./'):
-            relative_excludes.append('./' + e)
-        else:
-            relative_excludes.append(e)
-
-    # Is filename in the list of exlcudes? Don't write it
-    if filename in relative_excludes:
-        return False
 
     # Does the filename not exist? OK, write it
-    if not os.path.exists(filename):
-        return True
-
-    # Force is True. Write it.
-    if force is True:
+    if not os.path.exists(filename) or force is True:
         return True
 
     if sync is True:
@@ -131,6 +118,7 @@ def _download(src,
               size=None,
               timestamp=None,
               excludes=None,
+              includes=None,
               dest=None,
               block_size=4096,
               atomic=False,
@@ -138,13 +126,21 @@ def _download(src,
               sync=False,
               agave=None):
 
-    # raise SystemError('force={0} sync={1} atomic={2}'.format(force, sync, atomic))
-
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
+    if isinstance(includes, list) and len(includes) > 0:
+        if not fnmatches(src, includes):
+            raise FileExcludedError(
+                '{0} did not match include filter'.format(src))
+
+    # Check filename is in the excludes list
+    if isinstance(excludes, list) and len(excludes) > 0:
+        if fnmatches(src, excludes):
+            raise FileExcludedError('{0} matched exclude filter'.format(src))
+
     if not _check_write(
-            local_filename, size, timestamp, excludes, sync=sync, force=force):
+            local_filename, size, timestamp, sync=sync, force=force):
         raise OutputFileExistsError(
             'Local {0} exists and was not different from remote'.format(
                 local_filename))
@@ -182,6 +178,7 @@ def download(source,
              job_uuid,
              destination=None,
              excludes=None,
+             includes=None,
              force=False,
              sync=False,
              atomic=False,
@@ -190,14 +187,13 @@ def download(source,
 
     downloaded, skipped, errors, runtime = ([], [], [], None)
 
-    if excludes is None:
-        excludes = []
     if destination is None:
         dest_dir = str(job_uuid)
     else:
         dest_dir = destination
-    excludes = [os.path.join(dest_dir, e) for e in excludes]
-    includes = [os.path.join('/', i) for i in includes]
+
+    # else:
+    #     includes = [os.path.join('/', i) for i in includes]
 
     if progress:
         print_stderr('Walking remote resource...')
@@ -216,12 +212,9 @@ def download(source,
     # Under jobs, paths all begin with /
     paths = [f['path'] for f in all_targets]
 
-    # Use only include files, if they were passed
-    if includes:
-        paths = [p for p in paths if p in includes]
 
-    # Tapis Jobs returns a spurious "null/" at the start of each file's path
-    # This is a temporary workaround
+    # Tapis Jobs returns a spurious "null/" at the start of
+    # each file's path. This is a temporary workaround.
     paths = [re.sub('null/', '/', p) for p in paths]
     sizes = [f['length'] for f in all_targets]
     mods = [datestring_to_epoch(f['lastModified']) for f in all_targets]
@@ -253,17 +246,20 @@ def download(source,
                       size=size,
                       timestamp=mod,
                       dest=dest,
+                      includes=includes,
                       excludes=excludes,
                       atomic=atomic,
                       force=force,
                       sync=sync,
                       agave=agave)
             downloaded.append(src)
+        except FileExcludedError as fexc:
+            errors.append(fexc)
+            skipped.append(src)
         except OutputFileExistsError as ofe:
-            if sync:
+            if sync or force:
                 skipped.append(src)
-            else:
-                errors.append(ofe)
+            errors.append(ofe)
         except Exception as exc:
             errors.append(exc)
 
