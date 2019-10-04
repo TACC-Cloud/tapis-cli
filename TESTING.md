@@ -102,6 +102,14 @@ the end user communities that will use it.
 some persistent settings. This will be described in more detail in
 future testing sessions.
 
+## Display Options
+
+04-10-2019 | New in this version is support for printing the curl equivalent
+for some commands to STDERR. This can be toggled on by setting
+`TAPIS_CLI_SHOW_CURL=1` in the environment or in the relevant `.env` file.
+Note that only commands that use the `TaccApiDirectClient` class to
+interact with Tapis currently have this capability.
+
 ## Auth
 
 04-10-2019 | It is now possible for users with the proper administrative role
