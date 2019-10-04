@@ -21,7 +21,8 @@ class ExcludeFiles(ParserExtender):
             action='append',
             # nargs='+',
             metavar='<filename>',
-            help='Unix-style filename/wildcard (can be specified multiple times)')
+            help=
+            'Unix-style filename/wildcard (can be specified multiple times)')
         return parser
 
 
@@ -37,7 +38,8 @@ class IncludeFiles(ParserExtender):
             action='append',
             # nargs='+',
             metavar='<filename>',
-            help='Unix-style filename/wildcard (can be specified multiple times)')
+            help=
+            'Unix-style filename/wildcard (can be specified multiple times)')
         return parser
 
 
