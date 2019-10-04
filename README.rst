@@ -1,6 +1,12 @@
 Tapis CLI
 =========
 
+.. image:: https://travis-ci.org/TACC-Cloud/tapis-cli-ng.svg?branch=master
+    :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
+
+.. image:: https://img.shields.io/pypi/l/Django.svg
+    :target: https://raw.githubusercontent.com/TACC-Cloud/tapis-cli-ng/master/LICENSE.txt
+
 Installation
 ------------
 
@@ -8,7 +14,7 @@ Installation
 
     $ git clone https://github.com/TACC-Cloud/tapis-cli-ng.git
     $ cd tapis-cli-ng
-    $ pip install --user .
+    $ pip install --upgrade --user .
 
 Docker Container Image
 ^^^^^^^^^^^^^^^^^^^^^^
