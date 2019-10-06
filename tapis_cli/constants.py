@@ -20,7 +20,8 @@ TENANT = 'tenant'
 CLIENT_KEY = 'client key'
 # Oauth client secret
 CLIENT_SECRET = 'client secret'
+
 # Has permission
-PEM_TRUE = 'X'
+PEM_TRUE = 'True'
 # Does not have permission
-PEM_FALSE = ' '
+PEM_FALSE = 'False'
