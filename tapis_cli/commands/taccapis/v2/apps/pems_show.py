@@ -1,16 +1,16 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import ServiceIdentifier, Username
 from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
-from .models import AppPermission
 from .formatters import AppsFormatOne
 
 __all__ = ['AppsPemsShow']
 
 
-class AppsPemsShow(AppsFormatOne, ServiceIdentifier):
+class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
     """Show permissions on an app for specific user
     """
     VERBOSITY = Verbosity.BRIEF
@@ -19,15 +19,13 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier):
     def get_parser(self, prog_name):
         parser = AppsFormatOne.get_parser(self, prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
-        parser.add_argument('username',
-                            type=str,
-                            help='username to show permission for')
+        parser = Username.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = AppsFormatOne.before_take_action(self, parsed_args)
-        headers = AppPermission.get_headers(self, self.VERBOSITY,
-                                            parsed_args.formatter)
+        headers = Permission.get_headers(self, self.VERBOSITY,
+                                         parsed_args.formatter)
         #
         # Below is call to the AgavePy method but it is broken due to changes in behavior
         # between Py2 and Py3. It returns an wierdly iterated dict object:
@@ -58,7 +56,7 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier):
         if self.app_verbose_level > self.VERBOSITY:
             # Table display
             record.append(rec.get('username'))
-            record.extend(AppPermission.pem_to_row(rec.get('permission', {})))
+            record.extend(Permission.pem_to_row(rec.get('permission', {})))
         else:
             # Verbose JSON display
             for key in headers:
