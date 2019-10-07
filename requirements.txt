@@ -1,4 +1,5 @@
 cliff
+curlify
 pbr
 python-dateutil
 python-dotenv
