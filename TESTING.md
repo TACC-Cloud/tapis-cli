@@ -285,6 +285,9 @@ request document that can be used to submit a similar job.
 
 ## Files
 
+11-10-2019 | Permissions management commands for files are now implemented
+The syntax is `files pems <action> <agave_url> <username> [<permission>]`
+
 04-10-2019 | File deletion is now supported. File history is now supported.
 
 27-09-2017 | File listing, inspection, and downloads (including recursive) are

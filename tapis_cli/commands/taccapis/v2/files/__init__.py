@@ -9,3 +9,8 @@ from .history import FilesHistory
 from .list import FilesList
 from .show import FilesShow
 from .upload import FilesUpload
+from .pems_list import FilesPemsList
+from .pems_show import FilesPemsShow
+from .pems_grant import FilesPemsGrant
+from .pems_revoke import FilesPemsRevoke
+from .pems_drop import FilesPemsDrop

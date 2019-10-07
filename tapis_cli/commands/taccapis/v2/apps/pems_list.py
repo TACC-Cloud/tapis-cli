@@ -2,9 +2,9 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
 from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
-from .models import AppPermission
 from .formatters import AppsFormatMany
 
 __all__ = ['AppsPemsList']
@@ -23,8 +23,8 @@ class AppsPemsList(AppsFormatMany, ServiceIdentifier):
 
     def take_action(self, parsed_args):
         parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
-        headers = AppPermission.get_headers(self, self.VERBOSITY,
-                                            parsed_args.formatter)
+        headers = Permission.get_headers(self, self.VERBOSITY,
+                                         parsed_args.formatter)
         self.take_action_defaults(parsed_args)
 
         results = self.tapis_client.apps.listPermissions(
@@ -36,8 +36,7 @@ class AppsPemsList(AppsFormatMany, ServiceIdentifier):
             # Table display
             if self.app_verbose_level > self.VERBOSITY:
                 record.append(rec.get('username'))
-                record.extend(
-                    AppPermission.pem_to_row(rec.get('permission', {})))
+                record.extend(Permission.pem_to_row(rec.get('permission', {})))
             else:
                 for key in headers:
                     val = self.render_value(rec.get(key, None))

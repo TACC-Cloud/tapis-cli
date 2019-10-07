@@ -7,7 +7,10 @@ from tapis_cli.clients.services.mixins import ParserExtender
 from tapis_cli.utils import humanize_bytes
 from .models import File
 
-__all__ = ['FilesFormatOne', 'FilesFormatMany', 'FilesHistoryFormatMany']
+__all__ = [
+    'FilesFormatOne', 'FilesFormatMany', 'FilesHistoryFormatMany',
+    'FilesPemsFormatMany'
+]
 
 
 class FilesBase(TaccApisCommandBase):
@@ -33,4 +36,8 @@ class FilesFormatMany(FilesBase, TaccApisFormatMany):
 
 
 class FilesHistoryFormatMany(FilesBase, TaccApisFormatMany):
+    pass
+
+
+class FilesPemsFormatMany(FilesBase, TaccApisFormatMany):
     pass

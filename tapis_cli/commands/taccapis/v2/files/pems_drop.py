@@ -1,34 +1,39 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import AppsFormatMany
+from .formatters import FilesFormatMany
+from .helpers.pems_list import pems_list
 
-__all__ = ['AppsPemsDrop']
+__all__ = ['FilesPemsDrop']
 
 
-class AppsPemsDrop(AppsFormatMany, ServiceIdentifier):
-    """Drop all granted permissions from an app
+class FilesPemsDrop(FilesFormatMany, AgaveURI):
+    """Drop all granted permissions from an file
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatMany.get_parser(self, prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = FilesFormatMany.get_parser(self, prog_name)
+        parser = AgaveURI.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
+        parsed_args = FilesFormatMany.before_take_action(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
-        drop_result = self.tapis_client.apps.deletePermissions(
-            appId=parsed_args.identifier)
-        results = self.tapis_client.apps.listPermissions(
-            appId=parsed_args.identifier)
+        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+
+        drop_result = self.tapis_client.files.deletePermissions(
+            systemId=storage_system, filePath=file_path)
+        # List now that the drop is complete
+        results = pems_list(file_path,
+                            system_id=storage_system,
+                            agave=self.tapis_client)
 
         records = []
         for rec in results:

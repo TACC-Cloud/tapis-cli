@@ -7,12 +7,14 @@ from agavepy.agave import Agave
 from cliff.command import Command
 from cliff.hooks import CommandHook
 from cliff.app import App
+
+from tapis_cli import constants
 from tapis_cli.display import Verbosity
 
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
-    'RemoteFilePath', 'LocalFilePath'
+    'RemoteFilePath', 'LocalFilePath', 'Username'
 ]
 
 
@@ -212,3 +214,13 @@ class UploadJsonFile(ParserExtender):
         with open(parsed_args.json_file_name, 'rb') as jfile:
             payload = json.load(jfile)
             setattr(self, 'json_file_contents', payload)
+
+
+class Username(ParserExtender):
+    """Configures a Command to accept an positional username
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('username',
+                            metavar='<username>',
+                            help='{0} username'.format(constants.PLATFORM))
+        return parser

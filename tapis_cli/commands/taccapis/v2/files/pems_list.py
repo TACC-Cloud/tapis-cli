@@ -1,34 +1,41 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.commands.taccapis import SearchableCommand
-from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import AppsFormatMany
+from tapis_cli.commands.taccapis.model import Permission
+from .formatters import FilesPemsFormatMany
+from .mixins import FileOptions
+from .helpers.pems_list import pems_list
 
-__all__ = ['AppsPemsDrop']
+__all__ = ['FilesPemsList']
 
 
-class AppsPemsDrop(AppsFormatMany, ServiceIdentifier):
-    """Drop all granted permissions from an app
+class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
+    """List permissions for an specific file path
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatMany.get_parser(self, prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = FilesPemsFormatMany.get_parser(self, prog_name)
+        parser = AgaveURI.extend_parser(self, parser)
+        parser = FileOptions.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
+        parsed_args = FilesPemsFormatMany.before_take_action(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
-        drop_result = self.tapis_client.apps.deletePermissions(
-            appId=parsed_args.identifier)
-        results = self.tapis_client.apps.listPermissions(
-            appId=parsed_args.identifier)
+        self.take_action_defaults(parsed_args)
+        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+        results = pems_list(file_path,
+                            system_id=storage_system,
+                            limit=parsed_args.limit,
+                            offset=parsed_args.offset,
+                            permissive=False,
+                            agave=self.tapis_client)
 
         records = []
         for rec in results:

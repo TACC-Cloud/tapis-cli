@@ -1,19 +1,15 @@
 """Data model and functions for Tapis apps
 """
-from .. import SERVICE_VERSION
-from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 from tapis_cli import constants
-from .app import App
+from . import TapisModel
 
-__all__ = ['App', 'API_NAME', 'SERVICE_VERSION']
-
-API_NAME = 'apps'
+__all__ = ['Permission']
 
 
-class AppPermission(App):
-    """Model of a Tapis application permission
+class Permission(TapisModel):
+    """Model of a Tapis permission
     """
 
     NAMES = [
