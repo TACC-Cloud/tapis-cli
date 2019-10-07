@@ -24,4 +24,5 @@ sphinx-fontawesome
 stevedore
 tenacity
 colorama
+curlify
 agavepy@git+https://github.com/TACC/agavepy.git@cli
