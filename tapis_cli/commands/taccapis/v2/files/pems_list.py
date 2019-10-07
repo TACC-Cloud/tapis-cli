@@ -7,6 +7,7 @@ from . import API_NAME, SERVICE_VERSION
 from tapis_cli.commands.taccapis.model import Permission
 from .formatters import FilesPemsFormatMany
 from .mixins import FileOptions
+from .helpers.pems_list import pems_list
 
 __all__ = ['FilesPemsList']
 
@@ -29,12 +30,12 @@ class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
                                          parsed_args.formatter)
         self.take_action_defaults(parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
-
-        results = self.tapis_client.files.listPermissions(
-            systemId=storage_system,
-            filePath=file_path,
-            limit=parsed_args.limit,
-            offset=parsed_args.offset)
+        results = pems_list(file_path,
+                            system_id=storage_system,
+                            limit=parsed_args.limit,
+                            offset=parsed_args.offset,
+                            permissive=False,
+                            agave=self.tapis_client)
 
         records = []
         for rec in results:

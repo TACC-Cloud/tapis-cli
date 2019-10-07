@@ -6,6 +6,7 @@ from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import FilesFormatMany
+from .helpers.pems_list import pems_list
 
 __all__ = ['FilesPemsRevoke']
 
@@ -25,13 +26,15 @@ class FilesPemsRevoke(FilesFormatMany, AgaveURI, Username):
     def take_action(self, parsed_args):
         parsed_args = FilesFormatMany.before_take_action(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
-                                            parsed_args.formatter)
+                                         parsed_args.formatter)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
         body = {'username': parsed_args.username, 'permission': 'NONE'}
         revoke_result = self.tapis_client.files.updatePermissions(
             systemId=storage_system, filePath=file_path, body=body)
-        results = self.tapis_client.files.listPermissions(
-            systemId=storage_system, filePath=file_path, limit=200, offset=0)
+        # List now that the revoke is complete
+        results = pems_list(file_path,
+                            system_id=storage_system,
+                            agave=self.tapis_client)
 
         records = []
         for rec in results:
@@ -39,8 +42,7 @@ class FilesPemsRevoke(FilesFormatMany, AgaveURI, Username):
             # Table display
             if self.app_verbose_level > self.VERBOSITY:
                 record.append(rec.get('username'))
-                record.extend(
-                    Permission.pem_to_row(rec.get('permission', {})))
+                record.extend(Permission.pem_to_row(rec.get('permission', {})))
             else:
                 for key in headers:
                     val = self.render_value(rec.get(key, None))

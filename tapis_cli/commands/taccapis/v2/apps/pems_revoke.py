@@ -25,7 +25,7 @@ class AppsPemsRevoke(AppsFormatMany, ServiceIdentifier):
     def take_action(self, parsed_args):
         parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
-                                            parsed_args.formatter)
+                                         parsed_args.formatter)
         body = {'username': parsed_args.username, 'permission': 'NONE'}
         revoke_result = self.tapis_client.apps.updateApplicationPermissions(
             appId=parsed_args.identifier, body=body)
@@ -38,8 +38,7 @@ class AppsPemsRevoke(AppsFormatMany, ServiceIdentifier):
             # Table display
             if self.app_verbose_level > self.VERBOSITY:
                 record.append(rec.get('username'))
-                record.extend(
-                    Permission.pem_to_row(rec.get('permission', {})))
+                record.extend(Permission.pem_to_row(rec.get('permission', {})))
             else:
                 for key in headers:
                     val = self.render_value(rec.get(key, None))

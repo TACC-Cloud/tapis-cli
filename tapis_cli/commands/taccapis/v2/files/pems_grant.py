@@ -6,6 +6,7 @@ from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import FilesFormatMany
+from .helpers.pems_list import pems_list
 
 __all__ = ['FilesPemsGrant']
 
@@ -40,10 +41,10 @@ class FilesPemsGrant(FilesFormatMany, AgaveURI, Username):
         # Do the grant
         grant_result = self.tapis_client.files.updatePermissions(
             systemId=storage_system, filePath=file_path, body=body)
-        # List new result
-        # TODO - permission set might be huge - figure out a way around this
-        results = self.tapis_client.files.listPermissions(
-            systemId=storage_system, filePath=file_path, limit=200, offset=0)
+        # List now that the grant is complete
+        results = pems_list(file_path,
+                            system_id=storage_system,
+                            agave=self.tapis_client)
 
         records = []
         for rec in results:
