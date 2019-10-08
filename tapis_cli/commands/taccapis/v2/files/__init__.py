@@ -7,6 +7,7 @@ from .delete import FilesDelete
 from .download import FilesDownload
 from .history import FilesHistory
 from .list import FilesList
+from .mkdir import FilesMakeDir
 from .show import FilesShow
 from .upload import FilesUpload
 from .pems_list import FilesPemsList
