@@ -7,7 +7,7 @@ from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
 from tapis_cli.clients.services.mixins import ServiceIdentifier
 from .models import Metadata
 
-__all__ = ['MetadataFormatOne', 'MetadataFormatMany', 'MetadataIdentifier']
+__all__ = ['MetadataFormatOne', 'MetadataFormatMany']
 
 
 class MetadataBase(TaccApisCommandBase):
@@ -22,15 +22,3 @@ class MetadataFormatMany(MetadataBase, TaccApisFormatMany):
     pass
 
 
-class MetadataIdentifier(ServiceIdentifier):
-    @classmethod
-    def arg_display(cls, id_value):
-        return '<uuid>'.format(id_value).lower()
-
-    @classmethod
-    def arg_metavar(cls, id_value):
-        return cls.arg_display(id_value)
-
-    @classmethod
-    def arg_help(cls, id_value):
-        return 'Metadata UUID'.format(id_value)

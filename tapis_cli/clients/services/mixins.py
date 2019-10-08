@@ -14,9 +14,13 @@ from tapis_cli.display import Verbosity
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
-    'RemoteFilePath', 'LocalFilePath', 'Username'
+    'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier'
 ]
 
+class InvalidIdentifier(ValueError):
+    """Raised when an invalid identifier is encountered
+    """
+    pass
 
 class OptionNotImplemented(ValueError):
     """Raised when an option that is only a placeholder is specified
@@ -128,6 +132,10 @@ class ServiceIdentifier(ParserExtender):
                                     metavar=self.arg_metavar(id_value),
                                     help=self.arg_help(id_value))
         return parser
+
+    @classmethod
+    def validate_identifier(cls, identifier):
+        return True
 
 
 class AgaveURI(ParserExtender):
