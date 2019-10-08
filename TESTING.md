@@ -106,8 +106,7 @@ the end user communities that will use it.
 04-10-2019 | The CLI leverages `python-dotenv` for configuration via file.
 This is currently used to control a couple of features, outlined below. An
 example config file can be found in `.env.sample` in the Github repo. The
-config file must be named `.env` but can be placed in the current working
-directory or the user's `$HOME` directory.
+config file must be named `.env` and be placed in the user's `$HOME` directory.
 
 Two configuration options to note include `TAPIS_CLI_FIT_WIDTH` which sets
 whether the CLI automatically formats its tables to the current terminal
