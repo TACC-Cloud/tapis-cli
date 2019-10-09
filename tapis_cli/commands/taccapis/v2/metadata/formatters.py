@@ -4,7 +4,6 @@ from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
                                                  TaccApisFormatOne,
                                                  TaccApisFormatMany,
                                                  TaccApisFormatManyUnlimited)
-from tapis_cli.clients.services.mixins import ServiceIdentifier
 from .models import Metadata
 
 __all__ = ['MetadataFormatOne', 'MetadataFormatMany']
@@ -20,5 +19,3 @@ class MetadataFormatOne(MetadataBase, TaccApisFormatOne):
 
 class MetadataFormatMany(MetadataBase, TaccApisFormatMany):
     pass
-
-

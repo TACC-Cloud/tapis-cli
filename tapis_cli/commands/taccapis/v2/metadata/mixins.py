@@ -2,13 +2,26 @@
 """
 
 from tapis_cli.clients.services.mixins import (ServiceIdentifier,
-                                               InvalidIdentifier)
+                                               InvalidIdentifier,
+                                               UploadJsonFile)
 
-__all__ = ['MetadataIdentifier']
+__all__ = ['MetadataIdentifier', 'UploadMetadataFile']
 
 
 class MetadataExistsError(ValueError):
     pass
+
+
+class UploadMetadataFile(UploadJsonFile):
+    def extend_parser(self, parser):
+        parser.add_argument('-F',
+                            '--file',
+                            dest='json_file_name',
+                            metavar='<json_file>',
+                            type=str,
+                            help='JSON file for metadata record')
+        return parser
+
 
 class MetadataIdentifier(ServiceIdentifier):
     @classmethod
@@ -28,4 +41,5 @@ class MetadataIdentifier(ServiceIdentifier):
         if True:
             return True
         else:
-            raise InvalidIdentifier('{0} is not a valid identifier'.format(identifier))
+            raise InvalidIdentifier(
+                '{0} is not a valid identifier'.format(identifier))
