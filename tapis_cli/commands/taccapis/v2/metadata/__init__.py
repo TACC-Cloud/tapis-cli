@@ -8,3 +8,4 @@ from .delete import MetadataDelete
 from .list import MetadataList
 from .show import MetadataShow
 from .search import MetadataSearch
+from .update import MetadataUpdate

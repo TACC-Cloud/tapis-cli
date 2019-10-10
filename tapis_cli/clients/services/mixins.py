@@ -137,9 +137,20 @@ class ServiceIdentifier(ParserExtender):
                                     help=self.arg_help(id_value))
         return parser
 
-    @classmethod
-    def validate_identifier(cls, identifier):
+    def validate_identifier(self, identifier):
         return True
+
+    def get_identifier(self, parsed_args, validate=False, permissive=False):
+        identifier = None
+        try:
+            identifier = parsed_args.identifier
+            self.validate_identifier(identifier)
+        except Exception:
+            if permissive:
+                return False
+            else:
+                raise
+        return identifier
 
 
 class AgaveURI(ParserExtender):

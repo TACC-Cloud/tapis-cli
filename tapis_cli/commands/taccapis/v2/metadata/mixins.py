@@ -19,7 +19,7 @@ class UploadMetadataFile(UploadJsonFile):
                             dest='json_file_name',
                             metavar='<json_file>',
                             type=str,
-                            help='JSON file for metadata record')
+                            help='JSON file containing document contents')
         return parser
 
 
@@ -36,8 +36,7 @@ class MetadataIdentifier(ServiceIdentifier):
     def arg_help(cls, id_value):
         return 'Metadata UUID'.format(id_value)
 
-    @classmethod
-    def validate_identifier(cls, identifier):
+    def validate_identifier(self, identifier):
         if True:
             return True
         else:

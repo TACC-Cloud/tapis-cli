@@ -31,9 +31,13 @@ def __to_cu_data(name, value, validate=True):
 def create_update(name=None,
                   value=None,
                   uuid=None,
+                  peristent_name=False,
                   permissive=False,
                   agave=None):
     try:
+        if peristent_name is True and name is None and uuid is not None:
+            name = agave.meta.getMetadata(uuid=uuid).get('name')
+
         cu_data = __to_cu_data(name, value, validate=True)
         if uuid is None:
             resp = agave.meta.addMetadata(body=cu_data)
