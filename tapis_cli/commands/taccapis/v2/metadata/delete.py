@@ -8,11 +8,11 @@ from .models import Metadata
 from .formatters import MetadataFormatOne
 from .mixins import MetadataIdentifier
 
-__all__ = ['MetadataShow']
+__all__ = ['MetadataDelete']
 
 
-class MetadataShow(MetadataFormatOne, MetadataIdentifier):
-    """Show a Metadata record by UUID
+class MetadataDelete(MetadataFormatOne, MetadataIdentifier):
+    """Delete a Metadata record by UUID
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -26,14 +26,25 @@ class MetadataShow(MetadataFormatOne, MetadataIdentifier):
         parsed_args = MetadataFormatOne.before_take_action(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.take_action_defaults(parsed_args)
-
-        headers = SearchableCommand.headers(self, Metadata, parsed_args)
         identifier = parsed_args.identifier
         self.validate_identifier(identifier)
-        rec = self.tapis_client.meta.getMetadata(uuid=parsed_args.identifier)
 
-        data = []
-        for key in headers:
-            val = self.render_value(rec.get(key, None))
-            data.append(val)
+        deleted = []
+        exceptions = []
+        try:
+            self.tapis_client.meta.deleteMetadata(uuid=parsed_args.identifier)
+            deleted.append(parsed_args.identifier)
+        except Exception as err:
+            exceptions.append(err)
+
+        # Following the example set for file upload/download, report
+        # summary statistics in table or structured form if showing yaml/json
+        #
+        # Considering implementing a plural version of ServiceIdentifer to
+        # allow commands to process multiple IDs - most useful for batch delete
+        headers = ['deleted', 'messages']
+        if parsed_args.formatter in ('json', 'yaml'):
+            data = [deleted, [str(e) for e in exceptions]]
+        else:
+            data = [len(deleted), len(exceptions)]
         return (tuple(headers), tuple(data))

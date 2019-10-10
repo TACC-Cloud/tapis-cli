@@ -4,6 +4,7 @@ import arrow
 import datetime
 import fnmatch
 import getpass
+import json
 import os
 import pkg_resources
 import re
@@ -293,3 +294,20 @@ def fnmatches(file_name, patterns=None):
             if fnmatch.fnmatch(file_name, p):
                 return True
         return False
+
+
+def serializable(obj, permissive=True):
+    """Check that a Python object is JSON serializable
+    """
+    try:
+        json.loads(json.dumps(obj))
+        return True
+    except Exception:
+        if permissive:
+            return False
+        else:
+            raise
+
+
+def timestamp():
+    return arrow.utcnow().format('YYMMDDTHHmmss') + 'Z'

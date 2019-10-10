@@ -2,6 +2,7 @@
 """
 import argparse
 import json
+import os
 from agavepy.agave import Agave
 
 from cliff.command import Command
@@ -10,12 +11,19 @@ from cliff.app import App
 
 from tapis_cli import constants
 from tapis_cli.display import Verbosity
+from tapis_cli.utils import serializable
 
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
-    'RemoteFilePath', 'LocalFilePath', 'Username'
+    'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier'
 ]
+
+
+class InvalidIdentifier(ValueError):
+    """Raised when an invalid identifier is encountered
+    """
+    pass
 
 
 class OptionNotImplemented(ValueError):
@@ -129,6 +137,21 @@ class ServiceIdentifier(ParserExtender):
                                     help=self.arg_help(id_value))
         return parser
 
+    def validate_identifier(self, identifier):
+        return True
+
+    def get_identifier(self, parsed_args, validate=False, permissive=False):
+        identifier = None
+        try:
+            identifier = parsed_args.identifier
+            self.validate_identifier(identifier)
+        except Exception:
+            if permissive:
+                return False
+            else:
+                raise
+        return identifier
+
 
 class AgaveURI(ParserExtender):
     """Configures a Command to require a mandatory 'agave uri'
@@ -211,9 +234,19 @@ class UploadJsonFile(ParserExtender):
         return parser
 
     def handle_file_upload(self, parsed_args):
-        with open(parsed_args.json_file_name, 'rb') as jfile:
-            payload = json.load(jfile)
-            setattr(self, 'json_file_contents', payload)
+        if parsed_args.json_file_name is not None and os.path.exists(
+                parsed_args.json_file_name):
+            with open(parsed_args.json_file_name, 'rb') as jfile:
+                payload = json.load(jfile)
+                setattr(self, 'json_file_contents', payload)
+            # Check JSON validity by loading and dumping it
+            try:
+                serializable(self.json_file_contents)
+            except Exception as exc:
+                raise ValueError('{0} was not valid JSON: {1}'.format(
+                    parsed_args.json_file_name, exc))
+        else:
+            setattr(self, 'json_file_contents', None)
 
 
 class Username(ParserExtender):
