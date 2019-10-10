@@ -3,6 +3,8 @@
 import argparse
 import json
 import os
+import sys
+
 from agavepy.agave import Agave
 
 from cliff.command import Command
@@ -234,19 +236,25 @@ class UploadJsonFile(ParserExtender):
         return parser
 
     def handle_file_upload(self, parsed_args):
-        if parsed_args.json_file_name is not None and os.path.exists(
+        if parsed_args.json_file_name == '-':
+            document_source = sys.stdin
+        elif parsed_args.json_file_name is not None and os.path.exists(
                 parsed_args.json_file_name):
-            with open(parsed_args.json_file_name, 'rb') as jfile:
-                payload = json.load(jfile)
-                setattr(self, 'json_file_contents', payload)
-            # Check JSON validity by loading and dumping it
-            try:
-                serializable(self.json_file_contents)
-            except Exception as exc:
-                raise ValueError('{0} was not valid JSON: {1}'.format(
-                    parsed_args.json_file_name, exc))
+            document_source = open(parsed_args.json_file_name, 'rb')
         else:
+            raise IOError('Unknown or inaccessible data source: {0}'.format(
+                parsed_args.json_file_name))
+
+        payload = json.load(document_source)
+
+        # Check JSON validity by loading and dumping it
+        try:
+            serializable(payload)
+            setattr(self, 'json_file_contents', payload)
+        except Exception as exc:
             setattr(self, 'json_file_contents', None)
+            raise ValueError('{0} was not valid JSON: {1}'.format(
+                parsed_args.json_file_name, exc))
 
 
 class Username(ParserExtender):
