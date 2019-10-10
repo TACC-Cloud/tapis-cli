@@ -103,6 +103,16 @@ the end user communities that will use it.
 
 ## Configuration
 
+11-10-2019 | It is now possible to specify a tenants server and default
+`tenant_id` for a non-TACC installation of the CLI. This accomplished by
+setting the variables `TAPIS_TENANTS_URL` and `TAPIS_DEFAULT_TENANT_ID`,
+respectively. Note that setting the default identifier will only change
+the behavior of `tapis auth init` by setting the designated value as the
+default value for `--tenant-id` in the interactive prompt.
+
+Several unused configuration settings were deactivated, including some
+pertaining to JupyterHub, Gitlab, and Tapis tenancy.
+
 04-10-2019 | The CLI leverages `python-dotenv` for configuration via file.
 This is currently used to control a couple of features, outlined below. An
 example config file can be found in `.env.sample` in the Github repo. The
