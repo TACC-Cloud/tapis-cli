@@ -52,6 +52,6 @@ not yet possible to  edit settings in the CLI directly.
     | TACC_API_SERVER             | https://api.tacc.utexas.edu/        |
     | TACC_JUPYTER_SERVER         | https://jupyter.tacc.utexas.edu     |
     | TACC_PRIMARY_STORAGE_SYSTEM | data-tapis-sandbox                  |
-    | TACC_GITLAB_SERVER          | git.tacc.utexas.edu                 |
-    | TACC_GITLAB_URI             | https://git.tacc.utexas.edu         |
+    | TENANT_GITLAB_SERVER          | git.tacc.utexas.edu                 |
+    | TENANT_GITLAB_URL             | https://git.tacc.utexas.edu         |
     +-----------------------------+-------------------------------------+

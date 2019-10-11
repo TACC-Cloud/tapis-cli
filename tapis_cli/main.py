@@ -28,7 +28,7 @@ class Tapis_App(App):
             deferred_help=True,
         )
         # Force table formatting to fit window width
-        if settings.FIT_WIDTH:
+        if settings.TAPIS_CLI_FIT_WIDTH:
             os.environ['CLIFF_FIT_WIDTH'] = '1'
 
     def prepare_to_run_command(self, cmd):
@@ -56,8 +56,8 @@ class Tapis_App(App):
         self.logger = logging.getLogger(__name__)
         self.logger.addHandler(NullHandler())
 
-        # if settings.LOG_LEVEL is not None:
-        #     logging.basicConfig(level=settings.LOG_LEVEL)
+        # if settings.TAPIS_CLI_LOG_LEVEL is not None:
+        #     logging.basicConfig(level=settings.TAPIS_CLI_LOG_LEVEL)
         return
 
     # TODO - Add foundational options like tenant, sandbox, verify_ssl, etc

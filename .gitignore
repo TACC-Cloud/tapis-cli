@@ -12,3 +12,4 @@ build/*
 .eggs/
 .tox/
 dist
+temp/

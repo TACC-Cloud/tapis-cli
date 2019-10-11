@@ -5,20 +5,21 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Metadata
-from .formatters import MetadataFormatOne, MetadataIdentifier
+from .formatters import MetadataFormatOne
+from .mixins import MetadataIdentifier
 
 __all__ = ['MetadataShow']
 
 
 class MetadataShow(MetadataFormatOne, MetadataIdentifier):
-    """Show a single Metadata record
+    """Show a Metadata record by UUID
     """
-    VERBOSITY = Verbosity.LISTING
-    EXTRA_VERBOSITY = Verbosity.RECORD
+    VERBOSITY = Verbosity.RECORD
+    EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = MetadataFormatOne.get_parser(self, prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = MetadataIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
@@ -27,6 +28,8 @@ class MetadataShow(MetadataFormatOne, MetadataIdentifier):
         self.take_action_defaults(parsed_args)
 
         headers = SearchableCommand.headers(self, Metadata, parsed_args)
+        identifier = parsed_args.identifier
+        self.validate_identifier(identifier)
         rec = self.tapis_client.meta.getMetadata(uuid=parsed_args.identifier)
 
         data = []

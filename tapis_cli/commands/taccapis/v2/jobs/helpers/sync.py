@@ -212,7 +212,6 @@ def download(source,
     # Under jobs, paths all begin with /
     paths = [f['path'] for f in all_targets]
 
-
     # Tapis Jobs returns a spurious "null/" at the start of
     # each file's path. This is a temporary workaround.
     paths = [re.sub('null/', '/', p) for p in paths]

@@ -70,7 +70,7 @@ class MetadataSearch(MetadataFormatMany, SearchableCommand):
             v = f[k]
             mongoql_els[k] = v
         self.post_payload['q'] = json.dumps(mongoql_els)
-        print(self.post_payload['q'])
+        # print(self.post_payload['q'])
 
         headers = SearchableCommand.headers(self, Metadata, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)

@@ -4,7 +4,7 @@ import curlify
 from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
 from tapis_cli.utils import print_stderr
-from tapis_cli.settings import SHOW_CURL
+from tapis_cli.settings import TAPIS_CLI_SHOW_CURL
 
 __all__ = ['TaccApiDirectClient']
 
@@ -106,5 +106,5 @@ class TaccApiDirectClient(object):
 
 
 def show_curl(response_object):
-    if SHOW_CURL:
+    if TAPIS_CLI_SHOW_CURL:
         print_stderr(curlify.to_curl(response_object.request))
