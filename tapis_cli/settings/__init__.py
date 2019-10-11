@@ -2,15 +2,10 @@
 application configuration.
 """
 import os
-import warnings
-from dotenv import load_dotenv, find_dotenv
 from dateutil.parser import parse
+from .config import find_config, load_config
 
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore')
-    if not load_dotenv(find_dotenv()):
-        if not load_dotenv(find_dotenv(usecwd=True)):
-            load_dotenv(os.path.join(os.path.expanduser('~'), '.env'))
+_ENV_PATH = load_config()  # noqa
 
 from .auth import *
 from .gitlab import *
@@ -34,4 +29,5 @@ def all_settings():
         if not callable(item) and not name.startswith("__") \
                 and not isinstance(item, ModuleType):
             settings[name] = item
-    return settings
+    sorted_settings = {k: v for (k, v) in sorted(settings.items())}
+    return sorted_settings
