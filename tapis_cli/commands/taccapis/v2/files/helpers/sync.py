@@ -74,7 +74,7 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     """
     file_name = dest_filename
     if file_name is None:
-        filename = os.path.basename(src_filename)
+        file_name = os.path.basename(src_filename)
     if atomic:
         temp_file_name = '{0}-{1}'.format(file_name, nanoseconds())
     else:
