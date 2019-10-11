@@ -1,6 +1,6 @@
 import os
-from . import ENV_PREFIX
 
+ENV_PREFIX = 'TAPIS_CLI'
 BOOLEAN_TRUE_STRINGS = ('true', 'on', 'ok', 'y', 'yes', '1')
 BOOLEAN_FALSE_STRINGS = ('false', 'off', 'n', 'no', '0')
 

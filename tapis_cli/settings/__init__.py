@@ -6,8 +6,6 @@ import warnings
 from dotenv import load_dotenv, find_dotenv
 from dateutil.parser import parse
 
-ENV_PREFIX = 'TAPIS_CLI'
-
 with warnings.catch_warnings():
     warnings.simplefilter('ignore')
     if not load_dotenv(find_dotenv()):
@@ -15,14 +13,14 @@ with warnings.catch_warnings():
             load_dotenv(os.path.join(os.path.expanduser('~'), '.env'))
 
 from .auth import *
-from .debug import *
-from .display import *
-from .organization import *
-
-from .taccapis.v1 import *
-from .taccapis.v2 import *
 from .gitlab import *
 from .jupyter import *
+from .organization import *
+
+from .debug import *
+from .display import *
+from .taccapis.v1 import *
+from .taccapis.v2 import *
 
 
 def all_settings():

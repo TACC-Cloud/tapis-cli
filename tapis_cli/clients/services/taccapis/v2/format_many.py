@@ -1,4 +1,5 @@
 from tapis_cli.clients.http import HTTPFormatMany
+from tapis_cli.settings import TAPIS_CLI_PAGE_SIZE
 from .bearer import TaccApisBearer
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier)
@@ -34,7 +35,7 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
                             '--limit',
                             dest='limit',
                             metavar='<int>',
-                            default=36,
+                            default=TAPIS_CLI_PAGE_SIZE,
                             type=int,
                             help='Limit to L records')
         parser.add_argument('-o',
