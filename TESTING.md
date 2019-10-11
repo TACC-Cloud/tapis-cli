@@ -103,7 +103,17 @@ the end user communities that will use it.
 
 ## Configuration
 
-11-10-2019 | It is now possible to specify a tenants server and default
+11-10-2019 | The behavior for finding a `.env` has been clarified. The CLI
+searches the current working directory, followed by `$HOME` for an environment
+file. The expected path for the CLI's environment file can be discovered via
+`tapis settings list` as `_ENV_PATH`.
+
+All environment settings specific to the Tapis CLI are now explicitly
+prefixed by `TAPIS_CLI_` in the configuration files. Settings variables
+imported from other modules (such as AgavePy) have their own namespace,
+such as `TAPIS_PY_` or simply `TAPIS_`. See `.env.sample` for clarification.
+
+It is now possible to specify a tenants server and default
 `tenant_id` for a non-TACC installation of the CLI. This accomplished by
 setting the variables `TAPIS_TENANTS_URL` and `TAPIS_DEFAULT_TENANT_ID`,
 respectively. Note that setting the default identifier will only change
@@ -112,6 +122,8 @@ default value for `--tenant-id` in the interactive prompt.
 
 Several unused configuration settings were deactivated, including some
 pertaining to JupyterHub, Gitlab, and Tapis tenancy.
+
+Settings are now presented in alphabetically-sorted order.
 
 04-10-2019 | The CLI leverages `python-dotenv` for configuration via file.
 This is currently used to control a couple of features, outlined below. An
