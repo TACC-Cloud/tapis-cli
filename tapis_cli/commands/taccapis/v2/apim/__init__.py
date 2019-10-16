@@ -1,6 +1,6 @@
 """Clients and tokens commands
 """
-from .. import SERVICE_VERSION
+from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 from .models import Token, API_NAME
 
 from .auth_init import AuthInit

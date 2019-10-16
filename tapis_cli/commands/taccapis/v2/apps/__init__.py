@@ -1,7 +1,7 @@
 """Apps service commands
 """
 
-from .. import SERVICE_VERSION
+from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 from .models import App, API_NAME
 
 from .show import AppsShow

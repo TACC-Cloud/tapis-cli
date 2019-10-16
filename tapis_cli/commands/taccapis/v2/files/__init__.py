@@ -1,6 +1,6 @@
 """Files service commands
 """
-from .. import SERVICE_VERSION
+from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 from .models import File, API_NAME
 
 from .delete import FilesDelete

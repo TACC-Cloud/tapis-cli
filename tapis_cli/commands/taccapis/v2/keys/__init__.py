@@ -1,4 +1,4 @@
 """TACC SSH keys service commands
 """
-from .. import SERVICE_VERSION
+SERVICE_VERSION = 'v2'
 API_NAME = 'keys'

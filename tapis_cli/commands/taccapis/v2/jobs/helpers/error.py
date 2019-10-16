@@ -37,7 +37,7 @@ def read_tapis_http_error(http_error_object):
         code = h.response.status_code
         assert isinstance(code, int)
     except Exception:
-        # we have no idea what the 🔥 happened
+        # we have no idea what happened
         code = 418
 
     # extract HTTP reason

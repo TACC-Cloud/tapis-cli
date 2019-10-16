@@ -1,6 +1,6 @@
 """Profiles service commands
 """
-from .. import SERVICE_VERSION
+from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 API_NAME = 'profiles'
 
 from .list import ProfilesList

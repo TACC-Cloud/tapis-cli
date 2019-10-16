@@ -1,9 +1,8 @@
 """Jobs service commands
 """
-from .. import SERVICE_VERSION
+from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 
 from .models import Job, API_NAME
-
 from .history import JobsHistory
 from .list import JobsList
 from .resubmit import JobsResubmit
