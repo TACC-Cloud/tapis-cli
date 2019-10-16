@@ -1,5 +1,6 @@
 """Public, low-dependency helper functions
 """
+from __future__ import print_function
 import arrow
 import datetime
 import fnmatch
