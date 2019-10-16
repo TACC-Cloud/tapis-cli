@@ -45,9 +45,9 @@ class TaccApiDirectClient(object):
         setattr(self, 'api_path', api_path)
 
     def build_url(self, *args):
-        path_els = [
-            self.service_name, self.service_version, self.api_path, *args
-        ]
+        arg_els = args
+        path_els = [self.service_name, self.service_version, self.api_path]
+        path_els.extend(arg_els)
         # TODO - Filter for leading slashes in path_els
         # TODO - Strip trailing slash from api_server
         url_path_els = [self.api_server]
