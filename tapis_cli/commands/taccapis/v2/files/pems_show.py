@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import AgaveURI, Username
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
@@ -17,15 +15,13 @@ class FilesPemsShow(FilesFormatOne, AgaveURI, Username):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = FilesFormatOne.get_parser(self, prog_name)
+        parser = super(FilesPemsShow, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
-        headers = Permission.get_headers(self, self.VERBOSITY,
-                                         parsed_args.formatter)
+        parsed_args = self.preprocess_args(parsed_args)
         self.update_payload(parsed_args)
 
         # We use the Command's requests client since file permissions lookup
@@ -37,10 +33,11 @@ class FilesPemsShow(FilesFormatOne, AgaveURI, Username):
         #
         # <api_server>/files/v2/pems/system/data-sd2e-community/path
         #
-        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+        (storage_system, file_path) = self.parse_url(parsed_args.agave_uri)
         API_PATH = 'pems/system/{0}{1}'.format(storage_system, file_path)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
         post_payload = {'username.eq': parsed_args.username}
+        headers = self.render_headers(Permission, parsed_args)
         rec = self.requests_client.get_data(params=post_payload)[0]
 
         # TODO - Account for the wierd behavior where querying ANY username
