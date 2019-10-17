@@ -51,7 +51,7 @@ class ProfilesSearch(ProfilesFormatMany, SearchableCommand):
             v = f[k]
             self.post_payload[k] = v
 
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         # raise SystemError(self.post_payload)
 

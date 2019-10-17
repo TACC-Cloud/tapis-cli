@@ -18,7 +18,7 @@ class ProfilesList(ProfilesFormatMany):
     def take_action(self, parsed_args):
         parsed_args = ProfilesFormatMany.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         headers = SearchableCommand.render_headers(self, Profile, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)

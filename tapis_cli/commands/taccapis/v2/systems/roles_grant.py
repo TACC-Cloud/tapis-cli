@@ -34,7 +34,7 @@ class SystemsRolesGrant(SystemsFormatOne, ServiceIdentifier):
     def take_action(self, parsed_args):
         parsed_args = SystemsFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         role = parsed_args.role
         body = {'username': parsed_args.username, 'role': role.upper()}

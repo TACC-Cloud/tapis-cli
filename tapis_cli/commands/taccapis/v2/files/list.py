@@ -30,7 +30,7 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
     def take_action(self, parsed_args):
         parsed_args = super().preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         headers = SearchableCommand.render_headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)

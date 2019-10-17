@@ -28,7 +28,7 @@ class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
         parsed_args = FilesPemsFormatMany.preprocess_args(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
         results = pems_list(file_path,
                             system_id=storage_system,

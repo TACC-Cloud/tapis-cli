@@ -34,7 +34,7 @@ class TokenCreate(CreateTokenFormatOne):
 
     def take_action(self, parsed_args):
         parsed_args = super(TokenCreate, self).preprocess_args(parsed_args)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         # Allow prompt for password when not specified
         passwd = parsed_args.tapis_password

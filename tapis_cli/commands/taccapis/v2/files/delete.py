@@ -31,7 +31,7 @@ class FilesDelete(FilesFormatOne, AgaveURI, FileOptions, ReportProgress):
     def take_action(self, parsed_args):
         parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
 

@@ -26,7 +26,7 @@ class FilesPemsShow(FilesFormatOne, AgaveURI, Username):
         parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         # We use the Command's requests client since file permissions lookup
         # by user are not supported via the documented API spec.

@@ -37,7 +37,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
     def take_action(self, parsed_args):
         parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         # Optionally disable creation and use of a job folder
         dest_dir = './{0}'.format(parsed_args.job_uuid)

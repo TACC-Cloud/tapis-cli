@@ -16,7 +16,7 @@ class AppsList(AppsFormatMany):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         headers = self.render_headers(App, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)

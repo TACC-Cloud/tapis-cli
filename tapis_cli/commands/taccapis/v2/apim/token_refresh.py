@@ -23,7 +23,7 @@ class TokenRefresh(TokenFormatOne):
     def take_action(self, parsed_args):
         parsed_args = super(TokenRefresh, self).preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         headers = super(TokenRefresh, self).render_headers(Token, parsed_args)
         try:

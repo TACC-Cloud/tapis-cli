@@ -28,7 +28,7 @@ class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions):
     def take_action(self, parsed_args):
         parsed_args = FilesFormatMany.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
 
         headers = SearchableCommand.render_headers(self, File, parsed_args)
         recs = listdir(parsed_args.file_path,
