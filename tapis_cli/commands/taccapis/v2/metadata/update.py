@@ -35,7 +35,7 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile,
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = super().before_take_action(parsed_args)
+        parsed_args = super().preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.take_action_defaults(parsed_args)
         self.handle_file_upload(parsed_args)

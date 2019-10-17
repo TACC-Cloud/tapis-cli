@@ -39,7 +39,7 @@ class ParserExtender(object):
         # When sublcassing: DO NOT FORGET TO RETURN PARSER
         return parser
 
-    def before_take_action(self, parsed_args):
+    def preprocess_args(self, parsed_args):
         # When sublcassing: DO NOT FORGET TO RETURN PARSED_ARGS
         return parsed_args
 
@@ -99,8 +99,8 @@ class JsonVerbose(AppVerboseLevel):
                 self.VERBOSITY = self.EXTRA_VERBOSITY
         return parsed_args
 
-    def before_take_action(self, parsed_args):
-        parsed_args = super(JsonVerbose, self).before_take_action(parsed_args)
+    def preprocess_args(self, parsed_args):
+        parsed_args = super(JsonVerbose, self).preprocess_args(parsed_args)
         if self.app_verbose_level > 1:
             parsed_args.formatter = 'json'
             if self.EXTRA_VERBOSITY is not None:

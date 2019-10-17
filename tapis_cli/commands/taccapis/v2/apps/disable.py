@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -22,10 +20,10 @@ class AppsDisable(AppsFormatOne, ServiceIdentifier):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.before_take_action(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.headers(self, App, parsed_args)
+        headers = self.headers(App, parsed_args)
         rec = self.tapis_client.apps.manage(appId=parsed_args.identifier,
                                             body={'action': 'disable'})
         data = []

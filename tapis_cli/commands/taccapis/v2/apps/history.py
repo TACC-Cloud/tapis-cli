@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import AppHistory
@@ -22,11 +20,11 @@ class AppsHistory(AppsFormatMany, ServiceIdentifier):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.before_take_action(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         api_resource = '{0}/history'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
 
-        headers = SearchableCommand.headers(self, AppHistory, parsed_args)
+        headers = self.headers(AppHistory, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

@@ -23,7 +23,7 @@ class FilesPemsDrop(FilesFormatMany, AgaveURI):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatMany.before_take_action(self, parsed_args)
+        parsed_args = FilesFormatMany.preprocess_args(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)

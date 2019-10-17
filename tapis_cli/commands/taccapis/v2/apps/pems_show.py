@@ -23,7 +23,7 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.before_take_action(self, parsed_args)
+        parsed_args = AppsFormatOne.preprocess_args(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
         #

@@ -21,7 +21,7 @@ class SystemsUpdate(SystemsCreate, ServiceIdentifier):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatOne.before_take_action(self, parsed_args)
+        parsed_args = SystemsFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 

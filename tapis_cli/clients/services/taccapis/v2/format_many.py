@@ -14,10 +14,10 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
         parser = TaccApisBearer.add_common_parser_arguments(self, parser)
         return parser
 
-    def before_take_action(self, parsed_args):
+    def preprocess_args(self, parsed_args):
         self.init_clients(parsed_args)
         parsed_args = super(TaccApisFormatManyUnlimited,
-                            self).before_take_action(parsed_args)
+                            self).preprocess_args(parsed_args)
         self.take_action_defaults(parsed_args)
         return parsed_args
 
@@ -53,7 +53,8 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
         self.post_payload['offset'] = parsed_args.offset
         return self
 
-    def before_take_action(self, parsed_args):
-        parsed_args = super().before_take_action(parsed_args)
+    def preprocess_args(self, parsed_args):
+        parsed_args = super(TaccApisFormatMany,
+                            self).preprocess_args(parsed_args)
         self.take_action_defaults(parsed_args)
         return parsed_args

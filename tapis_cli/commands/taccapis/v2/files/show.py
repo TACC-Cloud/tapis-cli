@@ -26,7 +26,7 @@ class FilesShow(FilesFormatOne, AgaveURI, FileOptions):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.before_take_action(self, parsed_args)
+        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 

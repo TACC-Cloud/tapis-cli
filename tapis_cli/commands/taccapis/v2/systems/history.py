@@ -22,7 +22,7 @@ class SystemsHistory(SystemsHistoryFormatMany, ServiceIdentifier):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsHistoryFormatMany.before_take_action(
+        parsed_args = SystemsHistoryFormatMany.preprocess_args(
             self, parsed_args)
         API_PATH = '{0}/history'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)

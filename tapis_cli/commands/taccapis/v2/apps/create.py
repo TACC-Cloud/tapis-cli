@@ -1,5 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import UploadJsonFile
 from tapis_cli.commands.taccapis import SearchableCommand
 
@@ -24,12 +23,11 @@ class AppsCreate(UploadJsonFile, AppsFormatOne):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.before_take_action(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = SearchableCommand.headers(self, App, parsed_args)
-
+        headers = self.headers(App, parsed_args)
         rec = self.tapis_client.apps.add(body=self.json_file_contents)
         data = []
         for key in headers:

@@ -25,7 +25,7 @@ class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesPemsFormatMany.before_take_action(self, parsed_args)
+        parsed_args = FilesPemsFormatMany.preprocess_args(self, parsed_args)
         headers = Permission.get_headers(self, self.VERBOSITY,
                                          parsed_args.formatter)
         self.take_action_defaults(parsed_args)
