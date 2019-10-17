@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.smoketest
-def test_can_import_mod():
+def test_can_import_tapis_cli():
     import tapis_cli
 
 @pytest.mark.smoketest
