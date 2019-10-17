@@ -40,7 +40,8 @@ class SystemsRolesGrant(SystemsFormatOne, ServiceIdentifier):
         body = {'username': parsed_args.username, 'role': role.upper()}
 
         # List roles on the System to show the new role
-        headers = SearchableCommand.render_headers(self, SystemRole, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemRole,
+                                                   parsed_args)
         rec = self.tapis_client.systems.updateRole(
             systemId=parsed_args.identifier, body=body)[0]
 

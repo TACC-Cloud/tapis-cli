@@ -27,5 +27,5 @@ class TaccApisCommandBase(TaccApiClient):
         self.init_clients(parsed_args)
         return ((), ())
 
-    def take_action_defaults(self, parsed_args):
+    def update_payload(self, parsed_args):
         return self

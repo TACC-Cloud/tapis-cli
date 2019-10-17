@@ -18,14 +18,14 @@ class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
         parser = TaccApisBearer.add_common_parser_arguments(self, parser)
         return parser
 
-    def take_action_defaults(self, parsed_args):
+    def update_payload(self, parsed_args):
         return self
 
     def preprocess_args(self, parsed_args):
         self.init_clients(parsed_args)
         parsed_args = super(TaccApisFormatOne,
                             self).preprocess_args(parsed_args)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
         return parsed_args
 
 
@@ -42,12 +42,12 @@ class TaccApisFormatOneNoBearer(JsonVerbose, HTTPFormatOne):
         parser = HTTPFormatOne.add_common_parser_arguments(self, parser)
         return parser
 
-    def take_action_defaults(self, parsed_args):
+    def update_payload(self, parsed_args):
         return self
 
     def preprocess_args(self, parsed_args):
         self.init_clients(parsed_args)
         parsed_args = super(TaccApisFormatOneNoBearer,
                             self).preprocess_args(parsed_args)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
         return parsed_args

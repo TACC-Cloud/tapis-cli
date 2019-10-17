@@ -28,7 +28,8 @@ class SystemsHistory(SystemsHistoryFormatMany, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, SystemHistory, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemHistory,
+                                                   parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

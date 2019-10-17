@@ -32,7 +32,8 @@ class SystemsRolesRevoke(SystemsFormatOne, ServiceIdentifier):
         self.update_payload(parsed_args)
 
         # List roles on the System to show the new role
-        headers = SearchableCommand.render_headers(self, SystemRole, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemRole,
+                                                   parsed_args)
         rec = self.tapis_client.systems.deleteRoleForUser(
             systemId=parsed_args.identifier, username=parsed_args.username)
 

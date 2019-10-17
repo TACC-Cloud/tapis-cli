@@ -18,7 +18,7 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
         self.init_clients(parsed_args)
         parsed_args = super(TaccApisFormatManyUnlimited,
                             self).preprocess_args(parsed_args)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
         return parsed_args
 
 
@@ -48,7 +48,7 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
                             help='Skip first O records')
         return parser
 
-    def take_action_defaults(self, parsed_args):
+    def update_payload(self, parsed_args):
         self.post_payload['limit'] = parsed_args.limit
         self.post_payload['offset'] = parsed_args.offset
         return self
@@ -56,5 +56,5 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
     def preprocess_args(self, parsed_args):
         parsed_args = super(TaccApisFormatMany,
                             self).preprocess_args(parsed_args)
-        self.take_action_defaults(parsed_args)
+        self.update_payload(parsed_args)
         return parsed_args

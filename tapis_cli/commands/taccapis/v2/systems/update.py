@@ -25,8 +25,8 @@ class SystemsUpdate(SystemsCreate, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = headers = SearchableCommand.render_headers(self, System,
-                                                      parsed_args)
+        headers = headers = SearchableCommand.render_headers(
+            self, System, parsed_args)
         rec = self.tapis_client.systems.update(systemId=parsed_args.identifier,
                                                body=self.json_file_contents)
 
