@@ -13,3 +13,5 @@ build/*
 .tox/
 dist
 temp/
+env2/
+tests/configuration.json
