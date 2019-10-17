@@ -10,21 +10,21 @@ __all__ = ['MetadataList']
 
 
 class MetadataList(MetadataFormatMany):
-    """List the Metadata catalog
+    """List Metadata documents
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = super(MetadataFormatMany, self).get_parser(prog_name)
+        parser = super(MetadataList, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = MetadataFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, Metadata, parsed_args)
+        headers = self.render_headers(Metadata, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

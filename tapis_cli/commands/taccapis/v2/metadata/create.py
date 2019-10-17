@@ -1,6 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Metadata
@@ -12,13 +10,13 @@ __all__ = ['MetadataCreate']
 
 
 class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
-    """Create a Metadata record
+    """Create a Metadata document
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
-        parser = MetadataFormatOne.get_parser(self, prog_name)
+        parser = super(MetadataCreate, self).get_parser(prog_name)
         parser = UploadMetadataFile.extend_parser(self, parser)
         name_group = parser.add_mutually_exclusive_group(required=False)
         name_group.add_argument('-N',
@@ -38,7 +36,7 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = MetadataFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.update_payload(parsed_args)
         self.handle_file_upload(parsed_args)
@@ -59,7 +57,7 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
             name_data = generate_name(username=self.tapis_client.username,
                                       data=value_data)
 
-        headers = SearchableCommand.render_headers(self, Metadata, parsed_args)
+        headers = self.render_headers(Metadata, parsed_args)
         rec = create_update(name=name_data,
                             value=value_data,
                             uuid=None,
