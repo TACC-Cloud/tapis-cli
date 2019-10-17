@@ -18,7 +18,7 @@ class AppsCreate(UploadJsonFile, AppsFormatOne):
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
-        parser = AppsFormatOne.get_parser(self, prog_name)
+        parser = super(AppsCreate, self).get_parser(prog_name)
         parser = UploadJsonFile.extend_parser(self, parser)
         return parser
 

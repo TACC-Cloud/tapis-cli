@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -17,7 +15,7 @@ class AppsPublish(AppsFormatOne, ServiceIdentifier):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatOne.get_parser(self, prog_name)
+        parser = super(AppsPublish, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         parser.add_argument(
             '-e',
@@ -28,9 +26,9 @@ class AppsPublish(AppsFormatOne, ServiceIdentifier):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        headers = SearchableCommand.render_headers(self, App, parsed_args)
+        headers = self.render_headers(App, parsed_args)
 
         mgt_body = {'action': 'publish'}
         if parsed_args.public_execution_system is not None:

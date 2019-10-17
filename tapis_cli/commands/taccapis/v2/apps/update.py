@@ -16,17 +16,16 @@ class AppsUpdate(AppsCreate, ServiceIdentifier):
     """Update an existing app
     """
     def get_parser(self, prog_name):
-        parser = AppsCreate.get_parser(self, prog_name)
+        parser = super(AppsUpdate, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, App, parsed_args)
-
+        headers = self.render_headers(App, parsed_args)
         rec = self.tapis_client.apps.update(appId=parsed_args.identifier,
                                             body=self.json_file_contents)
         data = []

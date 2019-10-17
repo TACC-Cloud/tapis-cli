@@ -15,7 +15,7 @@ class AppsHistory(AppsFormatMany, ServiceIdentifier):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatMany.get_parser(self, prog_name)
+        parser = super(AppsHistory, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 

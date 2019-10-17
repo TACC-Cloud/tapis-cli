@@ -15,7 +15,7 @@ class AppsEnable(AppsFormatOne, ServiceIdentifier):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatOne.get_parser(self, prog_name)
+        parser = super(AppsEnable, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 

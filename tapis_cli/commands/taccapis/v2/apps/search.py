@@ -1,5 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
@@ -9,19 +8,19 @@ from .formatters import AppsFormatOne, AppsFormatMany
 __all__ = ['AppsSearch']
 
 
-class AppsSearch(AppsFormatMany, SearchableCommand):
+class AppsSearch(AppsFormatMany):
     """Search the Apps catalog
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
-        parser = super(AppsFormatMany, self).get_parser(prog_name)
+        parser = super(AppsSearch, self).get_parser(prog_name)
         parser = SearchableCommand.extend_parser(self, parser, App)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
@@ -39,7 +38,7 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
             v = f[k]
             self.post_payload[k] = v
 
-        headers = SearchableCommand.render_headers(self, App, parsed_args)
+        headers = self.render_headers(App, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []
