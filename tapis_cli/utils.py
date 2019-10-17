@@ -31,26 +31,25 @@ def current_time():
 def seconds():
     """Current time in seconds as ``int``
     """
-    return int(round(datetime.datetime.utcnow().timestamp() * 1))
+    return round(arrow.utcnow().float_timestamp)
 
 
 def milliseconds():
     """Current time in milliseconds as ``int``
     """
-    return int(round(datetime.datetime.utcnow().timestamp() * 1000))
+    return round(arrow.utcnow().float_timestamp * 1000)
 
 
 def microseconds():
     """Current time in microseconds as ``int``
     """
-    return int(round(datetime.datetime.utcnow().timestamp() * 1000 * 1000))
+    return round(arrow.utcnow().float_timestamp * 1000 * 1000)
 
 
 def nanoseconds():
     """Current time in nanoseconds as ``int``
     """
-    return int(
-        round(datetime.datetime.utcnow().timestamp() * 1000 * 1000 * 1000))
+    return round(arrow.utcnow().float_timestamp * 1000 * 1000 * 1000)
 
 
 def ts_to_isodate(date_string, include_time=False):
