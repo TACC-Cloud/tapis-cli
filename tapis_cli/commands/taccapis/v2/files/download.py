@@ -1,8 +1,6 @@
 import os
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier, AgaveURI
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.utils import humanize_bytes
 
 from . import API_NAME, SERVICE_VERSION
@@ -21,7 +19,7 @@ class FilesDownload(FilesFormatOne, AgaveURI, ExcludeFiles, OverwritePolicy,
 
     # TODO - add formatting and sorting options
     def get_parser(self, prog_name):
-        parser = FilesFormatOne.get_parser(self, prog_name)
+        parser = super(FilesDownload, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser = ExcludeFiles.extend_parser(self, parser)
         parser = OverwritePolicy.extend_parser(self, parser)
@@ -34,12 +32,12 @@ class FilesDownload(FilesFormatOne, AgaveURI, ExcludeFiles, OverwritePolicy,
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, File, parsed_args)
-        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+        headers = self.render_headers(File, parsed_args)
+        (storage_system, file_path) = self.parse_url(parsed_args.agave_uri)
         downloaded, skipped, exceptions, dl_bytes, elapsed = download(
             file_path,
             storage_system,

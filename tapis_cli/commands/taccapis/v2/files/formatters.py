@@ -1,8 +1,8 @@
 """Formatters customized for system records and listings
 """
-from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
-                                                 TaccApisFormatOne,
-                                                 TaccApisFormatMany)
+from tapis_cli.commands.taccapis.formatters import (TaccApisCommandBase,
+                                                    TaccApisFormatOne,
+                                                    TaccApisFormatMany)
 from tapis_cli.clients.services.mixins import ParserExtender
 from tapis_cli.utils import humanize_bytes
 from .models import File

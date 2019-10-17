@@ -1,8 +1,6 @@
 import os
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier, AgaveURI
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.utils import print_stderr, seconds, milliseconds
 
 from . import API_NAME, SERVICE_VERSION
@@ -22,18 +20,18 @@ class FilesDelete(FilesFormatOne, AgaveURI, FileOptions, ReportProgress):
 
     # TODO - add formatting and sorting options
     def get_parser(self, prog_name):
-        parser = FilesFormatOne.get_parser(self, prog_name)
+        parser = super(FilesDelete, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser = FileOptions.extend_parser(self, parser)
         parser = ReportProgress.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+        (storage_system, file_path) = self.parse_url(parsed_args.agave_uri)
 
         headers = ['deleted', 'skipped', 'warnings', 'elapsed_msec']
         (deleted, skipped, warnings, elapsed) = [[], [], [], 0]

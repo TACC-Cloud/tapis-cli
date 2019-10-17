@@ -1,8 +1,6 @@
 import os
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import AgaveURI
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .helpers.walk import listdir
@@ -22,25 +20,21 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
     # TODO - add formatting and sorting options
 
     def get_parser(self, prog_name):
-        parser = FilesFormatMany.get_parser(self, prog_name)
+        parser = super(FilesList, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser = FilesOptions.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = super().preprocess_args(parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, File, parsed_args)
-        (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+        (storage_system, file_path) = self.parse_url(parsed_args.agave_uri)
+        headers = self.render_headers(File, parsed_args)
         recs = listdir(file_path,
                        system_id=storage_system,
                        agave=self.tapis_client)
-        # recs = self.tapis_client.files.list(systemId=storage_system,
-        #                                     filePath=file_path,
-        #                                     limit=parsed_args.limit,
-        #                                     offset=parsed_args.offset)
 
         if not isinstance(recs, list):
             raise ValueError('No files listing was returned')

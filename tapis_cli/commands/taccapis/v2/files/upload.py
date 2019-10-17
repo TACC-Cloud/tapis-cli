@@ -1,10 +1,8 @@
 import os
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import (ServiceIdentifier, AgaveURI,
                                                LocalFilePath,
                                                OptionNotImplemented)
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.utils import (datestring_to_epoch, humanize_bytes, relpath,
                              abspath, print_stderr)
 
@@ -27,7 +25,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
     """Upload a file or directory from local host to a Tapis files destination
     """
     def get_parser(self, prog_name):
-        parser = FilesFormatOne.get_parser(self, prog_name)
+        parser = super(FilesUpload, self).get_parser(prog_name)
         # Positionals:
         #
         # CLI expects <agave_uri> <file_path> so the user can up-arrow
@@ -55,7 +53,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
         return remote_contents
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
@@ -69,7 +67,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
 
         local_file_path = parsed_args.local_file_path
         (storage_system,
-         remote_file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
+         remote_file_path) = self.parse_url(parsed_args.agave_uri)
 
         uploaded, skipped, exceptions, ul_bytes, elapsed = upload(
             local_file_path,
