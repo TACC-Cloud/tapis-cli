@@ -1,10 +1,9 @@
 """Formatters customized for job records and listings
 """
 
-from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
-                                                 TaccApisFormatOne,
-                                                 TaccApisFormatMany,
-                                                 TaccApisFormatManyUnlimited)
+from tapis_cli.commands.taccapis.formatters import (
+    TaccApisCommandBase, TaccApisFormatOne, TaccApisFormatMany,
+    TaccApisFormatManyUnlimited)
 from .models import Job
 
 __all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']

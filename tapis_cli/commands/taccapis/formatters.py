@@ -5,7 +5,7 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 __all__ = [
     'TaccApisCommandBase', 'TaccApisFormatOne', 'TaccApisFormatMany',
-    'TaccApisFormatOneNoBearer'
+    'TaccApisFormatOneNoBearer', 'TaccApisFormatManyUnlimited'
 ]
 
 
@@ -18,6 +18,10 @@ class TaccApisFormatOne(taccapis.TaccApisFormatOne):
 
 
 class TaccApisFormatMany(taccapis.TaccApisFormatMany):
+    pass
+
+
+class TaccApisFormatManyUnlimited(taccapis.TaccApisFormatManyUnlimited):
     pass
 
 
