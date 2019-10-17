@@ -26,4 +26,5 @@ stevedore
 tenacity
 colorama
 curlify
+pathlib2
 agavepy@git+https://github.com/TACC/agavepy.git@cli

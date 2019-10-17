@@ -1,6 +1,5 @@
 import os
 from tapis_cli.display import Verbosity
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from ..files.models import File
 from ..files.formatters import FilesFormatMany
@@ -12,25 +11,25 @@ from .helpers.walk import listdir
 from . import API_NAME, SERVICE_VERSION
 
 
-class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions):
+class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
     """Lists a Jobs output directory
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = FilesFormatMany.get_parser(self, prog_name)
+        parser = super(JobsOutputsList, self).get_parser(prog_name)
         parser = JobsUUID.extend_parser(self, parser)
         parser = RemoteFilePath.extend_parser(self, parser)
         parser = FilesOptions.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, File, parsed_args)
+        headers = self.render_headers(File, parsed_args)
         recs = listdir(parsed_args.file_path,
                        job_uuid=parsed_args.job_uuid,
                        agave=self.tapis_client)

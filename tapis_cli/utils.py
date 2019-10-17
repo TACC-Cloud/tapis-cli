@@ -18,6 +18,11 @@ from colorama import Fore, Back, Style
 
 from dateutil.parser import parse
 
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path  # Python 2 backport
+
 
 def current_time():
     """Current UTC time
@@ -310,3 +315,9 @@ def serializable(obj, permissive=True):
 
 def timestamp():
     return arrow.utcnow().format('YYMMDDTHHmmss') + 'Z'
+
+
+def makedirs(file_path, exist_ok=True):
+    """Python2-compatible makedirs with exist_ok support
+    """
+    Path(file_path).mkdir(exist_ok=exist_ok)

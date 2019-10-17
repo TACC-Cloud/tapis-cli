@@ -1,6 +1,6 @@
 import os
 from tapis_cli.clients.services.mixins import JobsUUID, RemoteFilePath
-from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.utils import makedirs
 
 from . import API_NAME, SERVICE_VERSION
 from ..files.models import File
@@ -19,14 +19,13 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
 
     # TODO - add --cwd option to disable creating job folder
     def get_parser(self, prog_name):
-        parser = FilesFormatOne.get_parser(self, prog_name)
+        parser = super(JobsOutputsDownload, self).get_parser(prog_name)
         parser = JobsUUID.extend_parser(self, parser)
         parser = RemoteFilePath.extend_parser(self, parser)
         parser = OverwritePolicy.extend_parser(self, parser)
         parser = IncludeFiles.extend_parser(self, parser)
         parser = ExcludeFiles.extend_parser(self, parser)
         parser = ReportProgress.extend_parser(self, parser)
-
         parser.add_argument(
             '--cwd',
             dest='use_cwd',
@@ -35,7 +34,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = FilesFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
@@ -44,9 +43,9 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         if parsed_args.use_cwd:
             dest_dir = '.'
         else:
-            os.makedirs(dest_dir, exist_ok=True)
+            makedirs(dest_dir, exist_ok=True)
 
-        headers = SearchableCommand.render_headers(self, File, parsed_args)
+        headers = self.render_headers(File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
             parsed_args.file_path,
             parsed_args.job_uuid,
