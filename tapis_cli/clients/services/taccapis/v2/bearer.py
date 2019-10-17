@@ -9,7 +9,8 @@ class TaccApisBearer(TaccApisCommandBase):
     """Base class for Tapis API commands that accept only an access token
     """
     def add_common_parser_arguments(self, parser):
-        parser = super().add_common_parser_arguments(parser)
+        parser = super(TaccApisBearer,
+                       self).add_common_parser_arguments(parser)
         parser.add_argument('-z',
                             '--token',
                             dest='access_token',
@@ -36,5 +37,6 @@ class TaccApisNoBearer(TaccApisCommandBase):
     """Base class for Tapis API commands that accept only an access token
     """
     def add_common_parser_arguments(self, parser):
-        parser = super().add_common_parser_arguments(parser)
+        parser = super(TaccApisNoBearer,
+                       self).add_common_parser_arguments(parser)
         return parser

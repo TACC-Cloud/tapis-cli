@@ -16,7 +16,8 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
 
     def before_take_action(self, parsed_args):
         self.init_clients(parsed_args)
-        parsed_args = super().before_take_action(parsed_args)
+        parsed_args = super(TaccApisFormatManyUnlimited,
+                            self).before_take_action(parsed_args)
         self.take_action_defaults(parsed_args)
         return parsed_args
 

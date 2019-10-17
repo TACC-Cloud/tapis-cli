@@ -100,7 +100,7 @@ class JsonVerbose(AppVerboseLevel):
         return parsed_args
 
     def before_take_action(self, parsed_args):
-        parsed_args = super().before_take_action(parsed_args)
+        parsed_args = super(JsonVerbose, self).before_take_action(parsed_args)
         if self.app_verbose_level > 1:
             parsed_args.formatter = 'json'
             if self.EXTRA_VERBOSITY is not None:
