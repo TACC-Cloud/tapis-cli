@@ -1,7 +1,6 @@
 import getpass
 from agavepy.agave import Agave, AgaveError
 from tapis_cli.display import Verbosity
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
 
 from . import API_NAME, SERVICE_VERSION

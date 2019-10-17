@@ -2,7 +2,6 @@ import getpass
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
                              get_local_username, fg_green, fg_bright)
@@ -21,7 +20,7 @@ class TokenCreate(CreateTokenFormatOne):
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
-        parser = CreateTokenFormatOne.get_parser(self, prog_name)
+        parser = super(TokenCreate, self).get_parser(prog_name)
         # TODO - This should be a mix-in
         parser.add_argument('--password',
                             dest='tapis_password',
@@ -34,8 +33,7 @@ class TokenCreate(CreateTokenFormatOne):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = CreateTokenFormatOne.before_take_action(
-            self, parsed_args)
+        parsed_args = super(TokenCreate, self).before_take_action(parsed_args)
         self.take_action_defaults(parsed_args)
 
         # Allow prompt for password when not specified
@@ -43,7 +41,7 @@ class TokenCreate(CreateTokenFormatOne):
         if passwd is None:
             passwd = prompt('Password', passwd, secret=True)
 
-        headers = SearchableCommand.headers(self, Token, parsed_args)
+        headers = super(TokenCreate, self).headers(Token, parsed_args)
         self.tapis_client.token.password = passwd
 
         result = list()

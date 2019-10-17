@@ -8,7 +8,6 @@ import agavepy
 from agavepy.agave import Agave, AgaveError
 from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.constants import PLATFORM
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
                              get_local_username)
@@ -33,7 +32,7 @@ class AuthInit(CreateTokenFormatOne):
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
-        parser = CreateTokenFormatOne.get_parser(self, prog_name)
+        parser = super(AuthInit, self).get_parser(prog_name)
         # TODO - Cowboy these in here now until the init workflow is solidified
 
         parser.add_argument('--tenant-id',
