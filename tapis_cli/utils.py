@@ -255,7 +255,6 @@ def humanize_bytes(bytesize, precision=2):
 
 
 def print_stderr(message):
-    # TODO - Support Python2 implementation
     print('{0}'.format(message), file=sys.stderr)
 
 
