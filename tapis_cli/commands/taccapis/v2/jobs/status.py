@@ -25,7 +25,7 @@ class JobsStatus(JobsFormatOne, ServiceIdentifier):
         parsed_args = JobsFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.headers(self, Job, parsed_args)
+        headers = SearchableCommand.render_headers(self, Job, parsed_args)
         rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)
 
         data = []

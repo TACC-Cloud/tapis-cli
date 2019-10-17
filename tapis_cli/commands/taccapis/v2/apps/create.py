@@ -27,7 +27,7 @@ class AppsCreate(UploadJsonFile, AppsFormatOne):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = self.headers(App, parsed_args)
+        headers = self.render_headers(App, parsed_args)
         rec = self.tapis_client.apps.add(body=self.json_file_contents)
         data = []
         for key in headers:

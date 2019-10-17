@@ -24,7 +24,7 @@ class JobsList(JobsFormatMany):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, Job, parsed_args)
+        headers = SearchableCommand.render_headers(self, Job, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

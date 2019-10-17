@@ -26,7 +26,7 @@ class JobsResubmit(JobsFormatOne, ServiceIdentifier):
         API_PATH = '{0}/resubmit'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
 
-        headers = SearchableCommand.headers(self, Job, parsed_args)
+        headers = SearchableCommand.render_headers(self, Job, parsed_args)
         rec = self.requests_client.post(content_type='application/json')
 
         data = []

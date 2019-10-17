@@ -59,7 +59,7 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
             name_data = generate_name(username=self.tapis_client.username,
                                       data=value_data)
 
-        headers = SearchableCommand.headers(self, Metadata, parsed_args)
+        headers = SearchableCommand.render_headers(self, Metadata, parsed_args)
         rec = create_update(name=name_data,
                             value=value_data,
                             uuid=None,

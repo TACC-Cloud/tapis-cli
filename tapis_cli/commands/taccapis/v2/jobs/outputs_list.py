@@ -30,7 +30,7 @@ class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, File, parsed_args)
+        headers = SearchableCommand.render_headers(self, File, parsed_args)
         recs = listdir(parsed_args.file_path,
                        job_uuid=parsed_args.job_uuid,
                        agave=self.tapis_client)

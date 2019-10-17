@@ -24,7 +24,7 @@ class SystemsList(SystemsFormatMany):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, System, parsed_args)
+        headers = SearchableCommand.render_headers(self, System, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

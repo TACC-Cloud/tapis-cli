@@ -25,7 +25,7 @@ class JobsHistory(JobsHistoryFormatMany, ServiceIdentifier):
         parsed_args = JobsHistoryFormatMany.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.headers(self, JobHistory, parsed_args)
+        headers = SearchableCommand.render_headers(self, JobHistory, parsed_args)
         results = self.tapis_client.jobs.getHistory(
             jobId=parsed_args.identifier)
 

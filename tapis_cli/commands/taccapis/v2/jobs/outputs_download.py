@@ -46,7 +46,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         else:
             os.makedirs(dest_dir, exist_ok=True)
 
-        headers = SearchableCommand.headers(self, File, parsed_args)
+        headers = SearchableCommand.render_headers(self, File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
             parsed_args.file_path,
             parsed_args.job_uuid,

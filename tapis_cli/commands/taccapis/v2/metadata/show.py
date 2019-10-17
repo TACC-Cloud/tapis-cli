@@ -27,7 +27,7 @@ class MetadataShow(MetadataFormatOne, MetadataIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, Metadata, parsed_args)
+        headers = SearchableCommand.render_headers(self, Metadata, parsed_args)
         identifier = parsed_args.identifier
         self.validate_identifier(identifier)
         rec = self.tapis_client.meta.getMetadata(uuid=parsed_args.identifier)

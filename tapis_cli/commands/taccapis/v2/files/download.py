@@ -38,7 +38,7 @@ class FilesDownload(FilesFormatOne, AgaveURI, ExcludeFiles, OverwritePolicy,
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, File, parsed_args)
+        headers = SearchableCommand.render_headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
         downloaded, skipped, exceptions, dl_bytes, elapsed = download(
             file_path,

@@ -31,7 +31,7 @@ class SystemsRolesShow(SystemsFormatOne, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, SystemRole, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemRole, parsed_args)
         try:
             rec = self.tapis_client.systems.getRoleForUser(
                 systemId=parsed_args.identifier, username=parsed_args.username)

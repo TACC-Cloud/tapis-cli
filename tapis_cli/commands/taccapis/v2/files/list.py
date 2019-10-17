@@ -32,7 +32,7 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, File, parsed_args)
+        headers = SearchableCommand.render_headers(self, File, parsed_args)
         (storage_system, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
         recs = listdir(file_path,
                        system_id=storage_system,

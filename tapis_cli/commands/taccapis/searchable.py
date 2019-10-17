@@ -38,7 +38,7 @@ class SearchableCommand(object):
                 search_group.add_argument(sargp.argument, **sargp.attributes)
         return parser
 
-    def headers(self, tapis_entity_class, parsed_args):
+    def render_headers(self, tapis_entity_class, parsed_args):
         """Returns headers from a TapisModel based on current verbosity level
         """
         verbose = getattr(self, 'VERBOSITY', Verbosity.LISTING)

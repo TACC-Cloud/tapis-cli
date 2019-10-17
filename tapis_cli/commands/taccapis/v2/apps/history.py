@@ -24,7 +24,7 @@ class AppsHistory(AppsFormatMany, ServiceIdentifier):
         api_resource = '{0}/history'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
 
-        headers = self.headers(AppHistory, parsed_args)
+        headers = self.render_headers(AppHistory, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

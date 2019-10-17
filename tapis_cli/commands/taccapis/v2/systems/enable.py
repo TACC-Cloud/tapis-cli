@@ -26,7 +26,7 @@ class SystemsEnable(SystemsFormatOne, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, System, parsed_args)
+        headers = SearchableCommand.render_headers(self, System, parsed_args)
         rec = self.tapis_client.systems.manage(systemId=parsed_args.identifier,
                                                body={'action': 'enable'})
 

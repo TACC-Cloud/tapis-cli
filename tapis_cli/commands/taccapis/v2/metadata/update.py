@@ -59,7 +59,7 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile,
 
         uuid_data = self.get_identifier(parsed_args, validate=True)
 
-        headers = SearchableCommand.headers(self, Metadata, parsed_args)
+        headers = SearchableCommand.render_headers(self, Metadata, parsed_args)
         rec = create_update(name=name_data,
                             value=value_data,
                             uuid=uuid_data,

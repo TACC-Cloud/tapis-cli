@@ -34,7 +34,7 @@ class JobsShow(JobsFormatOne, ServiceIdentifier):
         rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)
 
         if not parsed_args.job_template:
-            headers = SearchableCommand.headers(self, Job, parsed_args)
+            headers = SearchableCommand.render_headers(self, Job, parsed_args)
         else:
             if self.formatter_default != 'json':
                 raise ValueError(

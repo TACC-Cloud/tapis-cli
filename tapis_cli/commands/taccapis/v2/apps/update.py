@@ -25,7 +25,7 @@ class AppsUpdate(AppsCreate, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = SearchableCommand.headers(self, App, parsed_args)
+        headers = SearchableCommand.render_headers(self, App, parsed_args)
 
         rec = self.tapis_client.apps.update(appId=parsed_args.identifier,
                                             body=self.json_file_contents)

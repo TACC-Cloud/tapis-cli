@@ -41,7 +41,7 @@ class TokenCreate(CreateTokenFormatOne):
         if passwd is None:
             passwd = prompt('Password', passwd, secret=True)
 
-        headers = super(TokenCreate, self).headers(Token, parsed_args)
+        headers = super(TokenCreate, self).render_headers(Token, parsed_args)
         self.tapis_client.token.password = passwd
 
         result = list()

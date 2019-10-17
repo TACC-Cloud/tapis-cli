@@ -24,7 +24,7 @@ class FilesHistory(FilesFormatMany, AgaveURI):
     def take_action(self, parsed_args):
         parsed_args = FilesFormatMany.preprocess_args(self, parsed_args)
 
-        headers = SearchableCommand.headers(self, FileHistory, parsed_args)
+        headers = SearchableCommand.render_headers(self, FileHistory, parsed_args)
         (system_id, file_path) = AgaveURI.parse_url(parsed_args.agave_uri)
         results = self.tapis_client.files.getHistory(filePath=file_path,
                                                      systemId=system_id,

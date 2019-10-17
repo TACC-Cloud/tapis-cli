@@ -30,7 +30,7 @@ class SystemsQueuesList(SystemsFormatMany, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, SystemQueue, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemQueue, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

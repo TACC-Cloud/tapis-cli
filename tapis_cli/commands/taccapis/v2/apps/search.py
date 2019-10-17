@@ -39,7 +39,7 @@ class AppsSearch(AppsFormatMany, SearchableCommand):
             v = f[k]
             self.post_payload[k] = v
 
-        headers = SearchableCommand.headers(self, App, parsed_args)
+        headers = SearchableCommand.render_headers(self, App, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

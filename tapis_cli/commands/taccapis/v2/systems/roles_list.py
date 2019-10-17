@@ -26,7 +26,7 @@ class SystemsRolesList(SystemsFormatMany, ServiceIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = SearchableCommand.headers(self, SystemRole, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemRole, parsed_args)
         results = self.tapis_client.systems.listRoles(
             systemId=parsed_args.identifier)
 

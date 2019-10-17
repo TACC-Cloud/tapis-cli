@@ -24,7 +24,7 @@ class ProfilesShow(ProfilesFormatOne, ServiceIdentifier):
         parsed_args = ProfilesFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.headers(self, Profile, parsed_args)
+        headers = SearchableCommand.render_headers(self, Profile, parsed_args)
         rec = self.tapis_client.profiles.listByUsername(
             username=parsed_args.identifier)
         data = []

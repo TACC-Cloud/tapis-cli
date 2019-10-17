@@ -25,7 +25,7 @@ class AppsShow(AppsFormatOne, ServiceIdentifier):
         parsed_args = AppsFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.headers(self, App, parsed_args)
+        headers = SearchableCommand.render_headers(self, App, parsed_args)
         rec = self.tapis_client.apps.get(appId=parsed_args.identifier)
 
         data = []

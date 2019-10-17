@@ -23,7 +23,7 @@ class AppsEnable(AppsFormatOne, ServiceIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = self.headers(App, parsed_args)
+        headers = self.render_headers(App, parsed_args)
         rec = self.tapis_client.apps.manage(appId=parsed_args.identifier,
                                             body={'action': 'enable'})
         data = []

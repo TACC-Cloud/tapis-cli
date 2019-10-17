@@ -34,7 +34,7 @@ class SystemsRolesDrop(SystemsFormatMany, ServiceIdentifier):
                 systemId=parsed_args.identifier))
 
         # Go ahead and list - should only return owner's role
-        headers = SearchableCommand.headers(self, SystemRole, parsed_args)
+        headers = SearchableCommand.render_headers(self, SystemRole, parsed_args)
         results = self.tapis_client.systems.listRoles(
             systemId=parsed_args.identifier)
 

@@ -25,7 +25,7 @@ class TokenRefresh(TokenFormatOne):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.take_action_defaults(parsed_args)
 
-        headers = super(TokenRefresh, self).headers(Token, parsed_args)
+        headers = super(TokenRefresh, self).render_headers(Token, parsed_args)
         try:
             result = self.tapis_client.token.refresh()
         except HTTPError as h:

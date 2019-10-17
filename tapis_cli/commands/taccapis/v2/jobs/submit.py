@@ -26,7 +26,7 @@ class JobsSubmit(UploadJsonFile, JobsFormatOne):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = SearchableCommand.headers(self, Job, parsed_args)
+        headers = SearchableCommand.render_headers(self, Job, parsed_args)
         rec = self.tapis_client.jobs.submit(body=self.json_file_contents)
 
         data = []
