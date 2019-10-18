@@ -1,9 +1,8 @@
 """Formatters customized for profile records and listings
 """
-from tapis_cli.clients.services.taccapis import (TaccApisCommandBase,
-                                                 TaccApisFormatOne,
-                                                 TaccApisFormatMany,
-                                                 TaccApisFormatManyUnlimited)
+from tapis_cli.commands.taccapis.formatters import (
+    TaccApisCommandBase, TaccApisFormatOne, TaccApisFormatMany,
+    TaccApisFormatManyUnlimited)
 from .models import Profile
 
 __all__ = ['ProfilesFormatOne', 'ProfilesFormatMany']

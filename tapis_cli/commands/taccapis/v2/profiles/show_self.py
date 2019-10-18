@@ -1,6 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Profile
@@ -10,16 +8,16 @@ __all__ = ['ProfilesShowSelf']
 
 
 class ProfilesShowSelf(ProfilesFormatOne):
-    """Show the user profile for the current authenticated user
+    """Show the Profile of the current authenticated user
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def take_action(self, parsed_args):
-        parsed_args = ProfilesFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        headers = SearchableCommand.render_headers(self, Profile, parsed_args)
+        headers = self.render_headers(Profile, parsed_args)
         rec = self.tapis_client.profiles.get()
         data = []
         for key in headers:

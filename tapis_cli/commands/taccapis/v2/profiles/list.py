@@ -1,6 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Profile
@@ -10,17 +8,17 @@ __all__ = ['ProfilesList']
 
 
 class ProfilesList(ProfilesFormatMany):
-    """Search the Profiles catalog
+    """List all Profiles (requires administrative privileges)
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.LISTING
 
     def take_action(self, parsed_args):
-        parsed_args = ProfilesFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, Profile, parsed_args)
+        headers = self.render_headers(Profile, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

@@ -9,26 +9,34 @@ from .formatters import ProfilesFormatOne, ProfilesFormatMany
 __all__ = ['ProfilesSearch']
 
 
-class ProfilesSearch(ProfilesFormatMany, SearchableCommand):
-    """Search the Profiles catalog
+class ProfilesSearch(ProfilesFormatMany):
+    """Search for a Profile by attribute
     """
     VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
-        parser = super(ProfilesFormatMany, self).get_parser(prog_name)
+        parser = super(ProfilesSearch, self).get_parser(prog_name)
+        # THe search params are created this way instead of with
+        # SearchableCommand.extend_parser because the parameterization
+        # for profiles is unlike any of the other Tapis services
+        #
+        # Define a mutually exclusive group for profiles search terms so
+        # that only one term can be specified
+        search_args = parser.add_mutually_exclusive_group(required=False)
         for f in Profile().fields:
             if f.searchable:
                 sarg = SearchWebParam(argument=f.param_name,
                                       field_type=f.param_type,
                                       mods=f.mod_types,
                                       default_mod=f.default_mod)
-                self.cache_sarg(sarg)
+                self._cache_sarg(sarg)
                 sargp = sarg.get_argparse()
-                parser.add_argument(sargp.argument, **sargp.attributes)
+                search_args.add_argument(sargp.argument, **sargp.attributes)
         return parser
 
     def take_action(self, parsed_args):
-        super().take_action(parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
+        # super().take_action(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         # Set up default search query payload (at minimum: limits, offset)
         # Map properties set in parsed_args to a query payload for search
@@ -40,8 +48,6 @@ class ProfilesSearch(ProfilesFormatMany, SearchableCommand):
                 filt = sarg.get_param(parsed_args_val)
                 filters.append(filt)
 
-        # TODO - The error message should be defined as a constant
-        # TODO - The check logic should come from a mixin 'OnlySingleTerm'
         if len(filters) > 1:
             raise ValueError(
                 'Multiple search terms are not supported for this command')
@@ -53,10 +59,8 @@ class ProfilesSearch(ProfilesFormatMany, SearchableCommand):
 
         self.update_payload(parsed_args)
 
-        # raise SystemError(self.post_payload)
-
+        headers = self.render_headers(Profile, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
-        headers = Profile().get_headers(self.VERBOSITY, parsed_args.formatter)
 
         records = []
         for rec in results:
