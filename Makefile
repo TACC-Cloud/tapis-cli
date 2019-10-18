@@ -62,3 +62,6 @@ interactive:
 
 image-release: image
 	docker push $(PUBLIC_DOCKER_IMAGE)
+
+locc:
+	python scripts/locc.py -recurse tapis_cli
