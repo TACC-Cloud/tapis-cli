@@ -9,7 +9,7 @@ __all__ = ['AppsEnable']
 
 
 class AppsEnable(AppsFormatOne, ServiceIdentifier):
-    """Restore usage for an app if disabled
+    """Restore usage for an App if disabled
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

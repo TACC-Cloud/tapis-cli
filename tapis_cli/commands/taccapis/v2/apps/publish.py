@@ -9,7 +9,7 @@ __all__ = ['AppsPublish']
 
 
 class AppsPublish(AppsFormatOne, ServiceIdentifier):
-    """Publish an app, making it generally usable across the platform
+    """Publish an App, making it generally usable across the platform
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

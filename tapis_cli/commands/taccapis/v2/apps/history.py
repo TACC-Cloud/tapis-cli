@@ -9,7 +9,7 @@ __all__ = ['AppsHistory']
 
 
 class AppsHistory(AppsFormatMany, ServiceIdentifier):
-    """List history for an specific app
+    """Show history of an App
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

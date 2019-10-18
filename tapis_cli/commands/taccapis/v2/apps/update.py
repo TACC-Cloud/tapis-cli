@@ -13,7 +13,7 @@ __all__ = ['AppsUpdate']
 
 
 class AppsUpdate(AppsCreate, ServiceIdentifier):
-    """Update an existing app
+    """Update an existing App
     """
     def get_parser(self, prog_name):
         parser = super(AppsUpdate, self).get_parser(prog_name)

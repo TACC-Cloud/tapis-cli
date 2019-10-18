@@ -10,7 +10,7 @@ __all__ = ['AppsShow']
 
 
 class AppsShow(AppsFormatOne, ServiceIdentifier):
-    """Show a single app record
+    """Show details for an App
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
