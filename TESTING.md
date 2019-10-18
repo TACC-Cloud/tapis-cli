@@ -41,7 +41,7 @@ that testers can help review on are laid out below by service.
 
 The following are **known issues** and will be addressed in future work periods:
 
-> 1.  Python 2.7.x is not supported (but will be)
+> 1.  ~~Python 2.7.x is not supported (but will be)~~ (18-10-2019)
 > 2.  ~~No **files** commands are implemented~~
 > 3.  No **actors** or **tacclab** commands are implemented
 > 4.  The **watch** function from the old jobs-submit is gone and will
@@ -72,7 +72,7 @@ rather than by manual intervention by the developers.
   - It must be installable using setuptools (`python setup.py
     install`)
   - It must be installable under Python 3.5, 3.6, and 3.7
-    (Python 2.7 support is forthcoming)
+  - It must be installable under Python 2.7.15+
 
 Please test the CLI under your favorite Python enviroment
 management practices so we can make sure it's relatively robust for
@@ -607,6 +607,10 @@ $ tapis metadata search --name eq vaughn.d021c9f2e90369e3.191010T173722Z -v
 records is not implemented, nor are permissions or metadata JSON schemas.
 
 ## Profiles
+
+18-10-2019 | Profiles search is now available. Only one attribute can be
+queried at a time and only the equality **eq** modifier is supported due to
+limitations of the profiles service.
 
 27-09-2019 | No changes
 
