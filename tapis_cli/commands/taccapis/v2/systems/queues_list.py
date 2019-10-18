@@ -1,6 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.clients.services.mixins import ServiceIdentifier
 
 from . import API_NAME, SERVICE_VERSION
@@ -20,18 +18,17 @@ class SystemsQueuesList(SystemsFormatMany, ServiceIdentifier):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = super(SystemsQueuesList, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         API_PATH = '{0}/queues'.format(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, SystemQueue,
-                                                   parsed_args)
+        headers = self.render_headers(SystemQueue, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

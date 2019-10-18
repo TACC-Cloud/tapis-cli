@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import UploadJsonFile
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System
@@ -12,24 +10,23 @@ __all__ = ['SystemsCreate']
 # TODO - enforce use of create vs update by checking for existence of systemId
 
 
-class SystemsCreate(UploadJsonFile, SystemsFormatOne):
+class SystemsCreate(SystemsFormatOne, UploadJsonFile):
     """Create a new System
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = SystemsFormatOne.get_parser(self, prog_name)
+        parser = super(SystemsCreate, self).get_parser(prog_name)
         parser = UploadJsonFile.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
 
-        headers = headers = SearchableCommand.render_headers(
-            self, System, parsed_args)
+        headers = headers = self.render_headers(System, parsed_args)
         rec = self.tapis_client.systems.add(body=self.json_file_contents)
 
         data = []

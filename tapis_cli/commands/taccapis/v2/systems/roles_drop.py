@@ -1,8 +1,6 @@
 from agavepy.agave import AgaveError
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import SystemRole
@@ -18,12 +16,12 @@ class SystemsRolesDrop(SystemsFormatMany, ServiceIdentifier):
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = super(SystemsRolesDrop, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
@@ -34,8 +32,7 @@ class SystemsRolesDrop(SystemsFormatMany, ServiceIdentifier):
                 systemId=parsed_args.identifier))
 
         # Go ahead and list - should only return owner's role
-        headers = SearchableCommand.render_headers(self, SystemRole,
-                                                   parsed_args)
+        headers = self.render_headers(SystemRole, parsed_args)
         results = self.tapis_client.systems.listRoles(
             systemId=parsed_args.identifier)
 

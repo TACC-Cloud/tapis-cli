@@ -1,6 +1,4 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System
@@ -16,15 +14,15 @@ class SystemsList(SystemsFormatMany):
     EXTRA_VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
-        parser = super(SystemsFormatMany, self).get_parser(prog_name)
+        parser = super(SystemsList, self).get_parser(prog_name)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatMany.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
-        headers = SearchableCommand.render_headers(self, System, parsed_args)
+        headers = self.render_headers(System, parsed_args)
         results = self.requests_client.get_data(params=self.post_payload)
 
         records = []

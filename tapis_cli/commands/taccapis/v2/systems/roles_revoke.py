@@ -1,8 +1,6 @@
 from agavepy.agave import AgaveError
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
-from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
+from tapis_cli.clients.services.mixins import ServiceIdentifier, Username
 
 from . import API_NAME, SERVICE_VERSION
 from .models import SystemRole
@@ -11,29 +9,25 @@ from .formatters import SystemsFormatOne
 __all__ = ['SystemsRolesRevoke']
 
 
-class SystemsRolesRevoke(SystemsFormatOne, ServiceIdentifier):
+class SystemsRolesRevoke(SystemsFormatOne, ServiceIdentifier, Username):
     """Revoke the current role for a User on a System
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = SystemsFormatOne.get_parser(self, prog_name)
+        parser = super(SystemsRolesRevoke, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
-        parser.add_argument('username',
-                            metavar='<username>',
-                            type=str,
-                            help='Revokee username')
+        parser = Username.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = SystemsFormatOne.preprocess_args(self, parsed_args)
+        parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
         # List roles on the System to show the new role
-        headers = SearchableCommand.render_headers(self, SystemRole,
-                                                   parsed_args)
+        headers = self.render_headers(SystemRole, parsed_args)
         rec = self.tapis_client.systems.deleteRoleForUser(
             systemId=parsed_args.identifier, username=parsed_args.username)
 
