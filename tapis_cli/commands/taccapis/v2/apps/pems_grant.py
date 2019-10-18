@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier, Username
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
@@ -11,13 +9,13 @@ __all__ = ['AppsPemsGrant']
 
 
 class AppsPemsGrant(AppsFormatMany, ServiceIdentifier, Username):
-    """Grant permissions on an app to a user
+    """Grant Permissions on an App to a User
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatMany.get_parser(self, prog_name)
+        parser = super(AppsPemsGrant, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         parser.add_argument('permission',
@@ -28,9 +26,8 @@ class AppsPemsGrant(AppsFormatMany, ServiceIdentifier, Username):
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.preprocess_args(self, parsed_args)
-        headers = Permission.get_headers(self, self.VERBOSITY,
-                                         parsed_args.formatter)
+        parsed_args = self.preprocess_args(parsed_args)
+        headers = self.render_headers(Permission, parsed_args)
         permission = parsed_args.permission
         body = {
             'username': parsed_args.username,

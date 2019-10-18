@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier, Username
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
@@ -11,21 +9,19 @@ __all__ = ['AppsPemsShow']
 
 
 class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
-    """Show permissions on an app for specific user
+    """Show Permissions on an App for specific User
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatOne.get_parser(self, prog_name)
+        parser = super(AppsPemsShow, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatOne.preprocess_args(self, parsed_args)
-        headers = Permission.get_headers(self, self.VERBOSITY,
-                                         parsed_args.formatter)
+        parsed_args = self.preprocess_args(parsed_args)
         #
         # Below is call to the AgavePy method but it is broken due to changes in behavior
         # between Py2 and Py3. It returns an wierdly iterated dict object:
@@ -44,6 +40,8 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
         API_PATH = '{0}/pems/{1}'.format(parsed_args.identifier,
                                          parsed_args.username)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
+
+        headers = self.render_headers(Permission, parsed_args)
         rec = self.requests_client.get_data(params=self.post_payload)
 
         # TODO - Account for the wierd behavior where querying ANY username

@@ -1,7 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.search import SearchWebParam
 from tapis_cli.clients.services.mixins import ServiceIdentifier
-from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
@@ -11,22 +9,21 @@ __all__ = ['AppsPemsList']
 
 
 class AppsPemsList(AppsFormatMany, ServiceIdentifier):
-    """List permissions for an specific app
+    """List Permissions for an specific App
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
-        parser = AppsFormatMany.get_parser(self, prog_name)
+        parser = super(AppsPemsList, self).get_parser(prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
-        parsed_args = AppsFormatMany.preprocess_args(self, parsed_args)
-        headers = Permission.get_headers(self, self.VERBOSITY,
-                                         parsed_args.formatter)
+        parsed_args = self.preprocess_args(parsed_args)
         self.update_payload(parsed_args)
 
+        headers = self.render_headers(Permission, parsed_args)
         results = self.tapis_client.apps.listPermissions(
             appId=parsed_args.identifier)
 
