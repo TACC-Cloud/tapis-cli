@@ -8,7 +8,8 @@ import shutil
 
 from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
-                             print_stderr, datestring_to_epoch, fnmatches)
+                             print_stderr, datestring_to_epoch, fnmatches,
+                             makedirs)
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
@@ -199,7 +200,7 @@ def download(source,
 
     # Create destinations
     for p in create_paths:
-        os.makedirs(p, exist_ok=True)
+        makedirs(p, exist_ok=True)
 
     # Do the downloads
     downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]

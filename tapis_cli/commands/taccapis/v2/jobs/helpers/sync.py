@@ -13,7 +13,8 @@ from dateutil.tz import tzoffset
 from tapis_cli import settings
 from tapis_cli.commands.taccapis.v2.files.mixins import FileExcludedError, FileExistsError
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
-                             print_stderr, datestring_to_epoch, fnmatches)
+                             print_stderr, datestring_to_epoch, fnmatches,
+                             makedirs)
 from tapis_cli.clients.services.taccapis.v2 import TaccApiDirectClient
 
 from .error import (read_tapis_http_error, handle_http_error,
@@ -226,7 +227,7 @@ def download(source,
     ]
     # Create destinations
     for dir in make_dirs:
-        os.makedirs(dir, exist_ok=True)
+        makedirs(dir, exist_ok=True)
 
     # Local filenames including destination directory
     rel_paths = [os.path.join(dest_dir, relpath(p)) for p in paths]
