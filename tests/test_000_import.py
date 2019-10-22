@@ -49,14 +49,17 @@ def test_can_import_files_modules():
     from tapis_cli.commands.taccapis.v2.files import pems_revoke
     from tapis_cli.commands.taccapis.v2.files import show
     from tapis_cli.commands.taccapis.v2.files import upload
-    from tapis_cli.commands.taccapis.v2.files import helpers
-    # from tapis_cli.commands.taccapis.v2.files.helpers.upload import upload
-    # from tapis_cli.commands.taccapis.v2.files.helpers.sync import download
-    # from tapis_cli.commands.taccapis.v2.files.helpers.stat import (isfile, isdir, stat, exists)
-    # from tapis_cli.commands.taccapis.v2.files.helpers.walk import (listdir, walk)
-    # from tapis_cli.commands.taccapis.v2.files.helpers.pems_list import pems_list
     from tapis_cli.commands.taccapis.v2.files import formatters
     from tapis_cli.commands.taccapis.v2.files import models
+    from tapis_cli.commands.taccapis.v2.files import helpers
+
+@pytest.mark.smoketest
+def test_can_import_files_helpers():
+    from tapis_cli.commands.taccapis.v2.files.helpers.upload import upload
+    from tapis_cli.commands.taccapis.v2.files.helpers.sync import download
+    from tapis_cli.commands.taccapis.v2.files.helpers.stat import (isfile, isdir, stat, exists)
+    from tapis_cli.commands.taccapis.v2.files.helpers.walk import (listdir, walk)
+    from tapis_cli.commands.taccapis.v2.files.helpers.pems_list import pems_list
 
 @pytest.mark.smoketest
 def test_can_import_jobs_modules():
@@ -150,4 +153,3 @@ def test_about(attribute, accept_none, expect_exception):
         val = getattr(a, attribute)
         if val is None and not accept_none:
             raise ValueError('{} cannot be None'.format(attribute))
-
