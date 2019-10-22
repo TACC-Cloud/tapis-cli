@@ -251,3 +251,19 @@ def is_mount(file_path,
     """
     raise NotImplementedError(
         'Tapis files is unable to determine if a resource is a mount')
+
+def dirname(file_path,
+            system_id=DEFAULT_SYSTEM_ID,
+            root_dir='/',
+            permissive=False,
+            agave=None,
+            **kwargs):
+    return os.path.dirname(file_path)
+
+def basename(file_path,
+             system_id=DEFAULT_SYSTEM_ID,
+             root_dir='/',
+             permissive=False,
+             agave=None,
+             **kwargs):
+    return os.path.basenamee(file_path)

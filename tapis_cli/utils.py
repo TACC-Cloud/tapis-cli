@@ -320,4 +320,4 @@ def timestamp():
 def makedirs(file_path, exist_ok=True):
     """Python2-compatible makedirs with exist_ok support
     """
-    Path(file_path).mkdir(exist_ok=exist_ok)
+    Path(file_path).mkdir(exist_ok=exist_ok, parents=True)

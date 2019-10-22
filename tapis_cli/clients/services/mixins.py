@@ -18,7 +18,8 @@ from tapis_cli.utils import serializable
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
-    'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier'
+    'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier',
+    'OptionalLocalFilePath'
 ]
 
 
@@ -214,9 +215,19 @@ class LocalFilePath(ParserExtender):
         parser.add_argument(
             'local_file_path',
             metavar='<file_path>',
-            help='File path relative to current working directory')
+            help='Path (relative to current working directory)')
         return parser
 
+class OptionalLocalFilePath(ParserExtender):
+    """Configures a Command to accept a local file path
+    """
+    def extend_parser(self, parser):
+        parser.add_argument(
+            'local_file_path',
+            nargs='?',
+            metavar='<file_path>',
+            help='Optional path (relative to current working directory)')
+        return parser
 
 class UploadJsonFile(ParserExtender):
     """Configures a client to accept and load a JSON file

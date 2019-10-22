@@ -3,13 +3,14 @@
 import copy
 import logging
 import os
+import re
 import requests
 import shutil
 
 from tapis_cli import settings
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
                              print_stderr, datestring_to_epoch, fnmatches,
-                             makedirs)
+                             makedirs, splitall)
 
 from .error import (read_tapis_http_error, handle_http_error,
                     TapisOperationFailed, AgaveError, HTTPError)
@@ -126,6 +127,7 @@ def _download(src,
 
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
+    print('_download: {}, {}'.format(local_filename, tmp_local_filename))
 
     if not _check_write(
             local_filename, size, timestamp, excludes, force=force, sync=sync):
@@ -150,11 +152,10 @@ def _download(src,
     except HTTPError as h:
         handle_http_error(h)
     except (OSError, IOError) as err:
-        logger.error(str(err))
+        print('Failed writing {}: {}'.format(tmp_local_filename, str(err)))
         raise
     except Exception as exc:
         raise TapisOperationFailed("Download failed: {}".format(exc))
-
 
 def download(source,
              system_id,
@@ -186,24 +187,33 @@ def download(source,
     abs_names = [f['path'] for f in all_targets]
     sizes = [f['length'] for f in all_targets]
     mods = [datestring_to_epoch(f['lastModified']) for f in all_targets]
-    dest_names = [f.replace(source, '.') for f in abs_names]
-    dest_paths = [f.replace('./', '') for f in dest_names]
-    dest_paths = [
-        os.path.join(destination, os.path.dirname(f)) for f in dest_paths
-    ]
-    # Remove references to current working directory and any redundant dir names
-    create_paths = []
-    create_paths = [
-        f for f in dest_paths
-        if f != './' and '{0}/'.format(destination) not in create_paths
-    ]
 
-    # Create destinations
-    for p in create_paths:
-        makedirs(p, exist_ok=True)
+    # Create local destination paths
+    dirs = [os.path.dirname(p) for p in abs_names]
+    if not isfile(source, system_id=system_id, agave=agave):
+        sub_root = None
+        if source.endswith('/'):
+            sub_root = source
+        else:
+            sub_root = os.path.dirname(source)
+        sub_root = re.sub('([/]+)$', '', sub_root)
+        dirs = [re.sub(sub_root, '', d) for d in dirs]
+        dest_names = [os.path.join(destination, relpath(re.sub(sub_root, '', f))) for f in abs_names]
+        dirs = [d for d in dirs if d != sub_root]
+        make_dirs = [
+            os.path.join(destination, relpath(p)) for p in dirs
+        ]
+        # Create destinations
+        for dir in make_dirs:
+            makedirs(dir, exist_ok=True)
+    else:
+        sub_root = os.path.dirname(source)
+        dest_names = [destination]
 
     # Do the downloads
     downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]
+    # raise SystemError()
+
     start_time_all = seconds()
     for src, size, mod, dest in downloads:
         if progress:
@@ -225,6 +235,7 @@ def download(source,
         except FileExistsError as fxerr:
             if sync or force:
                 skipped.append(src)
+                errors.append(fxerr)
             else:
                 errors.append(fxerr)
         except Exception as exc:

@@ -81,7 +81,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
             atomic=False,
             agave=self.tapis_client)
 
-        headers = ['uploaded', 'skipped', 'warnings', 'data', 'elapsed_sec']
+        headers = ['uploaded', 'skipped', 'messages', 'bytes_transferred', 'elapsed_sec']
         if parsed_args.formatter in ('json', 'yaml'):
             data = [
                 uploaded, skipped, [str(e) for e in exceptions], ul_bytes,
