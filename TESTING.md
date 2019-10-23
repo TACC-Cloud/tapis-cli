@@ -239,6 +239,9 @@ updating, publishing, search & discovery, and sharing are all implemented.
 
 ## Jobs
 
+25-10-2019 | Job permissions management commands are now supported. Job  UUIDs
+are soft-validated for length and suffix characters.
+
 04-10-2019 | Boolean search options are functional. Search arguments where
 there are a restricted set of choices are now indicated in the help. The
 preferred modifier for each argument is now highlighted. Furthermore, date
@@ -444,6 +447,9 @@ usage: tapis systems search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
 is the ability to atomically update a system's login inforamation.
 
 ## Metadata
+
+25-10-2019 | Metadata permissions management commands are now supported. Metadata UUIDs
+are soft-validated for length and suffix characters.
 
 11-10-2019 | Creation, update, and delete for metadata records is now supported. A (hopefully)
 improved workflow is now supported for create and update.
