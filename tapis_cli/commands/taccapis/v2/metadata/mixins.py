@@ -3,7 +3,8 @@
 
 from tapis_cli.clients.services.mixins import (ServiceIdentifier,
                                                InvalidIdentifier,
-                                               UploadJsonFile)
+                                               UploadJsonFile,
+                                               InvalidIdentifier)
 
 __all__ = ['MetadataIdentifier', 'UploadMetadataFile']
 
@@ -36,9 +37,13 @@ class MetadataIdentifier(ServiceIdentifier):
     def arg_help(cls, id_value):
         return 'Metadata UUID'.format(id_value)
 
-    def validate_identifier(self, identifier):
-        if True:
+    def validate_identifier(self, identifier, permissive=False):
+        if len(identifier) >= 36 and len(
+                identifier) <= 40 and identifier.endswith('-012'):
             return True
         else:
-            raise InvalidIdentifier(
-                '{0} is not a valid identifier'.format(identifier))
+            if permissive:
+                return False
+            else:
+                raise InvalidIdentifier(
+                    '{0} not a valid metadata UUID'.format(identifier))
