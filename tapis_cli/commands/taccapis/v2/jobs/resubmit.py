@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import JobsUUID
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
@@ -8,7 +8,7 @@ from .formatters import JobsFormatOne
 __all__ = ['JobsResubmit']
 
 
-class JobsResubmit(JobsFormatOne, ServiceIdentifier):
+class JobsResubmit(JobsFormatOne, JobsUUID):
     """Resubmit a Job using the same inputs and parameters
     """
     VERBOSITY = Verbosity.BRIEF
@@ -16,7 +16,7 @@ class JobsResubmit(JobsFormatOne, ServiceIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(JobsResubmit, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = JobsUUID.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

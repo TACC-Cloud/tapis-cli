@@ -17,6 +17,17 @@ class Permission(TapisModel):
         'WRITE_EXECUTE', 'NONE'
     ]
 
+    PEM_POSIX_MAPPING = {
+        'NONE': '---',
+        'READ': 'r--',
+        'WRITE': '-w-',
+        'EXECUTE': '--x',
+        'READ_WRITE': 'rw-',
+        'READ_EXECUTE': 'r-x',
+        'WRITE_EXECUTE': '-wx',
+        'ALL': 'rwx'
+    }
+
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("username", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
@@ -38,7 +49,7 @@ class Permission(TapisModel):
             return ['username', 'read', 'write', 'execute']
 
     @classmethod
-    def pem_to_row(self, permission):
+    def pem_to_row(cls, permission):
         """Transforms a 'permission' object into an array of strings
 
         Values for 'True' and 'False' are defined in constants.PEM_TRUE and
@@ -51,3 +62,20 @@ class Permission(TapisModel):
             else:
                 row_data.append(constants.PEM_FALSE)
         return row_data
+
+    @classmethod
+    def pem_to_unix(cls, permission):
+        """Returns a UNIX shell representation of a Tapis permission
+        """
+        return cls.PEM_POSIX_MAPPING.get(permission.upper(), '---')
+
+    @classmethod
+    def validate(cls, permission, permissive=False):
+        if permission in cls.NAMES:
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise ValueError(
+                    '{0} not a valid Permission'.format(permission))

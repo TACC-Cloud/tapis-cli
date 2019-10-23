@@ -35,11 +35,13 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        self.validate_identifier(parsed_args.identifier)
+
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
         # Optionally disable creation and use of a job folder
-        dest_dir = './{0}'.format(parsed_args.job_uuid)
+        dest_dir = './{0}'.format(parsed_args.identifier)
         if parsed_args.use_cwd:
             dest_dir = '.'
         else:
@@ -48,7 +50,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         headers = self.render_headers(File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
             parsed_args.file_path,
-            parsed_args.job_uuid,
+            parsed_args.identifer,
             destination=dest_dir,
             excludes=parsed_args.exclude_files,
             includes=parsed_args.include_files,

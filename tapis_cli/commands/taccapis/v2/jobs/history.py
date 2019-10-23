@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import JobsUUID
 
 from . import API_NAME, SERVICE_VERSION
 from .models import JobHistory
@@ -8,7 +8,7 @@ from .formatters import JobsHistoryFormatMany
 __all__ = ['JobsHistory']
 
 
-class JobsHistory(JobsHistoryFormatMany, ServiceIdentifier):
+class JobsHistory(JobsHistoryFormatMany, JobsUUID):
     """List history for a specific job
     """
     VERBOSITY = Verbosity.LISTING
@@ -16,11 +16,12 @@ class JobsHistory(JobsHistoryFormatMany, ServiceIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(JobsHistory, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = JobsUUID.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        self.validate_identifier(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(JobHistory, parsed_args)

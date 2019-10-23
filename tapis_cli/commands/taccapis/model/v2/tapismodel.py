@@ -81,3 +81,6 @@ class TapisModel(object):
             k1, v1 = cls.render_key_value(k, v)
             transformed[k1] = v1
         return transformed
+
+    def validate(self, entity, permissive=True):
+        return True

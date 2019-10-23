@@ -19,11 +19,15 @@ __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
     'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier',
-    'OptionalLocalFilePath'
+    'OptionalLocalFilePath', 'InvalidValue'
 ]
 
 
-class InvalidIdentifier(ValueError):
+class InvalidValue(ValueError):
+    pass
+
+
+class InvalidIdentifier(InvalidValue):
     """Raised when an invalid identifier is encountered
     """
     pass
@@ -46,6 +50,12 @@ class ParserExtender(object):
 
     def render_field(self, key, value, formatter=None):
         return key, value
+
+    def validate(self, value, permissive=True):
+        """Placeholder to implement validation of a value passed
+        via a ParserExtender
+        """
+        return True
 
 
 class AppVerboseLevel(ParserExtender):
@@ -140,8 +150,8 @@ class ServiceIdentifier(ParserExtender):
                                     help=self.arg_help(id_value))
         return parser
 
-    def validate_identifier(self, identifier):
-        return True
+    def validate_identifier(self, identifier, permissive=True):
+        return self.validate(identifier)
 
     def get_identifier(self, parsed_args, validate=False, permissive=False):
         identifier = None
@@ -183,16 +193,39 @@ class AgaveURI(ParserExtender):
             parts = url.split('/')
             if parts[1] == 'files' and parts[3] == 'media':
                 return parts[5], '/'.join(parts[6:])
+        else:
+            raise InvalidValue('{0} not a valid Agave URL or URI'.format(url))
+
+    def validate(self, url, permissive=False):
+        try:
+            self.parse_url(url)
+            return True
+        except Exception:
+            if permissive:
+                return False
+            else:
+                raise
 
 
-class JobsUUID(ParserExtender):
+class JobsUUID(ServiceIdentifier):
     """Configures a Command to require a mandatory Tapis job UUID
     """
     def extend_parser(self, parser):
-        parser.add_argument('job_uuid',
+        parser.add_argument('identifier',
                             metavar='<job_uuid>',
-                            help='Tapis job UUID')
+                            help='Tapis Job UUID')
         return parser
+
+    def validate_identifier(self, identifier, permissive=False):
+        if len(identifier) >= 36 and len(
+                identifier) <= 40 and identifier.endswith('-007'):
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise InvalidValue(
+                    '{0} not a valid job UUID'.format(identifier))
 
 
 class RemoteFilePath(ParserExtender):
@@ -258,10 +291,9 @@ class UploadJsonFile(ParserExtender):
             raise IOError('Unknown or inaccessible data source: {0}'.format(
                 parsed_args.json_file_name))
 
-        payload = json.load(document_source)
-
         # Check JSON validity by loading and dumping it
         try:
+            payload = json.load(document_source)
             serializable(payload)
             setattr(self, 'json_file_contents', payload)
         except Exception as exc:

@@ -26,12 +26,13 @@ class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        self.validate_identifier(parsed_args.identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
         headers = self.render_headers(File, parsed_args)
         recs = listdir(parsed_args.file_path,
-                       job_uuid=parsed_args.job_uuid,
+                       job_uuid=parsed_args.identifier,
                        agave=self.tapis_client)
 
         if not isinstance(recs, list):
