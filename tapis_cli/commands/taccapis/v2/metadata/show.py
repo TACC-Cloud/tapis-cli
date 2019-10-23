@@ -10,7 +10,7 @@ __all__ = ['MetadataShow']
 
 
 class MetadataShow(MetadataFormatOne, MetadataIdentifier):
-    """Show a Metadata record by UUID
+    """Show a Metadata document by UUID
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

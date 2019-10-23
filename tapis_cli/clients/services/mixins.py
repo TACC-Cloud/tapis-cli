@@ -218,6 +218,7 @@ class LocalFilePath(ParserExtender):
             help='Path (relative to current working directory)')
         return parser
 
+
 class OptionalLocalFilePath(ParserExtender):
     """Configures a Command to accept a local file path
     """
@@ -228,6 +229,7 @@ class OptionalLocalFilePath(ParserExtender):
             metavar='<file_path>',
             help='Optional path (relative to current working directory)')
         return parser
+
 
 class UploadJsonFile(ParserExtender):
     """Configures a client to accept and load a JSON file

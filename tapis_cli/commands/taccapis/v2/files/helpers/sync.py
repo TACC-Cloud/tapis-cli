@@ -157,6 +157,7 @@ def _download(src,
     except Exception as exc:
         raise TapisOperationFailed("Download failed: {}".format(exc))
 
+
 def download(source,
              system_id,
              destination='.',
@@ -198,11 +199,12 @@ def download(source,
             sub_root = os.path.dirname(source)
         sub_root = re.sub('([/]+)$', '', sub_root)
         dirs = [re.sub(sub_root, '', d) for d in dirs]
-        dest_names = [os.path.join(destination, relpath(re.sub(sub_root, '', f))) for f in abs_names]
-        dirs = [d for d in dirs if d != sub_root]
-        make_dirs = [
-            os.path.join(destination, relpath(p)) for p in dirs
+        dest_names = [
+            os.path.join(destination, relpath(re.sub(sub_root, '', f)))
+            for f in abs_names
         ]
+        dirs = [d for d in dirs if d != sub_root]
+        make_dirs = [os.path.join(destination, relpath(p)) for p in dirs]
         # Create destinations
         for dir in make_dirs:
             makedirs(dir, exist_ok=True)

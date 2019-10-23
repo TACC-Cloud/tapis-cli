@@ -12,8 +12,8 @@ from .mixins import ExcludeFiles, FilesCallbackURI, OverwritePolicy, ReportProgr
 __all__ = ['FilesDownload']
 
 
-class FilesDownload(FilesFormatOne, AgaveURI, OptionalLocalFilePath, ExcludeFiles, OverwritePolicy,
-                    ReportProgress):
+class FilesDownload(FilesFormatOne, AgaveURI, OptionalLocalFilePath,
+                    ExcludeFiles, OverwritePolicy, ReportProgress):
     """Download a Tapis-managed file or directory to local host
     """
 
@@ -54,7 +54,10 @@ class FilesDownload(FilesFormatOne, AgaveURI, OptionalLocalFilePath, ExcludeFile
             atomic=False,
             agave=self.tapis_client)
 
-        headers = ['downloaded', 'skipped', 'messagess', 'bytes_transfered', 'elapsed_sec']
+        headers = [
+            'downloaded', 'skipped', 'messagess', 'bytes_transfered',
+            'elapsed_sec'
+        ]
         if parsed_args.formatter in ('json', 'yaml'):
             data = [
                 downloaded, skipped, [str(e) for e in exceptions], dl_bytes,

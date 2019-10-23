@@ -9,3 +9,8 @@ from .list import MetadataList
 from .show import MetadataShow
 from .search import MetadataSearch
 from .update import MetadataUpdate
+from .pems_list import MetadataPemsList
+from .pems_show import MetadataPemsShow
+from .pems_grant import MetadataPemsGrant
+from .pems_revoke import MetadataPemsRevoke
+from .pems_drop import MetadataPemsDrop

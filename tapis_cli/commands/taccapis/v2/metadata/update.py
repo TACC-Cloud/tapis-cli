@@ -11,7 +11,7 @@ from .mixins import MetadataIdentifier, UploadMetadataFile
 
 class MetadataUpdate(MetadataFormatOne, UploadMetadataFile,
                      MetadataIdentifier):
-    """Update a metadata document by UUID
+    """Update a Metadata document by UUID
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
