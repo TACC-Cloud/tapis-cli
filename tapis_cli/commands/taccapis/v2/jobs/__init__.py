@@ -3,6 +3,7 @@
 from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 
 from .models import Job, API_NAME
+from .hide import JobsHide
 from .history import JobsHistory
 from .list import JobsList
 from .resubmit import JobsResubmit
@@ -17,3 +18,4 @@ from .pems_show import JobsPemsShow
 from .pems_grant import JobsPemsGrant
 from .pems_revoke import JobsPemsRevoke
 from .pems_drop import JobsPemsDrop
+from .unhide import JobsUnhide
