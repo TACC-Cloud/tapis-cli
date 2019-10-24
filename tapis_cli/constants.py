@@ -3,7 +3,7 @@
 
 __all__ = [
     'PLATFORM', 'CLI', 'ACCESS_TOKEN', 'REFRESH_TOKEN', 'TENANT', 'CLIENT_KEY',
-    'CLIENT_SECRET', 'PEM_TRUE', 'PEM_FALSE'
+    'CLIENT_SECRET', 'PEM_TRUE', 'PEM_FALSE', 'GOOGLE_ANALYTICS_ID'
 ]
 
 # Platform name (useful if we rebrand)
@@ -25,3 +25,6 @@ CLIENT_SECRET = 'client secret'
 PEM_TRUE = 'True'
 # Does not have permission
 PEM_FALSE = 'False'
+
+# Google Analytics
+GOOGLE_ANALYTICS_ID = 'UA-147552755-1'

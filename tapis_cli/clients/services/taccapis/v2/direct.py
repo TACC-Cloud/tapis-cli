@@ -1,10 +1,11 @@
-from tapis_cli.main import PKG_NAME, About, VersionInfo
+# from tapis_cli.main import PKG_NAME, About, VersionInfo
 import requests
 import curlify
 from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
 from tapis_cli.utils import print_stderr
 from tapis_cli.settings import TAPIS_CLI_SHOW_CURL
+from tapis_cli.user_agent import user_agent
 
 __all__ = ['TaccApiDirectClient']
 
@@ -19,15 +20,12 @@ class TaccApiDirectClient(object):
     web request is made directly using the ``requests`` library.
     """
     def __init__(self, agave_client):
-        ab = About(PKG_NAME)
-        vers = VersionInfo(PKG_NAME)
         # TODO - Catch when client is missing properties
         # token = agave_client.token.token_info['access_token']
         # Always refresh when using a requests call
         # agave_client.token.refresh()
         token = agave_client._token
-        self.user_agent = '{}/{}#{}'.format(ab.title, vers.version_string(),
-                                            ab.git_commit)
+        self.user_agent = user_agent()
         self.api_server = agave_client.api_server
         self.api_key = agave_client.api_key
         self.api_secret = agave_client.api_secret

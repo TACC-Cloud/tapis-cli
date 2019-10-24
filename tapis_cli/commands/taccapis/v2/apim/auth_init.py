@@ -12,6 +12,7 @@ from tapis_cli.constants import PLATFORM
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
                              get_local_username)
 from tapis_cli.settings import TAPIS_DEFAULT_TENANT_ID
+from tapis_cli import et
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -58,6 +59,7 @@ class AuthInit(CreateTokenFormatOne):
         # Load what we can from credentials cache. Ultimately, if no
         # overrides are specified, the cached contents will be used to
         # populate the Tapis client.
+
         try:
             logger.debug('Read from local Tapis cache...')
             ag_context = Agave._read_current(agave_kwargs=True)
@@ -201,4 +203,5 @@ class AuthInit(CreateTokenFormatOne):
             str(ag.expires_at)
         ]
 
+        et.phone_home()
         return (tuple(headers), tuple(data))

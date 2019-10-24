@@ -1,6 +1,7 @@
 from agavepy.agave import AgaveError
 from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
+from tapis_cli import et
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -38,4 +39,6 @@ class TokenRefresh(TokenFormatOne):
         result = list()
         for h in headers:
             result.append(self.tapis_client.token.token_info.get(h))
+
+        et.phone_home()
         return (tuple(headers), tuple(result))
