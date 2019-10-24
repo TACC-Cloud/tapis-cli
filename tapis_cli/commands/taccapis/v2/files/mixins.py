@@ -99,7 +99,7 @@ class FilesOptions(FileOptions):
     a 'sort_table' function to sort a table by designated header.
     """
     def extend_parser(self, parser):
-        parser = super().extend_parser(parser)
+        parser = super(FilesOptions, self).extend_parser(parser)
         parser.add_argument('--reverse',
                             dest='ls_sort_reverse',
                             action='store_true',

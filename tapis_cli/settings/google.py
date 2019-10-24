@@ -1,3 +1,5 @@
+"""Google Analytics settings
+"""
 import os
 from hashlib import sha1
 from tapis_cli.utils import get_hostname
@@ -11,5 +13,6 @@ TAPIS_CLI_GA_VISITOR = str(
             os.environ.get('TAPIS_CLI_GA_VISITOR',
                            get_hostname()).encode('utf-8')).hexdigest(),
         0))[:10]
+
 TAPIS_CLI_GA_DISABLE = parse_boolean(
     os.environ.get('TAPIS_CLI_GA_DISABLE', 'false'))

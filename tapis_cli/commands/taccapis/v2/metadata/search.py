@@ -45,7 +45,7 @@ class MetadataSearch(MetadataFormatMany, SearchableCommand):
 
     def update_payload(self, parsed_args):
         # Override inherited update_payload to add --privileged
-        super().update_payload(parsed_args)
+        super(MetadataSearch, self).update_payload(parsed_args)
         self.post_payload['privileged'] = parsed_args.privileged
         return self
 

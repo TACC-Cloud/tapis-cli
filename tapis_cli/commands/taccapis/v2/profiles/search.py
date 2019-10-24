@@ -36,7 +36,6 @@ class ProfilesSearch(ProfilesFormatMany):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        # super().take_action(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         # Set up default search query payload (at minimum: limits, offset)
         # Map properties set in parsed_args to a query payload for search

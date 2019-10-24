@@ -110,6 +110,8 @@ def datestring_to_epoch(date_string):
 
 
 def command_set():
+    """Discover and return the full complement of commands
+    """
     FILTERED = ('complete', 'help')
     cset = list()
     epts = pkg_resources.iter_entry_points('tapis.cli')
@@ -123,12 +125,16 @@ def command_set():
 
 
 def fmtcols(mylist, cols):
+    """Generate a string of tab and newline delimited columns from a list
+    """
     lines = ("\t".join(mylist[i:i + cols])
              for i in range(0, len(mylist), cols))
     return '\n'.join(lines)
 
 
 def prompt(body, default=None, secret=False):
+    """Prompt user for input
+    """
     if default is not None:
         if secret is False:
             fdefault = default
@@ -249,6 +255,8 @@ def splitall(path):
 
 # Inspired by https://gist.github.com/moird/3684595
 def humanize_bytes(bytesize, precision=2):
+    """Render byte counts into human-scale formats
+    """
     abbrevs = ((1 << 50, 'PB'), (1 << 40, 'TB'), (1 << 30, 'GB'),
                (1 << 20, 'MB'), (1 << 10, 'kB'), (1, 'bytes'))
     if bytesize == 1:
@@ -260,6 +268,8 @@ def humanize_bytes(bytesize, precision=2):
 
 
 def print_stderr(message):
+    """Print to STDERR without using logging
+    """
     print('{0}'.format(message), file=sys.stderr)
 
 
@@ -267,22 +277,32 @@ def print_stderr(message):
 
 
 def fg_red(message):
+    """Red text
+    """
     return Fore.RED + message + Fore.RESET
 
 
 def fg_green(message):
+    """Green text
+    """
     return Fore.GREEN + message + Fore.RESET
 
 
 def fg_blue(message):
+    """Blue text
+    """
     return Fore.BLUE + message + Fore.RESET
 
 
 def fg_bright(message):
+    """Bright text
+    """
     return Style.BRIGHT + message + Style.RESET_ALL
 
 
 def fg_dim(message):
+    """Dim text
+    """
     return Style.DIM + message + Style.RESET_ALL
 
 
@@ -314,6 +334,8 @@ def serializable(obj, permissive=True):
 
 
 def timestamp():
+    """Returns Zulu-formatted UTC time
+    """
     return arrow.utcnow().format('YYMMDDTHHmmss') + 'Z'
 
 

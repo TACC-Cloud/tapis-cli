@@ -27,4 +27,5 @@ tenacity
 colorama
 curlify
 pathlib2
+validators
 agavepy@git+https://github.com/TACC/agavepy.git@cli

@@ -7,6 +7,7 @@ from urllib.error import HTTPError
 
 import platform
 import requests
+import six
 import sys
 from random import randint
 
@@ -24,26 +25,32 @@ def generate_tracking_url(path=None):
                                               sys.version_info.minor,
                                               sys.version_info.micro)
         os_version = str(platform.platform())
-        VISIT_PATH = '/stats/python/{0}/platform/{1}'.format(
+        visit_path = '/stats/python/{0}/platform/{1}'.format(
             python_version, os_version)
     else:
-        VISIT_PATH = path
+        visit_path = path
 
-    DATA = {
+    data = {
         'utmwv':
         '5.2.2d',
         'utmn':
         str(randint(1, 9999999999)),
         'utmp':
-        VISIT_PATH,
+        visit_path,
         'utmac':
         GOOGLE_ANALYTICS_ID,
         'utmcc':
         '__utma=%s;' %
         '.'.join(['1', settings.TAPIS_CLI_GA_VISITOR, '1', '1', '1', '1'])
     }
-    url = urlunparse(('https', 'www.google-analytics.com', '/__utm.gif', '',
-                      urlencode(DATA), ''))
+
+    path_els = ('https', 'www.google-analytics.com', '/__utm.gif', '',
+                urlencode(data), '')
+    if not six.PY3:
+        # Coerce to strings to avoid mixed-type error in urlunparse
+        path_els = [str(e) for e in path_els]
+
+    url = urlunparse(path_els)
     return url
 
 
