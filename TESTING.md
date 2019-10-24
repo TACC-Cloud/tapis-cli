@@ -242,6 +242,8 @@ updating, publishing, search & discovery, and sharing are all implemented.
 25-10-2019 | Job permissions management commands are now supported. Job  UUIDs
 are soft-validated for length and suffix characters.
 
+Jobs can now be hidden and unhidden via `tapis jobs hide/unhide`
+
 04-10-2019 | Boolean search options are functional. Search arguments where
 there are a restricted set of choices are now indicated in the help. The
 preferred modifier for each argument is now highlighted. Furthermore, date
