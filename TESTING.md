@@ -22,6 +22,8 @@ functionality (such as with permissions), the command structure is
       - enable - restore a resource to use
       - publish - make a resource publicly usable
       - unpublish - remove a resource from public use
+      - hide - hide a resource (jobs only) from view
+      - unhide - restore visibility to a resource (jobs only)
 
   - Permissions and roles:
       - list - list entitlements for entity by identifier
@@ -48,7 +50,7 @@ The following are **known issues** and will be addressed in future work periods:
 >     never return
 > 5.  ~~Impersonation token issuance is not yet implemented~~
 > 6.  The beloved `auth switch` is not yet implemented
-> 7.  Metadata schema and record management commands are not yet
+> 7.  Metadata schema and ~~record management~~ commands are not yet
 >     implemented
 > 8.  No **notifications** commands are implemented
 > 9.  The module is not yet available on PyPi
@@ -57,6 +59,8 @@ The following are **known issues** and will be addressed in future work periods:
 > 12. ~~Search on dates is broken~~
 > 12. ~~Search on booleans can be broken (try `--boolean eq true`)~~
 > 13. ~~Access tokens passed via `-z` or `--token` are not honored~~
+> 14. Some `pems drop` commands do not actually drop all granted permissions
+> 15. Commands built with AgavePy don't report complete error messages
 
 ## Installation
 
@@ -141,6 +145,9 @@ some persistent settings. This will be described in more detail in
 future testing sessions.
 
 ## Display Options
+
+25-10-2019: A point of clarification: You should probably just set
+`TAPIS_PY_SHOW_CURL` and allow it to govern the CLI's behavior.
 
 11-10-2019 | AgavePy has been updated to also print cURL-equivalent commands to
 STDERR. This behavior can be toggled by setting `TAPIS_PY_SHOW_CURL=1` in the
@@ -242,7 +249,9 @@ updating, publishing, search & discovery, and sharing are all implemented.
 25-10-2019 | Job permissions management commands are now supported. Job  UUIDs
 are soft-validated for length and suffix characters.
 
-Jobs can now be hidden and unhidden via `tapis jobs hide/unhide`
+Jobs can now be hidden and unhidden via `tapis jobs hide/unhide`. A job cannot
+be listed or viewed when hidden. This is provided as an alternative to
+deleting the job, which is antithetical to provenance and usage tracking.
 
 04-10-2019 | Boolean search options are functional. Search arguments where
 there are a restricted set of choices are now indicated in the help. The
@@ -317,6 +326,9 @@ option, which will translate the verbose Aloe jobs output into a JSON
 request document that can be used to submit a similar job.
 
 ## Files
+
+25-10-2019 | It is now possible to define the destination path in
+`tapis files download`.
 
 11-10-2019 | Permissions management commands for files are now implemented
 The syntax is `files pems <action> <agave_url> <username> [<permission>]`
