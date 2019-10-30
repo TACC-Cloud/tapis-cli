@@ -105,4 +105,8 @@ class TaccApiDirectClient(object):
 
 def show_curl(response_object):
     if TAPIS_CLI_SHOW_CURL:
-        print_stderr(curlify.to_curl(response_object.request))
+        try:
+            curl_text = curlify.to_curl(response_object.request)
+        except Exception as err:
+            curl_text = 'Failed to render curl command: {0}'.format(err)
+        print_stderr(curl_text)
