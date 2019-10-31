@@ -50,7 +50,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         headers = self.render_headers(File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
             parsed_args.file_path,
-            parsed_args.identifer,
+            parsed_args.identifier,
             destination=dest_dir,
             excludes=parsed_args.exclude_files,
             includes=parsed_args.include_files,
