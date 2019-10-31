@@ -137,7 +137,7 @@ class ServiceIdentifier(ParserExtender):
 
     @classmethod
     def arg_help(cls, id_value):
-        return '{0} identifer'.format(id_value)
+        return '{0} identifier'.format(id_value)
 
     def extend_parser(self, parser):
         id_value = getattr(self, 'service_id_type')
