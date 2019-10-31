@@ -38,7 +38,7 @@ class MetadataDelete(MetadataFormatOne, MetadataIdentifier):
         # Following the example set for file upload/download, report
         # summary statistics in table or structured form if showing yaml/json
         #
-        # Considering implementing a plural version of ServiceIdentifer to
+        # Considering implementing a plural version of ServiceIdentifier to
         # allow commands to process multiple IDs - most useful for batch delete
         headers = ['deleted', 'messages']
         if parsed_args.formatter in ('json', 'yaml'):

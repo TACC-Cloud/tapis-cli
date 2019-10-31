@@ -1,6 +1,8 @@
 import fnmatch
 import logging
 import os
+import sys
+import traceback
 
 from tapis_cli.utils import datestring_to_epoch, humanize_bytes, relpath, abspath, print_stderr, seconds, fnmatches
 
@@ -77,7 +79,8 @@ def _upload(local_file_path,
         logger.error(str(err))
         raise
     except Exception as exc:
-        raise TapisOperationFailed("Upload failed: {}".format(exc))
+        traceback.print_exc(file=sys.stdout)
+        raise TapisOperationFailed("Upload failed: {0}}".format(exc))
 
     return True
 
