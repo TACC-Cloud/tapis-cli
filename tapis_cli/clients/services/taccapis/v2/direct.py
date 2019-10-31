@@ -4,7 +4,7 @@ import curlify
 from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
 from tapis_cli.utils import print_stderr
-from tapis_cli.settings import TAPIS_CLI_SHOW_CURL
+from tapis_cli.settings import TAPIS_CLI_SHOW_CURL, TAPIS_CLI_VERBOSE_ERRORS
 from tapis_cli.user_agent import user_agent
 
 __all__ = ['TaccApiDirectClient']
@@ -57,21 +57,24 @@ class TaccApiDirectClient(object):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
         show_curl(resp)
-        resp.raise_for_status()
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def get_bytes(self, path=None):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
         show_curl(resp)
-        resp.raise_for_status()
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
         return resp
 
     def get_data(self, path=None, params={}):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers, params=params)
         show_curl(resp)
-        resp.raise_for_status()
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def post(self, path=None, content_type=None):
@@ -81,7 +84,8 @@ class TaccApiDirectClient(object):
             post_headers['Content-type'] = content_type
         resp = requests.post(url, headers=post_headers)
         show_curl(resp)
-        resp.raise_for_status()
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def post_data_basic(self,
@@ -99,10 +103,39 @@ class TaccApiDirectClient(object):
         resp = requests.post(url, headers=post_headers, auth=auth, data=data)
         show_curl(resp)
 
-        resp.raise_for_status()
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
         return resp.json()
+
+    def _raise_for_status(self, resp):
+        """Handler for requests raise_for_status to capture message from API server responses
+        """
+        try:
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as h:
+            if TAPIS_CLI_VERBOSE_ERRORS:
+                # Extract the API JSON message and attach it
+                # to the HTTPError object before raising it
+                code = h.response.status_code
+                reason = h.response.reason + ' for ' + h.response.url
+                try:
+                    message = h.response.json().get('message')
+                except Exception:
+                    message = h.response.text
+                raise requests.exceptions.HTTPError(code,
+                                                    reason,
+                                                    message,
+                                                    response=h.response,
+                                                    request=h.request)
+            else:
+                raise h
+        return resp
 
 
 def show_curl(response_object):
     if TAPIS_CLI_SHOW_CURL:
-        print_stderr(curlify.to_curl(response_object.request))
+        try:
+            curl_text = curlify.to_curl(response_object.request)
+        except Exception as err:
+            curl_text = 'Failed to render curl command: {0}'.format(err)
+        print_stderr(curl_text)

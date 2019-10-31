@@ -146,6 +146,28 @@ future testing sessions.
 
 ## Display Options
 
+01-11-2019 | There is a new configuration option `TAPIS_PY_VERBOSE_ERRORS`
+which controls whether the contents of a Tapis API server message is
+returned as part of the general `HTTPError` that is raised when an
+error is encountered. The default is `True` but can be disabled in case the
+new function introduces a regression somewhere. Here's an example of trying to
+show a non-existent App. Before this new capability was released, the 404
+would have been reported simply as a client error. Now, a more informative
+response is provided.
+
+```shell
+$ tapis apps show sd2etest-xea-test-0.0.2
+[Errno 404] Not Found for https://api.sd2e.org/apps/v2/sd2etest-xea-test-0.0.2: 'No software found matching sd2etest-xea-test-0.0.2'
+```
+
+Here's another example, where an attempt is made to submit an invalid
+App definition.
+
+```shell
+$ tapis apps create -F tests/data/commands/apps/simple-app-invalid.json
+[Errno 400] Bad Request for https://api.sd2e.org/apps/v2/: "Invalid 'app.name' value. Please enter a valid name for this app."
+```
+
 25-10-2019: A point of clarification: You should probably just set
 `TAPIS_PY_SHOW_CURL` and allow it to govern the CLI's behavior.
 
