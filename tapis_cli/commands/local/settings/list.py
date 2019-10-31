@@ -3,6 +3,7 @@ from tapis_cli import settings
 
 __all__ = ['SettingsList']
 
+
 class SettingsList(FormatMany):
     """List current Tapis CLI settings
     """

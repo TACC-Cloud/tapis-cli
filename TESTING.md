@@ -107,6 +107,23 @@ the end user communities that will use it.
 
 ## Configuration
 
+01-11-2019 | There is now support for setting, unsetting, and getting
+specific `.env` based settings for the CLI. Here's an example:
+
+```$ tapis settings get TAPIS_CLI_PAGE_SIZE
++---------------------+-------+
+| Field               | Value |
++---------------------+-------+
+| TAPIS_CLI_PAGE_SIZE | 33    |
++---------------------+-------+
+
+$ tapis settings set TAPIS_CLI_PAGE_SIZE 50
++---------------------+-------+
+| Field               | Value |
++---------------------+-------+
+| TAPIS_CLI_PAGE_SIZE | 50    |
++---------------------+-------+
+
 11-10-2019 | The behavior for finding a `.env` has been clarified. The CLI
 searches the current working directory, followed by `$HOME` for an environment
 file. The expected path for the CLI's environment file can be discovered via

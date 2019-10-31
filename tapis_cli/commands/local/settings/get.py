@@ -4,8 +4,9 @@ from .mixins import SettingName
 
 __all__ = ['SettingsGet']
 
+
 class SettingsGet(FormatOne, SettingName):
-    """Show one Tapis CLI setting
+    """Get a Tapis CLI setting
     """
     def get_parser(self, prog_name):
         parser = super(SettingsGet, self).get_parser(prog_name)
