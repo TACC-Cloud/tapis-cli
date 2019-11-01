@@ -18,5 +18,6 @@ from .pems_grant import AppsPemsGrant
 from .pems_revoke import AppsPemsRevoke
 # The apps.deletePermissions method returns a 500 so command is disabled
 # from .pems_drop import AppsPemsDrop
+from .clone import AppsClone
 from .publish import AppsPublish
 from .unpublish import AppsUnpublish
