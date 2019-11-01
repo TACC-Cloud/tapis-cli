@@ -245,6 +245,9 @@ supported.
 
 ## Apps
 
+01-11-2019 | It is now possible for an admin user to specify the name and
+version when publishing an App.
+
 04-10-2019 | Boolean search options are functional. Search arguments where
 there are a restricted set of choices are now indicated in the help. Note that
 Search on date fields is not supported. The preferred modifier for each
