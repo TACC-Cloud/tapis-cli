@@ -689,6 +689,9 @@ user is supported. List and search are not implemented at present.
 
 ## Postits
 
+01-11-2019 | Support for `postits list|create|delete` is now available. Consult
+the per-command docs for usage details.
+
 27-09-2019 | No changes
 
 20-09-2019 | No postits commands are ready to test
