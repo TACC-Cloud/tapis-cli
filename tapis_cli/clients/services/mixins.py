@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import sys
+import validators
 
 from agavepy.agave import Agave
 
@@ -19,7 +20,7 @@ __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
     'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier',
-    'OptionalLocalFilePath', 'InvalidValue'
+    'OptionalLocalFilePath', 'InvalidValue', 'URL', 'PostItsIdentifier'
 ]
 
 
@@ -228,6 +229,26 @@ class JobsUUID(ServiceIdentifier):
                     '{0} not a valid job UUID'.format(identifier))
 
 
+class PostItsIdentifier(ServiceIdentifier):
+    """Configures a Command to require a mandatory Post-it
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('identifier',
+                            metavar='<job_uuid>',
+                            help='Tapis Job UUID')
+        return parser
+
+    def validate_identifier(self, identifier, permissive=False):
+        if len(identifier) == 32:
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise InvalidValue(
+                    '{0} not a valid Post-it Identifier'.format(identifier))
+
+
 class RemoteFilePath(ParserExtender):
     """Configures a Command to accept an optional file path
     """
@@ -310,3 +331,24 @@ class Username(ParserExtender):
                             metavar='<username>',
                             help='{0} username'.format(constants.PLATFORM))
         return parser
+
+
+class URL(ParserExtender):
+    """Configures a Command to require a mandatory 'url' positional parameter
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('url',
+                            type=str,
+                            metavar='<url>',
+                            help='Valid URL [http(s)://]')
+        return parser
+
+    def validate(self, url, permissive=False):
+        try:
+            validators.url(url, public=True)
+            return True
+        except Exception:
+            if permissive:
+                return False
+            else:
+                raise

@@ -61,6 +61,14 @@ class TaccApiDirectClient(object):
         #        resp.raise_for_status()
         return resp.json().get('result', {})
 
+    def delete(self, path=None):
+        url = self.build_url(path)
+        resp = requests.delete(url, headers=self.headers)
+        show_curl(resp)
+        resp = self._raise_for_status(resp)
+        #        resp.raise_for_status()
+        return resp.json().get('result', {})
+
     def get_bytes(self, path=None):
         url = self.build_url(path)
         resp = requests.get(url, headers=self.headers)
