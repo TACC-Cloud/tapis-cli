@@ -22,31 +22,41 @@ class AppsClone(AppsFormatOne, ServiceIdentifier):
             '--execution-system',
             type=str,
             dest='execution_system',
-            help="Execution system where the cloned app will run. Defaults to the current app's execution system.")
+            help=
+            "Execution system where the cloned app will run. Defaults to the current app's execution system."
+        )
         parser.add_argument(
             '-s',
             '--deployment-system',
             type=str,
             dest='storage_system',
-            help="Storage system where the cloned app assets will be stored. Defaults to the current user's default storage system.")
+            help=
+            "Storage system where the cloned app assets will be stored. Defaults to the current user's default storage system."
+        )
         parser.add_argument(
             '-p',
             '--deployment-path',
             type=str,
             dest='storage_path',
-            help='Path on storage system where the cloned app assets will be stored. Only applies when cloning a public app.')
+            help=
+            'Path on storage system where the cloned app assets will be stored. Only applies when cloning a public app.'
+        )
         parser.add_argument(
             '-n',
             '--app-name',
             type=str,
             dest='app_name',
-            help="Optional new name of the cloned app. Defaults to the current App name and the authenticated user's username appended with a dash.")
+            help=
+            "Optional new name of the cloned app. Defaults to the current App name and the authenticated user's username appended with a dash."
+        )
         parser.add_argument(
             '-x',
             '--app-version',
             type=str,
             dest='app_version',
-            help="Optional new version of the cloned app. Defaults to the current app's version number.")
+            help=
+            "Optional new version of the cloned app. Defaults to the current app's version number."
+        )
         return parser
 
     def take_action(self, parsed_args):

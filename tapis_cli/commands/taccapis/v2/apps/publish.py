@@ -23,18 +23,16 @@ class AppsPublish(AppsFormatOne, ServiceIdentifier):
             type=str,
             dest='public_execution_system',
             help='Optional execution system where the public app will run')
-        parser.add_argument(
-            '-n',
-            '--app-name',
-            type=str,
-            dest='app_name',
-            help='Optional new name of the public app')
-        parser.add_argument(
-            '-x',
-            '--app-version',
-            type=str,
-            dest='app_version',
-            help='Optional new version of the public app')
+        parser.add_argument('-n',
+                            '--app-name',
+                            type=str,
+                            dest='app_name',
+                            help='Optional new name of the public app')
+        parser.add_argument('-x',
+                            '--app-version',
+                            type=str,
+                            dest='app_version',
+                            help='Optional new version of the public app')
         return parser
 
     def take_action(self, parsed_args):
