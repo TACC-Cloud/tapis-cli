@@ -9,7 +9,7 @@ __all__ = ['MetadataFormatOne', 'MetadataFormatMany']
 
 
 class MetadataBase(TaccApisCommandBase):
-    service_id_type = Metadata.service_id_type
+    pass
 
 
 class MetadataFormatOne(MetadataBase, TaccApisFormatOne):

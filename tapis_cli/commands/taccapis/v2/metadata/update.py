@@ -1,4 +1,5 @@
 from tapis_cli.display import Verbosity
+from tapis_cli.clients.services.mixins import MetadataUUID
 
 from . import API_NAME, SERVICE_VERSION
 
@@ -6,11 +7,10 @@ from .create import MetadataCreate
 from .formatters import MetadataFormatOne
 from .helpers import create_update, generate_name
 from .models import Metadata
-from .mixins import MetadataIdentifier, UploadMetadataFile
+from .mixins import UploadMetadataFile
 
 
-class MetadataUpdate(MetadataFormatOne, UploadMetadataFile,
-                     MetadataIdentifier):
+class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
     """Update a Metadata document by UUID
     """
     VERBOSITY = Verbosity.RECORD
@@ -30,7 +30,7 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile,
                             dest='meta_value',
                             metavar='<record_value>',
                             help='Value for the document')
-        parser = MetadataIdentifier.extend_parser(self, parser)
+        parser = MetadataUUID.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

@@ -6,7 +6,7 @@ from tapis_cli.clients.services.mixins import (ServiceIdentifier,
                                                UploadJsonFile,
                                                InvalidIdentifier)
 
-__all__ = ['MetadataIdentifier', 'UploadMetadataFile']
+__all__ = ['UploadMetadataFile']
 
 
 class MetadataExistsError(ValueError):
@@ -22,28 +22,3 @@ class UploadMetadataFile(UploadJsonFile):
                             type=str,
                             help='JSON file containing document contents')
         return parser
-
-
-class MetadataIdentifier(ServiceIdentifier):
-    @classmethod
-    def arg_display(cls, id_value):
-        return '<uuid>'.format(id_value).lower()
-
-    @classmethod
-    def arg_metavar(cls, id_value):
-        return cls.arg_display(id_value)
-
-    @classmethod
-    def arg_help(cls, id_value):
-        return 'Metadata UUID'.format(id_value)
-
-    def validate_identifier(self, identifier, permissive=False):
-        if len(identifier) >= 36 and len(
-                identifier) <= 40 and identifier.endswith('-012'):
-            return True
-        else:
-            if permissive:
-                return False
-            else:
-                raise InvalidIdentifier(
-                    '{0} not a valid metadata UUID'.format(identifier))

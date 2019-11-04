@@ -1,15 +1,14 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import Username
+from tapis_cli.clients.services.mixins import Username, MetadataUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import MetadataFormatMany
-from .mixins import MetadataIdentifier
 
 __all__ = ['MetadataPemsRevoke']
 
 
-class MetadataPemsRevoke(MetadataFormatMany, MetadataIdentifier, Username):
+class MetadataPemsRevoke(MetadataFormatMany, MetadataUUID, Username):
     """Revoke Permissions on a Metadata document for a User
     """
     VERBOSITY = Verbosity.BRIEF
@@ -17,7 +16,7 @@ class MetadataPemsRevoke(MetadataFormatMany, MetadataIdentifier, Username):
 
     def get_parser(self, prog_name):
         parser = super(MetadataPemsRevoke, self).get_parser(prog_name)
-        parser = MetadataIdentifier.extend_parser(self, parser)
+        parser = MetadataUUID.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         return parser
 

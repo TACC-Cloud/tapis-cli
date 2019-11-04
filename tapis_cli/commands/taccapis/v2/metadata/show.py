@@ -1,15 +1,14 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from tapis_cli.clients.services.mixins import MetadataUUID
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Metadata
 from .formatters import MetadataFormatOne
-from .mixins import MetadataIdentifier
 
 __all__ = ['MetadataShow']
 
 
-class MetadataShow(MetadataFormatOne, MetadataIdentifier):
+class MetadataShow(MetadataFormatOne, MetadataUUID):
     """Show a Metadata document by UUID
     """
     VERBOSITY = Verbosity.RECORD
@@ -17,7 +16,7 @@ class MetadataShow(MetadataFormatOne, MetadataIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(MetadataShow, self).get_parser(prog_name)
-        parser = MetadataIdentifier.extend_parser(self, parser)
+        parser = MetadataUUID.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

@@ -1,15 +1,14 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import Username
+from tapis_cli.clients.services.mixins import Username, MetadataUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import MetadataFormatOne
-from .mixins import MetadataIdentifier
 
 __all__ = ['MetadataPemsShow']
 
 
-class MetadataPemsShow(MetadataFormatOne, MetadataIdentifier, Username):
+class MetadataPemsShow(MetadataFormatOne, MetadataUUID, Username):
     """Show Permissions on a Metadata document for specific User
     """
     VERBOSITY = Verbosity.BRIEF
@@ -17,7 +16,7 @@ class MetadataPemsShow(MetadataFormatOne, MetadataIdentifier, Username):
 
     def get_parser(self, prog_name):
         parser = super(MetadataPemsShow, self).get_parser(prog_name)
-        parser = MetadataIdentifier.extend_parser(self, parser)
+        parser = MetadataUUID.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         return parser
 

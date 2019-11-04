@@ -1,14 +1,14 @@
 from tapis_cli.display import Verbosity
+from tapis_cli.clients.services.mixins import MetadataUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import MetadataFormatMany
-from .mixins import MetadataIdentifier
 
 __all__ = ['MetadataPemsList']
 
 
-class MetadataPemsList(MetadataFormatMany, MetadataIdentifier):
+class MetadataPemsList(MetadataFormatMany, MetadataUUID):
     """List Permissions for a Metadata document
     """
     VERBOSITY = Verbosity.BRIEF
@@ -16,7 +16,7 @@ class MetadataPemsList(MetadataFormatMany, MetadataIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(MetadataPemsList, self).get_parser(prog_name)
-        parser = MetadataIdentifier.extend_parser(self, parser)
+        parser = MetadataUUID.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
