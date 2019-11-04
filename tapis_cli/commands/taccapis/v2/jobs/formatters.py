@@ -10,7 +10,7 @@ __all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']
 
 
 class JobsBase(TaccApisCommandBase):
-    service_id_type = Job.service_id_type
+    pass
 
 
 class JobsFormatOne(JobsBase, TaccApisFormatOne):
