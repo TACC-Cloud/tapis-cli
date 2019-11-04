@@ -20,7 +20,9 @@ __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
     'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier',
-    'OptionalLocalFilePath', 'InvalidValue', 'URL', 'PostItsIdentifier'
+    'OptionalLocalFilePath', 'InvalidValue', 'URL', 'PostItsIdentifier',
+    'NotificationsUUID', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
+    'MetadataUUID'
 ]
 
 
@@ -120,53 +122,6 @@ class JsonVerbose(AppVerboseLevel):
         return parsed_args
 
 
-class ServiceIdentifier(ParserExtender):
-    """Configures a Command to require a mandatory 'identifier' positional param
-
-    Adds a positional parameter to the Command parser. The value for the
-    parameter's 'metavar' is set by the Command.service_id_type property.
-    """
-    service_id_type = 'Service'
-
-    @classmethod
-    def arg_display(cls, id_value):
-        return '<{0}_id>'.format(id_value).lower()
-
-    @classmethod
-    def arg_metavar(cls, id_value):
-        return cls.arg_display(id_value)
-
-    @classmethod
-    def arg_help(cls, id_value):
-        return '{0} identifier'.format(id_value)
-
-    def extend_parser(self, parser):
-        id_value = getattr(self, 'service_id_type')
-        if id_value is not None:
-            arg_display = '<{0}_id>'.format(id_value).lower()
-            if id_value is not None:
-                parser.add_argument('identifier',
-                                    type=str,
-                                    metavar=self.arg_metavar(id_value),
-                                    help=self.arg_help(id_value))
-        return parser
-
-    def validate_identifier(self, identifier, permissive=True):
-        return self.validate(identifier)
-
-    def get_identifier(self, parsed_args, validate=False, permissive=False):
-        identifier = None
-        try:
-            identifier = parsed_args.identifier
-            self.validate_identifier(identifier)
-        except Exception:
-            if permissive:
-                return False
-            else:
-                raise
-        return identifier
-
-
 class AgaveURI(ParserExtender):
     """Configures a Command to require a mandatory 'agave uri'
     positional parameter
@@ -208,25 +163,61 @@ class AgaveURI(ParserExtender):
                 raise
 
 
-class JobsUUID(ServiceIdentifier):
-    """Configures a Command to require a mandatory Tapis job UUID
+class ServiceIdentifier(ParserExtender):
+    """Configures a Command to require a mandatory 'identifier' positional param
+
+    Adds a positional parameter to the Command parser. The value for the
+    parameter's 'metavar' is set by the Command.service_id_type property.
     """
+    service_id_type = 'Service'
+    id_type = 'identifier'
+    optional = False
+
+    @classmethod
+    def arg_display(cls, id_value):
+        return '<{0}_id>'.format(id_value).lower()
+
+    @classmethod
+    def arg_metavar(cls, id_value):
+        return cls.arg_display(id_value)
+
+    @classmethod
+    def arg_help(cls, id_value):
+        if not cls.optional:
+            return '{0} {1}'.format(id_value, cls.id_type)
+        else:
+            return 'Optional {0} {1}'.format(id_value, cls.id_type)
+
     def extend_parser(self, parser):
-        parser.add_argument('identifier',
-                            metavar='<job_uuid>',
-                            help='Tapis Job UUID')
+        id_value = getattr(self, 'service_id_type')
+        if id_value is not None:
+            arg_display = '<{0}_id>'.format(id_value).lower()
+        if self.optional:
+            nargs = '?'
+        else:
+            nargs = None
+        if id_value is not None:
+            parser.add_argument('identifier',
+                                type=str,
+                                nargs=nargs,
+                                metavar=self.arg_metavar(id_value),
+                                help=self.arg_help(id_value))
         return parser
 
-    def validate_identifier(self, identifier, permissive=False):
-        if len(identifier) >= 36 and len(
-                identifier) <= 40 and identifier.endswith('-007'):
-            return True
-        else:
+    def validate_identifier(self, identifier, permissive=True):
+        return self.validate(identifier)
+
+    def get_identifier(self, parsed_args, validate=False, permissive=False):
+        identifier = None
+        try:
+            identifier = parsed_args.identifier
+            self.validate_identifier(identifier)
+        except Exception:
             if permissive:
                 return False
             else:
-                raise InvalidValue(
-                    '{0} not a valid job UUID'.format(identifier))
+                raise
+        return identifier
 
 
 class PostItsIdentifier(ServiceIdentifier):
@@ -234,8 +225,8 @@ class PostItsIdentifier(ServiceIdentifier):
     """
     def extend_parser(self, parser):
         parser.add_argument('identifier',
-                            metavar='<job_uuid>',
-                            help='Tapis Job UUID')
+                            metavar='<postit_id>',
+                            help='Post-it ID')
         return parser
 
     def validate_identifier(self, identifier, permissive=False):
@@ -247,6 +238,68 @@ class PostItsIdentifier(ServiceIdentifier):
             else:
                 raise InvalidValue(
                     '{0} not a valid Post-it Identifier'.format(identifier))
+
+
+class TapisEntityUUID(ServiceIdentifier):
+    service_id_type = 'Tapis'
+    id_type = 'UUID'
+
+    @classmethod
+    def arg_display(cls, id_value):
+        return '<{0}_uuid>'.format(id_value).lower()
+
+
+class OptionalTapisEntityUUID(TapisEntityUUID):
+    optional = True
+
+
+class JobsUUID(TapisEntityUUID):
+    """Configures a Command to require a mandatory Tapis job UUID
+    """
+    service_id_type = 'Job'
+
+    def validate_identifier(self, identifier, permissive=False):
+        if len(identifier) >= 36 and len(
+                identifier) <= 40 and identifier.endswith('-007'):
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise InvalidValue(
+                    '{0} not a valid Job UUID'.format(identifier))
+
+
+class MetadataUUID(TapisEntityUUID):
+
+    service_id_type = 'Metadata'
+
+    def validate_identifier(self, identifier, permissive=False):
+        if identifier.endswith('-012'):
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise InvalidIdentifier(
+                    '{0} not a valid metadata UUID'.format(identifier))
+
+
+class NotificationsUUID(TapisEntityUUID):
+    """Configures a Command to require a mandatory Tapis notification UUID
+    """
+    service_id_type = 'Notification'
+
+    def validate_identifier(self, identifier, permissive=False):
+        if len(identifier) >= 36 and len(
+                identifier) <= 40 and identifier.endswith('-011'):
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise InvalidValue(
+                    '{0} not a valid Notification UUID'.format(identifier))
 
 
 class RemoteFilePath(ParserExtender):
