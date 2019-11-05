@@ -27,10 +27,10 @@ tests:
 format: format-code format-tests
 
 format-code:
-	yapf --recursive --style pep8 -i tapis_cli
+	yapf --parallel --recursive --style pep8 -i tapis_cli
 
 format-tests:
-	yapf --recursive --style pep8 -i tests
+	yapf --parallel --recursive --style pep8 -i tests
 
 .PHONY: docs docs/requirements.txt
 
