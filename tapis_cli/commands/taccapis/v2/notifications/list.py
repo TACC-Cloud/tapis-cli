@@ -9,7 +9,7 @@ __all__ = ['NotificationsList']
 
 
 class NotificationsList(NotificationsFormatMany, OptionalTapisEntityUUID):
-    """List Notifications (optional: Filter by target UUID)
+    """List Notifications [associated with a specific Tapis UUID]
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
