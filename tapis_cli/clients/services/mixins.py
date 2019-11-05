@@ -169,8 +169,11 @@ class ServiceIdentifier(ParserExtender):
     Adds a positional parameter to the Command parser. The value for the
     parameter's 'metavar' is set by the Command.service_id_type property.
     """
+    # Stem for naming the identifier
     service_id_type = 'Service'
+    # Leaf for naming the identifier
     id_type = 'identifier'
+    # If True, the argument is optional
     optional = False
 
     @classmethod
@@ -241,7 +244,7 @@ class PostItsIdentifier(ServiceIdentifier):
 
 
 class TapisEntityUUID(ServiceIdentifier):
-    service_id_type = 'Tapis'
+    service_id_type = 'Tapis Entity'
     id_type = 'UUID'
 
     @classmethod
@@ -366,6 +369,7 @@ class UploadJsonFile(ParserExtender):
                 parsed_args.json_file_name))
 
         # Check JSON validity by loading and dumping it
+        # TODO - factor validation into its own method so it can be overridden
         try:
             payload = json.load(document_source)
             serializable(payload)
