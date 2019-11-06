@@ -16,7 +16,11 @@ __all__ = [
 class FilesBase(TaccApisCommandBase):
     service_id_type = File.service_id_type
 
-    def render_field(self, key, value, parsed_args, formatter=None):
+    def render_extended_parser_value(self,
+                                     key,
+                                     value,
+                                     parsed_args,
+                                     formatter=None):
         if formatter == 'table':
             if key in ('lastModified',
                        'lastUpdated') and parsed_args.ls_humanized:

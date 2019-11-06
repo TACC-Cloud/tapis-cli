@@ -2,7 +2,7 @@ import re
 import collections
 import stringcase
 
-__all__ = ['Argdef', 'optionize', 'propertize', 'tapisize']
+__all__ = ['Argdef', 'optionize', 'propertize', 'tapisize', 'spinal_to_camel']
 
 Argdef = collections.namedtuple(
     'Argdef',
@@ -30,3 +30,9 @@ def tapisize(fieldKeyName):
     """Transforms a string into a Tapis query parameter
     """
     return fieldKeyName.lower()
+
+
+def spinal_to_camel(optionName):
+    option = re.sub('(-){1,}', '_', optionName)
+    option = re.sub('^(_){1,}', '', option)
+    return stringcase.camelcase(option)
