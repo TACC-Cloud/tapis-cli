@@ -1,5 +1,6 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier, Username
+from tapis_cli.clients.services.mixins import Username
+from .mixins import AppIdentifier
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
@@ -8,7 +9,7 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsPemsShow']
 
 
-class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
+class AppsPemsShow(AppsFormatOne, AppIdentifier, Username):
     """Show Permissions on an App for specific User
     """
     VERBOSITY = Verbosity.BRIEF
@@ -16,13 +17,13 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
 
     def get_parser(self, prog_name):
         parser = super(AppsPemsShow, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = AppIdentifier.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        #
+        app_id = AppIdentifier.get_identifier(self, parsed_args)
         # Below is call to the AgavePy method but it is broken due to changes in behavior
         # between Py2 and Py3. It returns an wierdly iterated dict object:
         #
@@ -30,15 +31,14 @@ class AppsPemsShow(AppsFormatOne, ServiceIdentifier, Username):
         # rather than the expected dict of username & permission object
         #
         # rec = self.tapis_client.apps.listPermissionsForUser(
-        #   appId=parsed_args.identifier, username=parsed_args.username)
+        #   appId=app_id, username=parsed_args.username)
         #
         # Instead, we use the Command's requests client which returns a
         # very simple response:
         # {"username": "<username>",
         #  "permission": {"write": bool, "read": bool, "exceute": bool, "_links": []}
         #
-        API_PATH = '{0}/pems/{1}'.format(parsed_args.identifier,
-                                         parsed_args.username)
+        API_PATH = '{0}/pems/{1}'.format(app_id, parsed_args.username)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
 
         headers = self.render_headers(Permission, parsed_args)

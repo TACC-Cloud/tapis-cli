@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from .mixins import AppIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import AppHistory
@@ -8,7 +8,7 @@ from .formatters import AppsFormatMany
 __all__ = ['AppsHistory']
 
 
-class AppsHistory(AppsFormatMany, ServiceIdentifier):
+class AppsHistory(AppsFormatMany, AppIdentifier):
     """Show history of an App
     """
     VERBOSITY = Verbosity.LISTING
@@ -16,12 +16,14 @@ class AppsHistory(AppsFormatMany, ServiceIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(AppsHistory, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = AppIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        api_resource = '{0}/history'.format(parsed_args.identifier)
+        app_id = AppIdentifier.get_identifier(self, parsed_args)
+
+        api_resource = '{0}/history'.format(app_id)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, api_resource)
 
         headers = self.render_headers(AppHistory, parsed_args)

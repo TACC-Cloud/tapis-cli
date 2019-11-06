@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from .mixins import AppIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -8,7 +8,7 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsClone']
 
 
-class AppsClone(AppsFormatOne, ServiceIdentifier):
+class AppsClone(AppsFormatOne, AppIdentifier):
     """Clone an App
     """
     VERBOSITY = Verbosity.LISTING
@@ -16,7 +16,7 @@ class AppsClone(AppsFormatOne, ServiceIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(AppsClone, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = AppIdentifier.extend_parser(self, parser)
         parser.add_argument(
             '-e',
             '--execution-system',
@@ -62,6 +62,8 @@ class AppsClone(AppsFormatOne, ServiceIdentifier):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        app_id = AppIdentifier.get_identifier(self, parsed_args)
+
         headers = self.render_headers(App, parsed_args)
 
         mgt_body = {'action': 'clone'}
@@ -77,8 +79,7 @@ class AppsClone(AppsFormatOne, ServiceIdentifier):
         if parsed_args.execution_system is not None:
             mgt_body['deploymentPath'] = parsed_args.storage_path
 
-        rec = self.tapis_client.apps.manage(appId=parsed_args.identifier,
-                                            body=mgt_body)
+        rec = self.tapis_client.apps.manage(appId=app_id, body=mgt_body)
 
         data = []
         for key in headers:

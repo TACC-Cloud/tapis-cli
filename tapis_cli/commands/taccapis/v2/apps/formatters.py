@@ -1,4 +1,4 @@
-"""Formatters customized for app records and listings
+"""Formatters customized for App records and listings
 """
 
 from tapis_cli.commands.taccapis.formatters import (TaccApisCommandBase,
@@ -10,7 +10,7 @@ __all__ = ['AppsFormatOne', 'AppsFormatMany']
 
 
 class AppsBase(TaccApisCommandBase):
-    service_id_type = App.service_id_type
+    pass
 
 
 class AppsFormatOne(AppsBase, TaccApisFormatOne):

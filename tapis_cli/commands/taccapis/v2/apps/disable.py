@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import ServiceIdentifier
+from .mixins import AppIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .models import App
@@ -8,7 +8,7 @@ from .formatters import AppsFormatOne
 __all__ = ['AppsDisable']
 
 
-class AppsDisable(AppsFormatOne, ServiceIdentifier):
+class AppsDisable(AppsFormatOne, AppIdentifier):
     """Disable usage of an app
     """
     VERBOSITY = Verbosity.LISTING
@@ -16,15 +16,16 @@ class AppsDisable(AppsFormatOne, ServiceIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(AppsDisable, self).get_parser(prog_name)
-        parser = ServiceIdentifier.extend_parser(self, parser)
+        parser = AppIdentifier.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        app_id = AppIdentifier.get_identifier(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(App, parsed_args)
-        rec = self.tapis_client.apps.manage(appId=parsed_args.identifier,
+        rec = self.tapis_client.apps.manage(appId=app_id,
                                             body={'action': 'disable'})
         data = []
         for key in headers:
