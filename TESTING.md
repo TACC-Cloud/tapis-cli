@@ -52,7 +52,7 @@ The following are **known issues** and will be addressed in future work periods:
 > 6.  The beloved `auth switch` is not yet implemented
 > 7.  Metadata schema and ~~record management~~ commands are not yet
 >     implemented
-> 8.  No **notifications** commands are implemented
+> 8.  ~~No **notifications** commands are implemented~~
 > 9.  The module is not yet available on PyPi
 > 10. Documentation builds are broken
 > 11. Creation of the Bash autocomplete config is broken
@@ -60,7 +60,7 @@ The following are **known issues** and will be addressed in future work periods:
 > 12. ~~Search on booleans can be broken (try `--boolean eq true`)~~
 > 13. ~~Access tokens passed via `-z` or `--token` are not honored~~
 > 14. Some `pems drop` commands do not actually drop all granted permissions
-> 15. Commands built with AgavePy don't report complete error messages
+> 15. ~~Commands built with AgavePy don't report complete error messages~~
 
 ## Installation
 
@@ -107,7 +107,7 @@ the end user communities that will use it.
 
 ## Configuration
 
-01-11-2019 | There is now support for setting, unsetting, and getting
+08-11-2019 | There is now support for setting, unsetting, and getting
 specific `.env` based settings for the CLI. Here's an example:
 
 ```$ tapis settings get TAPIS_CLI_PAGE_SIZE
@@ -163,7 +163,7 @@ future testing sessions.
 
 ## Display Options
 
-01-11-2019 | There is a new configuration option `TAPIS_PY_VERBOSE_ERRORS`
+08-11-2019 | There is a new configuration option `TAPIS_PY_VERBOSE_ERRORS`
 which controls whether the contents of a Tapis API server message is
 returned as part of the general `HTTPError` that is raised when an
 error is encountered. The default is `True` but can be disabled in case the
@@ -245,7 +245,7 @@ supported.
 
 ## Apps
 
-01-11-2019 | It is now possible for an admin user to specify the name and
+08-11-2019 | It is now possible for an admin user to specify the name and
 version when publishing an App.
 
 It is now possible to clone an existing App using `tapis apps clone...`
@@ -683,13 +683,16 @@ user is supported. List and search are not implemented at present.
 
 ## Notifications
 
+08-11-2019 | Support for `notifications list|show|delete` is now available. Consult
+the per-command docs for usage details.
+
 27-09-2019 | No changes
 
 20-09-2019 | No notifications commands are ready to test
 
 ## Postits
 
-01-11-2019 | Support for `postits list|create|delete` is now available. Consult
+08-11-2019 | Support for `postits list|create|delete` is now available. Consult
 the per-command docs for usage details.
 
 27-09-2019 | No changes
