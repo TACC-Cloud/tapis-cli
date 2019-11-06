@@ -18,11 +18,10 @@ from tapis_cli.utils import serializable
 
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
-    'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'JobsUUID',
-    'RemoteFilePath', 'LocalFilePath', 'Username', 'InvalidIdentifier',
-    'OptionalLocalFilePath', 'InvalidValue', 'URL', 'PostItsIdentifier',
-    'NotificationsUUID', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
-    'MetadataUUID'
+    'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'RemoteFilePath',
+    'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
+    'InvalidValue', 'URL', 'PostItsIdentifier', 'NotificationsUUID',
+    'TapisEntityUUID', 'OptionalTapisEntityUUID', 'MetadataUUID'
 ]
 
 
@@ -51,7 +50,7 @@ class ParserExtender(object):
         # When sublcassing: DO NOT FORGET TO RETURN PARSED_ARGS
         return parsed_args
 
-    def render_field(self, key, value, formatter=None):
+    def render_extended_parser_value(self, key, value, formatter=None):
         return key, value
 
     def validate(self, value, permissive=True):
@@ -175,6 +174,8 @@ class ServiceIdentifier(ParserExtender):
     id_type = 'identifier'
     # If True, the argument is optional
     optional = False
+    # argparse destination
+    dest = id_type
 
     @classmethod
     def arg_display(cls, id_value):
@@ -200,7 +201,7 @@ class ServiceIdentifier(ParserExtender):
         else:
             nargs = None
         if id_value is not None:
-            parser.add_argument('identifier',
+            parser.add_argument(self.dest,
                                 type=str,
                                 nargs=nargs,
                                 metavar=self.arg_metavar(id_value),
@@ -213,7 +214,8 @@ class ServiceIdentifier(ParserExtender):
     def get_identifier(self, parsed_args, validate=False, permissive=False):
         identifier = None
         try:
-            identifier = parsed_args.identifier
+            identifier = getattr(parsed_args, self.dest)
+            # identifier = parsed_args.identifier
             self.validate_identifier(identifier)
         except Exception:
             if permissive:
@@ -254,23 +256,6 @@ class TapisEntityUUID(ServiceIdentifier):
 
 class OptionalTapisEntityUUID(TapisEntityUUID):
     optional = True
-
-
-class JobsUUID(TapisEntityUUID):
-    """Configures a Command to require a mandatory Tapis job UUID
-    """
-    service_id_type = 'Job'
-
-    def validate_identifier(self, identifier, permissive=False):
-        if len(identifier) >= 36 and len(
-                identifier) <= 40 and identifier.endswith('-007'):
-            return True
-        else:
-            if permissive:
-                return False
-            else:
-                raise InvalidValue(
-                    '{0} not a valid Job UUID'.format(identifier))
 
 
 class MetadataUUID(TapisEntityUUID):
@@ -349,6 +334,7 @@ class UploadJsonFile(ParserExtender):
     reside in self.json_file_contents.
     """
     json_loaded = dict()
+    optional = False
 
     def extend_parser(self, parser):
         parser.add_argument('-F',
@@ -365,8 +351,13 @@ class UploadJsonFile(ParserExtender):
                 parsed_args.json_file_name):
             document_source = open(parsed_args.json_file_name, 'rb')
         else:
-            raise IOError('Unknown or inaccessible data source: {0}'.format(
-                parsed_args.json_file_name))
+            if self.optional is False:
+                raise IOError(
+                    'Unknown or inaccessible data source: {0}'.format(
+                        parsed_args.json_file_name))
+            else:
+                setattr(self, 'json_file_contents', {})
+                return self.json_file_contents
 
         # Check JSON validity by loading and dumping it
         # TODO - factor validation into its own method so it can be overridden
@@ -374,6 +365,7 @@ class UploadJsonFile(ParserExtender):
             payload = json.load(document_source)
             serializable(payload)
             setattr(self, 'json_file_contents', payload)
+            return self.json_file_contents
         except Exception as exc:
             setattr(self, 'json_file_contents', None)
             raise ValueError('{0} was not valid JSON: {1}'.format(

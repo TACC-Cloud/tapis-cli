@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import JobsUUID
 
+from .formatters import JobsFormatOne
+from .mixins import JobsUUID
 from .models import Job
 from . import API_NAME, SERVICE_VERSION
-from .formatters import JobsFormatOne
 
 __all__ = ['JobsStatus']
 
@@ -21,11 +21,11 @@ class JobsStatus(JobsFormatOne, JobsUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(Job, parsed_args)
-        rec = self.tapis_client.jobs.get(jobId=parsed_args.identifier)
+        rec = self.tapis_client.jobs.get(jobId=identifier)
 
         data = []
         for key in headers:

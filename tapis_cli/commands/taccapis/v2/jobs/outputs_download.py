@@ -1,8 +1,9 @@
 import os
-from tapis_cli.clients.services.mixins import JobsUUID, RemoteFilePath
+from tapis_cli.clients.services.mixins import RemoteFilePath
 from tapis_cli.utils import makedirs
 
 from . import API_NAME, SERVICE_VERSION
+from .mixins import JobsUUID
 from ..files.models import File
 from ..files.formatters import FilesFormatOne
 from .helpers.sync import download
@@ -35,13 +36,13 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
 
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
 
         # Optionally disable creation and use of a job folder
-        dest_dir = './{0}'.format(parsed_args.identifier)
+        dest_dir = './{0}'.format(identifier)
         if parsed_args.use_cwd:
             dest_dir = '.'
         else:
@@ -50,7 +51,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         headers = self.render_headers(File, parsed_args)
         downloaded, skipped, exceptions, elapsed = download(
             parsed_args.file_path,
-            parsed_args.identifier,
+            identifier,
             destination=dest_dir,
             excludes=parsed_args.exclude_files,
             includes=parsed_args.include_files,

@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import JobsUUID
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
 from .formatters import JobsFormatOne
+from .mixins import JobsUUID
 
 __all__ = ['JobsResubmit']
 
@@ -21,7 +21,9 @@ class JobsResubmit(JobsFormatOne, JobsUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        API_PATH = '{0}/resubmit'.format(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
+
+        API_PATH = '{0}/resubmit'.format(identifier)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
 
         headers = self.render_headers(Job, parsed_args)

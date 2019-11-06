@@ -1,10 +1,10 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.clients.services.mixins import Username
-from tapis_cli.clients.services.mixins import JobsUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import JobsFormatMany
+from .mixins import JobsUUID
 
 __all__ = ['JobsPemsGrant']
 
@@ -28,7 +28,7 @@ class JobsPemsGrant(JobsFormatMany, JobsUUID, Username):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
 
         permission = parsed_args.permission
         body = {
@@ -36,11 +36,10 @@ class JobsPemsGrant(JobsFormatMany, JobsUUID, Username):
             'permission': permission.upper()
         }
         grant_result = self.tapis_client.jobs.updatePermissions(
-            jobId=parsed_args.identifier, body=body)
+            jobId=identifier, body=body)
 
         headers = self.render_headers(Permission, parsed_args)
-        results = self.tapis_client.jobs.listPermissions(
-            jobId=parsed_args.identifier)
+        results = self.tapis_client.jobs.listPermissions(jobId=identifier)
 
         records = []
         for rec in results:

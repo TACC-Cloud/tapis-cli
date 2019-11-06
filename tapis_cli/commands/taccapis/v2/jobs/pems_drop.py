@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.commands.taccapis.model import Permission
-from tapis_cli.clients.services.mixins import JobsUUID
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import JobsFormatMany
+from .mixins import JobsUUID
 
 __all__ = ['JobsPemsDrop']
 
@@ -21,14 +21,13 @@ class JobsPemsDrop(JobsFormatMany, JobsUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
 
         drop_result = self.tapis_client.jobs.deletePermissions(
-            jobId=parsed_args.identifier)
+            jobId=identifier)
 
         headers = self.render_headers(Permission, parsed_args)
-        results = self.tapis_client.jobs.listPermissions(
-            jobId=parsed_args.identifier)
+        results = self.tapis_client.jobs.listPermissions(jobId=identifier)
 
         records = []
         for rec in results:

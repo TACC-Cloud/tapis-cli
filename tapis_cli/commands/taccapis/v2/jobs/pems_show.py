@@ -1,10 +1,10 @@
 from tapis_cli.display import Verbosity
 from tapis_cli.clients.services.mixins import Username
-from tapis_cli.clients.services.mixins import JobsUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import JobsFormatOne
+from .mixins import JobsUUID
 
 __all__ = ['JobsPemsShow']
 
@@ -23,12 +23,12 @@ class JobsPemsShow(JobsFormatOne, JobsUUID, Username):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
         self.update_payload(parsed_args)
 
         headers = self.render_headers(Permission, parsed_args)
         rec = self.tapis_client.meta.listPermissionsForUser(
-            jobId=parsed_args.identifier, username=parsed_args.username)
+            jobId=identifier, username=parsed_args.username)
 
         # TODO - Account for the wierd behavior where querying ANY username
         # will return +rwx even if the username is fictitious. A client-side

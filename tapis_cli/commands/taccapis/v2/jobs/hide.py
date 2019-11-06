@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import JobsUUID
 from tapis_cli.commands.taccapis.model.v2 import Message
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import JobsFormatOne
+from .mixins import JobsUUID
 
 __all__ = ['JobsHide']
 
@@ -21,17 +21,16 @@ class JobsHide(JobsFormatOne, JobsUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
-
         headers = self.render_headers(Message, parsed_args)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
         message, warning = '', ''
         try:
-            API_PATH = '{0}/hide'.format(parsed_args.identifier)
+            API_PATH = '{0}/hide'.format(identifier)
             self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
             self.requests_client.post(content_type='application/json')
-            message = 'Hid {0}'.format(parsed_args.identifier)
+            message = 'Hid {0}'.format(identifier)
         except Exception as err:
-            message = 'Failed to hide {0}'.format(parsed_args.identifier)
+            message = 'Failed to hide {0}'.format(identifier)
             warning = str(err)
 
         data = [message, warning]

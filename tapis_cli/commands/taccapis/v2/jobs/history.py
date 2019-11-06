@@ -1,7 +1,7 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import JobsUUID
 
 from . import API_NAME, SERVICE_VERSION
+from .mixins import JobsUUID
 from .models import JobHistory
 from .formatters import JobsHistoryFormatMany
 
@@ -21,12 +21,11 @@ class JobsHistory(JobsHistoryFormatMany, JobsUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = JobsUUID.get_identifier(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(JobHistory, parsed_args)
-        results = self.tapis_client.jobs.getHistory(
-            jobId=parsed_args.identifier)
+        results = self.tapis_client.jobs.getHistory(jobId=identifier)
 
         records = []
         for rec in results:
