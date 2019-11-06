@@ -1,7 +1,7 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import MetadataUUID
 
 from . import API_NAME, SERVICE_VERSION
+from .mixins import MetadataUUID
 from .models import Metadata
 from .formatters import MetadataFormatOne
 
@@ -23,14 +23,13 @@ class MetadataDelete(MetadataFormatOne, MetadataUUID):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.update_payload(parsed_args)
-        identifier = parsed_args.identifier
-        self.validate_identifier(identifier)
+        identifier = MetadataUUID.get_identifier(self, parsed_args)
 
         deleted = []
         exceptions = []
         try:
-            self.tapis_client.meta.deleteMetadata(uuid=parsed_args.identifier)
-            deleted.append(parsed_args.identifier)
+            self.tapis_client.meta.deleteMetadata(uuid=identifier)
+            deleted.append(identifier)
         except Exception as err:
             exceptions.append(err)
 

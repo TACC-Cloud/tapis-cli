@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import NotificationsUUID
 
-from . import API_NAME, SERVICE_VERSION
-from .models import Notification
 from .formatters import NotificationsFormatOne
+from .mixins import NotificationsUUID
+from .models import Notification
+from . import API_NAME, SERVICE_VERSION
 
 __all__ = ['NotificationsShow']
 
@@ -22,14 +22,14 @@ class NotificationsShow(NotificationsFormatOne, NotificationsUUID):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = NotificationsUUID.get_identifier(self, parsed_args)
 
         headers = self.render_headers(Notification, parsed_args)
-        results = self.tapis_client.notifications.get(
-            uuid=parsed_args.identifier)
+        results = self.tapis_client.notifications.get(uuid=identifier)
 
         data = []
         for key in headers:
             val = self.render_value(results.get(key, None))
+            key, val = self.render_extended_parser_value(key, val, parsed_args)
             data.append(val)
         return (tuple(headers), tuple(data))

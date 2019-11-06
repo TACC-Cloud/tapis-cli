@@ -1,13 +1,12 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import MetadataUUID
-
-from . import API_NAME, SERVICE_VERSION
 
 from .create import MetadataCreate
 from .formatters import MetadataFormatOne
 from .helpers import create_update, generate_name
 from .models import Metadata
+from .mixins import MetadataUUID
 from .mixins import UploadMetadataFile
+from . import API_NAME, SERVICE_VERSION
 
 
 class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
@@ -38,6 +37,7 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
         self.requests_client.setup(API_NAME, SERVICE_VERSION, 'data')
         self.update_payload(parsed_args)
         self.handle_file_upload(parsed_args)
+        identifier = MetadataUUID.get_identifier(self, parsed_args)
 
         self.value_data = None
         if parsed_args.json_file_name is not None and parsed_args.meta_value is not None:
@@ -56,7 +56,7 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
         else:
             name_data = None
 
-        uuid_data = self.get_identifier(parsed_args, validate=True)
+        uuid_data = identifier
 
         headers = self.render_headers(Metadata, parsed_args)
         rec = create_update(name=name_data,

@@ -1,7 +1,7 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import PostItsIdentifier
 
 from . import API_NAME, SERVICE_VERSION
+from .mixins import PostItsIdentifier
 from .models import PostIt, HTTP_METHODS, DEFAULT_LIFETIME, DEFAULT_MAX_USES
 from .formatters import PostItsFormatOne
 
@@ -22,15 +22,14 @@ class PostItsDelete(PostItsFormatOne, PostItsIdentifier):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = PostItsIdentifier.get_identifier(self, parsed_args)
 
         headers = ['deleted', 'messages']
         deleted = []
         messages = []
         try:
-            self.requests_client.delete(parsed_args.identifier)
-            deleted.append(
-                self.requests_client.build_url(parsed_args.identifier))
+            self.requests_client.delete(identifier)
+            deleted.append(self.requests_client.build_url(identifier))
         except Exception as err:
             messages.append(str(err))
         data = [deleted, messages]

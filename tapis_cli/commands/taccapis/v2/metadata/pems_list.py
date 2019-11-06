@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import MetadataUUID
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import MetadataFormatMany
+from .mixins import MetadataUUID
 
 __all__ = ['MetadataPemsList']
 
@@ -21,11 +21,12 @@ class MetadataPemsList(MetadataFormatMany, MetadataUUID):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        identifier = MetadataUUID.get_identifier(self, parsed_args)
         self.update_payload(parsed_args)
 
         headers = self.render_headers(Permission, parsed_args)
         results = self.tapis_client.meta.listMetadataPermissions(
-            uuid=parsed_args.identifier)
+            uuid=identifier)
 
         records = []
         for rec in results:

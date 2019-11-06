@@ -17,11 +17,21 @@ from tapis_cli.display import Verbosity
 from tapis_cli.utils import serializable
 
 __all__ = [
-    'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
-    'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'RemoteFilePath',
-    'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
-    'InvalidValue', 'URL', 'PostItsIdentifier', 'NotificationsUUID',
-    'TapisEntityUUID', 'OptionalTapisEntityUUID', 'MetadataUUID'
+    'OptionNotImplemented',
+    'AppVerboseLevel',
+    'JsonVerbose',
+    'ServiceIdentifier',
+    'UploadJsonFile',
+    'AgaveURI',
+    'RemoteFilePath',
+    'LocalFilePath',
+    'Username',
+    'InvalidIdentifier',
+    'OptionalLocalFilePath',
+    'InvalidValue',
+    'URL',
+    'TapisEntityUUID',
+    'OptionalTapisEntityUUID',
 ]
 
 
@@ -219,30 +229,10 @@ class ServiceIdentifier(ParserExtender):
             self.validate_identifier(identifier)
         except Exception:
             if permissive:
-                return False
+                return None
             else:
                 raise
         return identifier
-
-
-class PostItsIdentifier(ServiceIdentifier):
-    """Configures a Command to require a mandatory Post-it
-    """
-    def extend_parser(self, parser):
-        parser.add_argument('identifier',
-                            metavar='<postit_id>',
-                            help='Post-it ID')
-        return parser
-
-    def validate_identifier(self, identifier, permissive=False):
-        if len(identifier) == 32:
-            return True
-        else:
-            if permissive:
-                return False
-            else:
-                raise InvalidValue(
-                    '{0} not a valid Post-it Identifier'.format(identifier))
 
 
 class TapisEntityUUID(ServiceIdentifier):
@@ -256,38 +246,6 @@ class TapisEntityUUID(ServiceIdentifier):
 
 class OptionalTapisEntityUUID(TapisEntityUUID):
     optional = True
-
-
-class MetadataUUID(TapisEntityUUID):
-
-    service_id_type = 'Metadata'
-
-    def validate_identifier(self, identifier, permissive=False):
-        if identifier.endswith('-012'):
-            return True
-        else:
-            if permissive:
-                return False
-            else:
-                raise InvalidIdentifier(
-                    '{0} not a valid metadata UUID'.format(identifier))
-
-
-class NotificationsUUID(TapisEntityUUID):
-    """Configures a Command to require a mandatory Tapis notification UUID
-    """
-    service_id_type = 'Notification'
-
-    def validate_identifier(self, identifier, permissive=False):
-        if len(identifier) >= 36 and len(
-                identifier) <= 40 and identifier.endswith('-011'):
-            return True
-        else:
-            if permissive:
-                return False
-            else:
-                raise InvalidValue(
-                    '{0} not a valid Notification UUID'.format(identifier))
 
 
 class RemoteFilePath(ParserExtender):

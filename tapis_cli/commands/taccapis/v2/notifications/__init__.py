@@ -7,4 +7,4 @@ from .create import NotificationsCreate
 from .delete import NotificationsDelete
 from .list import NotificationsList
 from .show import NotificationsShow
-from .update import NotificationsUpdate
+# from .update import NotificationsUpdate

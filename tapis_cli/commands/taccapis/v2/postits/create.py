@@ -71,4 +71,9 @@ class PostItsCreate(PostItsFormatOne, URL):
         for key in headers:
             val = self.render_value(rec.get(key, None))
             data.append(val)
+
+        # Extend response to show the full URL for the Post-It
+        headers.append('postit_url')
+        data.append(self.requests_client.build_url(rec.get('postit')))
+
         return (tuple(headers), tuple(data))

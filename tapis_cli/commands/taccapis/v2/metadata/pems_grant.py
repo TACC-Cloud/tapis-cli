@@ -1,9 +1,10 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import Username, MetadataUUID
+from tapis_cli.clients.services.mixins import Username
 from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import MetadataFormatMany
+from .mixins import MetadataUUID
 
 __all__ = ['MetadataPemsGrant']
 
@@ -27,6 +28,7 @@ class MetadataPemsGrant(MetadataFormatMany, MetadataUUID, Username):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
+        identifier = MetadataUUID.get_identifier(self, parsed_args)
 
         permission = parsed_args.permission
         body = {
@@ -34,11 +36,11 @@ class MetadataPemsGrant(MetadataFormatMany, MetadataUUID, Username):
             'permission': permission.upper()
         }
         grant_result = self.tapis_client.meta.updateMetadataPermissions(
-            uuid=parsed_args.identifier, body=body)
+            uuid=identifier, body=body)
 
         headers = self.render_headers(Permission, parsed_args)
         results = self.tapis_client.meta.listMetadataPermissions(
-            uuid=parsed_args.identifier)
+            uuid=identifier)
 
         records = []
         for rec in results:

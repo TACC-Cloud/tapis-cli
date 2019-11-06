@@ -1,9 +1,9 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import NotificationsUUID
 
-from . import API_NAME, SERVICE_VERSION
-from .models import Notification
 from .formatters import NotificationsFormatOne
+from .mixins import NotificationsUUID
+from .models import Notification
+from . import API_NAME, SERVICE_VERSION
 
 __all__ = ['NotificationsDelete']
 
@@ -22,15 +22,15 @@ class NotificationsDelete(NotificationsFormatOne, NotificationsUUID):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.validate_identifier(parsed_args.identifier)
+        identifier = NotificationsUUID.get_identifier(self, parsed_args)
 
         headers = ['deleted', 'messages']
         deleted = []
         messages = []
 
         try:
-            self.requests_client.delete(parsed_args.identifier)
-            deleted.append(parsed_args.identifier)
+            self.requests_client.delete(identifier)
+            deleted.append(identifier)
         except Exception as err:
             messages.append(str(err))
         data = [deleted, messages]

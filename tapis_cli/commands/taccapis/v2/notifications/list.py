@@ -25,14 +25,22 @@ class NotificationsList(NotificationsFormatMany, OptionalTapisEntityUUID):
         self.update_payload(parsed_args)
 
         headers = self.render_headers(Notification, parsed_args)
-        results = self.tapis_client.notifications.list(
-            limit=parsed_args.limit, offset=parsed_args.offset)
+        if parsed_args.identifier is None:
+            results = self.tapis_client.notifications.list(
+                limit=parsed_args.limit, offset=parsed_args.offset)
+        else:
+            results = self.tapis_client.notifications.list(
+                associatedUuid=parsed_args.identifier,
+                limit=parsed_args.limit,
+                offset=parsed_args.offset)
 
         records = []
         for rec in results:
             record = []
             for key in headers:
                 val = self.render_value(rec.get(key, None))
+                key, val = self.render_extended_parser_value(
+                    key, val, parsed_args)
                 record.append(val)
             records.append(record)
         return (tuple(headers), tuple(records))
