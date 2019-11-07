@@ -1,5 +1,5 @@
-API Reference
-=============
+tapis_cli
+=========
 
 .. toctree::
    :maxdepth: 1

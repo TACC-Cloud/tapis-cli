@@ -27,9 +27,10 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 # Cliff options
 autoprogram_cliff_application = 'tapis'
 autoprogram_cliff_ignored = [
-    '--help', '--page', '--skip', '--limit', '-k', '-l', '--noindent',
-    '--prefix', '--print-empty', '-c', '--sort-column',
-    '--max-width', '--fit-width']
+    '--help', '--noindent',
+    '--prefix', '--print-empty',
+    '--max-width', '--fit-width',
+    '--quote', '--no-verify']
 
 # -- Project information -----------------------------------------------------
 

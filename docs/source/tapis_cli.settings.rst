@@ -16,6 +16,22 @@ Subpackages
 Submodules
 ----------
 
+tapis\_cli.settings.auth module
+-------------------------------
+
+.. automodule:: tapis_cli.settings.auth
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tapis\_cli.settings.config module
+---------------------------------
+
+.. automodule:: tapis_cli.settings.config
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 tapis\_cli.settings.debug module
 --------------------------------
 
@@ -36,6 +52,14 @@ tapis\_cli.settings.gitlab module
 ---------------------------------
 
 .. automodule:: tapis_cli.settings.gitlab
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tapis\_cli.settings.google module
+---------------------------------
+
+.. automodule:: tapis_cli.settings.google
     :members:
     :undoc-members:
     :show-inheritance:

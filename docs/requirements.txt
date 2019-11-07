@@ -1,14 +1,34 @@
 cliff
+curlify
 pbr
 python-dateutil
 python-dotenv
 requests
 six
-agavepy
 dateparser
-agavepy==0.9.3
 stringcase
 arrow
+PyMongo
+flake8
+pycodestyle
+pyflakes
+Pygments>=2.4.2
+PyGithub
+Sphinx==1.8.5 # pinned for Python 2.7.x support
+pytest==4.6.5 # pinned for Python 2.7.x support
+pytest-cov
+pytest-runner
+sphinxcontrib-napoleon
+yapf
+sphinx-rtd-theme
+sphinx-fontawesome
+stevedore
+tenacity
+colorama
+curlify
+pathlib2
+validators
+agavepy@git+https://github.com/TACC/agavepy.git@cli
 flake8>=3.7.8
 pycodestyle>=2.5.0
 pyflakes>=2.1.1

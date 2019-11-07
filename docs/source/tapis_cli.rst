@@ -12,6 +12,9 @@ Subpackages
 .. toctree::
 
     tapis_cli.clients
+    tapis_cli.commands
+    tapis_cli.et
+    tapis_cli.hashcache
     tapis_cli.mocks
     tapis_cli.search
     tapis_cli.settings
@@ -47,6 +50,14 @@ tapis\_cli.main module
 ----------------------
 
 .. automodule:: tapis_cli.main
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+tapis\_cli.user\_agent module
+-----------------------------
+
+.. automodule:: tapis_cli.user_agent
     :members:
     :undoc-members:
     :show-inheritance:

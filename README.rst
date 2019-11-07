@@ -1,14 +1,7 @@
 Tapis CLI
 =========
 
-.. image:: https://travis-ci.org/TACC-Cloud/tapis-cli-ng.svg?branch=master
-    :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
-
-.. image:: https://img.shields.io/pypi/l/Django.svg
-    :target: https://raw.githubusercontent.com/TACC-Cloud/tapis-cli-ng/master/LICENSE.txt
-
-.. image:: https://zenodo.org/badge/203083094.svg
-   :target: https://zenodo.org/badge/latestdoi/203083094
+|build-status| |docs| |doi|
 
 Installation
 ------------
@@ -82,10 +75,7 @@ There is a ``--help`` flag for each command.
 Initializing a Tapis Client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This release marks the debut of a simplified scheme in which a single
-host-specific client is generated and maintained for each combination of
-tenant and username. To initialize a host to use Tapis, simply run
-``tapis auth init`` command.
+To initialize a host to use Tapis, simply run ``tapis auth init`` command.
 
 .. code-block:: shell
 
@@ -109,212 +99,6 @@ tenant and username. To initialize a host to use Tapis, simply run
     | expires_at   | Thu Sep 19 14:08:37 2019        |
     +--------------+---------------------------------+
 
-Re-running without changing tenant or username will display the current auth
-context, while changing either tenant or username (or specifying
-``--interactive`` mode) will re-initialize the host to use the specified
-tenant/username combination.
-
-Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
-
-**NOTE** If you have a configured, but expired Agave client in
-``~/.agave/current``, the ``init`` command may fail to detect the expiration
-and may skip a key step. If you get a message ``Tapis client appears invalid``
-re-run with ``tapis auth init --interactive`` and follow the prompts.
-
-Usage Examples
---------------
-
-The following illustrate basic patterns implemented in each Tapis CLI command.
-Explore their help documents to learn more details.
-
-List
-^^^^
-
-Simply list resources (apps, in this case) known to an API. List commands
-support **limit** and **offset** arguments.
-
-.. code-block:: shell
-
-    $ tapis apps list --limit 3
-    +-------------------------------+------------------+
-    | id                            | label            |
-    +-------------------------------+------------------+
-    | tapis.app.imageclassify-1.0u1 | Image Classifier |
-    | vina-ls5-1.1.2u3              | Autodock Vina    |
-    | vina-ls5-1.1.2u2              | Autodock Vina    |
-    +-------------------------------+------------------+
-
-Search
-^^^^^^
-
-It is possible to search for resources matching specific fields. Rather than
-require a user to remember complicated query syntax, searchable fields are
-presented as command line options. Search modifiers are supported. Search
-commands also support **limit** and **offset** arguments.
-
-This is an example of help for a search command.
-
-.. code-block:: shell
-
-    $ tapis apps search -h
-    usage: tapis apps search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
-                            [--quote {all,minimal,none,nonnumeric}] [--noindent]
-                            [--max-width <integer>] [--fit-width] [--print-empty]
-                            [--sort-column SORT_COLUMN] [--no-verify]
-                            [-H API_SERVER] [-z ACCESS_TOKEN] [-l LIMIT]
-                            [-o OFFSET] [--id mod STRING] [--name mod STRING]
-                            [--version mod STRING] [--revision mod INT]
-                            [--label mod STRING] [--short-description mod STRING]
-                            [--long-description mod STRING] [--owner mod STRING]
-                            [--public mod TRUE] [--execution-type mod STRING]
-                            [--execution-system mod STRING]
-                            [--deployment-system mod STRING]
-                            [--available mod TRUE] [--parallelism mod STRING]
-                            [--default-processors-per-node mod INT]
-                            [--default-memory-per-node mod INT]
-                            [--default-node-count mod INT]
-                            [--default-max-run-time mod STRING]
-                            [--default-queue mod STRING]
-
-    Search the Apps catalog
-
-    optional arguments:
-    -h, --help            show this help message and exit
-    --no-verify           Allow insecure server connections when using SSL
-    -H API_SERVER, --api-server API_SERVER
-                            Tapis API server
-    -z ACCESS_TOKEN, --token ACCESS_TOKEN
-                            Tapis access_token
-    -l LIMIT, --limit LIMIT
-                            Limit to L records
-    -o OFFSET, --offset OFFSET
-                            Skip first O records
-
-    Search arguments:
-    --id mod STRING
-    --name mod STRING
-    --version mod STRING
-    --revision mod INT
-    --label mod STRING
-    --short-description mod STRING
-    --long-description mod STRING
-    --owner mod STRING
-    --public mod TRUE
-    --execution-type mod STRING
-    --execution-system mod STRING
-    --deployment-system mod STRING
-    --available mod TRUE
-    --parallelism mod STRING
-    --default-processors-per-node mod INT
-    --default-memory-per-node mod INT
-    --default-node-count mod INT
-    --default-max-run-time mod STRING
-    --default-queue mod STRING
-
-Any named field (**id**, **parallelism**, **owner**, etc.) can be searched.
-Here is an illustration of searching for an app by specific **name**. The
-equality (**eq**) modifier constrains the result to identical matches. Using
-**like** allows the search term to a match a substring. Wildcards or
-regular expressions are not (currently) supported.
-
-.. code-block:: shell
-
-    $ tapis apps search --name eq vina-ls5
-    +------------------+----------+---------------+--------------------+--------+------------------+
-    | id               | revision | label         | shortDescription   | public | executionSystem  |
-    +------------------+----------+---------------+--------------------+--------+------------------+
-    | vina-ls5-1.1.2u3 |        3 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
-    |                  |          |               | an open-source     |        |                  |
-    |                  |          |               | program for doing  |        |                  |
-    |                  |          |               | molecular docking  |        |                  |
-    | vina-ls5-1.1.2u2 |        2 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
-    |                  |          |               | an open-source     |        |                  |
-    |                  |          |               | program for doing  |        |                  |
-    |                  |          |               | molecular docking  |        |                  |
-    | vina-ls5-1.1.2u1 |        1 | Autodock Vina | AutoDock Vina is   | None   | docking.exec.ls5 |
-    |                  |          |               | an open-source     |        |                  |
-    |                  |          |               | program for doing  |        |                  |
-    |                  |          |               | molecular docking  |        |                  |
-    +------------------+----------+---------------+--------------------+--------+------------------+
-    $ tapis apps search --name eq image
-    (None)
-    $ tapis apps search --name like image
-    +------------------+----------+------------------+------------------+--------+---------------------+
-    | id               | revision | label            | shortDescription | public | executionSystem     |
-    +------------------+----------+------------------+------------------+--------+---------------------+
-    | tapis.app.imagec |        3 | Image Classifier | Classify an      | None   | tapis.execution.sys |
-    | lassify-1.0u3    |          |                  | image using a    |        | tem                 |
-    |                  |          |                  | small ImageNet   |        |                     |
-    |                  |          |                  | model            |        |                     |
-    | tapis.app.imagec |        2 | Image Classifier | Classify an      | None   | tapis.execution.sys |
-    | lassify-1.0u2    |          |                  | image using a    |        | tem                 |
-    |                  |          |                  | small ImageNet   |        |                     |
-    |                  |          |                  | model            |        |                     |
-    | tapis.app.imagec |        1 | Image Classifier | Classify an      | None   | tapis.execution.sys |
-    | lassify-1.0u1    |          |                  | image using a    |        | tem                 |
-    |                  |          |                  | small ImageNet   |        |                     |
-    |                  |          |                  | model            |        |                     |
-    +------------------+----------+------------------+------------------+--------+---------------------+
-
-Show
-^^^^
-
-A show command replicates the original CLI behavior where
-``<service>> list <<identifier>>`` would return a detailed display of one
-specific Tapis entity. The new CLI separates this out into its own verb for
-the sake of clarity.
-
-.. code-block:: shell
-
-    $ tapis apps show tapis.app.imageclassify-1.0u3
-    +--------------------------+------------------------------------------------------------------+
-    | Field                    | Value                                                            |
-    +--------------------------+------------------------------------------------------------------+
-    | id                       | tapis.app.imageclassify-1.0u3                                    |
-    | name                     | tapis.app.imageclassify                                          |
-    | version                  | 1.0                                                              |
-    | revision                 | 3                                                                |
-    | label                    | Image Classifier                                                 |
-    | lastModified             | 6 days ago                                                       |
-    | shortDescription         | Classify an image using a small ImageNet model                   |
-    | longDescription          |                                                                  |
-    | owner                    | cicsvc                                                           |
-    | public                   | None                                                             |
-    | executionType            | CLI                                                              |
-    | executionSystem          | tapis.execution.system                                           |
-    | deploymentSystem         | docking.storage                                                  |
-    | available                | True                                                             |
-    | parallelism              | SERIAL                                                           |
-    | defaultProcessorsPerNode | 1                                                                |
-    | defaultMemoryPerNode     | 1                                                                |
-    | defaultNodeCount         | 1                                                                |
-    | defaultMaxRunTime        | None                                                             |
-    | defaultQueue             | None                                                             |
-    | helpURI                  |                                                                  |
-    | deploymentPath           | /home/docking/api/v2/prod/apps/tapis.app.imageclassify-1.0u3.zip |
-    | templatePath             | wrapper.sh                                                       |
-    | testPath                 | test/test.sh                                                     |
-    | checkpointable           | False                                                            |
-    | uuid                     | 3162334876895875561-242ac119-0001-005                            |
-    | icon                     | None                                                             |
-    +--------------------------+------------------------------------------------------------------+
-
-One can get a JSON representation of the record by passing the **verbose** flag:
-
-.. code-block:: shell
-
-    $ tapis apps show tapis.app.imageclassify-1.0u3 -v
-
-Update
-^^^^^^
-
-Assume one is the author (or an authorized contributor) to
-**tapis.app.imageclassify**: The Tapis metadata for the app can be updated
-usng ``tapis apps update <app_id>``. Here's an example:
-
-.. code-block:: shell
-
-    $ tapis apps update -F imageclassif.json tapis.app.imageclassify-1.0
 
 Hacking
 -------
@@ -369,34 +153,7 @@ Example setuptools entrypoint::
     tapis.cli =
         apps_list = tapis_cli.commands.taccapis.v2.apps:AppsList
 
-This combination of mixture of code namespacing and configuration is intended
-to support migration of specific services to new versions, while maintaining
-code and capability to support earlier versions.
-
-Commands are further constructed using mix-in classes. These are all (for now)
-defined in ``tapis_cli.clients.services.mixins``. Examples include a class
-``ServiceIdentifier`` which makes a command require an identifier to be
-specified as a positional parameter, and ``JsonVerbose`` which extends cliff's
-``-v`` flag to automatically turn up the number of fields reported to the
-maximum allowed by the command and to force a switch to the JSON formatter.
-
-Within the service-level package for each command is a ``models`` sub-package
-where the "data model (or models)" for the service are defined. In **apps**,
-one has ``App``, ``AppPermission``, and ``AppHistory``.
-
-Model classes aren't really models in the strict sense of the word, as they
-don't encode any knowledge of how the underlying API code works. Instead, their
-primary role is to define the top-level fields returned by each service, in
-what context the field is returned, and whether the field is searchable.
-They also encode rules for how to render specific fields for display. For
-example, there is a rule defined in the ``File`` model to humanize display of
-file sizes when the display formatter is anything but JSON, and another one
-to transform "Agave" style permissions (``READ_WRITE``) to be better aligned
-with the UNIX shell environment (``rw-``).
-
-Very limited unit tests are implemented in the `tests` directory, which make
-extensive use of fixtures to minimize duplication of text code.
-
+Limited (at present) unit tests are implemented in the `tests` directory.
 Automated code linting (to PEP8) and code coverage analysis are included in
 all PyTest runs to encourage sustainable development practices.
 
@@ -429,3 +186,19 @@ All work should proceed through at least one or more reported Issues_.
 
 .. _Milestones: https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open
 .. _Issues: https://github.com/TACC-Cloud/tapis-cli-ng/issues
+
+
+.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli-ng.svg?branch=master&style=flat
+    :alt: build status
+    :scale: 100%
+    :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
+
+.. |docs| image:: https://readthedocs.org/projects/tapis-cli-ng/badge/?version=latest&style=flat
+    :alt: Documentation Status
+    :scale: 100%
+    :target: https://tapis-cli.readthedocs.io/
+
+.. |doi| image:: https://zenodo.org/badge/203083094.svg
+    :alt: Publication
+    :scale: 100%
+    :target: https://zenodo.org/badge/latestdoi/203083094
