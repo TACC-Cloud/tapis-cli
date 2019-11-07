@@ -33,7 +33,7 @@ class Metadata(TapisModel):
          argmod.DEFAULT, None, None, False),
         ("created", argtype.DATETIME, Verbosity.RECORD, argmod.DATE_DEFAULTS,
          argmod.DATE_DEFAULT_MOD, None, None, False),
-        ("lastUpdated", argtype.DATETIME, Verbosity.LISTING,
+        ("lastUpdated", argtype.DATETIME, Verbosity.RECORD,
          argmod.DATE_DEFAULTS, argmod.DATE_DEFAULT_MOD, None, None, False),
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)

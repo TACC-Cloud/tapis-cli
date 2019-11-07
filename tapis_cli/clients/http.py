@@ -14,6 +14,12 @@ class HTTPCommandBase(object):
     """
     constants = constants
 
+    def get_parser(self, prog_name):
+        pass
+
+    def take_action(self, parsed_args):
+        pass
+
     def add_common_parser_arguments(self, parser):
         # Derived classes must call the parent's super()
         # print('HTTPCommandBase')

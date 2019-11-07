@@ -4,7 +4,7 @@ from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Profile
-from .formatters import ProfilesFormatOne, ProfilesFormatMany
+from .formatters import ProfilesFormatMany
 
 __all__ = ['ProfilesSearch']
 

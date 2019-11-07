@@ -42,7 +42,7 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
         self.handle_file_upload(parsed_args)
 
         self.value_data = None
-        if parsed_args.json_file_name is not None and parsed_args.meta_value is not None:
+        if self.json_file_contents != {} and parsed_args.meta_value is not None:
             raise RuntimeError(
                 'Specifing both --value and -F options is not supported.')
         else:

@@ -16,6 +16,8 @@ class MetadataExistsError(ValueError):
 
 
 class UploadMetadataFile(UploadJsonFile):
+    optional = True
+
     def extend_parser(self, parser):
         parser.add_argument('-F',
                             '--file',

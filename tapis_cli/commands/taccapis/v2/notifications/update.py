@@ -1,9 +1,10 @@
 import stringcase
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import UploadJsonFile, NotificationsUUID
+from tapis_cli.clients.services.mixins import UploadJsonFile
 from tapis_cli.commands.taccapis import SearchableCommand
 from tapis_cli.search import spinal_to_camel
 from . import API_NAME, SERVICE_VERSION
+from .mixins import NotificationsUUID
 from .models import Notification
 from .create import NotificationsCreate
 
