@@ -26,6 +26,27 @@ def makedirs(file_path,
             raise
 
 
+def move(file_path,
+         system_id=DEFAULT_SYSTEM_ID,
+         destination=None,
+         permissive=False,
+         agave=None):
+    try:
+        if destination is None:
+            raise ValueError('Value for "destination" must be provided')
+        body = {'action': 'move', 'path': destination}
+        resp = agave.files.manage(body=body,
+                                  systemId=system_id,
+                                  filePath=file_path)
+        return resp
+    # TODO - handle 404 differently than other errors
+    except Exception:
+        if permissive:
+            return False
+        else:
+            raise
+
+
 def delete(file_path,
            system_id=DEFAULT_SYSTEM_ID,
            permissive=False,
