@@ -20,6 +20,12 @@ copy.
    :command: files mkdir
 
 .. autoprogram-cliff:: tapis.cli
+   :command: files copy
+
+.. autoprogram-cliff:: tapis.cli
+   :command: files move
+
+.. autoprogram-cliff:: tapis.cli
    :command: files delete
 
 .. autoprogram-cliff:: tapis.cli

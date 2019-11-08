@@ -10,7 +10,7 @@ __all__ = ['FilesPemsDrop']
 
 
 class FilesPemsDrop(FilesFormatMany, AgaveURI):
-    """Drop all granted permissions from an file
+    """Drop all granted permissions from a Files path
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

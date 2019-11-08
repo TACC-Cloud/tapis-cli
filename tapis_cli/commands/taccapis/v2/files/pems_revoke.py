@@ -10,7 +10,7 @@ __all__ = ['FilesPemsRevoke']
 
 
 class FilesPemsRevoke(FilesFormatMany, AgaveURI, Username):
-    """Revoke permissions on a file path for a user
+    """Revoke permissions on a Files path for a User
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

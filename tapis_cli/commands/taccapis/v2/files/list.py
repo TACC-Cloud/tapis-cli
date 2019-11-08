@@ -12,7 +12,7 @@ __all__ = ['FilesList']
 
 
 class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
-    """Lists a File path
+    """List a Files path
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

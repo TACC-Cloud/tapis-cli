@@ -13,7 +13,7 @@ __all__ = ['FilesPemsList']
 
 
 class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
-    """List permissions for an specific file path
+    """List permissions for an specific Files path
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

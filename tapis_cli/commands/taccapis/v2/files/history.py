@@ -9,7 +9,7 @@ __all__ = ['FilesHistory']
 
 
 class FilesHistory(FilesFormatMany, AgaveURI):
-    """List history for an specific file or directory
+    """List history for a Files path
     """
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

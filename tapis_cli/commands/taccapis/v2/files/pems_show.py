@@ -9,7 +9,7 @@ __all__ = ['FilesPemsShow']
 
 
 class FilesPemsShow(FilesFormatOne, AgaveURI, Username):
-    """Show permissions on a file path for specific user
+    """Show permissions on a Files path for a User
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

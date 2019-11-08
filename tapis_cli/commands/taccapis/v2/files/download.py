@@ -14,7 +14,7 @@ __all__ = ['FilesDownload']
 
 class FilesDownload(FilesFormatOne, AgaveURI, OptionalLocalFilePath,
                     ExcludeFiles, OverwritePolicy, ReportProgress):
-    """Download a Tapis-managed file or directory to local host
+    """Download a Files path to the local host
     """
 
     # TODO - add formatting and sorting options

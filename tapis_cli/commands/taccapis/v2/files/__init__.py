@@ -3,6 +3,7 @@
 from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 from .models import File, API_NAME
 
+from .copy import FilesCopy
 from .delete import FilesDelete
 from .download import FilesDownload
 from .history import FilesHistory
