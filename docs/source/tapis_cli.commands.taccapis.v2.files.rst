@@ -17,6 +17,14 @@ Subpackages
 Submodules
 ----------
 
+tapis\_cli.commands.taccapis.v2.files.copy module
+-------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.files.copy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.files.delete module
 ---------------------------------------------------
 
@@ -69,6 +77,14 @@ tapis\_cli.commands.taccapis.v2.files.mkdir module
 --------------------------------------------------
 
 .. automodule:: tapis_cli.commands.taccapis.v2.files.mkdir
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.commands.taccapis.v2.files.move module
+-------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.files.move
    :members:
    :undoc-members:
    :show-inheritance:
