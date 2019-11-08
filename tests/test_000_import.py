@@ -5,9 +5,11 @@ import pytest
 def test_can_import_tapis_cli():
     import tapis_cli
 
+
 @pytest.mark.smoketest
 def test_can_import_actors_modules():
     pass
+
 
 @pytest.mark.smoketest
 def test_can_import_apim_modules():
@@ -17,6 +19,7 @@ def test_can_import_apim_modules():
     from tapis_cli.commands.taccapis.v2.apim import token_refresh
     from tapis_cli.commands.taccapis.v2.apim import formatters
     from tapis_cli.commands.taccapis.v2.apim import models
+
 
 @pytest.mark.smoketest
 def test_can_import_apps_modules():
@@ -37,6 +40,7 @@ def test_can_import_apps_modules():
     from tapis_cli.commands.taccapis.v2.apps import formatters
     from tapis_cli.commands.taccapis.v2.apps import models
 
+
 @pytest.mark.smoketest
 def test_can_import_files_modules():
     from tapis_cli.commands.taccapis.v2.files import delete
@@ -53,13 +57,18 @@ def test_can_import_files_modules():
     from tapis_cli.commands.taccapis.v2.files import models
     from tapis_cli.commands.taccapis.v2.files import helpers
 
+
 @pytest.mark.smoketest
 def test_can_import_files_helpers():
     from tapis_cli.commands.taccapis.v2.files.helpers.upload import upload
     from tapis_cli.commands.taccapis.v2.files.helpers.sync import download
-    from tapis_cli.commands.taccapis.v2.files.helpers.stat import (isfile, isdir, stat, exists)
-    from tapis_cli.commands.taccapis.v2.files.helpers.walk import (listdir, walk)
+    from tapis_cli.commands.taccapis.v2.files.helpers.stat import (isfile,
+                                                                   isdir, stat,
+                                                                   exists)
+    from tapis_cli.commands.taccapis.v2.files.helpers.walk import (listdir,
+                                                                   walk)
     from tapis_cli.commands.taccapis.v2.files.helpers.pems_list import pems_list
+
 
 @pytest.mark.smoketest
 def test_can_import_jobs_modules():
@@ -74,9 +83,11 @@ def test_can_import_jobs_modules():
     from tapis_cli.commands.taccapis.v2.jobs import formatters
     from tapis_cli.commands.taccapis.v2.jobs import models
 
+
 @pytest.mark.smoketest
 def test_can_import_keys_modules():
     pass
+
 
 @pytest.mark.smoketest
 def test_can_import_metadata_modules():
@@ -97,6 +108,7 @@ def test_can_import_profiles_modules():
     from tapis_cli.commands.taccapis.v2.profiles import show_self
     from tapis_cli.commands.taccapis.v2.profiles import formatters
     from tapis_cli.commands.taccapis.v2.profiles import models
+
 
 @pytest.mark.smoketest
 def test_can_import_systems_modules():
@@ -119,9 +131,11 @@ def test_can_import_systems_modules():
     from tapis_cli.commands.taccapis.v2.systems import formatters
     from tapis_cli.commands.taccapis.v2.systems import models
 
+
 @pytest.mark.smoketest
 def test_can_import_uuid_modules():
     pass
+
 
 @pytest.mark.smoketest
 def test_can_import_formatone_subclasses():
@@ -133,6 +147,7 @@ def test_can_import_formatone_subclasses():
     from tapis_cli.commands.taccapis.v2.profiles.formatters import ProfilesFormatOne
     from tapis_cli.commands.taccapis.v2.systems.formatters import SystemsFormatOne
 
+
 @pytest.mark.smoketest
 def test_can_import_formatmany_subclasses():
     from tapis_cli.commands.taccapis.v2.apps.formatters import AppsFormatMany
@@ -141,6 +156,7 @@ def test_can_import_formatmany_subclasses():
     from tapis_cli.commands.taccapis.v2.metadata.formatters import MetadataFormatMany
     from tapis_cli.commands.taccapis.v2.profiles.formatters import ProfilesFormatMany
     from tapis_cli.commands.taccapis.v2.systems.formatters import SystemsFormatMany
+
 
 @pytest.mark.smoketest
 @pytest.mark.parametrize('attribute,accept_none,expect_exception',

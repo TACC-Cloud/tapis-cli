@@ -1,6 +1,7 @@
 import pytest
 import validators
 
+
 def test_phone_home_url():
     """Check that a valid URL is generated at run-time
     """
