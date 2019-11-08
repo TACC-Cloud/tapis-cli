@@ -74,9 +74,11 @@ def test_client(test_api_key, test_api_secret, test_username, test_password,
         'TAPIS_BASE_URL': test_api_server
     }
 
+
 @pytest.fixture(scope='function')
 def tapis_active_client(test_client):
     return Agave(**test_client).restore()
+
 
 @pytest.fixture(scope='function')
 def temp_cache_env(temp_cache, monkeypatch):
