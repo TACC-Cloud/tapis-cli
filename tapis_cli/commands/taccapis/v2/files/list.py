@@ -68,4 +68,10 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
                                header=sort_header,
                                reverse=parsed_args.ls_sort_reverse)
 
-        return (tuple(headers), tuple(data))
+        # In-place field render (mostly for fixing datetime at this point)
+        fdata = []
+        for row in data:
+            row_data = [self.render_value(v) for v in row]
+            fdata.append(row_data)
+
+        return (tuple(headers), tuple(fdata))
