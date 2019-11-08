@@ -371,6 +371,8 @@ request document that can be used to submit a similar job.
 
 ## Files
 
+08-11-2019 | Support for `files move` and `files copy` is now present
+
 25-10-2019 | It is now possible to define the destination path in
 `tapis files download`.
 
@@ -505,6 +507,10 @@ usage: tapis systems search [-h] [-f {csv,json,table,value,yaml}] [-c COLUMN]
 is the ability to atomically update a system's login inforamation.
 
 ## Metadata
+
+08-11-2019 | Passed CLI arguments (name, value) and specification of a JSON
+file data source are now mutually exclusive in the **create** and **update** commands. This
+was done to avoid confusion about dictionary merge order.
 
 25-10-2019 | Metadata permissions management commands are now supported. Metadata UUIDs
 are soft-validated for length and suffix characters.
