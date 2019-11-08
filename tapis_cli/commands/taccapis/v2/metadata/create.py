@@ -10,29 +10,31 @@ __all__ = ['MetadataCreate']
 
 
 class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
-    """Create a Metadata document
+    """Store Metadata in a new document
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(MetadataCreate, self).get_parser(prog_name)
-        parser = UploadMetadataFile.extend_parser(self, parser)
         name_group = parser.add_mutually_exclusive_group(required=False)
-        name_group.add_argument('-N',
-                                '--name',
-                                dest='meta_name',
-                                metavar='Record name',
-                                help='Name of the document')
-        name_group.add_argument('-A',
-                                '--assign-name',
-                                action='store_true',
-                                help='Generate a name for the document')
         parser.add_argument('-V',
                             '--value',
                             dest='meta_value',
                             metavar='Record value',
                             help='Value for the document')
+        name_group.add_argument('-N',
+                                '--name',
+                                dest='meta_name',
+                                metavar='Record name',
+                                help='Optional name for the document')
+        parser = UploadMetadataFile.extend_parser(self, parser)
+
+        # name_group.add_argument('-A',
+        #                         '--assign-name',
+        #                         action='store_true',
+        #                         help='Generate a name for the document')
+
         return parser
 
     def take_action(self, parsed_args):
@@ -41,28 +43,25 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
         self.update_payload(parsed_args)
         self.handle_file_upload(parsed_args)
 
-        self.value_data = None
+        body = None
         if self.json_file_contents != {} and parsed_args.meta_value is not None:
             raise RuntimeError(
                 'Specifing both --value and -F options is not supported.')
-        else:
-            if parsed_args.meta_value is not None:
-                value_data = parsed_args.meta_value
-            else:
-                value_data = self.json_file_contents
 
-        if parsed_args.meta_name is not None:
-            name_data = parsed_args.meta_name
+        # Blindly accept the JSON file if passed. Otherwise construct a
+        # name/value record, generating the name if needed.
+        if self.json_file_contents != {}:
+            body = self.json_file_contents
         else:
-            name_data = generate_name(username=self.tapis_client.username,
-                                      data=value_data)
+            body = {'value': parsed_args.meta_value}
+            if parsed_args.meta_name is not None:
+                body['name'] = parsed_args.meta_name
+            else:
+                body['name'] = generate_name(
+                    username=self.tapis_client.username,
+                    data=parsed_args.meta_value)
 
         headers = self.render_headers(Metadata, parsed_args)
-        rec = create_update(name=name_data,
-                            value=value_data,
-                            uuid=None,
-                            permissive=False,
-                            agave=self.tapis_client)
 
         data = []
         for key in headers:

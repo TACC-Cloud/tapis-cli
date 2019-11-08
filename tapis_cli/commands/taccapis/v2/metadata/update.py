@@ -10,26 +10,27 @@ from . import API_NAME, SERVICE_VERSION
 
 
 class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
-    """Update a Metadata document by UUID
+    """Update an existing Metadata document by UUID
     """
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(MetadataUpdate, self).get_parser(prog_name)
-        parser = UploadMetadataFile.extend_parser(self, parser)
         name_group = parser.add_mutually_exclusive_group(required=False)
-        name_group.add_argument('-N',
-                                '--rename',
-                                dest='meta_name',
-                                metavar='<record_name>',
-                                help='Rename document')
         parser.add_argument('-V',
                             '--value',
                             dest='meta_value',
                             metavar='<record_value>',
                             help='Value for the document')
+        name_group.add_argument('-N',
+                                '--rename',
+                                dest='meta_name',
+                                metavar='<record_name>',
+                                help='Rename document')
+        parser = UploadMetadataFile.extend_parser(self, parser)
         parser = MetadataUUID.extend_parser(self, parser)
+
         return parser
 
     def take_action(self, parsed_args):

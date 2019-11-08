@@ -31,6 +31,7 @@ class UploadMetadataFile(UploadJsonFile):
 class MetadataUUID(TapisEntityUUID):
     """Configures a command to require a mandatory Tapis metadata UUID
     """
+    optional = False
     service_id_type = 'Metadata'
     dest = 'meta_uuid'
     suffix = '-012'
