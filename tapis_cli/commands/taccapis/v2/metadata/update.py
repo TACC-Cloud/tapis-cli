@@ -40,32 +40,30 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
         self.handle_file_upload(parsed_args)
         identifier = MetadataUUID.get_identifier(self, parsed_args)
 
-        self.value_data = None
-        if parsed_args.json_file_name is not None and parsed_args.meta_value is not None:
+        body = None
+        if self.json_file_contents != {} and parsed_args.meta_value is not None:
             raise RuntimeError(
                 'Specifing both --value and -F options is not supported.')
+
+        # Blindly accept the JSON file if passed. Otherwise construct a
+        # name/value record, generating the name if needed.
+        if self.json_file_contents != {}:
+            body = self.json_file_contents
         else:
+            # Fetch
+            doc = self.tapis_client.meta.getMetadata(uuid=identifier)
+            body = {
+                'name': doc.get('name'),
+                'value': doc.get('value'),
+                'associationIds': doc.get('associationIds', [])
+            }
+            if parsed_args.meta_name is not None:
+                body['name'] = parsed_args.meta_name
             if parsed_args.meta_value is not None:
-                value_data = parsed_args.meta_value
-            else:
-                value_data = self.json_file_contents
-
-        persist_name = True
-        if parsed_args.meta_name is not None:
-            name_data = parsed_args.meta_name
-            persist_name = False
-        else:
-            name_data = None
-
-        uuid_data = identifier
+                body['value'] = parsed_args.meta_value
 
         headers = self.render_headers(Metadata, parsed_args)
-        rec = create_update(name=name_data,
-                            value=value_data,
-                            uuid=uuid_data,
-                            peristent_name=persist_name,
-                            permissive=False,
-                            agave=self.tapis_client)
+        rec = self.tapis_client.meta.updateMetadata(body=body, uuid=identifier)
 
         data = []
         for key in headers:

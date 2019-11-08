@@ -62,6 +62,7 @@ class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
                     data=parsed_args.meta_value)
 
         headers = self.render_headers(Metadata, parsed_args)
+        rec = self.tapis_client.meta.addMetadata(body=body)
 
         data = []
         for key in headers:
