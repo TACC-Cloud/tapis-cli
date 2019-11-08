@@ -63,13 +63,13 @@ class TestMetaDescriptions(object):
     def test_meta_create_description(self):
         app = Tapis_App()
         cmd = metadata.MetadataCreate(app, None)
-        assert cmd.get_description().startswith('Create a Metadata document')
+        assert cmd.get_description().startswith('Store Metadata in a new document')
 
     def test_meta_update_description(self):
         app = Tapis_App()
         cmd = metadata.MetadataUpdate(app, None)
         assert cmd.get_description().startswith(
-            'Update a Metadata document by UUID')
+            'Update an existing Metadata document by UUID')
 
     def test_meta_delete_description(self):
         app = Tapis_App()
