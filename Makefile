@@ -1,7 +1,7 @@
 PYTEST_OPTS ?= -v --durations=10
 PYTEST_SRC ?= tests/
 PYTEST_MAX_FAIL ?= 1
-PYTEST_FAIL_OPTS ?= --maxfail=$(PYTEST_MAX_FAIL)
+PYTEST_FAIL_OPTS ?= --maxfail=$(PYTEST_MAX_FAIL) --no-cov-on-fail
 PYTEST_RUN_OPTS ?= $(PYTEST_FAIL_OPTS)
 
 GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
