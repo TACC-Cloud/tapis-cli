@@ -5,6 +5,7 @@ import arrow
 import datetime
 import fnmatch
 import getpass
+import importlib
 import json
 import os
 import pkg_resources
@@ -343,3 +344,33 @@ def makedirs(file_path, exist_ok=True):
     """Python2-compatible makedirs with exist_ok support
     """
     Path(file_path).mkdir(exist_ok=exist_ok, parents=True)
+
+
+def dynamic_import(module, package=None):
+    """Dynamically import a module by name at runtime
+
+    Args:
+        module (str): The name of the module to import
+        package (str, optional): The package to import ``module`` from
+
+    Returns:
+        object: The imported module
+    """
+    return importlib.import_module(module, package=package)
+
+
+def import_submodules(module, package=None, exclude=[]):
+    """Dynamically discover and import submodules at runtime
+    """
+    m = dynamic_import(module, package)
+    paths = m.__path__
+    real_path = [pt for pt in paths][0]
+    submodules = list()
+    for c in os.listdir(real_path):
+        try:
+            if c not in exclude:
+                sm = dynamic_import(module + '.' + os.path.basename(c))
+                submodules.append(sm)
+        except ModuleNotFoundError:
+            pass
+    return submodules
