@@ -8,6 +8,7 @@ __all__ = ['key_values']
 def key_values():
     facts = dict()
     facts['homedir'] = os.path.expanduser('~')
+    facts['cwd'] = os.getcwd()
     facts['posix_username'] = get_local_username()
     facts['hostname'] = get_hostname()
     facts['fqdn'] = getfqdn()
