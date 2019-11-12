@@ -9,5 +9,6 @@ def key_values():
     cli = dict()
     about_info = About(PKG_NAME)
     version_info = VersionInfo(PKG_NAME)
+    cli['tapis_cli_name'] = about_info.project
     cli['tapis_cli_version'] = version_info.version_string()
     return cli

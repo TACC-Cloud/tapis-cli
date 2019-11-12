@@ -4,6 +4,7 @@ import os
 from agavepy.agave import Agave
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .direct import TaccApiDirectClient
+import logging
 
 
 class TaccApiClient(object):
@@ -67,5 +68,28 @@ class TaccApiClient(object):
         api['full_name'] = '{0} {1}'.format(api['first_name'],
                                             api['last_name'])
 
-        # systems.list()
+        # Default storage and execution systems
+        api['default_public_storage'] = None
+        api['default_public_execution'] = None
+        api['default_private_storage'] = None
+        api['default_private_execution'] = None
+        try:
+            default_systems = self.tapis_client.systems.list(default=True)
+            for s in default_systems:
+                s_type = s.get('type', False)
+                s_public = s.get('public', False)
+                s_id = s.get('id')
+                if s_type == 'STORAGE':
+                    if s_public:
+                        api['default_public_storage'] = s_id
+                    else:
+                        api['default_private_storage'] = s_id
+                elif s_type == 'EXECUTION':
+                    if s_public:
+                        api['default_public_execution'] = s_id
+                    else:
+                        api['default_private_execution'] = s_id
+        except Exception:
+            pass
+
         return api

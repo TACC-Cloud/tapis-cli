@@ -12,29 +12,48 @@ __all__ = ['key_values', 'render_template']
 IMPORTS = ['settings', 'variables']
 
 
-def key_values(supplemental=None):
+def key_values(passed_vals=None):
     """Create a dict that can be used to render a Jinja template
     """
-    if not isinstance(supplemental, dict):
-        kvals = dict()
+    kvals = dict()
+
+    if not isinstance(passed_vals, dict):
+        extras = dict()
     else:
-        kvals = supplemental
+        extras = passed_vals
+
     for i in IMPORTS:
         a = dynamic_import('tapis_cli.templating.{}'.format(i))
         d = a.key_values()
         kvals.update(d)
+    # passed extras override computed or default values
+    kvals.update(extras)
     return kvals
 
 
 def all_keys():
-    """Return all available template variable names
+    """Get names of all built-in, renderable variables
     """
     ks = list(key_values().keys())
     ks.sort()
     return ks
 
 
-def render_template(doc_source, supplemental=None):
+def render_template(doc_source, passed_vals=None, allow_undefined=True):
+    """Render a string template using extant variables
+
+    Parameters:
+        doc_source (str): Template string
+
+    Keyword Arguments:
+        passed_vals (dict, optional): Dictionary of variable name/value pairs
+        file (str|list, optional): One or more files containing variable data
+        allow_undefined (bool, optional): Do not raise an Exception when there are un-rendered variables
+
+    Returns:
+        str: Rendered string
+    """
+    # TODO - actually implement support for allow_undefined
     template = Template(doc_source)
-    values = key_values(supplemental)
+    values = key_values(passed_vals)
     return template.render(**values)
