@@ -47,3 +47,25 @@ class TaccApiClient(object):
             else:
                 value = datetime_to_isodate(value)
         return value
+
+    def key_values(self):
+        """Returns Tapis variable/value pairs for templating
+        """
+        api = dict()
+        # Client data
+        for k in ['username', 'api_server', 'tenant_id', 'api_key']:
+            api[k] = getattr(self.tapis_client, k, None)
+
+        # Profiles data
+        try:
+            profile = self.tapis_client.profiles.list(
+                username=api['username'])[0]
+        except Exception:
+            profile = {}
+        for k in ['email', 'username', 'first_name', 'last_name']:
+            api[k] = profile.get(k, None)
+        api['full_name'] = '{0} {1}'.format(api['first_name'],
+                                            api['last_name'])
+
+        # systems.list()
+        return api
