@@ -1,6 +1,7 @@
 arrow
 cliff
 colorama
+configparser
 curlify
 curlify
 dateparser
