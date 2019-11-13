@@ -9,8 +9,8 @@ def test_render_template_undefined_var():
     from tapis_cli.templating import render_template
     source = '{{ variable_a }} static'
     env = {'variable1': 'nonstatic', 'variable2': 'unstatic'}
-    render_template(source, passed_vals=env)
-
+    rendered = render_template(source, passed_vals=env)
+    assert rendered is not None
 
 def test_render_template_pass_dict():
     """Values will be rendered from a passed dict
