@@ -2,7 +2,7 @@ import configparser
 import os
 from .config_file import load_config, config_path
 
-__all__ = ['key_values', 'generate_template_ini']
+__all__ = ['key_values', 'generate_template_ini', 'populate_config']
 
 
 def key_values(filename=None):
@@ -15,9 +15,9 @@ def key_values(filename=None):
     """
     file_path = config_path(filename)
     if os.path.exists(file_path):
-        return load_config(file_path)
+        return dict(load_config(file_path))
     else:
-        return {}
+        return dict()
 
 
 def populate_config(config, values_dict):
