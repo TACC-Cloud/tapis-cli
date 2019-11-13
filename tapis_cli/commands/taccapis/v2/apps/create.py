@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import UploadJsonFile
+from tapis_cli.clients.services.mixins import UploadJsonFile, UploadJSONTemplate
 from tapis_cli.commands.taccapis import SearchableCommand
 
 from . import API_NAME, SERVICE_VERSION
@@ -11,7 +11,7 @@ __all__ = ['AppsCreate']
 # TODO - enforce use of create vs update by checking for existence of appId
 
 
-class AppsCreate(UploadJsonFile, AppsFormatOne):
+class AppsCreate(AppsFormatOne, UploadJSONTemplate):
     """Create a new app
     """
     VERBOSITY = Verbosity.RECORD
@@ -19,7 +19,7 @@ class AppsCreate(UploadJsonFile, AppsFormatOne):
 
     def get_parser(self, prog_name):
         parser = super(AppsCreate, self).get_parser(prog_name)
-        parser = UploadJsonFile.extend_parser(self, parser)
+        parser = UploadJSONTemplate.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

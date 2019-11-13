@@ -1,0 +1,93 @@
+{
+    "checkpointable": false,
+    "name": "word-count",
+    "executionSystem": "hpc-tacc-jetstream",
+    "executionType": "CLI",
+    "deploymentPath": "apps/word-count",
+    "deploymentSystem": "{{ default_public_storage }}",
+    "helpURI": "https://sd2e.org/develop/",
+    "label": "Word Count ({{ username }})",
+    "longDescription": "Counts words in a file",
+    "modules": [
+        "load tacc-singularity"
+    ],
+    "ontology": [
+        "http://purl.obolibrary.org/obo/STATO_0000047",
+        "http://www.ebi.ac.uk/swo/interface/SWO_9000051"
+    ],
+    "parallelism": "SERIAL",
+    "shortDescription": "How many words are in a file? Guess randomly or use ADVanCEd aNalYTIcaL tECHnIqUES to figure it out.",
+    "tags": [
+        "testing",
+        "pipelinejob"
+    ],
+    "templatePath": "runner-template.sh",
+    "testPath": "tester.sh",
+    "version": "0.1",
+    "defaultMaxRunTime": "00:05:00",
+    "inputs": [
+        {
+            "id": "input1",
+            "details": {
+                "label": "A plain text file",
+                "showAttribute": false
+            },
+            "semantics": {
+                "minCardinality": 1,
+                "maxCardinality": 1,
+                "semantics": {
+                    "ontology": [
+                        "http://edamontology.org/format_1964"
+                    ]
+                }
+            },
+            "value": {
+                "default": "agave://data-sd2e-community/sample/tacc-cloud/doc2.json",
+                "required": true,
+                "visible": true
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "id": "CONTAINER_IMAGE",
+            "value": {
+                "default": "sd2e/word-count:0.1",
+                "type": "string",
+                "visible": false,
+                "required": true,
+                "order": 99
+            }
+        },
+        {
+            "id": "cli_opts",
+            "details": {
+                "label": "Word count command-line options",
+                "showAttribute": false
+            },
+            "value": {
+                "default": "",
+                "type": "string",
+                "visible": false,
+                "required": false,
+                "order": 1
+            }
+        }
+    ],
+    "outputs": [
+        {
+            "id": "output",
+            "value": {
+                "default": "wc_out/output.txt"
+            },
+            "semantics": {
+                "ontology": [
+                    "http://edamontology.org/format_1964"
+                ]
+            },
+            "details": {
+                "label": "Contains STDOUT from the wc command"
+            }
+        }
+    ]
+}

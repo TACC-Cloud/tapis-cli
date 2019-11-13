@@ -3,7 +3,7 @@
 
 from tapis_cli.clients.services.mixins import (ServiceIdentifier,
                                                InvalidIdentifier,
-                                               UploadJsonFile,
+                                               UploadJSONTemplate,
                                                InvalidIdentifier)
 
 from tapis_cli.clients.services.mixins import InvalidValue, TapisEntityUUID
@@ -15,7 +15,7 @@ class MetadataExistsError(ValueError):
     pass
 
 
-class UploadMetadataFile(UploadJsonFile):
+class UploadMetadataFile(UploadJSONTemplate):
     optional = True
 
     def extend_parser(self, parser):

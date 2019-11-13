@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import UploadJsonFile
+from tapis_cli.clients.services.mixins import UploadJSONTemplate
 
 from . import API_NAME, SERVICE_VERSION
 from .models import System
@@ -10,7 +10,7 @@ __all__ = ['SystemsCreate']
 # TODO - enforce use of create vs update by checking for existence of systemId
 
 
-class SystemsCreate(SystemsFormatOne, UploadJsonFile):
+class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
     """Create a new System
     """
     VERBOSITY = Verbosity.RECORD
@@ -18,7 +18,7 @@ class SystemsCreate(SystemsFormatOne, UploadJsonFile):
 
     def get_parser(self, prog_name):
         parser = super(SystemsCreate, self).get_parser(prog_name)
-        parser = UploadJsonFile.extend_parser(self, parser)
+        parser = UploadJSONTemplate.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):

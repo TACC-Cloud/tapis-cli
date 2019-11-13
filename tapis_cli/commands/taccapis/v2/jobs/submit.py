@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import UploadJsonFile
+from tapis_cli.clients.services.mixins import UploadJSONTemplate
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Job
@@ -8,7 +8,7 @@ from .formatters import JobsFormatOne
 __all__ = ['JobsSubmit']
 
 
-class JobsSubmit(JobsFormatOne, UploadJsonFile):
+class JobsSubmit(JobsFormatOne, UploadJSONTemplate):
     """Submit a new compute Job
     """
     VERBOSITY = Verbosity.BRIEF
@@ -16,7 +16,7 @@ class JobsSubmit(JobsFormatOne, UploadJsonFile):
 
     def get_parser(self, prog_name):
         parser = super(JobsSubmit, self).get_parser(prog_name)
-        parser = UploadJsonFile.extend_parser(self, parser)
+        parser = UploadJSONTemplate.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
