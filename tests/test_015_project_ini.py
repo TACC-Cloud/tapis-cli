@@ -53,32 +53,32 @@ def test_projects_ini_save_config_invalid_name(temp_dir):
     with pytest.raises(ValueError):
         project_ini.save_config(k, filename=os.path.join(temp_dir, 'invald.ini'))
 
-def test_projects_ini_populate_config():
+def test_projects_ini_update_config():
     """Can populate a config with a dict
     """
     k = project_ini.load_config('tests/data/project_ini/project.ini')
-    project_ini.populate_config(k, {'app': {'name': 'pytest'}})
+    project_ini.update_config(k, {'app': {'name': 'pytest'}})
     assert 'version' in k['app'], '"app" section missing from config'
     assert k['app']['name'] == 'pytest', '"version" option missing from "app" section'
 
-def test_projects_ini_populate_config_empty_dict():
+def test_projects_ini_update_config_empty_dict():
     """Values dict can be empty, resulting in no change to config
     """
     k = project_ini.load_config('tests/data/project_ini/project.ini')
-    project_ini.populate_config(k, {})
+    project_ini.update_config(k, {})
     assert 'version' in k['app'], '"app" section missing from config'
     assert k['app']['name'] == 'fcs-etl', 'wrong name'
 
-def test_projects_ini_populate_config_invalid_dict():
+def test_projects_ini_update_config_invalid_dict():
     """Values dict must only contain sections and options defined by ini
     """
     k = project_ini.load_config('tests/data/project_ini/project.ini')
     with pytest.raises(KeyError):
         # Cannot add an option to an ini section
-        project_ini.populate_config(k, {'app': {'level': '9000'}})
+        project_ini.update_config(k, {'app': {'level': '9000'}})
     with pytest.raises(KeyError):
         # Cannot add a section to ini
-        project_ini.populate_config(k, {'candybar': {'name': 'Baby Ruth'}})
+        project_ini.update_config(k, {'candybar': {'name': 'Baby Ruth'}})
 
 def test_projects_ini_key_values():
     """Config can be loaded and returned as key-values for templating

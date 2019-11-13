@@ -1,7 +1,10 @@
 import configparser
 import os
 
-__all__ = ['FILENAMES', 'DEFAULT_FILENAME', 'load_config', 'save_config', 'config_path']
+__all__ = [
+    'FILENAMES', 'DEFAULT_FILENAME', 'load_config', 'save_config',
+    'config_path'
+]
 
 # Other inis might exist but we will only actively try loading from these
 FILENAMES = ['app.ini', 'reactor.ini', 'project.ini']

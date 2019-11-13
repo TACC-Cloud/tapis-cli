@@ -15,23 +15,14 @@ from cliff.app import App
 from tapis_cli import constants
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import serializable
+from tapis_cli import project_ini, templating
 
 __all__ = [
-    'OptionNotImplemented',
-    'AppVerboseLevel',
-    'JsonVerbose',
-    'ServiceIdentifier',
-    'UploadJsonFile',
-    'AgaveURI',
-    'RemoteFilePath',
-    'LocalFilePath',
-    'Username',
-    'InvalidIdentifier',
-    'OptionalLocalFilePath',
-    'InvalidValue',
-    'URL',
-    'TapisEntityUUID',
-    'OptionalTapisEntityUUID',
+    'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
+    'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'RemoteFilePath',
+    'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
+    'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
+    'UploadJSONTemplate'
 ]
 
 
@@ -292,6 +283,7 @@ class UploadJsonFile(ParserExtender):
     reside in self.json_file_contents.
     """
     json_loaded = dict()
+    validate = True
     optional = False
 
     def extend_parser(self, parser):
@@ -321,13 +313,50 @@ class UploadJsonFile(ParserExtender):
         # TODO - factor validation into its own method so it can be overridden
         try:
             payload = json.load(document_source)
-            serializable(payload)
+            if self.validate:
+                serializable(payload)
             setattr(self, 'json_file_contents', payload)
             return self.json_file_contents
         except Exception as exc:
             setattr(self, 'json_file_contents', None)
             raise ValueError('{0} was not valid JSON: {1}'.format(
                 parsed_args.json_file_name, exc))
+
+
+class UploadJSONTemplate(UploadJsonFile):
+    def extend_parser(self, parser):
+        parser = super(UploadJSONTemplate, self).extend_parser(parser)
+        parser.add_argument('--ini',
+                            dest='ini_file_name',
+                            type=str,
+                            help='Optional project.ini file')
+        return parser
+
+    def _render_json_file_contents(self, passed_vals):
+        """Transform the JSON file contents by rendering it as a Jinja template
+        """
+        payload = getattr(self, 'json_file_contents')
+        txt_payload = json.dumps(payload)
+        txt_payload = templating.render_template(txt_payload,
+                                                 passed_vals=passed_vals)
+        payload = json.loads(txt_payload)
+        setattr(self, 'json_file_contents', payload)
+        return self.json_file_contents
+
+    def handle_file_upload(self, parsed_args):
+        super(UploadJSONTemplate, self).handle_file_upload(parsed_args)
+        payload = getattr(self, 'json_file_contents')
+        # load variable sets
+        # ini-based configuration
+        config = project_ini.key_values(parsed_args.ini_file_name)
+        # tapis dynamic variables
+        tapis_variables = self.key_values()
+        # right-merged dictionary
+        # dynamic values always overide ini-loaded defaults
+        project_ini.update_config(config, tapis_variables, add_keys=True)
+        # render, where merged variables overrides module-provided values
+        self._render_json_file_contents(passed_vals=config)
+        return self.json_file_contents
 
 
 class Username(ParserExtender):

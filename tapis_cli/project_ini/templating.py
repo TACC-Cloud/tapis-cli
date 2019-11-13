@@ -2,7 +2,7 @@ import configparser
 import os
 from .config_file import load_config, config_path
 
-__all__ = ['key_values', 'generate_template_ini', 'populate_config']
+__all__ = ['key_values', 'generate_template_ini', 'update_config']
 
 
 def key_values(filename=None):
@@ -20,7 +20,7 @@ def key_values(filename=None):
         return dict()
 
 
-def populate_config(config, values_dict):
+def update_config(config, values_dict, add_keys=False):
     """Recursively merge a dict onto a ConfigParser
 
     This is used to initialize the parser with passed values, like one
@@ -30,14 +30,18 @@ def populate_config(config, values_dict):
         if isinstance(v, dict):
             for k1, v1 in v.items():
                 if not isinstance(v1, dict):
-                    if k in config and k1 in config[k]:
+                    if add_keys:
+                        config[k][k1] = str(v1)
+                    elif k in config and k1 in config[k]:
                         config[k][k1] = str(v1)
                     else:
                         raise KeyError(
                             'Unknown config section or option: {0}/{1}'.format(
                                 k, k1))
         else:
-            if k in config:
+            if add_keys:
+                config[k] = str(v)
+            elif k in config:
                 config[k] = str(v)
             else:
                 raise KeyError('Unknown config section: {0}'.format(k))
@@ -79,5 +83,5 @@ def generate_template_ini(passed_vals=None):
     }
     config['environment'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}
-    populate_config(config, passed_vals)
+    update_config(config, passed_vals)
     return config

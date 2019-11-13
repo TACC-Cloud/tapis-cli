@@ -56,4 +56,4 @@ def render_template(doc_source, passed_vals=None, allow_undefined=True):
     # TODO - actually implement support for allow_undefined
     template = Template(doc_source)
     values = key_values(passed_vals)
-    return template.render(**values)
+    return template.render(**values).encode('utf-8')
