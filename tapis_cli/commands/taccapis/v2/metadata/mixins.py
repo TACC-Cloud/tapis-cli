@@ -18,16 +18,6 @@ class MetadataExistsError(ValueError):
 class UploadMetadataFile(UploadJSONTemplate):
     optional = True
 
-    def extend_parser(self, parser):
-        parser.add_argument('-F',
-                            '--file',
-                            dest='json_file_name',
-                            metavar='<json_file>',
-                            type=str,
-                            help='JSON file containing document contents')
-        return parser
-
-
 class MetadataUUID(TapisEntityUUID):
     """Configures a command to require a mandatory Tapis metadata UUID
     """
