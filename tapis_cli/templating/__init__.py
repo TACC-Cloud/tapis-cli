@@ -60,7 +60,7 @@ def render_template(doc_source, passed_vals=None, allow_undefined=True):
 
 
 def dot_notation(sourcedict, replacelevel=None):
-    """Transform a 2-level dict into level.key form
+    """Transform a nested configparser option into section.option form
     """
     flat_dict = {}
     for l in list(sourcedict.keys()):
