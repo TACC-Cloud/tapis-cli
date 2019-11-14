@@ -6,7 +6,7 @@ from tapis_cli.utils import dynamic_import
 from . import settings
 from . import variables
 
-__all__ = ['key_values', 'render_template']
+__all__ = ['key_values', 'render_template', 'dot_notation']
 
 # Each imported module *must* have a key_values method that returns a dict
 IMPORTS = ['settings', 'variables']
@@ -57,3 +57,16 @@ def render_template(doc_source, passed_vals=None, allow_undefined=True):
     template = Template(doc_source)
     values = key_values(passed_vals)
     return template.render(**values).encode('utf-8')
+
+
+def dot_notation(sourcedict, replacelevel=None):
+    """Transform a 2-level dict into level.key form
+    """
+    flat_dict = {}
+    for l in list(sourcedict.keys()):
+        level = l
+        if replacelevel is not None:
+            level = replacelevel
+        for k in list(sourcedict[l].keys()):
+            flat_dict['.'.join([level, k])] = sourcedict[l][k]
+    return flat_dict

@@ -31,18 +31,18 @@ def update_config(config, values_dict, add_keys=False):
             for k1, v1 in v.items():
                 if not isinstance(v1, dict):
                     if add_keys:
-                        config[k][k1] = str(v1)
+                        config[k][k1] = v1
                     elif k in config and k1 in config[k]:
-                        config[k][k1] = str(v1)
+                        config[k][k1] = v1
                     else:
                         raise KeyError(
                             'Unknown config section or option: {0}/{1}'.format(
                                 k, k1))
         else:
             if add_keys:
-                config[k] = str(v)
+                config[k] = v
             elif k in config:
-                config[k] = str(v)
+                config[k] = v
             else:
                 raise KeyError('Unknown config section: {0}'.format(k))
 
