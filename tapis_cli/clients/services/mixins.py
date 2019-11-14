@@ -1,6 +1,7 @@
 """Mix-ins used to add defined behaviors to Tapis CLI commands
 """
 import argparse
+import copy
 import json
 import os
 import sys
@@ -331,6 +332,18 @@ class UploadJSONTemplate(UploadJsonFile):
                             type=str,
                             help='Optional project.ini file')
         return parser
+
+    def all_key_values(self, parsed_args, passed_vals):
+        t = templating.key_values(passed_vals)
+        p = project_ini.key_values(parsed_args.ini_file_name)
+        project_ini.update_config(t, p, add_keys=True)
+        # tapis dynamic variables
+        tapis_variables = self.key_values()
+        # right-merged dictionary
+        # dynamic values always overide ini-loaded defaults
+        project_ini.update_config(t, tapis_variables, add_keys=True)
+        project_ini.update_config(t, {}, add_keys=True)
+        return t
 
     def _render_json_file_contents(self, passed_vals):
         """Transform the JSON file contents by rendering it as a Jinja template

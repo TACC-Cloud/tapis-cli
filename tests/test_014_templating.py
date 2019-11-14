@@ -42,7 +42,7 @@ def test_render_template_passed_vals_supercede_builtin():
     rendered = render_template(source, passed_vals=env)
     assert '9000' in rendered
 
-def test_taccapis_direct_client_init(tapis_active_client):
+def test_taccapis_api_client_init(tapis_active_client):
     """Test dynamic generation of Tapis-relevant templating data
     """
     from tapis_cli.clients.services.taccapis.v2 import TaccApiClient
@@ -54,3 +54,12 @@ def test_taccapis_direct_client_init(tapis_active_client):
     assert tackv['email'] is not None, 'No email'
     assert tackv['first_name'] is not None, 'No first name'
     assert tackv['default_public_storage'] is not None, 'No default public storage system'
+
+def test_command_key_values(tapis_active_client):
+    from tapis_cli.clients.services.taccapis.v2 import TaccApiClient
+    tac = TaccApiClient()
+    tac.init_clients()
+    tackv = tac.key_values()
+    variables = list(tackv.keys())
+    variables.sort()
+    assert len(variables) > 0
