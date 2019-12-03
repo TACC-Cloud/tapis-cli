@@ -287,6 +287,7 @@ class WorkingDirectory(ParserExtender):
     """
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
+                            metavar='<directory>',
                             default='.',
                             type=str,
                             help='Working directory')
@@ -303,6 +304,7 @@ class WorkingDirectoryOpt(WorkingDirectory):
     """
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
+                            metavar='<directory>',
                             default='.',
                             nargs='?',
                             type=str,
@@ -316,6 +318,7 @@ class WorkingDirectoryArg(WorkingDirectory):
     def extend_parser(self, parser):
         parser.add_argument('--work_dir',
                             dest='working_directory',
+                            metavar='<directory>',
                             default='.',
                             type=str,
                             help='Optional working directory')
@@ -337,6 +340,7 @@ class UploadJsonFile(ParserExtender):
         parser.add_argument('-F',
                             '--file',
                             dest='json_file_name',
+                            metavar='<file>',
                             type=str,
                             help='JSON payload file')
         return parser
@@ -377,6 +381,7 @@ class UploadJSONTemplate(UploadJsonFile):
         parser.add_argument('--ini',
                             dest='ini_file_name',
                             default='project.ini',
+                            metavar='<file>',
                             type=str,
                             help='Optional project.ini file')
         return parser
