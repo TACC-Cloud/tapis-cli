@@ -24,6 +24,8 @@ class AppsUpdate(AppsCreate, AppIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         app_id = AppIdentifier.get_identifier(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        # Activates usage of argument from WorkingDirectoryArg
+        self.set_working_directory(parsed_args)
         self.handle_file_upload(parsed_args)
 
         headers = self.render_headers(App, parsed_args)

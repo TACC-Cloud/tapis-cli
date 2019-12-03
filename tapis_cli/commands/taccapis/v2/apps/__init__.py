@@ -21,3 +21,6 @@ from .pems_revoke import AppsPemsRevoke
 from .clone import AppsClone
 from .publish import AppsPublish
 from .unpublish import AppsUnpublish
+
+# Workflows
+from .deploy import AppsDeploy

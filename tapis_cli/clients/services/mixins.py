@@ -23,7 +23,8 @@ __all__ = [
     'ServiceIdentifier', 'UploadJsonFile', 'AgaveURI', 'RemoteFilePath',
     'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
-    'UploadJSONTemplate'
+    'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
+    'WorkingDirectoryArg'
 ]
 
 
@@ -44,6 +45,12 @@ class OptionNotImplemented(ValueError):
 
 
 class ParserExtender(object):
+
+    working_dir = '.'
+
+    def getwd(self):
+        return getattr(self, 'working_dir')
+
     def extend_parser(self, parser):
         # When sublcassing: DO NOT FORGET TO RETURN PARSER
         return parser
@@ -257,10 +264,9 @@ class LocalFilePath(ParserExtender):
     """Configures a Command to accept a local file path
     """
     def extend_parser(self, parser):
-        parser.add_argument(
-            'local_file_path',
-            metavar='<file_path>',
-            help='Path (relative to current working directory)')
+        parser.add_argument('local_file_path',
+                            metavar='<file_path>',
+                            help='Path (relative to working directory)')
         return parser
 
 
@@ -272,7 +278,47 @@ class OptionalLocalFilePath(ParserExtender):
             'local_file_path',
             nargs='?',
             metavar='<file_path>',
-            help='Optional path (relative to current working directory)')
+            help='Optional path (relative to working directory)')
+        return parser
+
+
+class WorkingDirectory(ParserExtender):
+    """Allows the working directory to be set via positional argument.
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('working_directory',
+                            default='.',
+                            type=str,
+                            help='Working directory')
+        return parser
+
+    def set_working_directory(self, parsed_args, working_dir='.'):
+        wd_value = getattr(parsed_args, 'working_directory', working_dir)
+        setattr(self, 'working_dir', wd_value)
+        return self
+
+
+class WorkingDirectoryOpt(WorkingDirectory):
+    """Allows the working directory to be set via optional, terminal argument.
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('working_directory',
+                            default='.',
+                            nargs='?',
+                            type=str,
+                            help='Optional working directory')
+        return parser
+
+
+class WorkingDirectoryArg(WorkingDirectory):
+    """Allows the working directory to be set via optional argument.
+    """
+    def extend_parser(self, parser):
+        parser.add_argument('--work_dir',
+                            dest='working_directory',
+                            default='.',
+                            type=str,
+                            help='Optional working directory')
         return parser
 
 
@@ -296,21 +342,22 @@ class UploadJsonFile(ParserExtender):
         return parser
 
     def handle_file_upload(self, parsed_args):
+        document_path, document_source = None, None
         if parsed_args.json_file_name == '-':
             document_source = sys.stdin
-        elif parsed_args.json_file_name is not None and os.path.exists(
-                parsed_args.json_file_name):
-            document_source = open(parsed_args.json_file_name, 'rb')
-        else:
-            if self.optional is False:
-                raise IOError(
-                    'Unknown or inaccessible data source: {0}'.format(
-                        parsed_args.json_file_name))
-            else:
+        elif parsed_args.json_file_name is None:
+            if self.optional:
                 setattr(self, 'json_file_contents', {})
                 return self.json_file_contents
+            else:
+                raise ValueError('JSON file path must be specified')
+        else:
+            document_path = os.path.join(self.getwd(),
+                                         parsed_args.json_file_name)
 
-        # Check JSON validity by loading and dumping it
+        document_source = open(document_path, 'rb')
+
+        # Load up the data source, validating that it's minimally serializable
         # TODO - factor validation into its own method so it can be overridden
         try:
             payload = json.load(document_source)
@@ -329,13 +376,15 @@ class UploadJSONTemplate(UploadJsonFile):
         parser = super(UploadJSONTemplate, self).extend_parser(parser)
         parser.add_argument('--ini',
                             dest='ini_file_name',
+                            default='project.ini',
                             type=str,
                             help='Optional project.ini file')
         return parser
 
     def all_key_values(self, parsed_args, passed_vals):
         t = templating.key_values(passed_vals)
-        p = project_ini.key_values(parsed_args.ini_file_name)
+        ini_path = os.path.join(self.getwd(), parsed_args.ini_file_name)
+        p = project_ini.key_values(ini_path)
         project_ini.update_config(t, p, add_keys=True)
         # tapis dynamic variables
         tapis_variables = self.key_values()
@@ -358,10 +407,11 @@ class UploadJSONTemplate(UploadJsonFile):
 
     def handle_file_upload(self, parsed_args):
         super(UploadJSONTemplate, self).handle_file_upload(parsed_args)
-        payload = getattr(self, 'json_file_contents')
+        # payload = getattr(self, 'json_file_contents')
         # load variable sets
         # ini-based configuration
-        config = project_ini.key_values(parsed_args.ini_file_name)
+        ini_path = os.path.join(self.getwd(), parsed_args.ini_file_name)
+        config = project_ini.key_values(ini_path)
         # tapis dynamic variables
         tapis_variables = self.key_values()
         # right-merged dictionary
