@@ -7,7 +7,7 @@ __all__ = [
 ]
 
 # Other inis might exist but we will only actively try loading from these
-FILENAMES = ['app.ini', 'reactor.ini', 'project.ini']
+FILENAMES = ['app.ini', 'actor.ini', 'project.ini', 'reactor.ini']
 DEFAULT_FILENAME = 'project.ini'
 
 

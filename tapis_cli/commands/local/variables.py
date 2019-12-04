@@ -1,9 +1,11 @@
 from configparser import SectionProxy
-from tapis_cli.commands.taccapis.formatters import TaccApisFormatManyUnlimited
+from tapis_cli.commands.taccapis.formatters import (
+    TaccApisFormatManyUnlimited, TaccApisFormatOne)
 from tapis_cli.clients.services.mixins import UploadJSONTemplate
 from tapis_cli.templating import dot_notation
+from tapis_cli.project_ini import generate_template_ini, save_config
 
-__all__ = ['VariablesList']
+__all__ = ['VariablesList', 'VariablesInit']
 
 
 class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
@@ -33,3 +35,37 @@ class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
         #     records.append([k, v])
         headers = ['variable', 'current_value']
         return (tuple(headers), tuple(flat_vars))
+
+
+class VariablesInit(TaccApisFormatOne):
+    """Create an .ini file to support templating
+    """
+
+    # tapis info vars init <filename>
+    def get_parser(self, prog_name):
+        parser = super(TaccApisFormatOne, self).get_parser(prog_name)
+        parser.add_argument(
+            'ini_file_name',
+            metavar='<filename>',
+            nargs='?',
+            default='project.ini',
+            help=
+            'Optional ini filename (must be one of: project.ini, app.ini. actor.ini)'
+        )
+        return parser
+
+    def take_action(self, parsed_args):
+        ini_doc = generate_template_ini()
+        created = []
+        exceptions = []
+
+        try:
+            save_config(ini_doc, parsed_args.ini_file_name)
+            created.append(parsed_args.ini_file_name)
+        except Exception as e:
+            exceptions.append(e)
+
+        headers = ['created', 'messages']
+        data = [created, [str(e) for e in exceptions]]
+
+        return (tuple(headers), tuple(data))
