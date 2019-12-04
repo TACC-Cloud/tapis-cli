@@ -6,7 +6,7 @@ from .helpers import (parse_boolean, int_or_none)
 __all__ = [
     'TAPIS_CLI_DATE_FORMAT', 'TAPIS_CLI_LOG_LEVEL', 'TAPIS_CLI_PAGE_SIZE',
     'TAPIS_CLI_RESPONSE_FORMAT', 'TAPIS_CLI_FIT_WIDTH', 'TAPIS_CLI_SHOW_CURL',
-    'TAPIS_PY_SHOW_CURL', 'TAPIS_CLI_VERBOSE_ERRORS'
+    'TAPIS_PY_SHOW_CURL', 'TAPIS_CLI_VERBOSE_ERRORS', 'TAPIS_CLI_DISPLAY_AUP'
 ]
 
 TAPIS_CLI_DATE_FORMAT = os.environ.get('TAPIS_CLI_DATE_FORMAT',
@@ -20,3 +20,5 @@ TAPIS_CLI_SHOW_CURL = parse_boolean(
     os.environ.get('TAPIS_CLI_SHOW_CURL', str(TAPIS_PY_SHOW_CURL)))
 TAPIS_CLI_VERBOSE_ERRORS = parse_boolean(
     os.environ.get('TAPIS_CLI_VERBOSE_ERRORS', str(TAPIS_PY_VERBOSE_ERRORS)))
+TAPIS_CLI_DISPLAY_AUP = parse_boolean(
+    os.environ.get('TAPIS_CLI_DISPLAY_AUP', '1'))

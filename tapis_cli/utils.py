@@ -158,6 +158,24 @@ def prompt(body, default=None, secret=False):
     return response
 
 
+def prompt_accept(body, default='y', exit_reject=True):
+    if default is None:
+        qtext = "{0} (type 'y' or 'n' then Return) ".format(body)
+    elif default == 'y':
+        qtext = '{0} [Y/n]: '.format(body)
+    else:
+        qtext = '{0} [y/N]: '.format(body)
+
+    response = input(qtext).lower()
+    if response.startswith('y'):
+        return True
+    else:
+        if exit_reject:
+            exit(1)
+        else:
+            return False
+
+
 def get_hostname():
     """Returns the fully-qualified domain name for current localhost
     """

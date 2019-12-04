@@ -3,7 +3,13 @@ from tapis_cli.mocks import FormatOne
 from tapis_cli import settings
 from .mixins import SettingName
 
-__all__ = ['SettingsSet']
+__all__ = ['SettingsSet', 'settings_set']
+
+
+def settings_set(setting_name, setting_value):
+    env_file = settings.config.find_config()
+    set_key(env_file, setting_name, setting_value)
+    return True
 
 
 class SettingsSet(FormatOne, SettingName):
@@ -20,11 +26,9 @@ class SettingsSet(FormatOne, SettingName):
     def take_action(self, parsed_args):
         super(SettingsSet, self).take_action(parsed_args)
         self.validate_identifier(parsed_args.identifier, allow_private=False)
-        env_file = settings.config.find_config()
         setting_name = parsed_args.identifier
-        # TODO - Add some degree of validation, perhaps comparing inferred types for old and new value
         setting_value = parsed_args.settings_value
-        set_key(env_file, setting_name, setting_value)
+        settings_set(setting_name, setting_value)
         headers = [setting_name]
         records = [setting_value]
         return (tuple(headers), tuple(records))

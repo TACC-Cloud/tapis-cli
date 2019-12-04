@@ -13,6 +13,7 @@ from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
                              get_local_username)
 from tapis_cli.settings import TAPIS_DEFAULT_TENANT_ID
 from tapis_cli import et
+from tapis_cli.firstrun import firstrun
 
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
@@ -59,6 +60,8 @@ class AuthInit(CreateTokenFormatOne):
         # Load what we can from credentials cache. Ultimately, if no
         # overrides are specified, the cached contents will be used to
         # populate the Tapis client.
+
+        firstrun()
 
         try:
             logger.debug('Read from local Tapis cache...')
