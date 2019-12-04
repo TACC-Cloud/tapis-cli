@@ -121,14 +121,13 @@ def _download(src,
         src, dest, atomic)
 
     # If includes is specified, check filename against it
-    if not fnmatches(local_filename, includes):
+    if not fnmatches(src, includes):
         raise FileExcludedError(
-            '{0} did not match --include filter'.format(local_filename))
+            '{0} did not match --include filter'.format(src))
 
     # Check filename is in the excludes list
-    if fnmatches(local_filename, excludes):
-        raise FileExcludedError(
-            '{0} matched --exclude filter'.format(local_filename))
+    if fnmatches(src, excludes):
+        raise FileExcludedError('{0} matched --exclude filter'.format(src))
 
     if not _check_write(
             local_filename, size, timestamp, force=force, sync=sync):
