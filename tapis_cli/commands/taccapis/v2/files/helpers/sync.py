@@ -13,10 +13,10 @@ from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
                              makedirs, splitall)
 
 from .error import (read_tapis_http_error, handle_http_error,
-                    TapisOperationFailed, AgaveError, HTTPError)
+                    TapisOperationFailed, FileExcludedError, AgaveError,
+                    HTTPError)
 from .stat import isdir, isfile
 from .walk import walk
-from ..mixins import FileExcludedError, FileExistsError
 
 from queue import Queue
 import threading
@@ -25,7 +25,7 @@ from threading import Thread
 logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
-__all__ = ['download', 'FileExistsError']
+__all__ = ['download']
 
 DEFAULT_SYSTEM_ID = 'data-tacc-sandbox'
 DEFAULT_PAGE_SIZE = 100
@@ -84,18 +84,9 @@ def _local_temp_filename(src_filename, dest_filename=None, atomic=False):
     return file_name, temp_file_name
 
 
-def _check_write(filename, size, timestamp, excludes, sync=True, force=False):
+def _check_write(filename, size, timestamp, sync=True, force=False):
     """Determine whether to write (or overwrite) a local file
     """
-    relative_excludes = []
-    for e in excludes:
-        if not e.startswith('./'):
-            relative_excludes.append('./' + e)
-        else:
-            relative_excludes.append(e)
-
-    if filename in relative_excludes:
-        return False
     if not os.path.exists(filename) or force is True:
         return True
     else:
@@ -117,6 +108,7 @@ def _download(src,
               system_id,
               size=None,
               timestamp=None,
+              includes=None,
               excludes=None,
               dest=None,
               block_size=4096,
@@ -127,10 +119,19 @@ def _download(src,
 
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
-    print('_download: {}, {}'.format(local_filename, tmp_local_filename))
+
+    # If includes is specified, check filename against it
+    if not fnmatches(local_filename, includes):
+        raise FileExcludedError(
+            '{0} did not match --include filter'.format(local_filename))
+
+    # Check filename is in the excludes list
+    if fnmatches(local_filename, excludes):
+        raise FileExcludedError(
+            '{0} matched --exclude filter'.format(local_filename))
 
     if not _check_write(
-            local_filename, size, timestamp, excludes, force=force, sync=sync):
+            local_filename, size, timestamp, force=force, sync=sync):
         raise FileExistsError(
             'Local {0} exists and was not different from remote.'.format(
                 local_filename))
@@ -161,6 +162,7 @@ def _download(src,
 def download(source,
              system_id,
              destination='.',
+             includes=None,
              excludes=None,
              force=False,
              sync=False,
@@ -172,6 +174,8 @@ def download(source,
 
     if excludes is None:
         excludes = []
+    if includes is None:
+        includes = []
 
     if progress:
         print_stderr('Walking remote resource...')
@@ -210,12 +214,10 @@ def download(source,
             makedirs(dir, exist_ok=True)
     else:
         sub_root = os.path.dirname(source)
-        dest_names = [destination]
+        dest_names = [os.path.join(destination, os.path.basename(source))]
 
     # Do the downloads
     downloads = [list(a) for a in zip(abs_names, sizes, mods, dest_names)]
-    # raise SystemError()
-
     start_time_all = seconds()
     for src, size, mod, dest in downloads:
         if progress:
@@ -226,6 +228,7 @@ def download(source,
                       size=size,
                       timestamp=mod,
                       dest=dest,
+                      includes=includes,
                       excludes=excludes,
                       force=force,
                       sync=sync,
@@ -234,7 +237,7 @@ def download(source,
             downloaded.append(src)
             # Track cumulative data size
             dl_bytes = dl_bytes + size
-        except FileExistsError as fxerr:
+        except (FileExistsError, FileExcludedError) as fxerr:
             if sync or force:
                 skipped.append(src)
                 errors.append(fxerr)

@@ -5,17 +5,8 @@ from tapis_cli.clients.services.mixins import ParserExtender
 
 __all__ = [
     'ExcludeFiles', 'FileOptions', 'FilesOptions', 'FilesCallbackURI',
-    'IncludeFiles', 'OverwritePolicy', 'ReportProgress', 'FileExistsError',
-    'FileExcludedError'
+    'IncludeFiles', 'OverwritePolicy', 'ReportProgress'
 ]
-
-
-class FileExistsError(IOError):
-    pass
-
-
-class FileExcludedError(IOError):
-    pass
 
 
 class ExcludeFiles(ParserExtender):
@@ -28,10 +19,8 @@ class ExcludeFiles(ParserExtender):
             '--exclude',
             dest='exclude_files',
             action='append',
-            # nargs='+',
-            metavar='<file_path>',
-            help=
-            'Unix-style filename/wildcard (can be specified multiple times)')
+            metavar='<fileglob>',
+            help='Unix-style fileglob (specify multiple times)')
         return parser
 
 
@@ -45,10 +34,8 @@ class IncludeFiles(ParserExtender):
             '--include',
             dest='include_files',
             action='append',
-            # nargs='+',
-            metavar='<file_path>',
-            help=
-            'Unix-style filename/wildcard (can be specified multiple times)')
+            metavar='<fileglob>',
+            help='Unix-style fileglob (specify multiple times)')
         return parser
 
 

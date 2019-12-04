@@ -4,24 +4,18 @@ import os
 import sys
 import traceback
 
-from tapis_cli.utils import datestring_to_epoch, humanize_bytes, relpath, abspath, print_stderr, seconds, fnmatches
+from tapis_cli.utils import (datestring_to_epoch, humanize_bytes, relpath,
+                             abspath, print_stderr, seconds, fnmatches)
 
 from .error import (read_tapis_http_error, handle_http_error,
-                    TapisOperationFailed, AgaveError, HTTPError)
+                    TapisOperationFailed, AgaveError, HTTPError,
+                    FileExcludedError)
 from .manage import makedirs
 
 logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 __all__ = ['upload']
-
-
-class FileExistsError(IOError):
-    pass
-
-
-class FileExcludedError(IOError):
-    pass
 
 
 def _check_write(file_name,
@@ -53,12 +47,12 @@ def _upload(local_file_path,
     # If includes is specified, check filename against it
     if not fnmatches(local_file_path, includes):
         raise FileExcludedError(
-            '{0} did not match include filter'.format(local_file_path))
+            '{0} did not match --include filter'.format(local_file_path))
 
     # Check filename is in the excludes list
     if fnmatches(local_file_path, excludes):
         raise FileExcludedError(
-            '{0} matched exclude filter'.format(local_file_path))
+            '{0} matched --exclude filter'.format(local_file_path))
 
     # Check size and modtime of remote vs overwrite policy
     # For eventual implementation of --sync and --force
