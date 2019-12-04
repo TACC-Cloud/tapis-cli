@@ -24,7 +24,7 @@ __all__ = [
     'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
     'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
-    'WorkingDirectoryArg'
+    'WorkingDirectoryArg', 'DownloadDirectoryArg'
 ]
 
 
@@ -285,12 +285,14 @@ class OptionalLocalFilePath(ParserExtender):
 class WorkingDirectory(ParserExtender):
     """Allows the working directory to be set via positional argument.
     """
+    help_string = 'Working directory'
+
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
-                            metavar='<directory>',
+                            metavar='<dir>',
                             default='.',
                             type=str,
-                            help='Working directory')
+                            help=self.help_string)
         return parser
 
     def set_working_directory(self, parsed_args, working_dir='.'):
@@ -304,11 +306,11 @@ class WorkingDirectoryOpt(WorkingDirectory):
     """
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
-                            metavar='<directory>',
+                            metavar='<dir>',
                             default='.',
                             nargs='?',
                             type=str,
-                            help='Optional working directory')
+                            help=self.help_string)
         return parser
 
 
@@ -316,12 +318,27 @@ class WorkingDirectoryArg(WorkingDirectory):
     """Allows the working directory to be set via optional argument.
     """
     def extend_parser(self, parser):
-        parser.add_argument('--work_dir',
+        parser.add_argument('-W',
                             dest='working_directory',
-                            metavar='<directory>',
+                            metavar='<dir>',
                             default='.',
                             type=str,
-                            help='Optional working directory')
+                            help=self.help_string)
+        return parser
+
+
+class DownloadDirectoryArg(WorkingDirectoryArg):
+    """Allows the working directory to be set via optional argument.
+    """
+    help_string = 'Download directory'
+
+    def extend_parser(self, parser):
+        parser.add_argument('-W',
+                            dest='working_directory',
+                            metavar='<dir>',
+                            default='.',
+                            type=str,
+                            help=self.help_string)
         return parser
 
 
