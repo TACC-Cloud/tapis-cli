@@ -400,7 +400,7 @@ class UploadJSONTemplate(UploadJsonFile):
                             default='project.ini',
                             metavar='<file>',
                             type=str,
-                            help='Optional project.ini file')
+                            help='Optional .ini filename')
         return parser
 
     def all_key_values(self, parsed_args, passed_vals):
