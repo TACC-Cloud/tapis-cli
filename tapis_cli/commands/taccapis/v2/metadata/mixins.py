@@ -18,6 +18,7 @@ class MetadataExistsError(ValueError):
 class UploadMetadataFile(UploadJSONTemplate):
     optional = True
 
+
 class MetadataUUID(TapisEntityUUID):
     """Configures a command to require a mandatory Tapis metadata UUID
     """
