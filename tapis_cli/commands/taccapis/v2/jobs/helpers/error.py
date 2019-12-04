@@ -10,8 +10,13 @@ from requests.exceptions import HTTPError
 
 __all__ = [
     'AgaveError', 'HTTPError', 'HTTPNotFoundError', 'TapisOperationFailed',
-    'ImportNotCompleteError', 'read_tapis_http_error', 'handle_http_error'
+    'ImportNotCompleteError', 'OutputFileExistsError', 'read_tapis_http_error',
+    'handle_http_error'
 ]
+
+
+class OutputFileExistsError(IOError):
+    pass
 
 
 class TapisOperationFailed(AgaveError):

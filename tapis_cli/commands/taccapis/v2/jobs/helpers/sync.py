@@ -11,14 +11,15 @@ import datetime
 from dateutil.tz import tzoffset
 
 from tapis_cli import settings
-from tapis_cli.commands.taccapis.v2.files.mixins import FileExcludedError, FileExistsError
+from tapis_cli.commands.taccapis.v2.files.helpers.error import FileExcludedError
 from tapis_cli.utils import (nanoseconds, seconds, abspath, normpath, relpath,
                              print_stderr, datestring_to_epoch, fnmatches,
                              makedirs)
 from tapis_cli.clients.services.taccapis.v2 import TaccApiDirectClient
 
 from .error import (read_tapis_http_error, handle_http_error,
-                    TapisOperationFailed, AgaveError, HTTPError)
+                    TapisOperationFailed, AgaveError, HTTPError,
+                    OutputFileExistsError)
 from .stat import isdir, isfile
 from .walk import walk
 
@@ -29,14 +30,10 @@ from threading import Thread
 logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
-__all__ = ['download', 'FileExistsError']
+__all__ = ['download']
 
 DEFAULT_SYSTEM_ID = 'data-tacc-sandbox'
 DEFAULT_PAGE_SIZE = 100
-
-
-class OutputFileExistsError(IOError):
-    pass
 
 
 def __download(src,
@@ -133,12 +130,12 @@ def _download(src,
     if isinstance(includes, list) and len(includes) > 0:
         if not fnmatches(src, includes):
             raise FileExcludedError(
-                '{0} did not match include filter'.format(src))
+                '{0} did not match --include filter'.format(src))
 
     # Check filename is in the excludes list
     if isinstance(excludes, list) and len(excludes) > 0:
         if fnmatches(src, excludes):
-            raise FileExcludedError('{0} matched exclude filter'.format(src))
+            raise FileExcludedError('{0} matched --exclude filter'.format(src))
 
     if not _check_write(
             local_filename, size, timestamp, sync=sync, force=force):
