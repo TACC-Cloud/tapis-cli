@@ -16,8 +16,10 @@ Subpackages
    tapis_cli.et
    tapis_cli.hashcache
    tapis_cli.mocks
+   tapis_cli.project_ini
    tapis_cli.search
    tapis_cli.settings
+   tapis_cli.templating
 
 Submodules
 ----------
@@ -34,6 +36,14 @@ tapis\_cli.display module
 -------------------------
 
 .. automodule:: tapis_cli.display
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.firstrun module
+--------------------------
+
+.. automodule:: tapis_cli.firstrun
    :members:
    :undoc-members:
    :show-inheritance:

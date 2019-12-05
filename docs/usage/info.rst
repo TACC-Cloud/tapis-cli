@@ -1,8 +1,8 @@
-Settings
-========
+Info
+====
 
 .. autoprogram-cliff:: tapis.cli
-   :command: settings *
+   :command: info *
 
 Usage Examples
 --------------

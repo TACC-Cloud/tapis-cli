@@ -24,6 +24,14 @@ tapis\_cli.commands.local.statuses module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.local.variables module
+------------------------------------------
+
+.. automodule:: tapis_cli.commands.local.variables
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.local.versions module
 -----------------------------------------
 

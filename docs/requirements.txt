@@ -1,6 +1,7 @@
 arrow
 cliff
 colorama
+configparser
 curlify
 curlify
 dateparser
@@ -14,6 +15,7 @@ stevedore
 stringcase
 tenacity
 validators
+Jinja2
 PyGithub
 PyMongo
 agavepy@git+https://github.com/TACC/agavepy.git@cli
