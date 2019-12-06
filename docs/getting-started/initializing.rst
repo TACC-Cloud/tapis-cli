@@ -47,14 +47,14 @@ be prompted for tenant, username, and password required to set up a session.
 Getting Help
 ------------
 
-The CLI features extensive contextual help. To start, one may get a listing of
+The CLI features extensive contextual help. Get a listing of
 supported commands and global options via  ``--help``.
 
 .. code-block:: shell
 
     $ tapis --help
 
-Find available subcommands:
+Find available commands:
 
 .. code-block:: shell
 
@@ -68,7 +68,7 @@ Find available subcommands:
     apps pems grant
     ...
 
-Get Help:
+Get help for a specific command:
 
 There is a ``--help`` flag for each command.
 

@@ -5,14 +5,16 @@ Tapis CLI
 
 Tapis CLI is a human-friendly, scriptable command line interface, implemented in
 Python, that helps scientists and engineers build and manage scalable computational
-and data science workflow projects using TACC's Tapis platform. It is a
+and data science workflow projects using the _Tapis platform. It is a
 replacement for a pure-Bash CLI environment known as agave-cli that we hope
 brings you new features, better reliability, and dramatically enhanced
 productivity.
 
-Tapis CLI provides a unified interface to multiple platform APIs, allowing them
+Tapis CLI provides a unified interface to multiple web service APIs, allowing them
 to be easily orchestrated and composed into higher-order constructs combining
 HPC, data management, cloud computing, and other aspects of computing.
+
+Comprehensive documentation is on _ReadTheDocs.
 
 Installation
 ------------
@@ -27,7 +29,7 @@ Docker Container Image
 ^^^^^^^^^^^^^^^^^^^^^^
 
 As an alternative to local installation, the CLI is available as a public
-Docker image ``tacc/tapis-cli-ng:latest``. Run it like so:
+Docker image ``tacc/tapis-cli-ng:latest`` on _DockerHub:
 
 .. code-block:: shell
 
@@ -79,14 +81,14 @@ is a scripted process implemented by ``tapis auth init``. Here's an example:
 Getting Started
 ---------------
 
-The CLI features extensive contextual help. To start, one may get a listing of
+The CLI features extensive contextual help. Get a listing of
 supported commands and global options via  ``--help``.
 
 .. code-block:: shell
 
     $ tapis --help
 
-Find available subcommands:
+Find available commands:
 
 .. code-block:: shell
 
@@ -98,20 +100,9 @@ Find available subcommands:
     apps history
     apps list
     apps pems grant
-    apps pems list
-    apps pems revoke
-    apps pems show
-    apps publish
-    apps search
-    apps show
-    apps unpublish
-    apps update
+    ...
 
-Get Help:
-
-.. code-block:: shell
-
-    $ tapis --help
+Get help for a specific command:
 
 There is a ``--help`` flag for each command.
 
@@ -223,3 +214,9 @@ All work should proceed through at least one or more reported Issues_.
     :alt: Publication
     :scale: 100%
     :target: https://zenodo.org/badge/latestdoi/203083094
+
+.. _ReadTheDocs: https://tapis-cli.readthedocs.io/en/latest/
+
+.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli-ng/
+
+.. _Tapis: https://agave.readthedocs.io/en/latest/
