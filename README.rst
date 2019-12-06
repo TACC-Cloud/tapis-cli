@@ -3,6 +3,17 @@ Tapis CLI
 
 |build-status| |docs| |doi|
 
+Tapis CLI is a human-friendly, scriptable command line interface, implemented in
+Python, that helps scientists and engineers build and manage scalable computational
+and data science workflow projects using TACC's Tapis platform. It is a
+replacement for a pure-Bash CLI environment known as agave-cli that we hope
+brings you new features, better reliability, and dramatically enhanced
+productivity.
+
+Tapis CLI provides a unified interface to multiple platform APIs, allowing them
+to be easily orchestrated and composed into higher-order constructs combining
+HPC, data management, cloud computing, and other aspects of computing.
+
 Installation
 ------------
 
@@ -23,9 +34,47 @@ Docker image ``tacc/tapis-cli-ng:latest``. Run it like so:
     docker run --rm -it -v ${PWD}:/work -v ${HOME}/.agave:/root/.agave \
         tacc/tapis-cli-ng:latest bash
 
-A local build of the image can be created and launched using ``make image``
-followed by ``make interactive``. Previous builds are available on
-[Docker Hub](https://hub.docker.com/r/tacc/tapis-cli-ng).
+Initialize a Session
+--------------------
+
+You must set up a Tapis session on each host where you will use Tapis CLI. This
+is a scripted process implemented by ``tapis auth init``. Here's an example:
+
+.. code-block:: shell
+
+    $ tapis auth init
+
+    Use of Tapis requires acceptance of the TACC Acceptable Use Policy,
+    which can be found at https://portal.tacc.utexas.edu/tacc-usage-policy
+
+    Do you agree to abide by the AUP? (type 'y' or 'n' then Return) y
+
+    To improve our ability to support Tapis and the Tapis CLI, we would like to
+    collect your IP addrress, operating system and Python version. No personally-
+    identifiable information will be collected. This data will only be shared in
+    aggregate form with funders and Tapis platform stakeholders.
+
+    Do you consent to this reporting? [Y/n]: y
+
+    Available Tenants
+    =================
+    3dem	agave.prod	araport.org	bridge	designsafe
+    iplantc.org	irec	portals	sd2e	sgci
+    tacc.prod	vdjserver.org
+
+    Enter a tenant name: tacc.prod
+    Username: tacotron
+    Password for tacotron:
+    +--------------+---------------------------------+
+    | Field        | Value                           |
+    +--------------+---------------------------------+
+    | tenant_id    | tacc.prod                       |
+    | username     | tacotron                        |
+    | client_name  | _cli-tacc.prod-tacotron-macbook |
+    | api_key      | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
+    | access_token | a31c66cfaa45451c95df6fd473ffd4b |
+    | expires_at   | Thu Sep 19 14:08:37 2019        |
+    +--------------+---------------------------------+
 
 Getting Started
 ---------------
@@ -71,34 +120,6 @@ There is a ``--help`` flag for each command.
     $ tapis help apps list
     $ # or
     $ tapis apps list --help
-
-Initializing a Tapis Client
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-To initialize a host to use Tapis, simply run ``tapis auth init`` command.
-
-.. code-block:: shell
-
-    $ tapis auth init
-    Available Tenants
-    =================
-    3dem	agave.prod	araport.org	bridge	designsafe
-    iplantc.org	irec	portals	sd2e	sgci
-    tacc.prod	vdjserver.org
-    Enter a tenant name: tacc.prod
-    Username: tacotron
-    Password for tacotron:
-    +--------------+---------------------------------+
-    | Field        | Value                           |
-    +--------------+---------------------------------+
-    | tenant_id    | tacc.prod                       |
-    | username     | tacotron                        |
-    | client_name  | _cli-tacc.prod-tacotron-macbook |
-    | api_key      | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
-    | access_token | a31c66cfaa45451c95df6fd473ffd4b |
-    | expires_at   | Thu Sep 19 14:08:37 2019        |
-    +--------------+---------------------------------+
-
 
 Hacking
 -------
@@ -193,8 +214,8 @@ All work should proceed through at least one or more reported Issues_.
     :scale: 100%
     :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
 
-.. |docs| image:: https://readthedocs.org/projects/tapis-cli-ng/badge/?version=latest&style=flat
-    :alt: Documentation Status
+.. |docs| image:: https://readthedocs.org/projects/tapis-cli/badge/?version=latest
+    :alt: Documentation
     :scale: 100%
     :target: https://tapis-cli.readthedocs.io/
 

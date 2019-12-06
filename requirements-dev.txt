@@ -12,3 +12,4 @@ stevedore
 yapf
 Pygments
 Sphinx
+twine
