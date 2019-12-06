@@ -1,6 +1,258 @@
 CHANGES
 =======
 
+* Rebuilt docs with better organization and detail
+* Added first-run screen. Closes #242
+* Implemenetd support for writing out a template .ini file; Closes #245
+* Moved informative commands under 'info'; Closes #240
+* Renamed settings command to config. Closes #241
+* Tweak to imports and module structure for jobs
+* Renamed metadata top-level command to meta. Closes #244
+* Tweak formatting
+* Change help text for ini file option
+* Use remote filename for includes and excludes
+* Added support for --include and --exclude; Fixed issue with single-file downloads; Added support for destination directory via -W
+* Cleaned up file and folder metavars
+* Fixed metavar for ini, json, and directory options
+* WIP: apps-deploy
+* Tweak to sample ini file and the help for dot\_notation
+* Update project.ini demo file to illustrate use of interpolation
+* two-level variable names are now expanded out to section.option notation when variables are listed
+* Added 'tapis variables' to show current vars and values available to the templating engine. Added test for assembling all variable names and keys
+* Updated metadata create to remove custom parser config stage
+* Added template rendering to (apps,jobs,systems) (create|update)
+* Improved support for template rendering
+* Unit tests and fixes discovered while writing them
+* Example ini file added to test data
+* Added a bit of specificity to a templating unit test
+* First-pass implementation of a config parser that will be used to augment variables in the templating system
+* Test data directory
+* Added support for default public, private storage and exec systems. Made passed\_vals override discovered or default values. Added unit tests
+* Added posix#cwd variable
+* Stubbed in template dictionary support to TapisApiClient
+* First commit for template support. Support for settings and a few classes of userland variables. Can render a string document with embedded variables/
+* Update Docker image label with new version
+
+v1.0.0a1
+--------
+
+* Updates to files docs to contain new commands
+* Updated AUTHORS
+* Updated TESTING
+* Added in-place render for files listings. Closes #236
+* Cleaned up help string wording for consistency
+* Implemented 'tapis files move' command
+* Actually implemented the new create/update behavior in code, not just docs
+* Revised metadata create and update to make CLI args and JSON file loads exclusive
+* Updated help text for two Metadata commands
+* Turn off coverage report on failures
+* Test settings module and commands
+* Formatting changes to some unit tests
+* Test the fixtures themselves
+* Added some fixtures for working w Cliff apps
+* Delete .readthedocs.yml
+* Update readthdocs config to try and install tapis\_cli before building
+* Rebuild requirements to get RTFD working
+
+1.0.0a0
+-------
+
+* Few fixes identified while getting docs working
+* Docs now build and are even readable and informative. Closes #235
+* Updated TESTING
+* Enabling only the notifications commmands that we trust (list, show, delete)
+* Added support for shortening long fields
+* Final refactors for postit identifiers to use new ServiceIdentifier features
+* Refactored apps commands to use new AppIdentifier
+* Refactor ServiceIdentifier to support mulitple instances per command. Revise jobs command to use a JobsUUID based on this new implementation
+* Added parallel formatting
+* Clarified default help text for TapisEntityUUID class
+* Implemented notifications add|update
+* WIP: Implement notifications commands
+* Refactored Jobs to use revised JobsUUID mixin
+* Refactored metadata to use new MetadataUUID mixin
+* Refactored to introduce an intermediary TapisEntityUUID class
+* Added note about postits commands
+* Code formatting
+* Implemented the 'postits' command set, including rudimentary validation
+* Updated TESTING.md
+* Added support for specifying app name and version when publishing. Clarified the help text for specifying public app execution system
+* Added support for specifying app name and version when publishing. Clarified the help text for specifying public app execution system
+* Added 'tapis settings get|set|unset'
+* Fixed some details around error reporting
+* TaccApiDirectClient now can report API server error messages
+* fixed residual instances of 'identifer'
+* Fixed 'identifer' in jobs/outputs\_download.py
+* Wrap curlify call in Exception handler to catch various serialization issues in curlify
+* Moved settings commands into subpackage. Added tapis settings get and simple validation of setting names
+
+v0.4.1
+------
+
+* Fixed crash in Py2  environment with no .env file
+
+v0.4
+----
+
+* Added some release notes
+* Fixed residual super() calls in files and metadata mixins
+* Added a basic Python/OS report to Google Analytics via tapis\_cli.et.phone\_home
+* Updated TESTING with latest jobs commands
+* Implemented jobs hide/unhide along with a data model for a simple Message response for when the API does not return a data object for parsing
+* Updated Testing document to describe latest changes
+* Added job pems management commands
+* Added validation to metadata UUIDs
+* Added validation of job UUIDs
+* Added metadata permissions management. Added initial unit tests for all metadata commands
+
+v0.3
+----
+
+* Added some more tests
+* Tapis files download now allows a destination to be set. Also, sorted out behavior of downloading directories, implmenting rsync-like trailing slash behavior. Updated reporting to use 'messages' and 'bytes\_transferred' instead of 'warnings' and 'data' for clarity
+* Added lines-of-code counter target to Makefile
+* Begin stubbing in unit tests for each apps command, starting with validation of their description
+* Updated systems commands to work w Python2 and leverage the improved inheritance mechanism
+* Added note about Python2 support to TESTING.md
+* Updated apps pems \* commands for Python2 and adopted new inheritance scheme
+* Moved to Python2/3 super() syntax
+* Replaced ; comment char with # since Python2 version of setuptools does not seem to recognize the former
+* Replaced calls to os.makedirs with the Python2/3 compatible tapis\_cli.utils#makedirs
+* Reactivated 'profiles search'. Made 'profiles show <user>' expect a username not a general identifier. Updated all commands for Python2 and to use new inheritance scheme
+* Updated metadata commands for Python2 and improved inheritance
+* Implemented Python2 versions of jobs outputs list|download. This includes a backport of Path from Python3 via the pathlib2 package
+* Updated files pems commands to use new inheritance scheme
+* Ported file management commands to use new inheritance scheme
+* Refactored jobs commands (save for outputs \*) to make better use of inheritance
+* Revised apps commands to make better use of inheritance
+* Linting
+* Changed take\_action\_defaults to update\_payload to clarify its role in the command processing workflow
+* Renamed SearchableCommand.headers to render\_headers to clarify its role in the command processing workflow
+* Renamed before\_take\_action to preprocess\_args to clarify what the function actually does
+* Removed note about needing to support Python2 since the print\_stderr function now works as intended on that platform
+* Reworked taccapis.v2 clients to use Python2-style super() calls
+* Reworked apim commands to use commands.taccapis.formatter base classes
+* Moved TaccApisCommandBase and kids to commands.taccapis.formatters, adding SearchableCommand as a parent class. This simplifies use of the headers function that translates a command's model into parameters and headers
+* Added longrun decorator since we don't need to validate the cache speedup every single time we run tests
+* Migrated seconds, msec, usec, nsec functions to use arrow, thus avoiding Python2's lack of datetime.datetime.timestamp
+* Added support for second virtualenv and the config file for unit test credentials
+* Stubbed in test files for other submodules
+* Unit tests showing that both serializers can work with the backported lru\_cache, at least in a trivial case
+* Added test to validate Python2 and 3 behavior of TaccApiDirectClient.build\_url
+* Added some helpful fixtures for building unit tests
+* Revert from using \*args inside build\_url for Python2 compatibility. Need to add a unit test
+* Added a Python2-compatible version of lru\_cache. Still needs to be functionally tested
+* Fixed majority of Python2/Python3 import path incompatibilities. Added unit tests to validate import paths for all command submodules
+* Fixed Python2 failure with print\_stderr
+* Removed deprecated settings names and use of the ENV\_PREFIX
+
+v0.2
+----
+
+* Updated TESTING docs
+* Refactored dotenv loading into a submodule
+* Settings properties now map to env variable names directly. Tested most core functions and they work OK after the update
+* Updated TESTING doc
+* Deactivated unused settings. Reworked seetings to honor AgavePy's default tenant ID setting
+* Updated UploadJsonFile mixin to be able to read from STDIN. This fixes #199 for all cases where a JSON upload is supported
+* Completed implementation of metadata update and updated TESTING docs with examples of all metadata CRUD operations
+* Suport for metadata create, delete
+* Small refactor to introduce a MetadataIdentifier mixin and to allow the ServiceIdentifier class and its subs to have a validate\_identifier() method
+* Implemented files mkdir. Closes #108
+* Closes #204
+* Fix var name typo in \_local\_temp\_filename
+* Added curlify
+* Update requirements.txt
+* Updated TESTING to reflect files pems command status
+* Refactored files pems commands to use a shared pems\_list helper which in turn fixes an issue with the files service returning a spurious result
+* WIP files pems (drop, grant, revoke)
+* Working versions of files pems list and files pems show
+* Changed display value for Permissions to TRue/False instead of X and ''
+* Refactord apps pems commands to use new Permission model instead of AppPermission
+* Refactored taccapis.model into a submodule
+* Username mixin added
+* Stubbed in additional metadata commands
+* Added Zenodo badge
+
+v0.1
+----
+
+* Updated TESTING doc
+* Mailmap
+* Jobs Outputs Download command now supports include and exclude wildcards
+* Badges. Install instrux
+* Sample config file now illustrates relation between TAPIS\_CLI\_SHOW\_CURL and TAPIS\_PY\_SHOW\_CURL
+* TAPIS\_CLI\_SHOW\_CURL now defaults to the current value of TAPIS\_PY\_SHOW\_CURL
+* Accept @eho-tacc PR to add include support to jobs outputs download
+* Updated env variable to reflect value defined in AgavePy
+* Updated TESTING doc with details on new curl command function
+* Formatting
+* WIP: All command using TaccApiDirectClient can now render a curl equivalent to STDERR when TAPIS\_CLI\_SHOW\_CURL is set to true. Making this work for AgavePy will require implementing the same functionality in agavepy.swaggerpy"
+* Attempt automatic container image build
+* Disable Travis builds that are breaking due to Travis platform issues
+* Updated ExcludeFiles and IncludeFiles argument builders to allow params to be specified multiple times insted of specifying a list. This makes the position of the --include and --exclude options agnostic to position when more than more pattern is specified
+* WIP to get date searches working for metadata. for now, disabled search on 'created' and 'lastUpdated' fields
+* WIP on metadata search by date
+* Added details about new/fixed search options in apps, jobs, systems
+* Improve support for --include flag
+* Date searches for jobs plus general quality improvements for all search params
+* Boolean searches work now. Available search modifiers now shown in help
+* Updated TESTING with new info on impersonation tokens
+* Disabled passing API server via CLI
+* TaccApisBearer now honors a custom access token when passed
+* Added support for colored text as set of utils function
+* tokens create can now issue an impersonation token, but the other commands don't all honor the -z option
+* Add --include option
+* Prepend destination dir to exclude file paths
+* Updated TESTING
+* Working version of files-history
+* files dete command
+* Updated TESTING
+* Implemeted files delete
+* Fixed import path
+* Updated contents of TESTING document
+* Throw Exceptions when a placeholder option is passed
+* WIP: tapis files upload is ready to test
+* Rename 'data' to 'rows' in FilesOptions#sort\_table
+* Small refactor to let Files\* commands use a series of mixins to set their arguments. Changed the metavar for --api-server, --token, --limit, and --offset to reflect their types Made --sort-size and --sort-time mutually exclusive in FilesOptions mixin
+* files download now reports total data downloaded
+* More details on files download command
+* Updated testing doc with latest on jobs-outputs and files functionality
+* Working implementation of 'jobs outputs download'
+* Extended Tapis Direct client to be able to get raw bytes
+* WIP jobs outputs download - help view works
+* Working implementation of jobs-output-list
+* Hide system since it's implicit
+* Make specifying a value optional for FilePath mixin
+* Minimal port of files.helpers to jobs. Very un-DRY
+* Added support for sync mode and an excludes parameter to 'files download'
+* WIP files download command
+* Added wrapper for print-reporting to STDERR
+* Implemented recursive download with support for atomic operations
+* Rebuilt helpers.\_walk to return entire record, which allows downstream formatting and other actions on the walked result
+* Lifted over some code from bacanora to implement list, walk, and various stat functions
+* Formatting
+* Added tenacity depedency. Brought in hashable from bacanora library as 'hashcache' to provide LRU caching of complex or custom objects
+* Minimal implementation of 'files show' and 'files list'
+* Lifted in from a branch
+* Added note in README about expired clients failing to be re-initialized by 'tapis auth init'
+* Update requirements.txt
+* Fixed typo in install instructions. Thanks \@wonaya
+* Move Docker build into deployment script. Fixed setup.cfg comments that broke in Py2.7 versions of setuptools
+* WIP: TravisCI build/push Docker image
+* Updated README to fix links
+* Updated README
+* Cleaned up README typos
+* silence 'fatal not a git repo' message when not working in a git repo
+* Removed warning about missing auth subsystem from README
+* Updated w details on profiles commands
+* Added image release target
+* Finishing touches on Docker image
+* Additional final prep for testing
+* Fixed import paths in Gitlab
+* Updated docs
+* Removed deprecated services.orig directory
+* Added Tox support
 * Getting tox to work and a Docker image to build
 * WIP: Build working Docker image
 * Automated AUTHORS and ChangeLog from setuptools and pbr
