@@ -81,7 +81,9 @@ def generate_template_ini(passed_vals=None):
         'build_args': '',
         'use_commit_hash': False
     }
-    config['environment'] = {}
+    config['env'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}
+    config['job'] = {}
+    config['system'] = {'ssh_private_key': '~/.ssh/id_rsa'}
     update_config(config, passed_vals)
     return config

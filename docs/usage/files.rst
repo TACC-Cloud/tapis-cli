@@ -1,11 +1,16 @@
+#####
 Files
-=====
+#####
 
 Support for the core Tapis file management is provided by the **files**
 command set. New, and of note, is support for wildcard include and exclude
 filters when uploading and downloading, as well as a "sync" mode for downloads
 that only retrieves files from Tapis if they are different from their local
 copy.
+
+****************
+General Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: files list
@@ -34,13 +39,15 @@ copy.
 .. autoprogram-cliff:: tapis.cli
    :command: files download
 
-Permissions
------------
+****************
+Sharing Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: files pems *
 
+**************
 Usage Examples
---------------
+**************
 
 *Coming soon*

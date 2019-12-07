@@ -1,10 +1,15 @@
+########
 Metadata
-========
+########
 
 Support for the legacy Tapis meta service is provided by the **meta**
 command set. New, and of note, is support for directly storing and
 retrieving values using the metadata service, making its usage modality more
 like that of a key-value store. See usage examples below:
+
+****************
+General Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: meta create
@@ -21,20 +26,23 @@ like that of a key-value store. See usage examples below:
 .. autoprogram-cliff:: tapis.cli
    :command: meta delete
 
-Permissions
------------
+****************
+Sharing Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: meta pems *
 
-Search
-------
+***************
+Search Commands
+***************
 
 It is possible to search for tapis Metadata by several criteria. Please consult
 ``tapis meta search -h`` for guidance.
 
+**************
 Usage Examples
---------------
+**************
 
 Metadata records have historically been written in Tapis by specifying a
 complete, schema-compliant JSON document. This has been considered by some
@@ -43,7 +51,7 @@ can be specified, but it is also possible to specify ``-name`` and ``--value``
 or even just a ``--value``.
 
 Example 1
-^^^^^^^^^
+---------
 
 .. code-block:: shell
 
@@ -99,7 +107,7 @@ Example 1
     +-------------+----------------------------------------+
 
 Example 2
-^^^^^^^^^
+---------
 
 .. code-block:: shell
 
@@ -139,7 +147,7 @@ Example 2
     +----------+-------+
 
 Example 3
-^^^^^^^^^
+---------
 
 .. code-block:: shell
 

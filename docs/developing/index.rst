@@ -1,11 +1,13 @@
+#########################
 Contributing to Tapis CLI
-=========================
+#########################
 
 We welcome contributions to Tapis CLI, since our users are often best qualified
 to propose and improve its functionality.
 
+*******
 Hacking
--------
+*******
 
 Install CLI in editable mode::
 
@@ -21,15 +23,17 @@ Run multi-environment tests with tox::
     pip install tox
     tox
 
-Custom Docker Image
--------------------
+************
+Docker image
+************
 
 A local build of the Tapis CLI container image can be created and launched
 using ``make image`` followed by ``make interactive``. This is helpful when
 customizing or extending the project Dockerfile.
 
+**************
 Code structure
---------------
+**************
 
 API commands are implemented as subclasses of ``TaccApisCommandBase``, which
 handles Oauth client setup, and either ``TaccApisFormatOne`` or
@@ -68,8 +72,9 @@ Limited (at present) unit tests are implemented in the `tests` directory.
 Automated code linting (to PEP8) and code coverage analysis are included in
 all PyTest runs to encourage sustainable development practices.
 
+*************
 Documentation
--------------
+*************
 
 The project uses Sphinx and the Napoleon extension, which is configured to
 support Google-style documentation strings.
@@ -78,24 +83,27 @@ Regenerate the documentation::
 
     make docs
 
+**********
 Code Style
-----------
+**********
 
 The project code style is vanilla PEP8, as configured by the
-``[flake8]`` section of ``setup.cfg``. Use of ``yapf`` autoformatter is
-supported and encouraged to maintain the codebase, and is available via the
-``make format`` Makefile target.
+``[flake8]`` section of ``setup.cfg``. 
 
-Roadmap and Issue Tracker
--------------------------
+Use of ``yapf`` autoformatter is supported and encouraged to 
+maintain the codebase, and is available via the ``make format`` 
+Makefile target.
+
+*************
+Issue Tracker
+*************
 
 Major functional objectives are bundled into Milestones_ with due dates in the
 future. This provides a way to organize the work and have a public road map
 for functionality.
 
-All work should proceed through at least one or more reported Issues_.
+All work should proceed via reported Issues_.
 
 .. _Milestones: https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open
 .. _Issues: https://github.com/TACC-Cloud/tapis-cli-ng/issues
-
 

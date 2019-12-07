@@ -1,14 +1,15 @@
+###################
 Configure Tapis CLI
--------------------
+###################
 
-The Tapis CLI uses Python's ``dotenv`` module for configuration via environment
+The Tapis CLI uses Python's _dotenv module for configuration via environment
 variables. Briefly, the CLI will look for a file ``.env`` containing
-``KEY=VALUE`` pairs starting in the current working directory and working up
-the parent directory tree. If it still cannot find an environment file, it
-looks in ``$HOME/.env`` for one. Any variable defined in the environment
+``KEY=VALUE`` pairs starting in the current working directory, working up
+the parent directory tree to root. If it still cannot find an environment 
+file, it looks in ``$HOME/.env`` for one. A variable defined in the environment
 file can be overridden by setting an environment variable in the shell where
 the CLI was launched. Some options can be further overridden at run-time via
-command-line option.
+command-line options.
 
 One may view the current settings for the Tapis CLI:
 
@@ -37,8 +38,9 @@ One may view the current settings for the Tapis CLI:
 
 Configuration options can be set using ``tapis config set``.
 
+**********
 An Example
-----------
+**********
 
 The number of results returned from list-type commands is defined by the
 variable ``TAPIS_CLI_PAGE_SIZE`` and defaults to **50**. List-type commands
@@ -51,8 +53,15 @@ environment then in a ``.env`` file. Here are ways to configure the page size:
     - For the current shell: ``export TAPIS_CLI_PAGE_SIZE=10``
     - For all future usage: ``tapis apps set TAPIS_CLI_PAGE_SIZE 10``
 
-Key Settings
-------------
+*****************
+Some Key Settings
+*****************
 
-**Coming soon**
+*Coming soon*
+
+*****************
+Technical Details
+*****************
+
+*Coming soon*
 

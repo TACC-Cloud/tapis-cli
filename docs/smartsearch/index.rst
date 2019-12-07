@@ -1,7 +1,8 @@
+###############
 Search Commands
-===============
+###############
 
-Several Tapis command familiie support sophisiticated search capabilities, but
+Several Tapis command families support sophisiticated search capabilities, but
 due to the fact that Tapis has been developed over several years,
 implementation details of syntax and capability vary widely. Tapis CLI remedies
 this with named **search** commands which accept optionized forms of select
@@ -10,8 +11,9 @@ enumerations is presented as well, as well as support for search modifiers.
 Finally, semantic or "humanized" dates are ranges are supported as query terms
 in fields which are Python ``datetime`` types.
 
-A Usage Example
----------------
+**********
+An Example
+**********
 
 To stimulate your interest, here's a simple example of searching for an app by a
 fragment of its name. The generalized form of a Tapis CLI search command is
@@ -31,9 +33,9 @@ fragment of its name. The generalized form of a Tapis CLI search command is
     |                               |          |                  | small ImageNet model          |          |                        |
     +-------------------------------+----------+------------------+-------------------------------+----------+------------------------+
 
-
-Help String
------------
+*******************
+Search help strings
+*******************
 
 The code that enables search also generates descriptive, if a bit
 repetitive, help text for each search command. The help text for
@@ -123,11 +125,12 @@ Here are some examples of humanized dates for searching date fields.
 | after 2018               | Any time in 2019 or after                 |
 +--------------------------+-------------------------------------------+
 
-Support by command
-------------------
+*************************
+Search support by command
+*************************
 
-Search support is completed (to a first approximation) for some commands,
-planned for others, and will never be in scope for some.
+Search is available for several commands, and is on the roadmap for 
+a few more in the coming months.
 
 +----------------+--------------+
 | Command Family | Smart Search |
@@ -161,9 +164,3 @@ planned for others, and will never be in scope for some.
 | versions       | No           |
 +----------------+--------------+
 
-Providing Feedback
-------------------
-
-Please note that the CLI search interface involves a fair degree of
-metaprogramming and is highly experimental, so please (please!) submit issues
-when you uncover unexpected behavior or outright failures.

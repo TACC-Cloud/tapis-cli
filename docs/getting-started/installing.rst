@@ -21,10 +21,11 @@ Container Image
 ---------------
 
 As an alternative to local installation, the CLI is available as a public
-Docker image ``tacc/tapis-cli-ng:latest``. Run it like so:
+DockerHub_ image ``tacc/tapis-cli-ng:latest``. Run it like so:
 
 .. code-block:: shell
 
     docker run --rm -it -v ${PWD}:/work -v ${HOME}/.agave:/root/.agave \
         tacc/tapis-cli-ng:latest bash
 
+.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli-ng

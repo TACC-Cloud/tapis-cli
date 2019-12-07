@@ -1,9 +1,15 @@
+#######
 Systems
-=======
+#######
 
-Support for the core Tapis applications life cycle is provided by the **apps**
-command set. Extensions to this lifecycle featured in some Tapis tenants will
-be added in a future release.
+Support for the Tapis systems management **systems** is provided by 
+the **systems** command set. Helper workflows (such as assistance 
+with SSH keys and testing newly created systems) will be added in 
+coming releases.
+
+****************
+General Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems list
@@ -26,26 +32,31 @@ be added in a future release.
 .. autoprogram-cliff:: tapis.cli
    :command: systems enable
 
-Permissions
------------
+****************
+Sharing Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems roles *
 
-Search
-------
+
+***************
+Search Commands
+***************
 
 It is possible to search for tapis Systems by several criteria. Please consult
 ``tapis systems search -h`` for guidance.
 
-Queues
-------
+***************
+Queues Commands
+***************
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems queues *
 
-Administrative
---------------
+***********************
+Administrative Commands
+***********************
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems publish
@@ -53,8 +64,9 @@ Administrative
 .. autoprogram-cliff:: tapis.cli
    :command: systems unpublish
 
+**************
 Usage Examples
---------------
+**************
 
 *Coming soon*
 

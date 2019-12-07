@@ -1,5 +1,6 @@
+###########
 Authn/Authz
-===========
+###########
 
 To initialize a host to use Tapis, run the ``tapis auth init`` command.
 
@@ -37,8 +38,9 @@ Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
 and may skip a key step. If you get a message ``Tapis client appears invalid``
 re-run with ``tapis auth init --interactive`` and follow the prompts.
 
+********
 Commands
---------
+********
 
 .. autoprogram-cliff:: tapis.cli
    :command: auth *
