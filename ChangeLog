@@ -1,6 +1,11 @@
 CHANGES
 =======
 
+* Simplified README a bit since the details can be found in the canonical docs
+* Formatting megapass
+* Added inline links to help docs
+* Tweaks to badge and requirements
+* Added stub for pypi release to Makefile
 * Rebuilt docs with better organization and detail
 * Added first-run screen. Closes #242
 * Implemenetd support for writing out a template .ini file; Closes #245
@@ -174,8 +179,8 @@ v0.2
 * Stubbed in additional metadata commands
 * Added Zenodo badge
 
-v0.1
-----
+0.1
+---
 
 * Updated TESTING doc
 * Mailmap
