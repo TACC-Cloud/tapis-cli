@@ -18,6 +18,7 @@ validators
 Jinja2
 PyGithub
 PyMongo
+docker>=4.1.0
 agavepy@git+https://github.com/TACC/agavepy.git@cli
 flake8
 pytest==4.6.5 # pinned for Python 2.7.x support

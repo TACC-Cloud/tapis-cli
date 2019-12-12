@@ -6,6 +6,14 @@ tapis\_cli.project\_ini package
    :undoc-members:
    :show-inheritance:
 
+Subpackages
+-----------
+
+.. toctree::
+
+   tapis_cli.project_ini.mixins
+   tapis_cli.project_ini.schema
+
 Submodules
 ----------
 

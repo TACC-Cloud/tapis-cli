@@ -6,9 +6,9 @@ Support for the core Tapis applications life cycle is provided by the **apps**
 command set. Extensions to this lifecycle featured in some Tapis tenants,
 such as ``apps init`` and ``apps deploy`` will be added in a future release.
 
-****************
-General Commands
-****************
+*******
+General
+*******
 
 .. autoprogram-cliff:: tapis.cli
    :command: apps list
@@ -34,23 +34,30 @@ General Commands
 .. autoprogram-cliff:: tapis.cli
    :command: apps enable
 
-****************
-Sharing Commands
-****************
+********
+Projects
+********
+
+.. autoprogram-cliff:: tapis.cli
+   :command: apps deploy
+
+*******
+Sharing
+*******
 
 .. autoprogram-cliff:: tapis.cli
    :command: apps pems *
 
-***************
-Search Commands
-***************
+******
+Search
+******
 
 It is possible to search for tapis Apps by several criteria. Please consult
 ``tapis apps search -h`` for guidance.
 
-***********************
-Administrative Commands
-***********************
+**************
+Administration
+**************
 
 .. autoprogram-cliff:: tapis.cli
    :command: apps publish
