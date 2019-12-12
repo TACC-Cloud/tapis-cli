@@ -17,6 +17,13 @@ def test_projects_ini_load_config():
     k = project_ini.load_config()
     assert isinstance(k, configparser.ConfigParser)
 
+def test_projects_ini_load_config_dict():
+    """ConfigParser can be loaded from default ini file
+    """
+    k = project_ini.load_config(as_dict=True)
+    assert isinstance(k, dict)
+    assert not isinstance(k, configparser.ConfigParser)
+
 def test_projects_ini_load_config_by_path():
     """ConfigParser can be loaded by specifying a path
     """

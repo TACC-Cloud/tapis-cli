@@ -42,6 +42,15 @@ def test_render_template_passed_vals_supercede_builtin():
     rendered = render_template(source, passed_vals=env)
     assert '9000' in rendered
 
+def test_render_template_nested():
+    """Nested values from a configparser instance should
+    render as values not as the name of the section
+    """
+    from tapis_cli.templating import render_template
+    source = 'App Name {{ app.name }} is cool'
+    rendered = render_template(source)
+    raise SystemError(rendered)
+
 def test_taccapis_api_client_init(tapis_active_client):
     """Test dynamic generation of Tapis-relevant templating data
     """

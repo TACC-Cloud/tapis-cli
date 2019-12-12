@@ -1,0 +1,8 @@
+"The trick is slick code to manage
+all the if, for, and while statements
+in a optimized number of lines.
+Pass a list, fix the syntax, import all the variables.
+Comment your lines and indent where necessary,
+leaving line breaks and whitespace
+for readability."
+    - Monica Sharman

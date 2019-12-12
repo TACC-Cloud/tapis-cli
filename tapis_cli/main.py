@@ -74,6 +74,8 @@ class Tapis_App(App):
 def main(argv=sys.argv[1:]):
     init(autoreset=True)
     catalogApp = Tapis_App()
+    # Swap out built-in complete for one that does not conflict with search commnds
+    del catalogApp.command_manager.commands['complete']
     deinit()
     return catalogApp.run(argv)
 

@@ -11,7 +11,7 @@ FILENAMES = ['app.ini', 'actor.ini', 'project.ini', 'reactor.ini']
 DEFAULT_FILENAME = 'project.ini'
 
 
-def load_config(filename=None):
+def load_config(filename=None, as_dict=False):
     if filename is None:
         filename = config_path()
     else:
@@ -22,7 +22,17 @@ def load_config(filename=None):
         # Fail gracefully if does not exist
         config = configparser.ConfigParser()
         config.read(filename)
-        return config
+        if as_dict is False:
+            return config
+        else:
+            dict_config = {}
+            for section in config.sections():
+                for k, v in config.items(section):
+                    if section not in dict_config:
+                        dict_config[section] = {}
+                    dict_config[section][k] = v
+            return dict_config
+
     else:
         raise ValueError(
             'Invalid config file name. Allowed values are: {0}'.format(
@@ -39,8 +49,16 @@ def save_config(config, filename=DEFAULT_FILENAME):
                 ', '.join(FILENAMES)))
 
 
-def config_path(filename=None):
+def config_path(filename=None, working_directory=None):
+    if working_directory is None:
+        working_directory = os.getcwd()
+
     if filename is not None:
         return filename
     else:
-        return os.path.join(os.getcwd(), DEFAULT_FILENAME)
+        for fname in FILENAMES:
+            ipath = os.path.join(working_directory, fname)
+            if os.path.exists(ipath):
+                return ipath
+
+        return os.path.join(working_directory, DEFAULT_FILENAME)

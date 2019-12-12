@@ -5,7 +5,7 @@ from .config_file import load_config, config_path
 __all__ = ['key_values', 'generate_template_ini', 'update_config']
 
 
-def key_values(filename=None):
+def key_values(filename=None, as_dict=True):
     """Load project config file into a dict for template remdering
 
     Keyword Arguments:
@@ -15,7 +15,7 @@ def key_values(filename=None):
     """
     file_path = config_path(filename)
     if os.path.exists(file_path):
-        return dict(load_config(file_path))
+        return load_config(file_path, as_dict=as_dict)
     else:
         return dict()
 
@@ -31,6 +31,8 @@ def update_config(config, values_dict, add_keys=False):
             for k1, v1 in v.items():
                 if not isinstance(v1, dict):
                     if add_keys:
+                        if k not in config:
+                            config[k] = {}
                         config[k][k1] = v1
                     elif k in config and k1 in config[k]:
                         config[k][k1] = v1
@@ -74,15 +76,15 @@ def generate_template_ini(passed_vals=None):
     }
     config['docker'] = {
         'dockerfile': 'Dockerfile',
-        'username': '',
-        'organization': '',
-        'repository': '',
+        'namespace': '',
+        'repo': '',
         'tag': '',
         'build_args': '',
         'use_commit_hash': False
     }
     config['env'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}
+    config['grants'] = {'read': '', 'execute': '', 'update': ''}
     config['job'] = {}
     config['system'] = {'ssh_private_key': '~/.ssh/id_rsa'}
     update_config(config, passed_vals)

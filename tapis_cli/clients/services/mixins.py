@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import validators
+import docker as dockerpy
 
 from agavepy.agave import Agave
 
@@ -24,7 +25,7 @@ __all__ = [
     'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
     'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
-    'WorkingDirectoryArg', 'DownloadDirectoryArg'
+    'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy'
 ]
 
 
@@ -352,14 +353,25 @@ class UploadJsonFile(ParserExtender):
     json_loaded = dict()
     validate = True
     optional = False
+    default = None
 
     def extend_parser(self, parser):
-        parser.add_argument('-F',
-                            '--file',
-                            dest='json_file_name',
-                            metavar='<file>',
-                            type=str,
-                            help='JSON payload file')
+        if self.default is None:
+            parser.add_argument('-F',
+                                '--file',
+                                dest='json_file_name',
+                                metavar='<file>',
+                                type=str,
+                                help='JSON payload file')
+        else:
+            parser.add_argument('-F',
+                                '--file',
+                                dest='json_file_name',
+                                metavar='<file>',
+                                default=self.default,
+                                type=str,
+                                help='JSON payload file ({})'.format(
+                                    self.default))
         return parser
 
     def handle_file_upload(self, parsed_args):
@@ -397,16 +409,20 @@ class UploadJSONTemplate(UploadJsonFile):
         parser = super(UploadJSONTemplate, self).extend_parser(parser)
         parser.add_argument('--ini',
                             dest='ini_file_name',
-                            default='project.ini',
                             metavar='<file>',
                             type=str,
-                            help='Optional .ini filename')
+                            help='Optional .ini file')
         return parser
 
-    def all_key_values(self, parsed_args, passed_vals):
+    def get_ini_path(self, filename):
+        return project_ini.config_path(filename, self.getwd())
+
+    # OVERRIDES DO NOT SEEM TO BE WORKING
+    def _all_key_values(self, parsed_args, passed_vals):
         t = templating.key_values(passed_vals)
-        ini_path = os.path.join(self.getwd(), parsed_args.ini_file_name)
+        ini_path = self.get_ini_path(parsed_args.ini_file_name)
         p = project_ini.key_values(ini_path)
+        raise SystemError(p)
         project_ini.update_config(t, p, add_keys=True)
         # tapis dynamic variables
         tapis_variables = self.key_values()
@@ -415,6 +431,25 @@ class UploadJSONTemplate(UploadJsonFile):
         project_ini.update_config(t, tapis_variables, add_keys=True)
         project_ini.update_config(t, {}, add_keys=True)
         return t
+
+    # OVERRIDES DO NOT SEEM TO BE WORKING
+    def all_key_values(self, parsed_args, passed_vals):
+        # Load up ini file
+        ini_path = self.get_ini_path(parsed_args.ini_file_name)
+        cfg = project_ini.key_values(ini_path)
+
+        # Load up core template vars
+        tmpl = templating.key_values({})
+        project_ini.update_config(cfg, tmpl, add_keys=True)
+
+        # Extend with API-related dynamic vars
+        tapis = self.key_values()
+        project_ini.update_config(cfg, tapis, add_keys=True)
+
+        # Finally, layer over passed values. Assumption is that these
+        # are passed by CLI or other run-time means
+        project_ini.update_config(cfg, passed_vals, add_keys=True)
+        return cfg
 
     def _render_json_file_contents(self, passed_vals):
         """Transform the JSON file contents by rendering it as a Jinja template
@@ -427,18 +462,20 @@ class UploadJSONTemplate(UploadJsonFile):
         setattr(self, 'json_file_contents', payload)
         return self.json_file_contents
 
-    def handle_file_upload(self, parsed_args):
+    def handle_file_upload(self, parsed_args, passed_vals={}):
         super(UploadJSONTemplate, self).handle_file_upload(parsed_args)
         # payload = getattr(self, 'json_file_contents')
         # load variable sets
         # ini-based configuration
-        ini_path = os.path.join(self.getwd(), parsed_args.ini_file_name)
-        config = project_ini.key_values(ini_path)
+        ini_path = self.get_ini_path(parsed_args.ini_file_name)
+        config = project_ini.key_values(ini_path, as_dict=True)
         # tapis dynamic variables
         tapis_variables = self.key_values()
         # right-merged dictionary
         # dynamic values always overide ini-loaded defaults
         project_ini.update_config(config, tapis_variables, add_keys=True)
+        # Accept run-time overrides
+        project_ini.update_config(config, passed_vals, add_keys=True)
         # render, where merged variables overrides module-provided values
         self._render_json_file_contents(passed_vals=config)
         return self.json_file_contents
@@ -473,3 +510,10 @@ class URL(ParserExtender):
                 return False
             else:
                 raise
+
+
+class DockerPy:
+    dockerpy = None
+
+    def docker_client_from_env(self):
+        setattr(self, 'dockerpy', dockerpy.from_env())
