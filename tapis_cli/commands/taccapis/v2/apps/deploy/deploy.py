@@ -7,7 +7,6 @@ from tapis_cli.commands.taccapis.v2.apps.create import AppsCreate
 from tapis_cli.clients.services.mixins import (WorkingDirectoryArg,
                                                UploadJSONTemplate, DockerPy)
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
-# from tapis_cli.commands.taccapis.v2.apps.
 
 from ..formatters import AppsFormatMany
 from .. import API_NAME, SERVICE_VERSION
@@ -177,6 +176,8 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         return (tuple(headers), tuple(self.messages))
 
     def _app_id(self):
+        """Compute the application ID
+        """
         return '{}-{}'.format(self.config['app']['name'],
                               self.config['app']['version'])
 
