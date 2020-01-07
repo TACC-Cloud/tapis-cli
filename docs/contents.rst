@@ -47,6 +47,7 @@ Welcome to Tapis CLI
    configure/index
    smartsearch/index
    templating/index
+   projects/index
    developing/index
 
 

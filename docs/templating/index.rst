@@ -2,25 +2,20 @@
 Template Support
 ################
 
-Tapis app, job, and system definitions, as well as metadata records, are commonly 
-defined as JSON documents stored in files. Sharing these files can be challenging 
-(for instance, as part of a collaborative development effort), since they may 
-contain user-specific values. Files are also, of course, static assets, so 
-any process involving dynamically changing their contents must be automated 
-using some form of JSON parsing. Inspired by the solutions our users arrived at 
-for these kinds of problems, we have introduced support for templating in Tapis 
-CLI. 
+Tapis app, job, and system definitions (as well as metadata records) are commonly 
+defined as JSON documents files. Sharing them files can be challenging 
+(for instance, as part of collaborative development), since they can 
+contain user-specific values. One way to deal with this is to automate 
+find-and-replace workflows for files, but another is to use variables. Inspired 
+by this real-world use case, we have introduced support for template 
+variables throughout the Tapis CLI. 
 
-This can take the form of simple variable substitution, but since the underlying 
-template engine is Python's Jinja2 module, even more sophisticated constructs are 
-possible. 
-
-Let us consider an example before diving into details. A group of collabortators each has 
+Let us consider an example. A group of collabortators each has 
 a private copy of a Tapis app for counting chickens, where the app identifier follows the 
 naming convention ``chicken-counter-[username]-1.0.0``. They want to standardize on one 
-set of parameters for a specific set of chicken counting experiments they are doing. Without 
-templating, each would maintain the parameter set in a standalone job file. For user **ellen** 
-that file might look like so:
+set of parameters for a specific set of counting experiments they are doing. Without 
+templating, each would maintain their parameter set in a standalone job file. For user 
+**ellen** that file might look like so:
 
 .. code-block:: json
 
@@ -39,13 +34,13 @@ that file might look like so:
     }
 
 If the group leader Francesca decides that ``wing_threshold`` needs to be -8.00, 
-everyone needs to edit a copy of their job file. If the group gets their parameter 
-files from the group leader, that means they would need to edit out refernces to 
-Francesca's username, replacing them with their own. Note also that the job **name** 
+everyone will need to edit a copy of the job file. If the group gets a master parameter 
+file from the group leader, that means each member will need to replace refernces to 
+Francesca's username with their own. Note also that the job **name** 
 is static, which could get annoying. Wouldn't it be nice if we could change it 
 for each instance of job that is run? 
 
-Consider a template-based version of this file:
+A version of the file using Tapis CLI templating might look like:
 
 .. code-block:: json
 
@@ -64,24 +59,28 @@ Consider a template-based version of this file:
     }
 
 Submitting this file to the Tapis jobs service using ``tapis jobs submit`` 
-will result in a job request being sent where ``{{ username }}`` is 
-replaced with the current Tapis username and ``{{ iso8601_basic_short }}`` 
-will be replaced with an IS0-8601 date stamp of format ``YYYMMDDTHHmmss``. 
-Nifty, eh? There's much more than can be done with this system!
+would result in a job request being to the proper app ID and 
+``{{ iso8601_basic_short }}`` is be replaced with an IS0-8601 date stamp
+ ``YYYMMDDTHHmmss``. 
+ 
+Nifty, eh? There's much more that can be done. The system supports dozens of 
+built-in and run-time variables, and can be extended by the end user without coding. 
+Also, since the system is built using Python's Jinja2 module, any Jinja syntax can 
+be used, including conditionals and iterators. 
 
 *********
 Variables
 *********
 
 There are two classes of variables supported by the template system: 
-"core" and "project". Core variables are provided by the CLI with no 
-options for user configuration, while project variables are set via 
-a file in *.ini* format. 
+"core" variables and "project" variables. Core variables are provided 
+by the CLI with no options for user configuration, while project 
+variables are set via a file in *.ini* format. 
 
 Core variables
 ==============
 
-These are, in effect, global variables representing the state and 
+These are global variables representing the state and 
 environment of the CLI itself. They are intended for use in any app, 
 job, system, or metadata definition without additional configuration. 
 You can find the name and value of core variables via the command 

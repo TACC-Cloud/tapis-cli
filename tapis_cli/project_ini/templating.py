@@ -20,12 +20,14 @@ def key_values(filename=None, as_dict=True):
         return dict()
 
 
-def update_config(config, values_dict, add_keys=False):
+def update_config(config, values_dict=None, add_keys=False):
     """Recursively merge a dict onto a ConfigParser
 
     This is used to initialize the parser with passed values, like one
     might do when setting up a project for the first time.
     """
+    if not isinstance(values_dict, dict):
+        values_dict = dict()
     for k, v in values_dict.items():
         if isinstance(v, dict):
             for k1, v1 in v.items():

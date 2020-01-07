@@ -21,13 +21,15 @@ class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
         tackv = self.all_key_values(parsed_args, None)
         flat_vars = {}
         for k, v in tackv.items():
-            print(k, type(v))
-            if not isinstance(v, SectionProxy):
-                flat_vars[k] = v
-            else:
-                dotted_vars = dot_notation({k: v})
-                for k1, v1 in dotted_vars.items():
-                    flat_vars[k1] = v1
+            # grants is a special section
+            if k != 'grants':
+                # print(k, type(v))
+                if not isinstance(v, (SectionProxy, dict)):
+                    flat_vars[k] = v
+                else:
+                    dotted_vars = dot_notation({k: v})
+                    for k1, v1 in dotted_vars.items():
+                        flat_vars[k1] = v1
 
         flat_vars = sorted(flat_vars.items())
         # records = []

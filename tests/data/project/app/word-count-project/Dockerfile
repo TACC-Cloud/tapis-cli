@@ -1,1 +1,2 @@
-FROM sd2e/base:ubuntu16
+FROM sd2e/base:ubuntu18
+

@@ -1,13 +1,8 @@
 {
-  "appId": "word-count-0.2.2",
+  "name": "{{ app.name }}-test-{{ iso8601_basic_short }}",
+  "appId": "{{ app.name }}-{{ app.version}}",
   "archive": false,
-  "maxRunTime": "0:06:00",
   "inputs": {
-    "input1": "agave://data-sd2e-community/sample/tacc-cloud/wc-sample.txt"
-  },
-  "memoryPerNode": "1",
-  "name": "word-count-test-20191211T121454",
-  "nodeCount": 1,
-  "parameters": {},
-  "processorsPerNode": 1
+    "input1":  "agave://data-sd2e-community/sample/tacc-cloud/wc-sample.txt"
+  }
 }

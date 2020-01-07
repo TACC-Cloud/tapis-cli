@@ -1,19 +1,24 @@
-# fastqc-application
+# word-count-project
 
-### 0. Contents
+## Contents
+
 ```
 .
+├── .dockerignore
+├── .gitignore
 ├── Dockerfile
 ├── README.md
 ├── app.ini
-└── fastqc-0.11.7
+├── app.json
+├── job.json
+├── wc-sample.txt
+└── word-count
     ├── _util
     │   ├── VERSION
     │   └── container_exec.sh
-    ├── app.json.j2
-    ├── job.json.j2
     ├── runner-template.sh
     └── tester.sh
+
 ```
 
 ### 1. Clone
@@ -24,7 +29,7 @@ cd fastqc-application/
 
 ### 2. Personalize
 #### ./app.ini
-=> change to your docker username / preferred repo and tag
+=> change to your docker namespace / preferred repo and tag
 
 #### ./fastqc-0.11.7/app.json.j2
 => change `executionSystem`, `deploymentSystem`, and `deploymentPath` if necessary
