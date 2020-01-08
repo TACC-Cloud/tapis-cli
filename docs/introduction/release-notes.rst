@@ -9,12 +9,13 @@ to this is when we add entirely new commands or functions (such as
 integration with GitHub or the like).
 
 **************************
-1.0.0 Alpha 2 (12-13-2020)
+1.0.0 Alpha 2 (01-17-2020)
 **************************
 
 Added
 -----
 
+    - Support for the ``tapis apps deploy`` command using projects
     - Support for templated JSON docs
     - Support for project-specific configuration files
     - A first-run screen now captures AUP and user data collection consent
