@@ -27,4 +27,11 @@ step required in deploying a Tapis resource should be achievable by
 cd-ing into a project directory and running ``tapis apps deploy`` or 
 ``tapis actors deploy``
 
+.. toctree::
+   :maxdepth: 1
 
+   structure
+   app_ini
+   init
+   deploy.rst
+   git.rst
