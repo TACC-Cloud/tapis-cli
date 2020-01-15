@@ -24,3 +24,4 @@ from .unpublish import AppsUnpublish
 
 # Workflows
 from .deploy import AppsDeploy
+from .init import AppsInit

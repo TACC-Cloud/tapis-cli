@@ -1,0 +1,8 @@
+{
+  "name": "{{ app.name }}-test-{{ iso8601_basic_short }}",
+  "appId": "{{ app.name }}-{{ app.version}}",
+  "archive": false,
+  "inputs": {
+    "input1":  "agave://data-sd2e-community/sample/tacc-cloud/wc-sample.txt"
+  }
+}

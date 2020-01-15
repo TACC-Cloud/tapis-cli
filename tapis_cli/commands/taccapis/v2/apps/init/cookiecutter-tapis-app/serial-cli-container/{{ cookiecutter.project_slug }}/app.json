@@ -1,0 +1,36 @@
+{
+  "checkpointable": false,
+  "name": "{{ app.name }}",
+  "executionSystem": "{{ app.execution_system }}",
+  "executionType": "CLI",
+  "deploymentPath": "apps/{{ app.name }}-{{ app.version }}",
+  "deploymentSystem": "{{ app.deployment_system }}",
+  "helpURI": "",
+  "label": "",
+  "shortDescription": "",
+  "longDescription": "",
+  "modules": [
+    "load tacc-singularity"
+  ],
+  "ontology": [],
+  "parallelism": "SERIAL",
+  "tags": [],
+  "templatePath": "runner-template.sh",
+  "testPath": "tester.sh",
+  "version": "{{ app.version }}",
+  "defaultMaxRunTime": "00:30:00",
+  "inputs": [],
+  "parameters": [
+    {
+      "id": "CONTAINER_IMAGE",
+      "value": {
+        "default": "{{ docker.namespace }}/{{ docker.repo }}:{{ docker.tag }}",
+        "type": "string",
+        "visible": false,
+        "required": true,
+        "order": 1000
+      }
+    }
+  ],
+  "outputs": []
+}
