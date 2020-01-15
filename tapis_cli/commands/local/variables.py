@@ -14,7 +14,8 @@ class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
     def get_parser(self, prog_name):
         parser = super(VariablesList, self).get_parser(prog_name)
         parser = UploadJSONTemplate.extend_parser(self, parser)
-        parser.add_argument('-A', '--all',
+        parser.add_argument('-A',
+                            '--all',
                             dest='show_all',
                             action='store_false',
                             help='Also show empty variables')
@@ -37,7 +38,11 @@ class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
 
         # Filter empty values
         if parsed_args.show_all:
-            flat_vars = {k:v for (k, v) in flat_vars.items() if (v is not None) and (v != '')}
+            flat_vars = {
+                k: v
+                for (k, v) in flat_vars.items()
+                if (v is not None) and (v != '')
+            }
 
         flat_vars = sorted(flat_vars.items())
         # records = []
