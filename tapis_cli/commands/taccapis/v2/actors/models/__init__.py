@@ -1,1 +1,1 @@
-from .actor import Actor
+from .actor import Actor, HTTP_METHODS
