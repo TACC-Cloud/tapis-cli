@@ -6,3 +6,4 @@ SERVICE_VERSION = 'v2'
 
 from .list import ActorsList
 from .show import ActorsShow
+from .delete import ActorsDelete
