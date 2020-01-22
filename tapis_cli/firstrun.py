@@ -8,13 +8,22 @@ __all__ = ['firstrun']
 
 def display_aup():
     print('''
-Use of Tapis requires acceptance of the TACC Acceptable Use Policy,
+Use of Tapis requires acceptance of the TACC Acceptable Use Policy 
 which can be found at https://portal.tacc.utexas.edu/tacc-usage-policy
 ''')
-    return prompt_accept('Do you agree to abide by the AUP?',
+    return prompt_accept('Do you agree to abide by this AUP?',
                          None,
                          exit_reject=True)
 
+
+def display_coc():
+    print('''
+Use of Tapis requires acceptance of the Tapis Project Code of Conduct
+which can be found at https://tapis-project.org/code-conduct
+''')
+    return prompt_accept('Do you agree to abide by this CoC?',
+                         None,
+                         exit_reject=True)
 
 def opt_in_reporting():
     print('''
@@ -48,6 +57,8 @@ def firstrun():
     if not exist_firstrun():
         if settings.TAPIS_CLI_DISPLAY_AUP:
             display_aup()
+        if settings.TAPIS_CLI_DISPLAY_COC:
+            display_coc()      
         if settings.TAPIS_CLI_GA_DISABLE is False:
             if not opt_in_reporting():
                 settings_set('TAPIS_CLI_GA_DISABLE', 'true')

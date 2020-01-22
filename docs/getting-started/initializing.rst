@@ -12,17 +12,22 @@ be prompted for tenant, username, and password required to set up a session.
 
     $ tapis auth init
 
-    Use of Tapis requires acceptance of the TACC Acceptable Use Policy,
+    Use of Tapis requires acceptance of the TACC Acceptable Use Policy 
     which can be found at https://portal.tacc.utexas.edu/tacc-usage-policy
 
     Do you agree to abide by the AUP? (type 'y' or 'n' then Return) y
+
+    Use of Tapis requires acceptance of the Tapis Project Code of Conduct
+    which can be found at https://tapis-project.org/code-conduct
+
+    Do you agree to abide by this CoC? (type 'y' or 'n' then Return) y
 
     To improve our ability to support Tapis and the Tapis CLI, we would like to
     collect your IP addrress, operating system and Python version. No personally-
     identifiable information will be collected. This data will only be shared in
     aggregate form with funders and Tapis platform stakeholders.
 
-    Do you consent to this reporting? [Y/n]: y
+    Do you consent to this reporting? [Y/n]: Y
 
     Available Tenants
     =================
