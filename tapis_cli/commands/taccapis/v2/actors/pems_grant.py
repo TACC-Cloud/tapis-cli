@@ -37,21 +37,19 @@ class ActorsPemsGrant(ActorsFormatMany, ActorIdentifier, Username):
         }
         grant_result = self.tapis_client.actors.updatePermissions(
             actorId=actor_id, body=body)
-        results = self.tapis_client.actors.getPermissions(actorId=actor_id)
 
         records = []
-        for key in results:
+        for key in grant_result:
             record = []
             # Table display
             if self.app_verbose_level > self.VERBOSITY:
                 username = key
-                permission = results[key]
+                permission = grant_result[key]
                 record.append(username)
                 record.append(permission)
             else:
-                for key in headers:
-                    val = self.render_value(rec.get(key, None))
-                    record.append(val)
+                val = grant_result
+                record.append(val)
             if record not in records:
                     records.append(record)
 

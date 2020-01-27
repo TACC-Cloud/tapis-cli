@@ -90,11 +90,11 @@ class AbacoPermission(TapisModel):
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
-        ("username", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+        ("result", argtype.ARRAY, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("permission", argtype.OBJECT, Verbosity.LISTING,
+        ("message", argtype.OBJECT, Verbosity.LISTING,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
-        ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+        ("status", argtype.OBJECT, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]
 
@@ -104,7 +104,7 @@ class AbacoPermission(TapisModel):
         if verbosity_level is None:
             verbosity_level = Verbosity.LISTING
         if verbosity_level > Verbosity.BRIEF:
-            return ['username', 'permission', '_links']
+            return ['result']
         else:
             return ['username', 'permission']
 

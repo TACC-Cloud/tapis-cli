@@ -43,9 +43,8 @@ class ActorsPemsList(ActorsFormatMany, ActorIdentifier):
                 record.append(username)
                 record.append(permission)
             else:
-                for key in headers:
-                    val = self.render_value(results.get(key, None))
-                    record.append(val)
+                val = results
+                record.append(val)
             if record not in records:
                 records.append(record)
 
