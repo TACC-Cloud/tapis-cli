@@ -22,4 +22,4 @@ TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT = parse_boolean(
 # Automatically create a remote for the repo
 # assuming git server and credentials are available
 TAPIS_CLI_PROJECT_GIT_CREATE_REMOTE = parse_boolean(
-    os.environ.get('TAPIS_CLI_PROJECT_GIT_CREATE_REMOTE', false))
+    os.environ.get('TAPIS_CLI_PROJECT_GIT_CREATE_REMOTE', 'false'))

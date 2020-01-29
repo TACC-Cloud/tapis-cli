@@ -35,13 +35,16 @@ def set_from_string(s):
 
 def parse_boolean(s):
     """Takes a string and returns the equivalent as a boolean value."""
-    s = s.strip().lower()
-    if s in BOOLEAN_TRUE_STRINGS:
-        return True
-    elif s in BOOLEAN_FALSE_STRINGS:
-        return False
+    if isinstance(s, bool):
+        return s
     else:
-        raise ValueError('Invalid boolean value %r' % s)
+        s = s.strip().lower()
+        if s in BOOLEAN_TRUE_STRINGS:
+            return True
+        elif s in BOOLEAN_FALSE_STRINGS:
+            return False
+        else:
+            raise ValueError('Invalid boolean value %r' % s)
 
 
 def int_or_none(value):
