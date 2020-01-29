@@ -5,6 +5,7 @@ configparser
 curlify
 curlify
 dateparser
+gitpython
 pathlib2
 pbr
 python-dateutil

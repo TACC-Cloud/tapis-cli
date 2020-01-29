@@ -1,4 +1,5 @@
 import docker as dockerpy
+import git
 import os
 from cookiecutter.main import cookiecutter
 from slugify import slugify
@@ -53,6 +54,7 @@ class AppsInit(AppsFormatMany):
 
     def get_parser(self, prog_name):
         parser = super(AppsInit, self).get_parser(prog_name)
+        # Values for configuring the project itself
         parser.add_argument('project_name',
                             type=str,
                             metavar='<name>',
@@ -75,6 +77,7 @@ class AppsInit(AppsFormatMany):
                             metavar='<version>',
                             help='Project version')
 
+        # Coordinates for CookieCutter assets
         parser.add_argument('--repo',
                             type=str,
                             dest='source_repo',
@@ -96,6 +99,8 @@ class AppsInit(AppsFormatMany):
                             metavar='<template>',
                             help='CookieCutter Template ({})'.format(
                                 templates.DIRECTORY))
+
+        # Override specific workflow actions
         return parser
 
     def take_action(self, parsed_args):
@@ -131,6 +136,23 @@ class AppsInit(AppsFormatMany):
         except Exception as exc:
             self.exceptions.append(str(exc))
 
-        # cd into project and git init
+        # Attempt to set up project as git repo
+        try:
+            if settings.TAPIS_CLI_PROJECT_GIT_INIT:
+                r = git.Repo.init(project_path)
+                self.messages.append('Initialized git repo')
+                if settings.TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT:
+                    add_files = os.listdir(project_path)
+                    for af in add_files:
+                        r.index.add([af])
+                    r.index.commit('Automated first commit by Tapis CLI')
+                else:
+                    self.messages.commit('Skipped automated first commit')
+                # Placeholder for create and set remote
+                # Placeholder for push
+            else:
+                self.messages.append('Skipped initializing git repo')
+        except Exception as exc:
+            self.exceptions.append(str(exc))
 
         return (tuple(), tuple())
