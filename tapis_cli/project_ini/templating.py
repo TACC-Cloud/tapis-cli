@@ -60,6 +60,8 @@ def generate_template_ini(passed_vals=None):
     config = configparser.ConfigParser()
     config['app'] = {
         'name': '',
+        'description': '',
+        'label': '',
         'version': '',
         'bundle': '',
         'deployment_path': '',
