@@ -1,13 +1,14 @@
 import docker as dockerpy
 import os
 from cookiecutter.main import cookiecutter
+from slugify import slugify
 
 from tapis_cli import settings
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import (seconds, milliseconds, print_stderr)
 from tapis_cli.project_ini.mixins import AppIniArgs, DockerIniArgs, GitIniArgs
 from tapis_cli.commands.taccapis.v2.apps.create import AppsCreate
-from tapis_cli.clients.services.mixins import (WorkingDirectoryArg,
+from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt,
                                                UploadJSONTemplate, DockerPy)
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
 
@@ -43,6 +44,7 @@ class AppsInit(AppsFormatMany):
     document = None
     results = []
     messages = []
+    exceptions = []
     passed_vals = {}
 
     # Workflow control flags
@@ -55,6 +57,12 @@ class AppsInit(AppsFormatMany):
                             type=str,
                             metavar='<name>',
                             help='Project name')
+        parser.add_argument('output_dir',
+                            metavar='output_directory',
+                            default='.',
+                            nargs='?',
+                            type=str,
+                            help='Output directory (optional)')
         parser.add_argument('--description',
                             type=str,
                             dest='project_description',
@@ -94,19 +102,35 @@ class AppsInit(AppsFormatMany):
         # Load parsed arguments into extra_context for sending
         # to cookiecutter
         extra_context = {}
+        project_path = None
         # From CLI
         for cv in ('name', 'description', 'version'):
             val = getattr(parsed_args, 'project_' + cv, None)
             if val is not None:
                 extra_context[cv] = val
+
+        # safen name and predict final output path
+        extra_context['project_slug'] = slugify(extra_context['name'],
+                                                separator='_')
+        project_path = os.path.join(parsed_args.output_dir,
+                                    extra_context['project_slug'])
+
         # From settings
         extra_context[
             'docker_namespace'] = settings.TAPIS_CLI_REGISTRY_NAMESPACE
 
-        cookiecutter(parsed_args.source_repo,
-                     no_input=True,
-                     extra_context=extra_context,
-                     directory=parsed_args.source_dir,
-                     checkout=parsed_args.source_checkout)
+        # Generate project from template
+        try:
+            cookiecutter(parsed_args.source_repo,
+                         no_input=True,
+                         extra_context=extra_context,
+                         output_dir=parsed_args.output_dir,
+                         directory=parsed_args.source_dir,
+                         checkout=parsed_args.source_checkout)
+            self.messages.append('Created project at {0}'.format(project_path))
+        except Exception as exc:
+            self.exceptions.append(str(exc))
+
+        # cd into project and git init
 
         return (tuple(), tuple())

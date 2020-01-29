@@ -10,6 +10,7 @@ pbr
 python-dateutil
 python-dotenv
 requests
+python-slugify
 six
 stevedore
 stringcase
