@@ -8,7 +8,7 @@ from .config import find_config, load_config
 _ENV_PATH = load_config()  # noqa
 
 from .auth import *
-from .gitlab import *
+from .gitserver import *
 from .jupyter import *
 from .organization import *
 

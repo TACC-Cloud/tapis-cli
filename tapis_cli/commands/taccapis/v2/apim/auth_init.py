@@ -18,6 +18,10 @@ from tapis_cli.firstrun import firstrun
 from . import API_NAME, SERVICE_VERSION
 from .models import Token
 from .formatters import CreateTokenFormatOne
+from . import gitserver, registry
+
+from .gitserver.init import GitServerOpts
+from .registry.init import RegistryOpts
 
 __all__ = ['AuthInit']
 
@@ -27,7 +31,7 @@ logger = logging.getLogger(__name__)
 CLIENT_PREFIX = '_cli'
 
 
-class AuthInit(CreateTokenFormatOne):
+class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
     """Configure the local host for use with Tapis
     """
     VERBOSITY = Verbosity.BRIEF
@@ -50,6 +54,8 @@ class AuthInit(CreateTokenFormatOne):
         #                     dest='tapis_tenant_id',
         #                     action='store_true',
         #                     help='Force recreate a client if it exists')
+        parser = RegistryOpts.extend_parser(parser)
+        parser = GitServerOpts.extend_parser(parser)
         parser.add_argument('--interactive',
                             action='store_true',
                             help='Prompt for all values')
@@ -205,6 +211,10 @@ class AuthInit(CreateTokenFormatOne):
             str(ag._token),
             str(ag.expires_at)
         ]
+
+        (headers, data) = registry.init.interactive(parsed_args, headers, data)
+        (headers, data) = gitserver.init.interactive(parsed_args, headers,
+                                                     data)
 
         et.phone_home()
         return (tuple(headers), tuple(data))
