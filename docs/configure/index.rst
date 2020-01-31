@@ -3,12 +3,10 @@ Configure Tapis CLI
 ###################
 
 The Tapis CLI uses Python's _dotenv module for configuration via environment
-variables. Briefly, the CLI will look for a file ``.env`` containing
-``KEY=VALUE`` pairs starting in the current working directory, working up
-the parent directory tree to root. If it still cannot find an environment 
-file, it looks in ``$HOME/.env`` for one. A variable defined in the environment
-file can be overridden by setting an environment variable in the shell where
-the CLI was launched. Some options can be further overridden at run-time via
+variables. It reads and writes from ``$HOME/.env``, which is a file containing 
+``KEY=VALUE`` pairs. A variable defined in the environment file can be 
+overridden by setting an environment variable in the shell where the CLI 
+was launched. Some options can also overridden at run-time via
 command-line options.
 
 One may view the current settings for the Tapis CLI:

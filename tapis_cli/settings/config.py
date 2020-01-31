@@ -19,14 +19,7 @@ def find_config(filename='.env'):
             # Search from __file__ up to /
             env_file = find_dotenv(filename, raise_error_if_not_found=True)
         except (IOError, OSError):
-            # Search from current working directory
-            try:
-                env_file = find_dotenv(filename=filename,
-                                       raise_error_if_not_found=True,
-                                       usecwd=True)
-            except (IOError, OSError):
-                # Fall back to $HOME
-                pass
+            pass
     return env_file
 
 
