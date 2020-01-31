@@ -7,6 +7,8 @@ from .config import find_config, load_config
 
 _ENV_PATH = load_config()  # noqa
 
+from .redact import auto_redact
+
 from .auth import *
 from .gitserver import *
 from .jupyter import *
@@ -32,5 +34,8 @@ def all_settings():
         if not callable(item) and not name.startswith("__") \
                 and not isinstance(item, ModuleType):
             settings[name] = item
-    sorted_settings = {k: v for (k, v) in sorted(settings.items())}
+    sorted_settings = {
+        k: auto_redact(k, v)
+        for (k, v) in sorted(settings.items())
+    }
     return sorted_settings

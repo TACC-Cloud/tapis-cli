@@ -76,7 +76,7 @@ def interactive(parsed_args, headers, results):
         header_name = iv.lower()
 
         if context['interactive']:
-            if re.search('password|secret|token', key_name, re.IGNORECASE):
+            if settings.redact.key_is_private(key_name):
                 is_secret = True
             else:
                 is_secret = False
