@@ -23,14 +23,16 @@ be prompted for tenant, username, and password required to set up a session.
     Do you agree to abide by this CoC? (type 'y' or 'n' then Return) y
 
     To improve our ability to support Tapis and the Tapis CLI, we would like to
-    collect your IP addrress, operating system and Python version. No personally-
+    collect your IP address, operating system and Python version. No personally-
     identifiable information will be collected. This data will only be shared in
     aggregate form with funders and Tapis platform stakeholders.
 
     Do you consent to this reporting? [Y/n]: Y
 
+    Tapis API access
+    ################
     Available Tenants
-    =================
+    *****************
     3dem	agave.prod	araport.org	bridge	designsafe
     iplantc.org	irec	portals	sd2e	sgci
     tacc.prod	vdjserver.org
@@ -38,16 +40,38 @@ be prompted for tenant, username, and password required to set up a session.
     Enter a tenant name: tacc.prod
     Username: tacotron
     Password for tacotron:
-    +--------------+---------------------------------+
-    | Field        | Value                           |
-    +--------------+---------------------------------+
-    | tenant_id    | tacc.prod                       |
-    | username     | tacotron                        |
-    | client_name  | _cli-tacc.prod-tacotron-macbook |
-    | api_key      | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
-    | access_token | a31c66cfaa45451c95df6fd473ffd4b |
-    | expires_at   | Thu Sep 19 14:08:37 2019        |
-    +--------------+---------------------------------+
+    Container registry access
+    #########################
+    Registry Url [https://index.docker.io]:
+    Registry Username []: tacotron
+    Registry Password []:
+    Registry Namespace []: TACO
+    Git server access
+    #################
+    Git Url [https://github.com]:
+    Git Username []: taconaut
+    Git Token []: 
+    Git Namespace []: TACOS
+
+    +--------------------+---------------------------------+
+    | Field              | Value                           |
+    +--------------------+---------------------------------+
+    | tenant_id          | tacc.prod                       |
+    | username           | tacotron                        |
+    | client_name        | _cli-tacc.prod-tacotron-macbook |
+    | api_key            | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
+    | access_token       | a31c66cfaa45451c95df6fd473ffd4b |
+    | expires_at         | Thu Sep 19 14:08:37 2019        |
+    | registry_url       | https://index.docker.io         |
+    | registry_username  | tacotron                        |
+    | registry_password  | T0rchy$                         |
+    | registry_namespace | tacotron                        |
+    | git_url            | https://github.com              |
+    | git_username       | tacomatic                       |
+    | git_token          | hqd8kw59h2h5z4zw78e64qz9        |
+    | git_namespace      | TACOS                           |
+    +--------------------+---------------------------------+
+
 
 Getting Help
 ------------

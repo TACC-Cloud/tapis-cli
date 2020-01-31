@@ -29,7 +29,7 @@ which can be found at https://tapis-project.org/code-conduct
 def opt_in_reporting():
     print('''
 To improve our ability to support Tapis and the Tapis CLI, we would like to
-collect your IP addrress, operating system and Python version. No personally-
+collect your IP address, operating system and Python version. No personally-
 identifiable information will be collected. This data will only be shared in
 aggregate form with funders and Tapis platform stakeholders.
 ''')
