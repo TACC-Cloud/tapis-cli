@@ -19,6 +19,8 @@ from .workers_delete import ActorsWorkersDelete
 from .aliases_show import ActorsAliasesShow
 from .aliases_delete import ActorsAliasesDelete
 from .aliases_list import ActorsAliasesList
+from .aliases_create import ActorsAliasesCreate
 from .nonces_show import ActorsNoncesShow
 from .nonces_list import ActorsNoncesList
 from .nonces_delete import ActorsNoncesDelete
+from .nonces_create import ActorsNoncesCreate
