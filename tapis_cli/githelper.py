@@ -8,15 +8,22 @@ __all__ = [
 
 
 def get_git_revision_hash():
-    return subprocess.check_output(['git', 'rev-parse',
-                                    'HEAD']).decode().strip()
-
+    try:
+        return subprocess.check_output(['git', 'rev-parse',
+                                        'HEAD']).decode().strip()
+    except Exception:
+        return None
 
 def get_git_revision_short_hash():
-    return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'],
-                                   stderr=subprocess.DEVNULL).decode().strip()
-
+    try:
+        return subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'],
+                                    stderr=subprocess.DEVNULL).decode().strip()
+    except Exception:
+        return None
 
 def get_git_remote(name='origin'):
-    return subprocess.check_output(['git', 'remote', 'get-url', name],
-                                   stderr=subprocess.DEVNULL).decode().strip()
+    try:
+        return subprocess.check_output(['git', 'remote', 'get-url', name],
+                                    stderr=subprocess.DEVNULL).decode().strip()
+    except Exception:
+        return None
