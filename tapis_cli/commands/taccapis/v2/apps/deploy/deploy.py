@@ -14,7 +14,6 @@ from ..helpers import pems
 
 __all__ = ['AppsDeploy']
 
-
 class WorkflowFailed(Exception):
     pass
 
@@ -28,7 +27,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
     """Deploy a Tapis app project.
     """
-    config = None
+    config = {}
     document = None
     results = []
     messages = []
@@ -148,6 +147,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         if parsed_args.docker_tag is not None:
             self.passed_vals['docker']['tag'] = parsed_args.docker_tag
         self.config = self.all_key_values(parsed_args, self.passed_vals)
+
         # Override defaults
         # These allow options to be empty but receive default values from mandatory ones
         #
@@ -157,6 +157,13 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         # Force a tag to be app.version if does not exist
         if self.config.get('docker', {}).get('tag', None) is None:
             self.config['docker']['tag'] = self.config['app']['version']
+
+        # If Dockerfile is not present, turn off container workflow
+        if not os.path.exists(self._dockerfile()):
+            self.build = False
+            self.pull = False
+            self.push = False
+            self.messages.append(('build', 'Dockerfile not present. Skipped container actions.'))
 
         try:
             self._build(parsed_args)
