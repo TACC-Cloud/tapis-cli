@@ -216,10 +216,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         """
         # TODO - handle working directory
         # Default bundle directory name is 'assets'
-        try:
-            return self.config['app']['bundle']
-        except KeyError:
-            return self.config['app'].get('name', 'assets')
+        return self.config['app'].get('bundle', 'assets')
 
     def _build(self, parsed_args):
         """Build container
@@ -316,11 +313,16 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
             dep_path_parent = os.path.dirname(dep_path)
             dep_path_temp = os.path.join(dep_path_parent, self._bundle())
 
-            print_stderr('Uploading app bundle to agave://{}/{}'.format(
-                dep_sys, dep_path))
+            print_stderr('Uploading app asset directory "{0}" to agave://{1}/{2}'.format(
+                self._bundle(), dep_sys, dep_path))
+            
 
             start_time = milliseconds()
             try:
+                # First, check existence of bundle. No point in taking other action
+                # if it does not exist
+                if not os.path.exists(self._bundle()):
+                    raise FileNotFoundError('Unable to locate asset directory "{}"'.format(self._bundle()))
                 # TODO - incorporate working directory
                 manage.makedirs(dep_path_parent,
                                 system_id=dep_sys,
@@ -380,10 +382,10 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
             granted = []
             for pem in [('update', 'ALL'), ('execute', 'READ_EXECUTE'),
                         ('read', 'READ')]:
-                users = self.config['grants'][pem[0]].split(',')
+                users = self.config['grants'].get(pem[0], '').split(',')
                 users = [u.strip() for u in users]
                 for u in users:
-                    if u not in granted:
+                    if u is not '' and u not in granted:
                         if pems.grant(self._app_id(),
                                       u,
                                       pem[1],
