@@ -1,12 +1,14 @@
 import docker as dockerpy
 import os
 
+from tapis_cli import settings
 from tapis_cli.utils import (seconds, milliseconds, print_stderr)
 from tapis_cli.project_ini.mixins import AppIniArgs, DockerIniArgs, GitIniArgs
 from tapis_cli.commands.taccapis.v2.apps.create import AppsCreate
 from tapis_cli.clients.services.mixins import (WorkingDirectoryArg,
                                                UploadJSONTemplate, DockerPy)
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
+from tapis_cli.commands.taccapis.v2.systems.helpers import default_execution_system, default_storage_system
 
 from ..formatters import AppsFormatMany
 from .. import API_NAME, SERVICE_VERSION
@@ -148,6 +150,22 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         if parsed_args.docker_tag is not None:
             self.passed_vals['docker']['tag'] = parsed_args.docker_tag
         self.config = self.all_key_values(parsed_args, self.passed_vals)
+
+        # Process preferred execution and deployment system
+        # 1. Resolve the values from local and platform configuration
+        pref_execution = settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM
+        pref_deploy = settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM
+        if pref_execution is None or pref_execution == '':
+            pref_execution = default_execution_system(self.tapis_client)
+        if pref_deploy is None or pref_deploy == '':
+            pref_deploy = default_deployment_system(self.tapis_client)
+        # 2. Insert into variables app.execution_system and app.deployment_system
+        #    if they are not specified in project.ini
+        if self.config.get('app', {}).get('execution_system', None) is None:
+            self.config['app']['execution_system'] = pref_execution
+        if self.config.get('app', {}).get('deployment_system', None) is None:
+            self.config['app']['deployment_system'] = pref_deploy
+
         # Override defaults
         # These allow options to be empty but receive default values from mandatory ones
         #

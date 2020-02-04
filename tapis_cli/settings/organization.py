@@ -1,7 +1,7 @@
 import os
 from .helpers import (parse_boolean, ns_os_environ_get)
 
-__all__ = []
+__all__ = ['TAPIS_CLI_PREF_EXECUTION_SYSTEM', 'TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM']
 
 # TENANT_DNS_DOMAIN = os.environ.get('TENANT_DNS_DOMAIN', 'tacc.utexas.edu')
 
@@ -22,3 +22,6 @@ __all__ = []
 # # NOTE - This is a mock
 # TENANT_PRIMARY_STORAGE_SYSTEM = os.environ.get('TENANT_PRIMARY_STORAGE_SYSTEM',
 #                                                'data-tapis-sandbox')
+
+TAPIS_CLI_PREF_EXECUTION_SYSTEM = os.environ.get('TAPIS_CLI_PREF_EXECUTION_SYSTEM', None)
+TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM = os.environ.get('TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM', None)
