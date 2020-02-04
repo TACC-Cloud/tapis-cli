@@ -422,7 +422,6 @@ class UploadJSONTemplate(UploadJsonFile):
         t = templating.key_values(passed_vals)
         ini_path = self.get_ini_path(parsed_args.ini_file_name)
         p = project_ini.key_values(ini_path)
-        raise SystemError(p)
         project_ini.update_config(t, p, add_keys=True)
         # tapis dynamic variables
         tapis_variables = self.key_values()
@@ -440,6 +439,7 @@ class UploadJSONTemplate(UploadJsonFile):
 
         # Load up core template vars
         tmpl = templating.key_values({})
+
         project_ini.update_config(cfg, tmpl, add_keys=True)
 
         # Extend with API-related dynamic vars
