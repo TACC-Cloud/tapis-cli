@@ -52,7 +52,6 @@ def update_config(config={}, values_dict=None, add_keys=False):
                                 k, k1))
         else:
             if add_keys:
-                print(k, v)
                 config[k] = v
             elif k in config:
                 config[k] = v
