@@ -5,7 +5,7 @@ from tapis_cli.search import argtype, argmod
 from tapis_cli import constants
 from . import TapisModel
 
-__all__ = ['Permission']
+__all__ = ['Permission', 'AbacoPermission']
 
 
 class Permission(TapisModel):
@@ -68,6 +68,45 @@ class Permission(TapisModel):
         """Returns a UNIX shell representation of a Tapis permission
         """
         return cls.PEM_POSIX_MAPPING.get(permission.upper(), '---')
+
+    @classmethod
+    def validate(cls, permission, permissive=False):
+        if permission in cls.NAMES:
+            return True
+        else:
+            if permissive:
+                return False
+            else:
+                raise ValueError(
+                    '{0} not a valid Permission'.format(permission))
+
+class AbacoPermission(TapisModel):
+    """Model of an Abaco permission
+    """
+
+    NAMES = [
+        'READ', 'EXECUTE', 'UPDATE', 'NONE'
+    ]
+
+    SEARCH_ARGS = [
+        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+        ("result", argtype.ARRAY, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, True),
+        ("message", argtype.OBJECT, Verbosity.LISTING,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
+        ("status", argtype.OBJECT, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, 'links', False)
+    ]
+
+    def get_headers(self, verbosity_level=1, formatter='table'):
+        """Custom headers by verbosity for ActorPermission
+        """
+        if verbosity_level is None:
+            verbosity_level = Verbosity.LISTING
+        if verbosity_level > Verbosity.BRIEF:
+            return ['result']
+        else:
+            return ['username', 'permission']
 
     @classmethod
     def validate(cls, permission, permissive=False):

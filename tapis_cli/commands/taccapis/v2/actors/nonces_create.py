@@ -1,0 +1,50 @@
+from tapis_cli.display import Verbosity
+from tapis_cli.search import SearchWebParam
+from .mixins import ActorIdentifier
+
+from . import API_NAME, SERVICE_VERSION
+from .formatters import ActorsFormatOne
+from .models import Nonce
+
+__all__ = ['ActorsNoncesCreate']
+
+
+class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
+    """Add a nonce to an actor
+    """
+    VERBOSITY = Verbosity.RECORD
+    EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
+
+    def get_parser(self, prog_name):
+        parser = super(ActorsNoncesCreate, self).get_parser(prog_name)
+        parser = ActorIdentifier.extend_parser(self, parser)
+        parser.add_argument('level',
+                            metavar='<level>',
+                            type=str,
+                            help='Permissions level associated with this \
+                                  nonce (default is EXECUTE)')
+        parser.add_argument('maxUses',
+                            metavar='<maxUses>',
+                            type=int,
+                            help='Max number of times nonce can be redeemed')
+
+        return parser
+
+    def take_action(self, parsed_args):
+        parsed_args = self.preprocess_args(parsed_args)
+        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        body = {
+            'level': parsed_args.level,
+            'maxUses': parsed_args.maxUses
+        }
+        rec = self.tapis_client.actors.addNonce(actorId=actor_id, body=body)
+        headers = self.render_headers(Nonce, parsed_args)
+        data = []
+        for key in headers:
+            try:
+                val = rec[key]
+            except KeyError:
+                val = None
+            data.append(self.render_value(val))
+
+        return (tuple(headers), tuple(data))
