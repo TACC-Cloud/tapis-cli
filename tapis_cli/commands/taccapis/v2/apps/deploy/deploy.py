@@ -10,7 +10,7 @@ from tapis_cli.clients.services.mixins import (WorkingDirectoryArg,
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
 from tapis_cli.commands.taccapis.v2.systems.helpers import default_execution_system, default_storage_system
 
-from ..formatters import AppsFormatMany
+from ..formatters import AppsFormatManyUnlimited
 from .. import API_NAME, SERVICE_VERSION
 from ..helpers import pems
 
@@ -25,7 +25,7 @@ class UploadAppTemplate(UploadJSONTemplate):
     optional = True
 
 
-class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
+class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
     """Deploy a Tapis app project.
     """

@@ -13,7 +13,7 @@ from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt,
                                                UploadJSONTemplate, DockerPy)
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
 
-from ..formatters import AppsFormatMany
+from ..formatters import AppsFormatManyUnlimited
 from .. import API_NAME, SERVICE_VERSION
 from ..helpers import pems
 from . import templates
@@ -34,7 +34,7 @@ __all__ = ['AppsInit']
 # (if possible and opted for - create remote; remote add origin; write project.ini#git.remote,name)
 
 
-class AppsInit(AppsFormatMany):
+class AppsInit(AppsFormatManyUnlimited):
     """Initialize a new Tapis app project.
     """
 
