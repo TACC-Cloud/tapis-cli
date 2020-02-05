@@ -58,24 +58,28 @@ class AppsInit(AppsFormatManyUnlimited):
         parser.add_argument('project_name',
                             type=str,
                             metavar='<name>',
-                            help='Project name')
+                            help='App name')
         parser.add_argument('output_dir',
                             metavar='output_directory',
                             default='.',
                             nargs='?',
                             type=str,
                             help='Output directory (optional)')
+        parser.add_argument('--label',
+                            type=str,
+                            dest='project_label',
+                            metavar='<label>',
+                            help='App human-readable label')
         parser.add_argument('--description',
                             type=str,
                             dest='project_description',
                             metavar='<description>',
-                            help='Project description')
+                            help='App description')
         parser.add_argument('--version',
                             type=str,
                             dest='project_version',
-                            default='0.0.1',
                             metavar='<version>',
-                            help='Project version')
+                            help='App version')
 
         # Coordinates for CookieCutter assets
         parser.add_argument('--repo',
@@ -113,12 +117,15 @@ class AppsInit(AppsFormatManyUnlimited):
             val = getattr(parsed_args, 'project_' + cv, None)
             if val is not None:
                 extra_context[cv] = val
+                self.messages.append(('setup', 'Project {0}: {1}'.format(cv, val)))
 
         # safen name and predict final output path
         extra_context['project_slug'] = slugify(extra_context['name'],
                                                 separator='_')
         project_path = os.path.join(parsed_args.output_dir,
                                     extra_context['project_slug'])
+        self.messages.append(('setup', 'Safened project name: {0}'.format(extra_context['project_slug'])))
+        self.messages.append(('setup', 'Project path: {0}'.format(project_path)))
 
         # From settings
         extra_context[
@@ -132,27 +139,29 @@ class AppsInit(AppsFormatManyUnlimited):
                          output_dir=parsed_args.output_dir,
                          directory=parsed_args.source_dir,
                          checkout=parsed_args.source_checkout)
-            self.messages.append('Created project at {0}'.format(project_path))
+            self.messages.append(('clone', 'Project path: {0}'.format(project_path)))
         except Exception as exc:
-            self.exceptions.append(str(exc))
+            self.messages.append(('clone', str(exc)))
 
         # Attempt to set up project as git repo
         try:
             if settings.TAPIS_CLI_PROJECT_GIT_INIT:
                 r = git.Repo.init(project_path)
-                self.messages.append('Initialized git repo')
+                self.messages.append(('git-init', 'Initialized as git repo'))
                 if settings.TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT:
                     add_files = os.listdir(project_path)
                     for af in add_files:
                         r.index.add([af])
                     r.index.commit('Automated first commit by Tapis CLI')
+                    self.messages.append(('git-init', 'Performed automated first commit'))
                 else:
-                    self.messages.commit('Skipped automated first commit')
+                    self.messages.append(('git-init', 'Skipped automated first commit'))
                 # Placeholder for create and set remote
                 # Placeholder for push
             else:
-                self.messages.append('Skipped initializing git repo')
+                self.messages.append(('git-init', 'Skipped initializing project as git repo'))
         except Exception as exc:
-            self.exceptions.append(str(exc))
+            self.messages.append(('git-init', str(exc)))
 
-        return (tuple(), tuple())
+        headers = ['stage', 'message']
+        return (tuple(headers), tuple(self.messages))
