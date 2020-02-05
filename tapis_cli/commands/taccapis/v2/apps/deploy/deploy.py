@@ -16,6 +16,8 @@ from ..helpers import pems
 
 __all__ = ['AppsDeploy']
 
+DEFAULT_BUNDLE_NAME = 'assets'
+
 class WorkflowFailed(Exception):
     pass
 
@@ -24,6 +26,7 @@ class UploadAppTemplate(UploadJSONTemplate):
     default = 'app.json'
     optional = True
 
+# TODO - Identify and implement other run-time overrides as they make sense
 
 class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
@@ -150,21 +153,6 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self.passed_vals['docker']['tag'] = parsed_args.docker_tag
         self.config = self.all_key_values(parsed_args, self.passed_vals)
 
-        # Process preferred execution and deployment system
-        # 1. Resolve the values from local and platform configuration
-        pref_execution = settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM
-        pref_deploy = settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM
-        if pref_execution is None or pref_execution == '':
-            pref_execution = default_execution_system(self.tapis_client)
-        if pref_deploy is None or pref_deploy == '':
-            pref_deploy = default_storage_system(self.tapis_client)
-        # 2. Insert into variables app.execution_system and app.deployment_system
-        #    if they are not specified in project.ini
-        if self.config.get('app', {}).get('execution_system', None) is None:
-            self.config['app']['execution_system'] = pref_execution
-        if self.config.get('app', {}).get('deployment_system', None) is None:
-            self.config['app']['deployment_system'] = pref_deploy
-
         # Override defaults
         # These allow options to be empty but receive default values from mandatory ones
         #
@@ -192,9 +180,6 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self._grant(parsed_args)
         except Exception as exc:
             raise
-
-
-#            self.messages.append(('deploy', str(exc)))
 
         headers = ['stage', 'message']
         return (tuple(headers), tuple(self.messages))
@@ -232,8 +217,8 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         """Compute path to application asset bundle
         """
         # TODO - handle working directory
-        # Default bundle directory name is 'assets'
-        return self.config['app'].get('bundle', 'assets')
+        # Default to DEFAULT_BUNDLE_NAME
+        return self.config['app'].get('bundle', DEFAULT_BUNDLE_NAME)
 
     def _build(self, parsed_args):
         """Build container
