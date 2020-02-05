@@ -17,7 +17,7 @@ from cliff.app import App
 from tapis_cli import constants
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import serializable
-from tapis_cli import project_ini, templating
+from tapis_cli import project_ini, settings, templating
 
 __all__ = [
     'OptionNotImplemented', 'AppVerboseLevel', 'JsonVerbose',
@@ -411,7 +411,7 @@ class UploadJSONTemplate(UploadJsonFile):
                             dest='ini_file_name',
                             metavar='<file>',
                             type=str,
-                            help='Optional .ini file')
+                            help='.ini file (project.ini)')
         return parser
 
     def get_ini_path(self, filename):
@@ -423,12 +423,28 @@ class UploadJSONTemplate(UploadJsonFile):
         ini_path = self.get_ini_path(parsed_args.ini_file_name)
         p = project_ini.key_values(ini_path)
         project_ini.update_config(t, p, add_keys=True)
+
         # tapis dynamic variables
-        tapis_variables = self.key_values()
-        # right-merged dictionary
+        tapis = self.key_values()
+        # right-merge dictionary
         # dynamic values always overide ini-loaded defaults
-        project_ini.update_config(t, tapis_variables, add_keys=True)
-        project_ini.update_config(t, {}, add_keys=True)
+        project_ini.update_config(t, tapis, add_keys=True)
+
+        # Compute default execution and deployment systems
+        defaults = {'app': {'execution_system': None, 'deployment_system': None}}
+        if settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM is not None and settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM != '':
+            defaults['app']['execution_system'] = settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM
+        else:
+            defaults['app']['execution_system'] = tapis.get(
+                'default_private_execution', tapis.get('default_public_execution', None))
+        if settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM is not None and settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM != '':
+            defaults['app']['deployment_system'] = settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM
+        else:
+            defaults['app']['deployment_system'] = tapis.get(
+                'default_private_storage', tapis.get('default_public_storage', None))
+
+        # right-merge dictionary
+        project_ini.update_config(t, defaults, add_keys=True)
         return t
 
     # OVERRIDES DO NOT SEEM TO BE WORKING
@@ -445,6 +461,32 @@ class UploadJSONTemplate(UploadJsonFile):
         # Extend with API-related dynamic vars
         tapis = self.key_values()
         project_ini.update_config(cfg, tapis, add_keys=True)
+
+        # Compute and merge in default execution and deployment systems
+        # consult settings first, then resolve from tapis config if defaults arent learnable
+        defaults = {'app': {'execution_system': None, 'deployment_system': None}}
+        if settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM is not None and settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM != '':
+            defaults['app']['execution_system'] = settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM
+        else:
+            if tapis.get('default_private_execution', None) is not None:
+                defaults['app']['execution_system'] = tapis.get('default_private_execution')
+            elif tapis.get('default_public_execution', None) is not None:
+                defaults['app']['execution_system'] = tapis.get('default_public_execution')
+            else:
+                defaults['app']['execution_system'] = None
+
+        if settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM is not None and settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM != '':
+            defaults['app']['deployment_system'] = settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM
+        else:
+            if tapis.get('default_private_storage', None) is not None:
+                defaults['app']['deployment_system'] = tapis.get('default_private_storage')
+            elif tapis.get('default_public_storage', None) is not None:
+                defaults['app']['deployment_system'] = tapis.get('default_public_storage')
+            else:
+                defaults['app']['deployment_system'] = None
+        
+        # right-merge dictionary
+        project_ini.update_config(cfg, defaults, add_keys=True)
 
         # Finally, layer over passed values. Assumption is that these
         # are passed by CLI or other run-time means
@@ -470,10 +512,35 @@ class UploadJSONTemplate(UploadJsonFile):
         ini_path = self.get_ini_path(parsed_args.ini_file_name)
         config = project_ini.key_values(ini_path, as_dict=True)
         # tapis dynamic variables
-        tapis_variables = self.key_values()
+        tapis = self.key_values()
         # right-merged dictionary
         # dynamic values always overide ini-loaded defaults
-        project_ini.update_config(config, tapis_variables, add_keys=True)
+        project_ini.update_config(config, tapis, add_keys=True)
+
+        # Compute and merge in default execution and deployment systems
+        # consult settings first, then resolve from tapis config if defaults arent learnable
+        defaults = {'app': {'execution_system': None, 'deployment_system': None}}
+        if settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM is not None and settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM != '':
+            defaults['app']['execution_system'] = settings.TAPIS_CLI_PREF_EXECUTION_SYSTEM
+        else:
+            if tapis.get('default_private_execution', None) is not None:
+                defaults['app']['execution_system'] = tapis.get('default_private_execution')
+            elif tapis.get('default_public_execution', None) is not None:
+                defaults['app']['execution_system'] = tapis.get('default_public_execution')
+            else:
+                defaults['app']['execution_system'] = None
+
+        if settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM is not None and settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM != '':
+            defaults['app']['deployment_system'] = settings.TAPIS_CLI_PREF_DEPLOYMENT_SYSTEM
+        else:
+            if tapis.get('default_private_storage', None) is not None:
+                defaults['app']['deployment_system'] = tapis.get('default_private_storage')
+            elif tapis.get('default_public_storage', None) is not None:
+                defaults['app']['deployment_system'] = tapis.get('default_public_storage')
+            else:
+                defaults['app']['deployment_system'] = None
+        project_ini.update_config(config, defaults, add_keys=True)
+
         # Accept run-time overrides
         project_ini.update_config(config, passed_vals, add_keys=True)
         # render, where merged variables overrides module-provided values
