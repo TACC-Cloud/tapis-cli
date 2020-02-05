@@ -15,17 +15,25 @@ def key_values(filename=None, as_dict=True):
     """
     file_path = config_path(filename)
     if os.path.exists(file_path):
-        return load_config(file_path, as_dict=as_dict)
+        cfg = load_config(file_path, as_dict=as_dict)
+        # Ensure that loaded config file always has minimum set of sections
+        template = generate_template_ini()
+        for k, v in template.items():
+            if cfg.get(k, None) is None:
+                cfg[k] = {}
     else:
-        return dict()
+        cfg = {}
+    
+    return cfg
 
-
-def update_config(config, values_dict=None, add_keys=False):
+def update_config(config={}, values_dict=None, add_keys=False):
     """Recursively merge a dict onto a ConfigParser
 
     This is used to initialize the parser with passed values, like one
     might do when setting up a project for the first time.
     """
+    if config is None:
+        config = {}
     if not isinstance(values_dict, dict):
         values_dict = dict()
     for k, v in values_dict.items():
@@ -49,6 +57,8 @@ def update_config(config, values_dict=None, add_keys=False):
                 config[k] = v
             else:
                 raise KeyError('Unknown config section: {0}'.format(k))
+
+        return config
 
 
 def generate_template_ini(passed_vals=None):

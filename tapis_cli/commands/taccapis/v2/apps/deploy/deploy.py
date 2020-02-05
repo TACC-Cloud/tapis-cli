@@ -16,7 +16,6 @@ from ..helpers import pems
 
 __all__ = ['AppsDeploy']
 
-
 class WorkflowFailed(Exception):
     pass
 
@@ -30,7 +29,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
     """Deploy a Tapis app project.
     """
-    config = None
+    config = {}
     document = None
     results = []
     messages = []
@@ -158,7 +157,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         if pref_execution is None or pref_execution == '':
             pref_execution = default_execution_system(self.tapis_client)
         if pref_deploy is None or pref_deploy == '':
-            pref_deploy = default_deployment_system(self.tapis_client)
+            pref_deploy = default_storage_system(self.tapis_client)
         # 2. Insert into variables app.execution_system and app.deployment_system
         #    if they are not specified in project.ini
         if self.config.get('app', {}).get('execution_system', None) is None:
@@ -175,6 +174,13 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         # Force a tag to be app.version if does not exist
         if self.config.get('docker', {}).get('tag', None) is None:
             self.config['docker']['tag'] = self.config['app']['version']
+
+        # If Dockerfile is not present, turn off container workflow
+        if not os.path.exists(self._dockerfile()):
+            self.build = False
+            self.pull = False
+            self.push = False
+            self.messages.append(('build', 'Dockerfile not present. Skipped container actions.'))
 
         try:
             self._build(parsed_args)
@@ -227,10 +233,7 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
         """
         # TODO - handle working directory
         # Default bundle directory name is 'assets'
-        try:
-            return self.config['app']['bundle']
-        except KeyError:
-            return self.config['app'].get('name', 'assets')
+        return self.config['app'].get('bundle', 'assets')
 
     def _build(self, parsed_args):
         """Build container
@@ -327,11 +330,16 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
             dep_path_parent = os.path.dirname(dep_path)
             dep_path_temp = os.path.join(dep_path_parent, self._bundle())
 
-            print_stderr('Uploading app bundle to agave://{}/{}'.format(
-                dep_sys, dep_path))
+            print_stderr('Uploading app asset directory "{0}" to agave://{1}/{2}'.format(
+                self._bundle(), dep_sys, dep_path))
+            
 
             start_time = milliseconds()
             try:
+                # First, check existence of bundle. No point in taking other action
+                # if it does not exist
+                if not os.path.exists(self._bundle()):
+                    raise FileNotFoundError('Unable to locate asset directory "{}"'.format(self._bundle()))
                 # TODO - incorporate working directory
                 manage.makedirs(dep_path_parent,
                                 system_id=dep_sys,
@@ -391,10 +399,10 @@ class AppsDeploy(AppsFormatMany, DockerPy, WorkingDirectoryArg,
             granted = []
             for pem in [('update', 'ALL'), ('execute', 'READ_EXECUTE'),
                         ('read', 'READ')]:
-                users = self.config['grants'][pem[0]].split(',')
+                users = self.config['grants'].get(pem[0], '').split(',')
                 users = [u.strip() for u in users]
                 for u in users:
-                    if u not in granted:
+                    if u is not '' and u not in granted:
                         if pems.grant(self._app_id(),
                                       u,
                                       pem[1],

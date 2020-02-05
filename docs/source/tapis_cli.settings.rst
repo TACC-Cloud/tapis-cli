@@ -48,10 +48,10 @@ tapis\_cli.settings.display module
    :undoc-members:
    :show-inheritance:
 
-tapis\_cli.settings.gitlab module
----------------------------------
+tapis\_cli.settings.gitserver module
+------------------------------------
 
-.. automodule:: tapis_cli.settings.gitlab
+.. automodule:: tapis_cli.settings.gitserver
    :members:
    :undoc-members:
    :show-inheritance:
@@ -84,6 +84,30 @@ tapis\_cli.settings.organization module
 ---------------------------------------
 
 .. automodule:: tapis_cli.settings.organization
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.settings.projects module
+-----------------------------------
+
+.. automodule:: tapis_cli.settings.projects
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.settings.redact module
+---------------------------------
+
+.. automodule:: tapis_cli.settings.redact
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.settings.registry module
+-----------------------------------
+
+.. automodule:: tapis_cli.settings.registry
    :members:
    :undoc-members:
    :show-inheritance:

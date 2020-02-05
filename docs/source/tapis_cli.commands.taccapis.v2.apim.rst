@@ -11,7 +11,9 @@ Subpackages
 
 .. toctree::
 
+   tapis_cli.commands.taccapis.v2.apim.gitserver
    tapis_cli.commands.taccapis.v2.apim.models
+   tapis_cli.commands.taccapis.v2.apim.registry
 
 Submodules
 ----------

@@ -68,7 +68,7 @@ def interactive(parsed_args, headers, results):
 
     if context['interactive']:
         print('Git server access')
-        print('=================')
+        print('#################')
 
     for iv in VARS:
         prompt_name = iv.replace('_', ' ').title()

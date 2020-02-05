@@ -15,14 +15,18 @@ Sections
 App
 ===
 
-This section contains variables for use specifically in an *app* project.
+This section contains variables to configure an *app* project.
 
 +-------------------+---------------------------------------------------+
 | Option            | Function                                          |
 +-------------------+---------------------------------------------------+
-| **name**          | App name                                          |
+| **name**             | App name                                                                          |
 +-------------------+---------------------------------------------------+
-| **version**       | App version                                       |
+| **label**              | App human-readable label                                              |
++-------------------+---------------------------------------------------+
+| **description**  | App short description                                                      |
++-------------------+---------------------------------------------------+
+| **version**         | App version                                                                        |
 +-------------------+---------------------------------------------------+
 | bundle            | Directory containing application assets (bundle)  |
 +-------------------+---------------------------------------------------+
@@ -36,7 +40,7 @@ This section contains variables for use specifically in an *app* project.
 Actor
 =====
 
-This section contains variables for use specifically in an *actor* project.
+This section contains variables to configure an *actor* project.
 
 Docker
 ======
@@ -46,15 +50,15 @@ registry settings for the project. There is an implicit assumption that
 a project corresponds to a single container repo. 
 
 +-----------------+-------------------------------------+
-| Option          | Function                            |
+| Option          | Function                                                         |
 +-----------------+-------------------------------------+
-| dockerfile      | Docker image build file             |
+| dockerfile      | Docker image build file                               |
 +-----------------+-------------------------------------+
-| **namespace**   | Docker Hub username or organization |
+| **namespace**   | Registry username or organization   |
 +-----------------+-------------------------------------+
-| **repo**        | Container image repo name           |
+| **repo**        | Container image repo name                      |
 +-----------------+-------------------------------------+
-| tag             | Container image tag                 |
+| **tag**           | Container image tag                                   |
 +-----------------+-------------------------------------+
 | build_args      | Build arguments for container image |
 +-----------------+-------------------------------------+
@@ -112,8 +116,8 @@ Git
 ===
 
 This section contains variables that define local and remote Git  
-settings for the project. There is an implicit assumption that 
-a project corresponds to a single git repository.  
+settings for the project. We assume that  a project corresponds 
+to a single git repository.  
 
 Grants
 ======

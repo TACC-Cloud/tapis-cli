@@ -69,6 +69,10 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
 
         firstrun()
 
+        if parsed_args.interactive:
+            print('Tapis API access')
+            print('################')
+
         try:
             logger.debug('Read from local Tapis cache...')
             ag_context = Agave._read_current(agave_kwargs=True)
@@ -109,7 +113,8 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             if temp_tenant_id is None:
                 temp_tenant_id = TAPIS_DEFAULT_TENANT_ID
             tl = [t.get('code') for t in agavepy.tenants.list_tenants()]
-            print('Available Tenants\n=================')
+            print('Available Tenants')
+            print('*****************')
             print(fmtcols(tl, 5))
             ag_context['tenant_id'] = prompt('Enter a tenant name',
                                              temp_tenant_id)
