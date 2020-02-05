@@ -69,39 +69,40 @@ class AppsInit(AppsFormatManyUnlimited):
                             type=str,
                             dest='project_label',
                             metavar='<label>',
-                            help='App human-readable label')
+                            help='Human-readable label')
         parser.add_argument('--description',
                             type=str,
                             dest='project_description',
                             metavar='<description>',
-                            help='App description')
+                            help='One-sentence description')
         parser.add_argument('--version',
                             type=str,
                             dest='project_version',
                             metavar='<version>',
-                            help='App version')
+                            help='Semantic version')
 
         # Coordinates for CookieCutter assets
-        parser.add_argument('--repo',
+        cc_group = parser.add_argument_group('Source Template')
+        cc_group.add_argument('--repo',
                             type=str,
                             dest='source_repo',
                             default=templates.COOKIECUTTER_URI,
                             metavar='<uri>',
                             help='CookieCutter Repo ({})'.format(
                                 templates.COOKIECUTTER_URI))
-        parser.add_argument('--checkout',
+        cc_group.add_argument('--checkout',
                             type=str,
                             dest='source_checkout',
                             default=templates.CHECKOUT,
                             metavar='<checkout>',
-                            help='CookieCutter Branch/Tag/Commit ({})'.format(
+                            help='Branch/Tag/Commit ({})'.format(
                                 templates.CHECKOUT))
-        parser.add_argument('--template',
+        cc_group.add_argument('--template',
                             type=str,
                             dest='source_dir',
                             default=templates.DIRECTORY,
                             metavar='<template>',
-                            help='CookieCutter Template ({})'.format(
+                            help='Template name ({})'.format(
                                 templates.DIRECTORY))
 
         # Override specific workflow actions
