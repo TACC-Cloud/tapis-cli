@@ -4,12 +4,12 @@ import os
 from .helpers import (parse_boolean, int_or_none)
 
 __all__ = [
-    'TAPIS_CLI_GIT_URL', 'TAPIS_CLI_GIT_USERNAME', 'TAPIS_CLI_GIT_TOKEN',
+    'TAPIS_CLI_GIT_USERNAME', 'TAPIS_CLI_GIT_TOKEN',
     'TAPIS_CLI_GIT_NAMESPACE'
 ]
 
 # Default to public Github
-TAPIS_CLI_GIT_URL = os.environ.get('TAPIS_CLI_GIT_URL', 'https://github.com')
+# TAPIS_CLI_GIT_URL = os.environ.get('TAPIS_CLI_GIT_URL', 'https://github.com')
 
 TAPIS_CLI_GIT_USERNAME = os.environ.get('TAPIS_CLI_GIT_USERNAME', None)
 TAPIS_CLI_GIT_TOKEN = os.environ.get('TAPIS_CLI_GIT_TOKEN', None)

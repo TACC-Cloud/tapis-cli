@@ -15,25 +15,48 @@ logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
 ENV_PREFIX = 'TAPIS_CLI_'
-VARS = ('GIT_URL', 'GIT_USERNAME', 'GIT_TOKEN', 'GIT_NAMESPACE')
+VARS = ('GIT_USERNAME', 'GIT_TOKEN', 'GIT_NAMESPACE')
 
+GITHUBCOM = 'github.com'
+GITLABCOM = 'gitlab.com'
+GITLAB = 'gitlab'
+OTHERGIT = 'other'
+DEFAULTGIT = GITHUBCOM
+
+API_TYPES = (GITHUBCOM)
+API_URLS = {
+    GITHUBCOM: 'https://api.github.com', 
+    GITLABCOM: 'https://gitlab.com/api/v4', 
+    GITLAB: None,
+    OTHERGIT: None}
+
+ACCESS_TOKEN_HELP_URLS = {
+    GITHUBCOM: 'https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line',
+    GITLABCOM: 'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
+    GITLAB: 'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
+    OTHERGIT: 'Consult your git server administrator'}
 
 class GitServerOpts(ParserExtender):
     def extend_parser(parser):
         """Configures a Command to accept git server config
         """
-        parser.add_argument('--git-url',
-                            metavar='<url>',
-                            help='Git server URL')
-        parser.add_argument('--git-username',
+        git_group = parser.add_argument_group('GitHub Access')
+        # git_group.add_argument('--git-variant',
+        #                     metavar='<variant>',
+        #                     choices=API_TYPES,
+        #                     help='Server variant')
+        # git_group.add_argument('--git-url',
+        #                     metavar='<url>',
+        #                     help='API URL')
+        git_group.add_argument('--git-username',
                             metavar='<username>',
-                            help='Git server username')
-        parser.add_argument('--git-token',
+                            help='Username')
+        git_group.add_argument('--git-token',
                             metavar='<token>',
-                            help='Git server access token')
-        parser.add_argument('--git-namespace',
+                            help='Personal access token')
+        git_group.add_argument('--git-namespace',
                             metavar='<namespace>',
-                            help='Git server namespace')
+                            help='Namespace')
         return parser
 
 
@@ -45,6 +68,7 @@ def _read_current(parsed_args):
         key_name = ENV_PREFIX + ev
         value = getattr(settings, key_name, None)
         current[key_name] = value
+
     # Read from parsed_args
     for av in VARS:
         key_name = ENV_PREFIX + av
@@ -76,6 +100,11 @@ def interactive(parsed_args, headers, results):
         header_name = iv.lower()
 
         if context['interactive']:
+
+            if key_name == ENV_PREFIX + 'GIT_TOKEN':
+                print('Learn about {} personal access tokens:'.format(GITHUBCOM))
+                print(ACCESS_TOKEN_HELP_URLS[GITHUBCOM])
+
             if settings.redact.key_is_private(key_name):
                 is_secret = True
             else:
