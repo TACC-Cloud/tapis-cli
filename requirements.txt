@@ -19,4 +19,5 @@ Jinja2
 PyGithub
 PyMongo
 docker>=4.1.0
+websocket-client==0.53.0
 agavepy@git+https://github.com/TACC/agavepy.git@cli
