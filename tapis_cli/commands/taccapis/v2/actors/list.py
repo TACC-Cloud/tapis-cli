@@ -1,16 +1,24 @@
 from tapis_cli.display import Verbosity
+from tapis_cli.utils import print_stderr, fnmatches
+
 from . import API_NAME, SERVICE_VERSION
-from .models import Actor
+from .mixins import GlobListFilter
+from .models import Actor, FILTERABLE_KEYS
 from .formatters import ActorsFormatMany
 
 __all__ = ['ActorsList']
 
 
-class ActorsList(ActorsFormatMany):
+class ActorsList(ActorsFormatMany, GlobListFilter):
     """List available Actors
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
+
+    def get_parser(self, prog_name):
+        parser = super(ActorsList, self).get_parser(prog_name)
+        parser = GlobListFilter.extend_parser(self, parser)
+        return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
@@ -23,9 +31,22 @@ class ActorsList(ActorsFormatMany):
 
         records = []
         for rec in results:
-            record = []
-            for key in headers:
-                val = self.render_value(rec.get(key, None))
-                record.append(val)
-            records.append(record)
+
+            include = False
+            if parsed_args.list_filter is None:
+                include = True
+            else:
+                for k in FILTERABLE_KEYS:
+                    if parsed_args.list_filter in rec[k]:
+                        include = True
+                    elif fnmatches(rec[k], [parsed_args.list_filter]):
+                        include = True
+
+            if include:
+                record = []
+                for key in headers:
+                    val = self.render_value(rec.get(key, None))
+                    record.append(val)
+                records.append(record)
+
         return (tuple(headers), tuple(records))
