@@ -5,11 +5,13 @@ from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
-__all__ = ['Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION']
+__all__ = ['Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS']
 
 API_NAME = 'actors'
 
 HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+
+FILTERABLE_KEYS = []
 
 class Worker(TapisModel):
     """Model of a Tapis actor Worker

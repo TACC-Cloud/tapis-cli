@@ -5,9 +5,11 @@ from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
-__all__ = ['Actor', 'API_NAME', 'SERVICE_VERSION']
+__all__ = ['Actor', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS']
 
 API_NAME = 'actors'
+
+FILTERABLE_KEYS = ['description', 'level']
 
 class Nonce(TapisModel):
     """Model of a Tapis Actor Nonce
