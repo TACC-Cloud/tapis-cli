@@ -5,19 +5,17 @@ from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
-__all__ = ['Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS']
+__all__ = ['Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION']
 
 API_NAME = 'actors'
 
 HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 
-FILTERABLE_KEYS = ['finalState', 'status']
-
 class Execution(TapisModel):
     """Model of a Tapis Actor Execution
     """
     service_id_type = 'Execution'
-
+    FILTERABLE_KEYS = ['finalState', 'status']
     SEARCH_ARGS = [
         ("actorId", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),

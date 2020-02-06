@@ -6,21 +6,18 @@ from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
 __all__ = [
-    'Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS'
+    'Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION'
 ]
 
 API_NAME = 'actors'
 
 HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 
-FILTERABLE_KEYS = ['name', 'description', 'image']
-
-
 class Actor(TapisModel):
     """Model of a Tapis actor
     """
     service_id_type = 'Actor'
-
+    FILTERABLE_KEYS = ['name', 'description', 'image', 'owner']
     SEARCH_ARGS = [
         ("createTime", argtype.DATETIME, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),

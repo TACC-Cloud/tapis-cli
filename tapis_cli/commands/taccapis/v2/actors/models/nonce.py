@@ -5,17 +5,15 @@ from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
-__all__ = ['Actor', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS']
+__all__ = ['Actor', 'API_NAME', 'SERVICE_VERSION']
 
 API_NAME = 'actors'
-
-FILTERABLE_KEYS = ['description', 'level']
 
 class Nonce(TapisModel):
     """Model of a Tapis Actor Nonce
     """
     service_id_type = 'Nonce'
-
+    FILTERABLE_KEYS = ['description', 'level']
     SEARCH_ARGS = [
         ("actorId", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),

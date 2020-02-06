@@ -3,7 +3,7 @@ from tapis_cli.utils import print_stderr, fnmatches
 
 from . import API_NAME, SERVICE_VERSION
 from .mixins import GlobListFilter
-from .models import Actor, FILTERABLE_KEYS
+from .models import Actor
 from .formatters import ActorsFormatMany
 
 __all__ = ['ActorsList']
@@ -14,6 +14,7 @@ class ActorsList(ActorsFormatMany, GlobListFilter):
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
+    FILTERABLE_KEYS = Actor.FILTERABLE_KEYS
 
     def get_parser(self, prog_name):
         parser = super(ActorsList, self).get_parser(prog_name)
@@ -36,7 +37,7 @@ class ActorsList(ActorsFormatMany, GlobListFilter):
             if parsed_args.list_filter is None:
                 include = True
             else:
-                for k in FILTERABLE_KEYS:
+                for k in self.FILTERABLE_KEYS:
                     if parsed_args.list_filter in rec[k]:
                         include = True
                     elif fnmatches(rec[k], [parsed_args.list_filter]):

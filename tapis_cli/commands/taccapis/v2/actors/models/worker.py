@@ -11,13 +11,11 @@ API_NAME = 'actors'
 
 HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
 
-FILTERABLE_KEYS = []
-
 class Worker(TapisModel):
     """Model of a Tapis actor Worker
     """
     service_id_type = 'Worker'
-
+    FILTERABLE_KEYS = ['hostIp', 'status']
     SEARCH_ARGS = [
         ("chName", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),

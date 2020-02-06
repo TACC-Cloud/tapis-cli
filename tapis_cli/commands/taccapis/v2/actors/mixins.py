@@ -14,9 +14,10 @@ class GlobListFilter(ParserExtender):
 
     Sets 'parsed_args.list_filter'
     """
+    FILTERABLE_KEYS = ['id']
     def extend_parser(self, parser):
         parser.add_argument('--filter',
-                            metavar='<filter>',
+                            metavar='<string>',
                             dest='list_filter',
-                            help='Unix-style glob')
+                            help='Matches {}'.format(','.join(self.FILTERABLE_KEYS)))
         return parser
