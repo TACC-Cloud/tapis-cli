@@ -4,6 +4,8 @@ from tapis_cli.utils import fnmatches
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatMany
+
+from tapis_cli.utils import fnmatches
 from .models import Alias
 from .mixins import GlobListFilter
 

@@ -19,5 +19,5 @@ class GlobListFilter(ParserExtender):
         parser.add_argument('--filter',
                             metavar='<string>',
                             dest='list_filter',
-                            help='Matches {}'.format(','.join(self.FILTERABLE_KEYS)))
+                            help='Filter by {}'.format(','.join(self.FILTERABLE_KEYS)))
         return parser
