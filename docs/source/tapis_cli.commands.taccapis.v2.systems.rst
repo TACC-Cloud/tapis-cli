@@ -48,6 +48,14 @@ tapis\_cli.commands.taccapis.v2.systems.formatters module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.systems.helpers module
+------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.systems.helpers
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.systems.history module
 ------------------------------------------------------
 
