@@ -3,6 +3,7 @@
 from tapis_cli.commands.taccapis.v2 import SERVICE_VERSION
 
 from .models import Job, API_NAME
+from .cancel import JobsCancel
 from .hide import JobsHide
 from .history import JobsHistory
 from .list import JobsList

@@ -17,6 +17,14 @@ Subpackages
 Submodules
 ----------
 
+tapis\_cli.commands.taccapis.v2.jobs.cancel module
+--------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.jobs.cancel
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.jobs.formatters module
 ------------------------------------------------------
 

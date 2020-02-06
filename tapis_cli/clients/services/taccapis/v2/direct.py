@@ -85,16 +85,23 @@ class TaccApiDirectClient(object):
         #        resp.raise_for_status()
         return resp.json().get('result', {})
 
-    def post(self, path=None, content_type=None):
+    def post(self, path=None, data=None, content_type=None):
         url = self.build_url(path)
         post_headers = self.headers
         if content_type is not None:
             post_headers['Content-type'] = content_type
-        resp = requests.post(url, headers=post_headers)
+        resp = requests.post(url, data=data, headers=post_headers)
         show_curl(resp)
         resp = self._raise_for_status(resp)
-        #        resp.raise_for_status()
-        return resp.json().get('result', {})
+        
+        # Some direct POST actions are management actions that return only a 
+        # message. Thus we try to return "result" first, but then fail over 
+        # to returning "message" before handling the most annoying case where 
+        # no response is returned, in which case an empty dict is the 
+        # appropriate response.
+        # TODO - Consider adding this logic to get and get_data ^
+        return resp.json().get('result', 
+                               resp.json().get('message', {}))
 
     def post_data_basic(self,
                         data=None,
@@ -112,7 +119,13 @@ class TaccApiDirectClient(object):
         show_curl(resp)
 
         resp = self._raise_for_status(resp)
-        #        resp.raise_for_status()
+        
+        # The use case for post_data_basic is communicating with 
+        # Tapis APIs that accept only Basic Auth. These include all 
+        # the API manager APIs, and the appropriate response is to 
+        # return the entire JSON payload since APIM responses do not 
+        # adhere to the (status, version, result) structure favored 
+        # by the core Tapis APIs
         return resp.json()
 
     def _raise_for_status(self, resp):

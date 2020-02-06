@@ -9,17 +9,20 @@ to this is when we add entirely new commands or functions (such as
 integration with GitHub or the like).
 
 **************************
-1.0.0 Alpha 2 (01-17-2020)
+1.0.0 Alpha 3 (02-14-2020)
 **************************
 
 Added
 -----
 
+    - Support for ``tapis apps init`` command using CookieCutter templates
     - Support for the ``tapis apps deploy`` command using projects
-    - Support for templated JSON docs
+    - Support for template variables inside submitted JSON docs
     - Support for project-specific configuration files
-    - A first-run screen now captures AUP and user data collection consent
+    - A first-run screen now captures AUP, COC, and user data collection consent
+    - The ``tapis auth init`` command now captures details about the user's preferred container registry and git server
     - The ``files download`` command now supports ``--include`` as well as ``--exclude``
+    - Support for canceling an in-progress job via ``tapis jobs cancel``
 
 Changed
 -------
