@@ -326,7 +326,7 @@ def fg_dim(message):
 
 
 def fnmatches(file_name, patterns=None):
-    """Check if a filename matches a member of patterns
+    """Check if a filename string matches a specified patterns
 
     Uses UNIX-style file wildcards
     """
