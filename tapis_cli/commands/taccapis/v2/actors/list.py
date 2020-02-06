@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.utils import print_stderr, fnmatches
+from tapis_cli.utils import fnmatches
 
 from . import API_NAME, SERVICE_VERSION
 from .mixins import GlobListFilter
