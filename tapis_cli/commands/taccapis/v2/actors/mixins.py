@@ -15,8 +15,8 @@ class GlobListFilter(ParserExtender):
     Sets 'parsed_args.list_filter'
     """
     def extend_parser(self, parser):
-        parser.add_argument('list_filter',
-                            metavar='filter',
-                            nargs='?',
-                            help='Unix-style glob filter')
+        parser.add_argument('--filter',
+                            metavar='<filter>',
+                            dest='list_filter',
+                            help='Unix-style glob')
         return parser
