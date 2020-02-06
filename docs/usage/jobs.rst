@@ -26,6 +26,9 @@ General Commands
    :command: jobs history
 
 .. autoprogram-cliff:: tapis.cli
+   :command: jobs cancel
+
+.. autoprogram-cliff:: tapis.cli
    :command: jobs resubmit
 
 .. autoprogram-cliff:: tapis.cli
