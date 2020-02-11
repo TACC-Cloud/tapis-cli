@@ -3,6 +3,7 @@ from tapis_cli.search import SearchWebParam
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatOne
+from .models import Alias
 
 __all__ = ['ActorsAliasesShow']
 
@@ -10,7 +11,7 @@ __all__ = ['ActorsAliasesShow']
 class ActorsAliasesShow(ActorsFormatOne):
     """Show details for an Actor Alias
     """
-    VERBOSITY = Verbosity.RECORD
+    VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
@@ -24,7 +25,7 @@ class ActorsAliasesShow(ActorsFormatOne):
         parsed_args = self.preprocess_args(parsed_args)
         alias = parsed_args.alias
         rec = self.tapis_client.actors.getAlias(alias=alias)
-        headers = ["actorId", "alias", "owner"]
+        headers = self.render_headers(Alias, parsed_args)
         data = []
         for key in headers:
             try:

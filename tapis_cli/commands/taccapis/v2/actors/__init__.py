@@ -24,3 +24,4 @@ from .nonces_show import ActorsNoncesShow
 from .nonces_list import ActorsNoncesList
 from .nonces_delete import ActorsNoncesDelete
 from .nonces_create import ActorsNoncesCreate
+from .submit import ActorsSubmit

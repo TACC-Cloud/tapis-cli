@@ -15,7 +15,7 @@ __all__ = ['ActorsAliasesList']
 class ActorsAliasesList(ActorsFormatMany, GlobListFilter):
     """List all current aliases
     """
-    VERBOSITY = Verbosity.RECORD
+    VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
     FILTERABLE_KEYS = Alias.FILTERABLE_KEYS
 
@@ -29,7 +29,7 @@ class ActorsAliasesList(ActorsFormatMany, GlobListFilter):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)
         results = self.tapis_client.actors.listAliases()
-        headers = ["actorId", "alias", "owner"]
+        headers = self.render_headers(Alias, parsed_args)
 
         records = []
         for rec in results:

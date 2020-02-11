@@ -41,4 +41,6 @@ class Execution(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("workerId", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, 'links', False)
     ]
