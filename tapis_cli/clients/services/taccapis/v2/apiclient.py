@@ -29,7 +29,7 @@ class TaccApiClient(object):
 
     def init_clients(self, passed_args=None):
         self.tapis_client = Agave.restore()
-        self.tapis_client.token.refresh()
+        self.tapis_client.refresh()
         self.requests_client = self._get_direct(self.tapis_client)
         return self
 

@@ -197,7 +197,7 @@ def download(source,
         print_stderr('Walking remote resource...')
     start_time = seconds()
     # Try to avoid timeouts since walk is already pretty slow
-    agave.token.refresh()
+    agave.refresh()
     all_targets = walk(source, job_uuid=job_uuid, recurse=True, agave=agave)
     elapsed_walk = seconds() - start_time
 
@@ -232,7 +232,7 @@ def download(source,
     downloads = [list(a) for a in zip(paths, sizes, mods, rel_paths)]
     start_time_all = seconds()
     # Try to avoid timeouts since walk is already pretty slow
-    agave.token.refresh()
+    agave.refresh()
     for src, size, mod, dest in downloads:
         if progress:
             print_stderr('Downloading {0}...'.format(os.path.basename(src)))

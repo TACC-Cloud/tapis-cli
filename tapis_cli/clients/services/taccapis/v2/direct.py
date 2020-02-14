@@ -23,7 +23,7 @@ class TaccApiDirectClient(object):
         # TODO - Catch when client is missing properties
         # token = agave_client.token.token_info['access_token']
         # Always refresh when using a requests call
-        # agave_client.token.refresh()
+        # agave_client.refresh()
         token = agave_client._token
         self.user_agent = user_agent()
         self.api_server = agave_client.api_server

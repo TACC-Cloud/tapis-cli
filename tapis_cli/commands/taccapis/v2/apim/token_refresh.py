@@ -28,7 +28,7 @@ class TokenRefresh(TokenFormatOne):
 
         headers = super(TokenRefresh, self).render_headers(Token, parsed_args)
         try:
-            result = self.tapis_client.token.refresh()
+            result = self.tapis_client.refresh()
         except HTTPError as h:
             if str(h).startswith('400'):
                 raise AgaveError(

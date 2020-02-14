@@ -28,7 +28,7 @@ class TaccApisBearer(TaccApisCommandBase):
                                       token=parsed_args.access_token)
         else:
             self.tapis_client = client
-            self.tapis_client.token.refresh()
+            self.tapis_client.refresh()
         self.requests_client = self._get_direct(self.tapis_client)
         return self
 
