@@ -12,8 +12,8 @@ __all__ = ['ActorsNoncesCreate']
 class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
     """Add a nonce to an actor
     """
-    VERBOSITY = Verbosity.RECORD
-    EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
+    VERBOSITY = Verbosity.BRIEF
+    EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(ActorsNoncesCreate, self).get_parser(prog_name)
@@ -25,11 +25,11 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
                             default='EXECUTE',
                             help='Optional Permissions level associated with this \
                                   nonce (default is EXECUTE)')
-        parser.add_argument('--maxUses',
+        parser.add_argument('--max-uses',
                             metavar='<maxUses>',
                             type=int,
                             required=False,
-                            default=1,
+                            default=-1,
                             help='Optional Max number of times nonce can be redeemed',
                             )
 
@@ -40,7 +40,7 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         body = {
             'level': parsed_args.level,
-            'maxUses': parsed_args.maxUses
+            'maxUses': parsed_args.max_uses
         }
         rec = self.tapis_client.actors.addNonce(actorId=actor_id, body=body)
         headers = self.render_headers(Nonce, parsed_args)

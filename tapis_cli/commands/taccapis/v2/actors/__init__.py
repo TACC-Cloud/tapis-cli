@@ -13,9 +13,11 @@ from .pems_revoke import ActorsPemsRevoke
 from .pems_show import ActorsPemsShow
 from .execs_show import ActorsExecsShow
 from .execs_list import ActorsExecsList
+from .execs_logs import ActorsExecsLogs
 from .workers_list import ActorsWorkersList
 from .workers_show import ActorsWorkersShow
 from .workers_delete import ActorsWorkersDelete
+from .workers_create import ActorsWorkersCreate
 from .aliases_show import ActorsAliasesShow
 from .aliases_delete import ActorsAliasesDelete
 from .aliases_list import ActorsAliasesList
