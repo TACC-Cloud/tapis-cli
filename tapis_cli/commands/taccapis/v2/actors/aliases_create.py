@@ -4,6 +4,7 @@ from .mixins import ActorIdentifier
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatOne
+from .models import Alias
 
 __all__ = ['ActorsAliasesCreate']
 
@@ -11,7 +12,7 @@ __all__ = ['ActorsAliasesCreate']
 class ActorsAliasesCreate(ActorsFormatOne, ActorIdentifier):
     """Add an alias of an actor
     """
-    VERBOSITY = Verbosity.RECORD
+    VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
@@ -32,7 +33,7 @@ class ActorsAliasesCreate(ActorsFormatOne, ActorIdentifier):
             'alias': alias
         }
         rec = self.tapis_client.actors.addAlias(body=body)
-        headers = ["actorId", "alias", "owner"]
+        headers = self.render_headers(Alias, parsed_args)
         data = []
         for key in headers:
             try:

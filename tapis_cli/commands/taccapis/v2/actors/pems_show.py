@@ -1,16 +1,16 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import Username
 from .mixins import ActorIdentifier
+from tapis_cli.clients.services.mixins import Username
 from tapis_cli.commands.taccapis.model import AbacoPermission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatOne
 
 __all__ = ['ActorsPemsShow']
 
 
-class ActorsPemsShow(ActorsFormatMany, ActorIdentifier, Username):
-    """Show Permissions on an Actor for specific User
+class ActorsPemsShow(ActorsFormatOne, ActorIdentifier, Username):
+    """Show Permissions on an Actor for a user
     """
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -24,32 +24,18 @@ class ActorsPemsShow(ActorsFormatMany, ActorIdentifier, Username):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        API_PATH = '{0}/permissions/{1}'.format(actor_id, parsed_args.username)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION, API_PATH)
+        user = parsed_args.username
+        results = self.tapis_client.actors.getPermissions(actorId=actor_id)
         headers = self.render_headers(AbacoPermission, parsed_args)
-        results = self.requests_client.get_data(params=self.post_payload)
+        username = []
+        permission = []
 
-        # TODO - Account for the wierd behavior where querying ANY username
-        # will return +rwx even if the username is fictitious. A client-side
-        # (partial) would be to list the pems, extract the usernames, and
-        # validate presence of <username> among the. Another would be to
-        # simply list all pems and extract the matching row by <username>
-        # for actors this will return a dictionary with key, values:
-        # {"username":"permission"} , so we need to parse this differently
+        if user in results:
+            username.append(user)
+            permission.append(results[user])
+        else:
+            username.append('None')
+            permission.append('None')
+        data = [username, permission]
 
-        records = []
-        for key in results:
-            record = []
-            # Table display
-            if self.app_verbose_level > self.VERBOSITY:
-                username = key
-                permission = results[key]
-                record.append(username)
-                record.append(permission)
-            else:
-                val = results
-                record.append(val)
-            if record not in records:
-                records.append(record)
-
-        return(tuple(headers), tuple(records))
+        return (tuple(headers), tuple(data))

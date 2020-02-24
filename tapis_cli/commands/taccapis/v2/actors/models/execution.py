@@ -15,7 +15,7 @@ class Execution(TapisModel):
     """Model of a Tapis Actor Execution
     """
     service_id_type = 'Execution'
-
+    FILTERABLE_KEYS = ['finalState', 'status']
     SEARCH_ARGS = [
         ("actorId", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
@@ -41,4 +41,6 @@ class Execution(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("workerId", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, 'links', False)
     ]

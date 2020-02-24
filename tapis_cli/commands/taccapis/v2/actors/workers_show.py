@@ -12,7 +12,7 @@ __all__ = ['ActorsWorkersShow']
 class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier):
     """Show Worker information of an Actor
     """
-    VERBOSITY = Verbosity.RECORD
+    VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):

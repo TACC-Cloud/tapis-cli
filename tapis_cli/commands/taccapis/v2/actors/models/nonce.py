@@ -13,30 +13,32 @@ class Nonce(TapisModel):
     """Model of a Tapis Actor Nonce
     """
     service_id_type = 'Nonce'
-
+    FILTERABLE_KEYS = ['description', 'level']
     SEARCH_ARGS = [
-        ("actorId", argtype.STRING, Verbosity.BRIEF,
+        ("actorId", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("apiServer", argtype.STRING, Verbosity.BRIEF,
+        ("apiServer", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("createTime", argtype.DATETIME, Verbosity.LISTING_VERBOSE,
+        ("createTime", argtype.DATETIME, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("currentUses", argtype.INTEGER, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("description", argtype.STRING, Verbosity.LISTING_VERBOSE,
+        ("description", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("id", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("lastUseTime", argtype.STRING, Verbosity.LISTING_VERBOSE,
+        ("lastUseTime", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("level", argtype.STRING, Verbosity.LISTING_VERBOSE,
+        ("level", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("maxUses", argtype.INTEGER, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("owner", argtype.STRING, Verbosity.BRIEF,
+        ("owner", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
-        ("remainingUses", argtype.INTEGER, Verbosity.BRIEF,
+        ("remainingUses", argtype.INTEGER, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("roles", argtype.ARRAY, Verbosity.BRIEF,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False)
+        ("roles", argtype.ARRAY, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, 'links', False)
     ]

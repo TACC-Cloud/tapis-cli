@@ -104,7 +104,7 @@ class AbacoPermission(TapisModel):
         if verbosity_level is None:
             verbosity_level = Verbosity.LISTING
         if verbosity_level > Verbosity.BRIEF:
-            return ['result']
+            return ['username', 'permission', 'status']
         else:
             return ['username', 'permission']
 
