@@ -3,7 +3,8 @@
 
 __all__ = [
     'PLATFORM', 'CLI', 'ACCESS_TOKEN', 'REFRESH_TOKEN', 'TENANT', 'CLIENT_KEY',
-    'CLIENT_SECRET', 'PEM_TRUE', 'PEM_FALSE', 'GOOGLE_ANALYTICS_ID'
+    'CLIENT_SECRET', 'PEM_TRUE', 'PEM_FALSE', 'GOOGLE_ANALYTICS_ID',
+    'TAPIS_AUTH_FAIL', 'API_SERVER'
 ]
 
 # Platform name (useful if we rebrand)
@@ -11,15 +12,17 @@ PLATFORM = 'Tapis'
 # CLI top-level command
 CLI = 'tapis'
 # Bearer token
-ACCESS_TOKEN = 'access_token'
+ACCESS_TOKEN = 'access token'
 # Refresh token
-REFRESH_TOKEN = 'refresh_token'
+REFRESH_TOKEN = 'refresh token'
 # Tenant concept
 TENANT = 'tenant'
 # Oauth client key
 CLIENT_KEY = 'client key'
 # Oauth client secret
 CLIENT_SECRET = 'client secret'
+# API host
+API_SERVER = 'API server'
 
 # Has permission
 PEM_TRUE = 'True'
@@ -28,3 +31,6 @@ PEM_FALSE = 'False'
 
 # Google Analytics
 GOOGLE_ANALYTICS_ID = 'UA-147552755-1'
+
+# AUTH FAILED
+TAPIS_AUTH_FAIL = "Failed to load Tapis API client. Run 'tapis auth init [--interactive]' to resolve this."

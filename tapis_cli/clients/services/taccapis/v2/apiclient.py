@@ -1,7 +1,7 @@
 import datetime
 import json
 import os
-from agavepy.agave import Agave
+from agavepy.agave import Agave, AgaveError
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .direct import TaccApiDirectClient
 import logging

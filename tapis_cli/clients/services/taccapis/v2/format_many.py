@@ -1,3 +1,4 @@
+from agavepy.agave import AgaveError
 from tapis_cli.clients.http import HTTPFormatMany
 from tapis_cli.settings import TAPIS_CLI_PAGE_SIZE
 from .bearer import TaccApisBearer
@@ -15,7 +16,10 @@ class TaccApisFormatManyUnlimited(JsonVerbose, HTTPFormatMany, TaccApisBearer):
         return parser
 
     def preprocess_args(self, parsed_args):
+        # try:
         self.init_clients(parsed_args)
+        # except Exception:
+        # raise AgaveError("Failed to load Tapis API client. Run 'tapis auth init [--interactive]' to resolve this.")
         parsed_args = super(TaccApisFormatManyUnlimited,
                             self).preprocess_args(parsed_args)
         self.update_payload(parsed_args)
@@ -32,20 +36,22 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
 
         # print('TaccApisFormatMany.get_parser')
         parser = TaccApisFormatManyUnlimited.get_parser(self, prog_name)
-        parser.add_argument('-l',
-                            '--limit',
-                            dest='limit',
-                            metavar='<int>',
-                            default=TAPIS_CLI_PAGE_SIZE,
-                            type=int,
-                            help='Limit to L records')
-        parser.add_argument('-o',
-                            '--offset',
-                            default=0,
-                            metavar='<int>',
-                            dest='offset',
-                            type=int,
-                            help='Skip first O records')
+        p = parser.add_argument_group('pagination')
+        p.add_argument('-l',
+                       '--limit',
+                       dest='limit',
+                       metavar='<int>',
+                       default=TAPIS_CLI_PAGE_SIZE,
+                       type=int,
+                       help='Limit to N records (default: {})'.format(
+                           TAPIS_CLI_PAGE_SIZE))
+        p.add_argument('-o',
+                       '--offset',
+                       default=0,
+                       metavar='<int>',
+                       dest='offset',
+                       type=int,
+                       help='Skip first N records')
         return parser
 
     def update_payload(self, parsed_args):

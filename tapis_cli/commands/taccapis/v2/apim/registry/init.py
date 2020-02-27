@@ -23,18 +23,19 @@ class RegistryOpts(ParserExtender):
     def extend_parser(parser):
         """Configures a Command to accept container registry config
         """
-        parser.add_argument('--registry-url',
-                            metavar='<url>',
-                            help='Registry URL')
-        parser.add_argument('--registry-username',
-                            metavar='<username>',
-                            help='Registry username')
-        parser.add_argument('--registry-password',
-                            metavar='<password>',
-                            help='Registry password')
-        parser.add_argument('--registry-namespace',
-                            metavar='<namespace>',
-                            help='Registry namespace')
+        reg_group = parser.add_argument_group('Registry Access')
+        reg_group.add_argument('--registry-url',
+                               metavar='<url>',
+                               help='Registry URL')
+        reg_group.add_argument('--registry-username',
+                               metavar='<username>',
+                               help='Registry username')
+        reg_group.add_argument('--registry-password',
+                               metavar='<password>',
+                               help='Registry password')
+        reg_group.add_argument('--registry-namespace',
+                               metavar='<namespace>',
+                               help='Registry namespace')
         return parser
 
 
@@ -68,8 +69,8 @@ def interactive(parsed_args, headers, results):
     context = _read_current(parsed_args)
 
     if context['interactive']:
-        print('Container registry access')
-        print('#########################')
+        print('Configure container registry access:')
+        print('###################################')
 
     for iv in VARS:
         prompt_name = iv.replace('_', ' ').title()

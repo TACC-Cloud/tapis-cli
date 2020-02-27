@@ -4,8 +4,7 @@ import os
 from .helpers import (parse_boolean, int_or_none)
 
 __all__ = [
-    'TAPIS_CLI_GIT_USERNAME', 'TAPIS_CLI_GIT_TOKEN',
-    'TAPIS_CLI_GIT_NAMESPACE'
+    'TAPIS_CLI_GIT_USERNAME', 'TAPIS_CLI_GIT_TOKEN', 'TAPIS_CLI_GIT_NAMESPACE'
 ]
 
 # Default to public Github

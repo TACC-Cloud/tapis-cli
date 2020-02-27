@@ -1,3 +1,4 @@
+from agavepy.agave import AgaveError
 from tapis_cli.clients.http import HTTPFormatOne
 from .bearer import TaccApisBearer
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
@@ -22,7 +23,10 @@ class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
         return self
 
     def preprocess_args(self, parsed_args):
+        # try:
         self.init_clients(parsed_args)
+        # except Exception:
+        # raise AgaveError("Failed to load Tapis API client. Run 'tapis auth init [--interactive]' to resolve this.")
         parsed_args = super(TaccApisFormatOne,
                             self).preprocess_args(parsed_args)
         self.update_payload(parsed_args)
@@ -46,7 +50,10 @@ class TaccApisFormatOneNoBearer(JsonVerbose, HTTPFormatOne):
         return self
 
     def preprocess_args(self, parsed_args):
+        # try:
         self.init_clients(parsed_args)
+        # except Exception:
+        # raise AgaveError("Failed to load Tapis API client. Run 'tapis auth init [--interactive]' to resolve this.")
         parsed_args = super(TaccApisFormatOneNoBearer,
                             self).preprocess_args(parsed_args)
         self.update_payload(parsed_args)

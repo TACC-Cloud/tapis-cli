@@ -25,16 +25,22 @@ DEFAULTGIT = GITHUBCOM
 
 API_TYPES = (GITHUBCOM)
 API_URLS = {
-    GITHUBCOM: 'https://api.github.com', 
-    GITLABCOM: 'https://gitlab.com/api/v4', 
+    GITHUBCOM: 'https://api.github.com',
+    GITLABCOM: 'https://gitlab.com/api/v4',
     GITLAB: None,
-    OTHERGIT: None}
+    OTHERGIT: None
+}
 
 ACCESS_TOKEN_HELP_URLS = {
-    GITHUBCOM: 'https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line',
-    GITLABCOM: 'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
-    GITLAB: 'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
-    OTHERGIT: 'Consult your git server administrator'}
+    GITHUBCOM:
+    'https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line',
+    GITLABCOM:
+    'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
+    GITLAB:
+    'https://docs.gitlab.com/ce/user/profile/personal_access_tokens.html',
+    OTHERGIT: 'Consult your git server administrator'
+}
+
 
 class GitServerOpts(ParserExtender):
     def extend_parser(parser):
@@ -49,14 +55,14 @@ class GitServerOpts(ParserExtender):
         #                     metavar='<url>',
         #                     help='API URL')
         git_group.add_argument('--git-username',
-                            metavar='<username>',
-                            help='Username')
+                               metavar='<username>',
+                               help='Git username')
         git_group.add_argument('--git-token',
-                            metavar='<token>',
-                            help='Personal access token')
+                               metavar='<token>',
+                               help='Git personal access token')
         git_group.add_argument('--git-namespace',
-                            metavar='<namespace>',
-                            help='Namespace')
+                               metavar='<namespace>',
+                               help='Git namespace')
         return parser
 
 
@@ -91,8 +97,8 @@ def interactive(parsed_args, headers, results):
     context = _read_current(parsed_args)
 
     if context['interactive']:
-        print('Git server access')
-        print('#################')
+        print('Configure Git server access:')
+        print('###########################')
 
     for iv in VARS:
         prompt_name = iv.replace('_', ' ').title()
@@ -102,7 +108,8 @@ def interactive(parsed_args, headers, results):
         if context['interactive']:
 
             if key_name == ENV_PREFIX + 'GIT_TOKEN':
-                print('Learn about {} personal access tokens:'.format(GITHUBCOM))
+                print(
+                    'Learn about {} personal access tokens:'.format(GITHUBCOM))
                 print(ACCESS_TOKEN_HELP_URLS[GITHUBCOM])
 
             if settings.redact.key_is_private(key_name):
