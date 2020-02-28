@@ -19,8 +19,8 @@ def test_render_template_pass_dict():
     source = '{{ variable1 }} static'
     env = {'variable1': 'nonstatic', 'variable2': 'unstatic'}
     rendered = render_template(source, passed_vals=env)
-    assert 'nonstatic' in rendered
-    assert 'unstatic' not in rendered
+    assert 'nonstatic' in str(rendered)
+    assert 'unstatic' not in str(rendered)
 
 def test_render_template_passed_vals_supercede_builtin():
     """Values in a passed dict should override default/discovered values
@@ -35,12 +35,12 @@ def test_render_template_passed_vals_supercede_builtin():
     source = 'Tapis CLI version {{ tapis_cli_version }} is cool'
     env = {}
     rendered = render_template(source, passed_vals=env)
-    assert version_string in rendered
+    assert version_string in str(rendered)
 
     # Pass over-ride value
     env = {'tapis_cli_version': 9000}
     rendered = render_template(source, passed_vals=env)
-    assert '9000' in rendered
+    assert '9000' in str(rendered)
 
 def test_render_template_nested():
     """Nested values from a configparser instance should
@@ -48,8 +48,8 @@ def test_render_template_nested():
     """
     from tapis_cli.templating import render_template
     source = 'App Name {{ app.name }} is cool'
-    rendered = render_template(source)
-    raise SystemError(rendered)
+    rendered = render_template(source, passed_vals={'app': {'name': 'abcdef'}})
+    assert 'abcdef' in str(rendered)
 
 def test_taccapis_api_client_init(tapis_active_client):
     """Test dynamic generation of Tapis-relevant templating data
