@@ -6,7 +6,7 @@ BOOLEAN_FALSE_STRINGS = ('false', 'off', 'n', 'no', '0')
 
 __all__ = [
     'ns_os_environ_get', 'fix_assets_path', 'array_from_string',
-    'set_from_string', 'parse_boolean', 'int_or_none'
+    'set_from_string', 'parse_boolean', 'int_or_none', 'os_environ_get_none'
 ]
 
 
@@ -51,3 +51,14 @@ def int_or_none(value):
     if value is None:
         return value
     return int(value)
+
+
+def os_environ_get_none(env_var_name, default=None):
+    val = os.environ.get(env_var_name)
+    if val == '' or val is None:
+        if default is not None:
+            return default
+        else:
+            return None
+    else:
+        return val

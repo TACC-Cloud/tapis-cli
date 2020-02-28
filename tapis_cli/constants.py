@@ -4,7 +4,7 @@
 __all__ = [
     'PLATFORM', 'CLI', 'ACCESS_TOKEN', 'REFRESH_TOKEN', 'TENANT', 'CLIENT_KEY',
     'CLIENT_SECRET', 'PEM_TRUE', 'PEM_FALSE', 'GOOGLE_ANALYTICS_ID',
-    'TAPIS_AUTH_FAIL', 'API_SERVER'
+    'TAPIS_AUTH_FAIL', 'API_SERVER', 'TAPIS_AUTH_REJECT'
 ]
 
 # Platform name (useful if we rebrand)
@@ -34,3 +34,4 @@ GOOGLE_ANALYTICS_ID = 'UA-147552755-1'
 
 # AUTH FAILED
 TAPIS_AUTH_FAIL = "Failed to load Tapis API client. Run 'tapis auth init [--interactive]' to resolve this."
+TAPIS_AUTH_REJECT = "Unable to authenticate with the provided credentials."

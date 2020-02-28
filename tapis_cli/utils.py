@@ -133,7 +133,11 @@ def fmtcols(mylist, cols):
     return '\n'.join(lines)
 
 
-def prompt(body, default=None, secret=False):
+def redact(value):
+    return value[0] + ('*' * (len(value) - 2)) + value[-1]
+
+
+def prompt(body, default=None, secret=False, allow_empty=True):
     """Prompt user for input
     """
     if default is not None:
@@ -141,7 +145,7 @@ def prompt(body, default=None, secret=False):
             fdefault = default
         else:
             # Mask out all but first and last two chars of secret value
-            fdefault = default[0:2] + '*' * (len(default) - 2) + default[-3:-1]
+            fdefault = redact(default)
         qtext = '{0} [{1}]: '.format(body, fdefault)
     else:
         qtext = '{0}: '.format(body)
@@ -155,7 +159,11 @@ def prompt(body, default=None, secret=False):
         response = default
     else:
         response = response.strip()
-    return response
+
+    if (response is None or response == '') and allow_empty is False:
+        raise ValueError('This value cannot be empty.')
+    else:
+        return response
 
 
 def prompt_accept(body, default='y', exit_reject=True):

@@ -91,21 +91,22 @@ def _read_current(parsed_args):
     return current
 
 
-def interactive(parsed_args, headers, results):
+def interactive(parsed_args, headers, results, force=False):
     """Interactively solicit configuration values
     """
     context = _read_current(parsed_args)
+    interactive = context['interactive'] or force
 
-    if context['interactive']:
-        print('Configure Git server access:')
-        print('###########################')
+    if interactive:
+        print('\nGit server access:')
+        print('------------------')
 
     for iv in VARS:
         prompt_name = iv.replace('_', ' ').title()
         key_name = ENV_PREFIX + iv
         header_name = iv.lower()
 
-        if context['interactive']:
+        if interactive:
 
             if key_name == ENV_PREFIX + 'GIT_TOKEN':
                 print(
@@ -124,6 +125,6 @@ def interactive(parsed_args, headers, results):
             settings_set(key_name, value)
 
         headers.append(header_name)
-        results.append(value)
+        results.append(settings.redact.auto_redact(header_name, value))
 
     return (headers, results)
