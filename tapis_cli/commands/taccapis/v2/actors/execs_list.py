@@ -7,7 +7,6 @@ from .formatters import ActorsFormatMany
 from .models import Execution
 from .mixins import GlobListFilter
 
-
 __all__ = ['ActorsExecsList']
 
 
@@ -27,11 +26,10 @@ class ActorsExecsList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        results = self.tapis_client.actors.listExecutions(
-            actorId=actor_id)
+        results = self.tapis_client.actors.listExecutions(actorId=actor_id)
         # custom headers to print all the execution id and status for a
         # given actor id
-        execs_result = results.get('executions') # returns a list
+        execs_result = results.get('executions')  # returns a list
         headers = ["executionId", "status"]
 
         records = []
@@ -46,7 +44,7 @@ class ActorsExecsList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
                         include = True
                     elif fnmatches(rec[k], [parsed_args.list_filter]):
                         include = True
-            
+
             if include:
                 record = []
                 record.append(rec.get('id'))

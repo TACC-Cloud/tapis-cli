@@ -31,10 +31,7 @@ class ActorsPemsGrant(ActorsFormatMany, ActorIdentifier, Username):
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         headers = self.render_headers(AbacoPermission, parsed_args)
         permission = parsed_args.permission
-        body = {
-            'user': parsed_args.username,
-            'level': permission.upper()
-        }
+        body = {'user': parsed_args.username, 'level': permission.upper()}
         grant_result = self.tapis_client.actors.updatePermissions(
             actorId=actor_id, body=body)
 
@@ -51,6 +48,6 @@ class ActorsPemsGrant(ActorsFormatMany, ActorIdentifier, Username):
                 val = grant_result
                 record.append(val)
             if record not in records:
-                    records.append(record)
+                records.append(record)
 
-        return(tuple(headers), tuple(records))
+        return (tuple(headers), tuple(records))

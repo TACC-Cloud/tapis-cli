@@ -18,6 +18,7 @@ __all__ = ['AppsDeploy']
 
 DEFAULT_BUNDLE_NAME = 'assets'
 
+
 class WorkflowFailed(Exception):
     pass
 
@@ -26,7 +27,9 @@ class UploadAppTemplate(UploadJSONTemplate):
     default = 'app.json'
     optional = True
 
+
 # TODO - Identify and implement other run-time overrides as they make sense
+
 
 class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
@@ -168,7 +171,9 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self.build = False
             self.pull = False
             self.push = False
-            self.messages.append(('build', 'Dockerfile not present. Skipped container actions.'))
+            self.messages.append(
+                ('build',
+                 'Dockerfile not present. Skipped container actions.'))
 
         try:
             self._build(parsed_args)
@@ -315,16 +320,18 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             dep_path_parent = os.path.dirname(dep_path)
             dep_path_temp = os.path.join(dep_path_parent, self._bundle())
 
-            print_stderr('Uploading app asset directory "{0}" to agave://{1}/{2}'.format(
-                self._bundle(), dep_sys, dep_path))
-            
+            print_stderr(
+                'Uploading app asset directory "{0}" to agave://{1}/{2}'.
+                format(self._bundle(), dep_sys, dep_path))
 
             start_time = milliseconds()
             try:
                 # First, check existence of bundle. No point in taking other action
                 # if it does not exist
                 if not os.path.exists(self._bundle()):
-                    raise FileNotFoundError('Unable to locate asset directory "{}"'.format(self._bundle()))
+                    raise FileNotFoundError(
+                        'Unable to locate asset directory "{}"'.format(
+                            self._bundle()))
                 # TODO - incorporate working directory
                 manage.makedirs(dep_path_parent,
                                 system_id=dep_sys,

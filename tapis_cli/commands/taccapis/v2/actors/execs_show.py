@@ -27,8 +27,8 @@ class ActorsExecsShow(ActorsFormatOne, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         execId = parsed_args.executionId
-        results = self.tapis_client.actors.getExecution(
-            actorId=actor_id, executionId=execId)
+        results = self.tapis_client.actors.getExecution(actorId=actor_id,
+                                                        executionId=execId)
         headers = self.render_headers(Execution, parsed_args)
         data = []
         for key in headers:

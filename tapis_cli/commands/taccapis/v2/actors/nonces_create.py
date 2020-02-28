@@ -18,30 +18,29 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
     def get_parser(self, prog_name):
         parser = super(ActorsNoncesCreate, self).get_parser(prog_name)
         parser = ActorIdentifier.extend_parser(self, parser)
-        parser.add_argument('--level',
-                            metavar='<level>',
-                            type=str,
-                            required=False,
-                            default='EXECUTE',
-                            help='Optional Permissions level associated with this \
+        parser.add_argument(
+            '--level',
+            metavar='<level>',
+            type=str,
+            required=False,
+            default='EXECUTE',
+            help='Optional Permissions level associated with this \
                                   nonce (default is EXECUTE)')
-        parser.add_argument('--max-uses',
-                            metavar='<maxUses>',
-                            type=int,
-                            required=False,
-                            default=-1,
-                            help='Optional Max number of times nonce can be redeemed',
-                            )
+        parser.add_argument(
+            '--max-uses',
+            metavar='<maxUses>',
+            type=int,
+            required=False,
+            default=-1,
+            help='Optional Max number of times nonce can be redeemed',
+        )
 
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        body = {
-            'level': parsed_args.level,
-            'maxUses': parsed_args.max_uses
-        }
+        body = {'level': parsed_args.level, 'maxUses': parsed_args.max_uses}
         rec = self.tapis_client.actors.addNonce(actorId=actor_id, body=body)
         headers = self.render_headers(Nonce, parsed_args)
         data = []

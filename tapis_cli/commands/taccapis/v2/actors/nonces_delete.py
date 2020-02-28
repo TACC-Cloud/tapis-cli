@@ -31,7 +31,8 @@ class ActorsNoncesDelete(ActorsFormatOne, ActorIdentifier):
         messages = []
 
         try:
-            self.tapis_client.actors.deleteNonce(actorId=actor_id, nonceId=nonce_id)
+            self.tapis_client.actors.deleteNonce(actorId=actor_id,
+                                                 nonceId=nonce_id)
             deleted.append(nonce_id)
         except Exception as err:
             messages.append(str(err))

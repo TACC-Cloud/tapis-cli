@@ -43,7 +43,7 @@ class ActorsNoncesList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
                     elif fnmatches(rec[k], [parsed_args.list_filter]):
                         include = True
 
-            if include:            
+            if include:
                 record = []
                 for key in headers:
                     val = self.render_value(rec.get(key, None))

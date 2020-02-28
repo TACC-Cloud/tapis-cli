@@ -28,8 +28,8 @@ class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         worker_id = parsed_args.workerId
-        results = self.tapis_client.actors.getWorker(
-            actorId=actor_id, workerId=worker_id)
+        results = self.tapis_client.actors.getWorker(actorId=actor_id,
+                                                     workerId=worker_id)
         headers = self.render_headers(Worker, parsed_args)
         data = []
         for key in headers:

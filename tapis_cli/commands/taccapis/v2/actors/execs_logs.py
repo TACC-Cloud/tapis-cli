@@ -27,9 +27,9 @@ class ActorsExecsLogs(ActorsFormatMany, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         execId = parsed_args.executionId
-        results = self.tapis_client.actors.getExecutionLogs(
-            actorId=actor_id, executionId=execId)
-        headers=['logs']
+        results = self.tapis_client.actors.getExecutionLogs(actorId=actor_id,
+                                                            executionId=execId)
+        headers = ['logs']
         logs_result = results.get('logs')
         print("Logs for execution", execId, "\n", logs_result)
         return (tuple(), tuple())

@@ -23,8 +23,9 @@ def key_values(filename=None, as_dict=True):
                 cfg[k] = {}
     else:
         cfg = {}
-    
+
     return cfg
+
 
 def update_config(config={}, values_dict=None, add_keys=False):
     """Recursively merge a dict onto a ConfigParser

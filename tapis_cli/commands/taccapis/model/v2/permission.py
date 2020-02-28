@@ -80,20 +80,19 @@ class Permission(TapisModel):
                 raise ValueError(
                     '{0} not a valid Permission'.format(permission))
 
+
 class AbacoPermission(TapisModel):
     """Model of an Abaco permission
     """
 
-    NAMES = [
-        'READ', 'EXECUTE', 'UPDATE', 'NONE'
-    ]
+    NAMES = ['READ', 'EXECUTE', 'UPDATE', 'NONE']
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("result", argtype.ARRAY, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
-        ("message", argtype.OBJECT, Verbosity.LISTING,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
+        ("message", argtype.OBJECT, Verbosity.LISTING, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, True),
         ("status", argtype.OBJECT, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]

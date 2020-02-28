@@ -28,10 +28,7 @@ class ActorsAliasesCreate(ActorsFormatOne, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         alias = parsed_args.alias
-        body = {
-            'actorId': actor_id,
-            'alias': alias
-        }
+        body = {'actorId': actor_id, 'alias': alias}
         rec = self.tapis_client.actors.addAlias(body=body)
         headers = self.render_headers(Alias, parsed_args)
         data = []

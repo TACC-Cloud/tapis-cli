@@ -29,11 +29,9 @@ class ActorsWorkersCreate(ActorsFormatOne, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         num = parsed_args.num
-        body = {
-            'num': num
-        }
-        create_result = self.tapis_client.actors.addWorker(
-            actorId=actor_id, body=body)
+        body = {'num': num}
+        create_result = self.tapis_client.actors.addWorker(actorId=actor_id,
+                                                           body=body)
         headers = self.render_headers(Worker, parsed_args)
         # worker names are in a list
         data = []

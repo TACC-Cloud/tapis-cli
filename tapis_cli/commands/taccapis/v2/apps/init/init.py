@@ -84,26 +84,26 @@ class AppsInit(AppsFormatManyUnlimited):
         # Coordinates for CookieCutter assets
         cc_group = parser.add_argument_group('Source Template')
         cc_group.add_argument('--repo',
-                            type=str,
-                            dest='source_repo',
-                            default=templates.COOKIECUTTER_URI,
-                            metavar='<uri>',
-                            help='CookieCutter Repo ({})'.format(
-                                templates.COOKIECUTTER_URI))
+                              type=str,
+                              dest='source_repo',
+                              default=templates.COOKIECUTTER_URI,
+                              metavar='<uri>',
+                              help='CookieCutter Repo ({})'.format(
+                                  templates.COOKIECUTTER_URI))
         cc_group.add_argument('--checkout',
-                            type=str,
-                            dest='source_checkout',
-                            default=templates.CHECKOUT,
-                            metavar='<checkout>',
-                            help='Branch/Tag/Commit ({})'.format(
-                                templates.CHECKOUT))
+                              type=str,
+                              dest='source_checkout',
+                              default=templates.CHECKOUT,
+                              metavar='<checkout>',
+                              help='Branch/Tag/Commit ({})'.format(
+                                  templates.CHECKOUT))
         cc_group.add_argument('--template',
-                            type=str,
-                            dest='source_dir',
-                            default=templates.DIRECTORY,
-                            metavar='<template>',
-                            help='Template name ({})'.format(
-                                templates.DIRECTORY))
+                              type=str,
+                              dest='source_dir',
+                              default=templates.DIRECTORY,
+                              metavar='<template>',
+                              help='Template name ({})'.format(
+                                  templates.DIRECTORY))
 
         # Override specific workflow actions
         return parser
@@ -118,15 +118,18 @@ class AppsInit(AppsFormatManyUnlimited):
             val = getattr(parsed_args, 'project_' + cv, None)
             if val is not None:
                 extra_context[cv] = val
-                self.messages.append(('setup', 'Project {0}: {1}'.format(cv, val)))
+                self.messages.append(
+                    ('setup', 'Project {0}: {1}'.format(cv, val)))
 
         # safen name and predict final output path
         extra_context['project_slug'] = slugify(extra_context['name'],
                                                 separator='_')
         project_path = os.path.join(parsed_args.output_dir,
                                     extra_context['project_slug'])
-        self.messages.append(('setup', 'Safened project name: {0}'.format(extra_context['project_slug'])))
-        self.messages.append(('setup', 'Project path: {0}'.format(project_path)))
+        self.messages.append(('setup', 'Safened project name: {0}'.format(
+            extra_context['project_slug'])))
+        self.messages.append(
+            ('setup', 'Project path: {0}'.format(project_path)))
 
         # From settings
         extra_context[
@@ -140,7 +143,8 @@ class AppsInit(AppsFormatManyUnlimited):
                          output_dir=parsed_args.output_dir,
                          directory=parsed_args.source_dir,
                          checkout=parsed_args.source_checkout)
-            self.messages.append(('clone', 'Project path: {0}'.format(project_path)))
+            self.messages.append(
+                ('clone', 'Project path: {0}'.format(project_path)))
         except Exception as exc:
             self.messages.append(('clone', str(exc)))
 
@@ -154,13 +158,16 @@ class AppsInit(AppsFormatManyUnlimited):
                     for af in add_files:
                         r.index.add([af])
                     r.index.commit('Automated first commit by Tapis CLI')
-                    self.messages.append(('git-init', 'Performed automated first commit'))
+                    self.messages.append(
+                        ('git-init', 'Performed automated first commit'))
                 else:
-                    self.messages.append(('git-init', 'Skipped automated first commit'))
+                    self.messages.append(
+                        ('git-init', 'Skipped automated first commit'))
                 # Placeholder for create and set remote
                 # Placeholder for push
             else:
-                self.messages.append(('git-init', 'Skipped initializing project as git repo'))
+                self.messages.append(
+                    ('git-init', 'Skipped initializing project as git repo'))
         except Exception as exc:
             self.messages.append(('git-init', str(exc)))
 

@@ -9,6 +9,7 @@ __all__ = ['Actor', 'API_NAME', 'SERVICE_VERSION']
 
 API_NAME = 'actors'
 
+
 class Nonce(TapisModel):
     """Model of a Tapis Actor Nonce
     """
@@ -25,12 +26,12 @@ class Nonce(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("description", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("id", argtype.STRING, Verbosity.BRIEF,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
         ("lastUseTime", argtype.STRING, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("level", argtype.STRING, Verbosity.BRIEF,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("level", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
         ("maxUses", argtype.INTEGER, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("owner", argtype.STRING, Verbosity.LISTING_VERBOSE,

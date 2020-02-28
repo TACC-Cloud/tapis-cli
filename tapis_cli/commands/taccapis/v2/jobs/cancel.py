@@ -9,6 +9,7 @@ from .formatters import JobsFormatOne
 
 __all__ = ['JobsCancel']
 
+
 class JobsCancel(JobsFormatOne, JobsUUID):
     """Cancel a running or queued Job
     """
@@ -32,7 +33,8 @@ class JobsCancel(JobsFormatOne, JobsUUID):
         try:
             payload = json.dumps({'action': 'stop'})
             # Expecting a 'message' back from API call
-            warning = self.requests_client.post(data=payload, content_type='application/json')
+            warning = self.requests_client.post(
+                data=payload, content_type='application/json')
             message = 'Cancelled Job {0}'.format(identifier)
         except Exception as exc:
             message = 'Failed to cancel Job {0}'.format(identifier)

@@ -5,11 +5,14 @@ from tapis_cli.commands.taccapis import TapisModel
 from tapis_cli.display import Verbosity
 from tapis_cli.search import argtype, argmod
 
-__all__ = ['Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS']
+__all__ = [
+    'Actor', 'HTTP_METHODS', 'API_NAME', 'SERVICE_VERSION', 'FILTERABLE_KEYS'
+]
 
 API_NAME = 'actors'
 
 HTTP_METHODS = ['GET', 'POST', 'PUT', 'DELETE']
+
 
 class Worker(TapisModel):
     """Model of a Tapis actor Worker
@@ -25,8 +28,8 @@ class Worker(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("hostId", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("hostIp", argtype.STRING, Verbosity.BRIEF,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("hostIp", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
         ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("image", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
@@ -37,10 +40,10 @@ class Worker(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("location", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("status", argtype.STRING, Verbosity.BRIEF,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
-        ("tenant", argtype.STRING, Verbosity.LISTING_VERBOSE, argmod.STRING_DEFAULTS,
-         argmod.DEFAULT, None, None, True),
+        ("status", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, False),
+        ("tenant", argtype.STRING, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]

@@ -48,4 +48,4 @@ class ActorsPemsList(ActorsFormatMany, ActorIdentifier):
             if record not in records:
                 records.append(record)
 
-        return(tuple(headers), tuple(records))
+        return (tuple(headers), tuple(records))

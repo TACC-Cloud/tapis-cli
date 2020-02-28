@@ -27,7 +27,8 @@ class ActorsNoncesShow(ActorsFormatOne, ActorIdentifier):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
         nonce_id = parsed_args.nonceId
-        rec = self.tapis_client.actors.getNonce(actorId=actor_id, nonceId=nonce_id)
+        rec = self.tapis_client.actors.getNonce(actorId=actor_id,
+                                                nonceId=nonce_id)
         headers = self.render_headers(Nonce, parsed_args)
         data = []
         for key in headers:

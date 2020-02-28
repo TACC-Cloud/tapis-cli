@@ -8,6 +8,7 @@ from .models import Message
 
 __all__ = ['ActorsSubmit']
 
+
 # make level and maxUses as optional arguments
 class ActorsSubmit(ActorsFormatOne, ActorIdentifier):
     """Send a message to an actor mailbox (asynchronous
@@ -28,9 +29,7 @@ class ActorsSubmit(ActorsFormatOne, ActorIdentifier):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        body = {
-            'message': parsed_args.message
-        }
+        body = {'message': parsed_args.message}
         rec = self.tapis_client.actors.sendMessage(actorId=actor_id, body=body)
         headers = self.render_headers(Message, parsed_args)
         data = []

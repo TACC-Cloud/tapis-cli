@@ -27,8 +27,7 @@ class ActorsWorkersList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        results = self.tapis_client.actors.listWorkers(
-            actorId=actor_id)
+        results = self.tapis_client.actors.listWorkers(actorId=actor_id)
         headers = ["workerId", "status"]
         records = []
         for rec in results:
