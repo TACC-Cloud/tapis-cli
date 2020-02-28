@@ -22,4 +22,5 @@ PyGithub
 PyMongo
 docker>=4.1.0
 agavepy@git+https://github.com/TACC/agavepy.git@1_0_0
-cookiecutter@git+https://github.com/cookiecutter/cookiecutter.git@master
+tacc-cookiecutter>=1.7.0.1
+
