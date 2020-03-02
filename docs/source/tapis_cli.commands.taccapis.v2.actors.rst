@@ -65,6 +65,14 @@ tapis\_cli.commands.taccapis.v2.actors.execs\_list module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.actors.execs\_logs module
+---------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.execs_logs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.actors.execs\_show module
 ---------------------------------------------------------
 
@@ -165,6 +173,22 @@ tapis\_cli.commands.taccapis.v2.actors.show module
 --------------------------------------------------
 
 .. automodule:: tapis_cli.commands.taccapis.v2.actors.show
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.commands.taccapis.v2.actors.submit module
+----------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.submit
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.commands.taccapis.v2.actors.workers\_create module
+-------------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.workers_create
    :members:
    :undoc-members:
    :show-inheritance:
