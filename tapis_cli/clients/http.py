@@ -23,16 +23,7 @@ class HTTPCommandBase(object):
     def add_common_parser_arguments(self, parser):
         # Derived classes must call the parent's super()
         # print('HTTPCommandBase')
-        try:
-            parser.add_argument(
-                '--no-verify',
-                dest='verify_ssl',
-                action='store_false',
-                help="Allow insecure server connections when using SSL")
-        except Exception:
-            pass
         return parser
-
 
 class HTTPFormatOne(ShowOne, HTTPCommandBase):
     """HTTP Single Record Display
