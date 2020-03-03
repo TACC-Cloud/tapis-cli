@@ -150,10 +150,16 @@ def prompt(body, default=None, secret=False, allow_empty=True):
     else:
         qtext = '{0}: '.format(body)
 
-    if not secret:
-        response = input(qtext)
-    else:
-        response = getpass.getpass(qtext)
+    try:
+        if not secret:
+            response = input(qtext)
+        else:
+            response = getpass.getpass(qtext)
+    except KeyboardInterrupt:
+        print()
+        sys.exit(1)
+    except Exception:
+        raise
 
     if (response is None or response == '') and default is not None:
         response = default
@@ -174,7 +180,14 @@ def prompt_accept(body, default='y', exit_reject=True):
     else:
         qtext = '{0} [y/N]: '.format(body)
 
-    response = input(qtext).lower()
+    try:
+        response = input(qtext).lower()
+    except KeyboardInterrupt:
+        print()
+        sys.exit(1)
+    except Exception:
+        raise
+    
     if response.startswith('y'):
         return True
     else:
