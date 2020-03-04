@@ -187,7 +187,7 @@ def prompt_accept(body, default='y', exit_reject=True):
         sys.exit(1)
     except Exception:
         raise
-    
+
     if response.startswith('y'):
         return True
     else:
@@ -413,3 +413,19 @@ def import_submodules(module, package=None, exclude=[]):
         except ModuleNotFoundError:
             pass
     return submodules
+
+
+def parse_uri(url):
+    # Agave URI
+    if url.startswith('agave://'):
+        url = url.replace('agave://', '', 1)
+        parts = url.split('/')
+        return parts[0], '/' + '/'.join(parts[1:])
+    # Agave media URL
+    elif url.startswith('https://'):
+        url = url.replace('https://', '')
+        parts = url.split('/')
+        if parts[1] == 'files' and parts[3] == 'media':
+            return parts[5], '/'.join(parts[6:])
+    else:
+        raise InvalidValue('{0} not a valid Agave URL or URI'.format(url))

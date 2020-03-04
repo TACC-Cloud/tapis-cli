@@ -25,6 +25,7 @@ class HTTPCommandBase(object):
         # print('HTTPCommandBase')
         return parser
 
+
 class HTTPFormatOne(ShowOne, HTTPCommandBase):
     """HTTP Single Record Display
     """

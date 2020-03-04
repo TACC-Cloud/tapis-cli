@@ -6,7 +6,10 @@ from tapis_cli.commands.taccapis.formatters import (
     TaccApisFormatManyUnlimited)
 from .models import Job
 
-__all__ = ['JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany']
+__all__ = [
+    'JobsFormatOne', 'JobsFormatMany', 'JobsHistoryFormatMany',
+    'JobsFormatManyUnlimited'
+]
 
 
 class JobsBase(TaccApisCommandBase):
@@ -18,6 +21,10 @@ class JobsFormatOne(JobsBase, TaccApisFormatOne):
 
 
 class JobsFormatMany(JobsBase, TaccApisFormatMany):
+    pass
+
+
+class JobsFormatManyUnlimited(JobsBase, TaccApisFormatManyUnlimited):
     pass
 
 

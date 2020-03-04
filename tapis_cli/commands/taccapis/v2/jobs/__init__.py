@@ -20,3 +20,4 @@ from .pems_grant import JobsPemsGrant
 from .pems_revoke import JobsPemsRevoke
 from .pems_drop import JobsPemsDrop
 from .unhide import JobsUnhide
+from .init import JobsInit

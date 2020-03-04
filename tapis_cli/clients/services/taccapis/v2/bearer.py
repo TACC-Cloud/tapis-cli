@@ -25,11 +25,10 @@ class TaccApisBearer(TaccApisCommandBase):
                        metavar='<token>',
                        help="{0} {1}".format(self.constants.PLATFORM,
                                              self.constants.ACCESS_TOKEN))
-        g.add_argument(
-            '--no-verify',
-            dest='verify_ssl',
-            action='store_false',
-            help="Allow insecure SSL connections")
+        g.add_argument('--no-verify',
+                       dest='verify_ssl',
+                       action='store_false',
+                       help="Allow insecure SSL connections")
         return parser
 
     def init_clients(self, parsed_args):
