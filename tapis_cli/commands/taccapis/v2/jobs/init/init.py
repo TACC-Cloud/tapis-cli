@@ -6,7 +6,8 @@ from slugify import slugify
 
 from tapis_cli import settings
 from tapis_cli.display import Verbosity
-from tapis_cli.utils import (seconds, milliseconds, print_stderr, parse_uri)
+from tapis_cli.utils import (seconds, milliseconds, print_stderr, parse_uri,
+                             prompt)
 from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.project_ini.mixins import AppIniArgs, DockerIniArgs, GitIniArgs
 from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt)
@@ -79,17 +80,23 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                             action='store_true',
                             help='Do not send job status notifications')
 
+        parser.add_argument('-O',
+                            '--output',
+                            dest='output',
+                            metavar='<filepath>',
+                            help='Output destination (STDOUT)')
+
+        parser.add_argument('--interactive',
+                            action='store_true',
+                            help='Prompt user for job values')
+
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         app_id = AppIdentifier.get_identifier(self, parsed_args)
-
-        # passing this overrides no_archive
-        # make options mututally exclusive
-        archiveURI = None
-        no_archive = False
+        interactive = parsed_args.interactive
 
         app_def = {}
         exc_def = {}
@@ -123,6 +130,9 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
             raise ValueError(
                 'Job queue "{0}" does not exist on system "{1}"'.format(
                     queue_name, exc_def['id']))
+        # TODO - Rewire so that we can check the queue name after prompting
+        if interactive:
+            queue_name = prompt('Queue', queue_name, allow_empty=False)
 
         # Continue interpreting parsed_args
         #
@@ -135,6 +145,9 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                                app_def.get('defaultMemoryPerNode', None))
         if mem_per_node is None:
             mem_per_node = sys_queue['maxMemoryPerNode']
+        if interactive:
+            queue_name = int(
+                prompt('Memory (GB)', mem_per_node, allow_empty=False))
         if isinstance(mem_per_node, int):
             mem_per_node = str(mem_per_node) + 'GB'
 
@@ -142,12 +155,17 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                                app_def.get('defaultProcessorsPerNode', None))
         if cpu_per_node is None:
             cpu_per_node = sys_queue['maxProcessorsPerNode']
+        if interactive:
+            cpu_per_node = int(
+                prompt('CPU/Node', cpu_per_node, allow_empty=False))
 
         node_count = getattr(parsed_args, 'node_count',
                              app_def.get('defaultNodeCount', None))
         if node_count is None:
             # There is no default node count in a system queue definition
             node_count = 1
+        if interactive:
+            node_count = int(prompt('Nodes', node_count, allow_empty=False))
 
         # TODO - Validate that max_run_time is LTE that sys_queue.maxRequestedTime
         max_run_time = getattr(parsed_args, 'max_run_time',
@@ -155,6 +173,10 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
         if max_run_time is None:
             # max_run_time = sys_queue['maxRequestedTime']
             max_run_time = DEFAULT_JOB_RUNTIME
+        if interactive:
+            max_run_time = prompt('Maximum Run Time',
+                                  max_run_time,
+                                  allow_empty=False)
         # validate max_run_time
         if not re.search('[0-9][0-9]:[0-9][0-9]:[0-9][0-9]', max_run_time):
             raise ValueError(
@@ -167,6 +189,8 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
             job_name = slugify(job_name, separator='_')
         else:
             job_name = '{0}-job-{1}'.format(app_def['name'], milliseconds())
+        if interactive:
+            job_name = prompt('Job Name', job_name, allow_empty=False)
 
         # Build out the job definition
         job = JOB_TEMPLATE
@@ -181,6 +205,7 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
         job['memoryPerNode'] = mem_per_node
 
         # Populate archiving config
+        # TODO - Make interactive
         if getattr(parsed_args, 'no_archive', False) is True:
             job['archive'] = False
         else:
@@ -192,6 +217,7 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                 job['archivePath'] = apath
 
         # TODO Populate notifications config
+        # TODO capture notification email
         if parsed_args.no_notifications is False:
             try:
                 email = self.tapis_client.profiles.get()['email']
@@ -205,6 +231,14 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
             if inp['value']['visible']:
                 if inp['value']['required'] or parsed_args.all_fields is True:
                     job['inputs'][inp['id']] = inp['value'].get('default', '')
+                    if interactive:
+                        inp_label = inp['details']['label']
+                        if inp_label is None or inp_label == '':
+                            inp_label = inp['id']
+                        job['inputs'][inp['id']] = prompt(
+                            inp_label,
+                            job['inputs'][inp['id']],
+                            allow_empty=False)
 
         # Populate Parameters
         #
@@ -218,6 +252,14 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                         'default', '')
                     if job['parameters'][prm['id']] is None:
                         job['parameters'][prm['id']] = ''
+                    if interactive:
+                        prm_label = prm['details']['label']
+                        if prm_label is None or prm_label == '':
+                            prm_label = prm['id']
+                        job['parameters'][prm['id']] = prompt(
+                            prm_label,
+                            job['parameters'][prm['id']],
+                            allow_empty=False)
 
         # Raw output
         print(json.dumps(job, indent=4))
