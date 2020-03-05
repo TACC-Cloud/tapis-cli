@@ -7,7 +7,8 @@ from slugify import slugify
 from tapis_cli import settings
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import (seconds, milliseconds, print_stderr, parse_uri,
-                             prompt)
+                             prompt, prompt_boolean, num)
+from tapis_cli.settings.helpers import parse_boolean
 from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.project_ini.mixins import AppIniArgs, DockerIniArgs, GitIniArgs
 from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt)
@@ -40,6 +41,9 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
     def get_parser(self, prog_name):
         parser = super(JobsInit, self).get_parser(prog_name)
         parser = AppIdentifier.extend_parser(self, parser)
+        parser.add_argument('--interactive',
+                            action='store_true',
+                            help='Prompt for configuration and parameters')
         parser.add_argument(
             '--all',
             dest='all_fields',
@@ -66,29 +70,30 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                             help='Compute nodes (1)')
 
         aopts = parser.add_mutually_exclusive_group()
+        aopts.add_argument('--no-archive',
+                           action='store_true',
+                           help='Do not archive results')
         aopts.add_argument('--archive-uri',
                            type=str,
                            metavar='<agave_uri>',
                            help='Path to archive results (Files URI agave://)')
-        aopts.add_argument('--no-archive',
-                           action='store_true',
-                           help='Do not archive results')
 
-        # nopts = parser.add_mutually_exclusive_group()
-        parser.add_argument('--no-notify',
-                            dest='no_notifications',
-                            action='store_true',
-                            help='Do not send job status notifications')
+        nopts = parser.add_mutually_exclusive_group()
+        nopts.add_argument('--no-notify',
+                           dest='no_notifications',
+                           action='store_true',
+                           help='Do not send job status notifications')
+        nopts.add_argument('--notifications-uri',
+                           type=str,
+                           metavar='<uri>',
+                           help='POST URL or email address for notifications')
 
         parser.add_argument('-O',
                             '--output',
                             dest='output',
+                            default='',
                             metavar='<filepath>',
                             help='Output destination (STDOUT)')
-
-        parser.add_argument('--interactive',
-                            action='store_true',
-                            help='Prompt user for job values')
 
         return parser
 
@@ -106,6 +111,7 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
 
         # Intrepret parsed_args in light of contents of app and exec system definiitions
         # 1. allow --queue to over-ride app['defaultQueue']
+        exc_queue_names = [q['name'] for q in exc_def['queues']]
         queue_name = getattr(parsed_args, 'queue_name', None)
         if queue_name is None:
             queue_name = app_def.get('defaultQueue', None)
@@ -132,7 +138,14 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                     queue_name, exc_def['id']))
         # TODO - Rewire so that we can check the queue name after prompting
         if interactive:
-            queue_name = prompt('Queue', queue_name, allow_empty=False)
+            print('Job configuration')
+            print('-----------------')
+
+        if interactive:
+            queue_name = prompt('Queue ({0})'.format(
+                '|'.join(exc_queue_names)),
+                                queue_name,
+                                allow_empty=False)
 
         # Continue interpreting parsed_args
         #
@@ -145,9 +158,9 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                                app_def.get('defaultMemoryPerNode', None))
         if mem_per_node is None:
             mem_per_node = sys_queue['maxMemoryPerNode']
-        if interactive:
-            queue_name = int(
-                prompt('Memory (GB)', mem_per_node, allow_empty=False))
+        # if interactive:
+        #     queue_name = int(
+        #         prompt('Memory (GB)', mem_per_node, allow_empty=False))
         if isinstance(mem_per_node, int):
             mem_per_node = str(mem_per_node) + 'GB'
 
@@ -155,9 +168,9 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                                app_def.get('defaultProcessorsPerNode', None))
         if cpu_per_node is None:
             cpu_per_node = sys_queue['maxProcessorsPerNode']
-        if interactive:
-            cpu_per_node = int(
-                prompt('CPU/Node', cpu_per_node, allow_empty=False))
+        # if interactive:
+        #     cpu_per_node = int(
+        #         prompt('CPU/Node', cpu_per_node, allow_empty=False))
 
         node_count = getattr(parsed_args, 'node_count',
                              app_def.get('defaultNodeCount', None))
@@ -167,14 +180,15 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
         if interactive:
             node_count = int(prompt('Nodes', node_count, allow_empty=False))
 
-        # TODO - Validate that max_run_time is LTE that sys_queue.maxRequestedTime
+        # TODO - Validate that max_run_time is LTE sys_queue.maxRequestedTime
         max_run_time = getattr(parsed_args, 'max_run_time',
                                app_def.get('defaultMaxRunTime', None))
         if max_run_time is None:
             # max_run_time = sys_queue['maxRequestedTime']
             max_run_time = DEFAULT_JOB_RUNTIME
         if interactive:
-            max_run_time = prompt('Maximum Run Time',
+            max_run_time = prompt('Run Time (max {0})'.format(
+                sys_queue['maxRequestedTime']),
                                   max_run_time,
                                   allow_empty=False)
         # validate max_run_time
@@ -195,6 +209,44 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
         # Build out the job definition
         job = JOB_TEMPLATE
 
+        # Populate notifications config
+        notify_job = not (parsed_args.no_notifications)
+        if interactive:
+            notify_job = prompt_boolean('Send status notifications',
+                                        notify_job)
+        if notify_job is True:
+            try:
+                if parsed_args.notifications_uri is not None:
+                    nuri = parsed_args.notifications_uri
+                else:
+                    nuri = self.tapis_client.profiles.get()['email']
+                if interactive:
+                    nuri = prompt('Status notifications URI',
+                                  nuri,
+                                  allow_empty=False)
+                notification = {'event': '*', 'persistent': True, 'url': nuri}
+                job['notifications'].append(notification)
+            except Exception:
+                pass
+
+        # Populate archiving config
+        archive_job = not (parsed_args.no_archive)
+        if interactive:
+            archive_job = prompt_boolean('Archive job outputs', archive_job)
+        job['archive'] = archive_job
+        if archive_job:
+            aui = getattr(parsed_args, 'archive_uri', None)
+            if interactive:
+                aui = prompt('Archive destination (Agave URI or leave empty)',
+                             aui,
+                             allow_empty=True)
+                if aui == '':
+                    aui = None
+            if aui is not None:
+                asys, apath = parse_uri(parsed_args.archive_uri)
+                job['archiveSystem'] = asys
+                job['archivePath'] = apath
+
         # Populate name and resource requirements
         job['name'] = job_name
         job['appId'] = app_id
@@ -204,29 +256,11 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
         job['processorsPerNode'] = cpu_per_node
         job['memoryPerNode'] = mem_per_node
 
-        # Populate archiving config
-        # TODO - Make interactive
-        if getattr(parsed_args, 'no_archive', False) is True:
-            job['archive'] = False
-        else:
-            job['archive'] = True
-            aui = getattr(parsed_args, 'archive_uri', None)
-            if aui is not None:
-                asys, apath = parse_uri(parsed_args.archive_uri)
-                job['archiveSystem'] = asys
-                job['archivePath'] = apath
-
-        # TODO Populate notifications config
-        # TODO capture notification email
-        if parsed_args.no_notifications is False:
-            try:
-                email = self.tapis_client.profiles.get()['email']
-                notification = {'event': '*', 'persistent': True, 'url': email}
-                job['notifications'].append(notification)
-            except Exception:
-                pass
-
         # Populate Inputs
+        if interactive:
+            print('Inputs')
+            print('------')
+
         for inp in app_def.get('inputs', {}):
             if inp['value']['visible']:
                 if inp['value']['required'] or parsed_args.all_fields is True:
@@ -235,16 +269,26 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                         inp_label = inp['details']['label']
                         if inp_label is None or inp_label == '':
                             inp_label = inp['id']
-                        job['inputs'][inp['id']] = prompt(
-                            inp_label,
-                            job['inputs'][inp['id']],
-                            allow_empty=False)
+                        resp = prompt(inp_label,
+                                      job['inputs'][inp['id']],
+                                      allow_empty=False)
+                        # Validate URI
+                        if re.search('^(agave://|http://|https://|ftp://)',
+                                     resp):
+                            job['inputs'][inp['id']] = resp
+                        else:
+                            raise ValueError(
+                                'Input value {0} must be a URI'.format(resp))
 
         # Populate Parameters
         #
         # The behavior implemented here is different than the original bash
         # jobs-template in that we make no attempt to fake values for
         # parameters that don't have a default value
+        if interactive:
+            print('Parameters')
+            print('----------')
+
         for prm in app_def.get('parameters', {}):
             if prm['value']['visible']:
                 if prm['value']['required'] or parsed_args.all_fields is True:
@@ -256,11 +300,34 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                         prm_label = prm['details']['label']
                         if prm_label is None or prm_label == '':
                             prm_label = prm['id']
-                        job['parameters'][prm['id']] = prompt(
-                            prm_label,
-                            job['parameters'][prm['id']],
-                            allow_empty=False)
+                        # Typecast and validate response
+                        resp = prompt(prm_label,
+                                      job['parameters'][prm['id']],
+                                      allow_empty=False)
+                        try:
+                            if prm['value']['type'] in ('string',
+                                                        'enumeration'):
+                                resp = str(resp)
+                            elif prm['value']['type'] in ('number'):
+                                resp = num(resp)
+                            elif prm['value']['type'] in ('bool', 'flag'):
+                                resp = parse_boolean(resp)
+                        except Exception:
+                            raise ValueError(
+                                'Unable to typecast {0} to type {1}'.format(
+                                    resp, prm['value']['type']))
+                        job['parameters'][prm['id']] = resp
 
         # Raw output
-        print(json.dumps(job, indent=4))
+        outfile_dest = parsed_args.output
+        if interactive:
+            outfile_dest = prompt('Output destination',
+                                  outfile_dest,
+                                  allow_empty=True)
+        if outfile_dest == '':
+            of = sys.stdout
+        else:
+            of = open(outfile_dest, 'w')
+
+        json.dump(job, fp=of, indent=2)
         sys.exit(0)

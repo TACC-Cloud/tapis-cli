@@ -182,6 +182,8 @@ def prompt_accept(body, default='y', exit_reject=True):
 
     try:
         response = input(qtext).lower()
+        if response == '':
+            response = default
     except KeyboardInterrupt:
         print()
         sys.exit(1)
@@ -195,6 +197,14 @@ def prompt_accept(body, default='y', exit_reject=True):
             exit(1)
         else:
             return False
+
+
+def prompt_boolean(body, default=True):
+    if default is True:
+        strdef = 'y'
+    else:
+        strdef = 'n'
+    return prompt_accept(body, default=strdef, exit_reject=False)
 
 
 def get_hostname():
@@ -429,3 +439,10 @@ def parse_uri(url):
             return parts[5], '/'.join(parts[6:])
     else:
         raise InvalidValue('{0} not a valid Agave URL or URI'.format(url))
+
+
+def num(n):
+    try:
+        return int(n)
+    except ValueError:
+        return float(n)
