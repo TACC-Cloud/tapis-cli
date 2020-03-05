@@ -4,12 +4,12 @@ from .mixins import ActorIdentifier
 from tapis_cli.commands.taccapis.model import AbacoPermission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 
 __all__ = ['ActorsPemsGrant']
 
 
-class ActorsPemsGrant(ActorsFormatMany, ActorIdentifier, Username):
+class ActorsPemsGrant(ActorsFormatManyUnlimited, ActorIdentifier, Username):
     """Grant Permissions on an Actor to a User
     """
     VERBOSITY = Verbosity.BRIEF

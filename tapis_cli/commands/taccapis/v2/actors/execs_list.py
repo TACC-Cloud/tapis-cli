@@ -3,14 +3,15 @@ from tapis_cli.utils import fnmatches
 from .mixins import ActorIdentifier
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 from .models import Execution
 from .mixins import GlobListFilter
 
 __all__ = ['ActorsExecsList']
 
 
-class ActorsExecsList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
+class ActorsExecsList(ActorsFormatManyUnlimited, ActorIdentifier,
+                      GlobListFilter):
     """List Executions for a specific Actor
     """
     VERBOSITY = Verbosity.BRIEF

@@ -4,12 +4,12 @@ from .mixins import ActorIdentifier
 from tapis_cli.commands.taccapis.model import AbacoPermission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 
 __all__ = ['ActorsPemsRevoke']
 
 
-class ActorsPemsRevoke(ActorsFormatMany, ActorIdentifier, Username):
+class ActorsPemsRevoke(ActorsFormatManyUnlimited, ActorIdentifier, Username):
     """Revoke Permissions on an Actor for a User
     """
     VERBOSITY = Verbosity.BRIEF

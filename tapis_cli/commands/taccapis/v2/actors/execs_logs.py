@@ -1,14 +1,15 @@
+import sys
 from tapis_cli.display import Verbosity
 from .mixins import ActorIdentifier
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 from .models import Execution
 
 __all__ = ['ActorsExecsLogs']
 
 
-class ActorsExecsLogs(ActorsFormatMany, ActorIdentifier):
+class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier):
     """Show specific Actor Execution Logs
     """
     VERBOSITY = Verbosity.BRIEF
@@ -32,4 +33,4 @@ class ActorsExecsLogs(ActorsFormatMany, ActorIdentifier):
         headers = ['logs']
         logs_result = results.get('logs')
         print("Logs for execution", execId, "\n", logs_result)
-        return (tuple(), tuple())
+        sys.exit(0)

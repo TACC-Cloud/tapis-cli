@@ -3,7 +3,7 @@ from tapis_cli.search import SearchWebParam
 from tapis_cli.utils import fnmatches
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 from .mixins import ActorIdentifier
 from .models import Worker
 from .mixins import GlobListFilter
@@ -11,7 +11,8 @@ from .mixins import GlobListFilter
 __all__ = ['ActorsWorkersList']
 
 
-class ActorsWorkersList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
+class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
+                        GlobListFilter):
     """List the Workers for a specific Actor
     """
     VERBOSITY = Verbosity.RECORD

@@ -4,14 +4,15 @@ from tapis_cli.utils import fnmatches
 from .mixins import ActorIdentifier
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 from .models import Nonce
 from .mixins import GlobListFilter
 
 __all__ = ['ActorsNoncesList']
 
 
-class ActorsNoncesList(ActorsFormatMany, ActorIdentifier, GlobListFilter):
+class ActorsNoncesList(ActorsFormatManyUnlimited, ActorIdentifier,
+                       GlobListFilter):
     """List the current nonces for an actor
     """
     VERBOSITY = Verbosity.BRIEF

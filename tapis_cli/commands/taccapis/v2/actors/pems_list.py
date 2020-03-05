@@ -3,12 +3,12 @@ from .mixins import ActorIdentifier
 from tapis_cli.commands.taccapis.model import AbacoPermission
 
 from . import API_NAME, SERVICE_VERSION
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 
 __all__ = ['ActorsPemsList']
 
 
-class ActorsPemsList(ActorsFormatMany, ActorIdentifier):
+class ActorsPemsList(ActorsFormatManyUnlimited, ActorIdentifier):
     """Show Permissions on an Actor
     """
     VERBOSITY = Verbosity.BRIEF
