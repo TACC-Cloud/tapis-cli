@@ -4,12 +4,12 @@ from tapis_cli.utils import fnmatches
 from . import API_NAME, SERVICE_VERSION
 from .mixins import GlobListFilter
 from .models import Actor
-from .formatters import ActorsFormatMany
+from .formatters import ActorsFormatManyUnlimited
 
 __all__ = ['ActorsList']
 
 
-class ActorsList(ActorsFormatMany, GlobListFilter):
+class ActorsList(ActorsFormatManyUnlimited, GlobListFilter):
     """List available Actors
     """
     VERBOSITY = Verbosity.BRIEF
