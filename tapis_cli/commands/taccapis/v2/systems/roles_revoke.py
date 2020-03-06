@@ -10,8 +10,10 @@ __all__ = ['SystemsRolesRevoke']
 
 
 class SystemsRolesRevoke(SystemsFormatOne, ServiceIdentifier, Username):
-    """Revoke the current role for a User on a System
-    """
+
+    DESCRIPTION = 'Revoke a user role from a System'
+    LEGACY_COMMMAND = 'systems-roles-addupdate'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

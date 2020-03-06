@@ -13,8 +13,10 @@ __all__ = ['SystemsUpdate']
 
 
 class SystemsUpdate(SystemsCreate, ServiceIdentifier):
-    """Update an existing System
-    """
+
+    DESCRIPTION = 'Update an existing System'
+    LEGACY_COMMMAND = 'systems-addupdate'
+
     def get_parser(self, prog_name):
         parser = SystemsCreate.get_parser(self, prog_name)
         parser = ServiceIdentifier.extend_parser(self, parser)

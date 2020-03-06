@@ -11,8 +11,10 @@ __all__ = ['SystemsCreate']
 
 
 class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
-    """Create a new System
-    """
+
+    DESCRIPTION = 'Create a new System'
+    LEGACY_COMMMAND = 'systems-addupdate'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

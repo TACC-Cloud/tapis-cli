@@ -10,8 +10,10 @@ __all__ = ['SystemsSearch']
 
 
 class SystemsSearch(SystemsFormatMany, SearchableCommand):
-    """Search registered Systems
-    """
+
+    DESCRIPTION = 'Search available Systems'
+    LEGACY_COMMMAND = 'systems-search'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
 

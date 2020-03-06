@@ -8,8 +8,10 @@ __all__ = ['SystemsList']
 
 
 class SystemsList(SystemsFormatMany):
-    """List registered Systems
-    """
+
+    DESCRIPTION = 'List available Systems'
+    LEGACY_COMMMAND = 'systems-list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
 

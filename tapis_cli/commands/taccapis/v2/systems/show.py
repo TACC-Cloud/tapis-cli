@@ -11,8 +11,10 @@ __all__ = ['SystemsShow']
 
 
 class SystemsShow(SystemsFormatOne, ServiceIdentifier):
-    """Show details of a System
-    """
+
+    DESCRIPTION = 'Show details of a System'
+    LEGACY_COMMMAND = 'systems-list'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

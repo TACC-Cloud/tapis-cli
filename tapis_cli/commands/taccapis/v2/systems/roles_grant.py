@@ -9,8 +9,10 @@ __all__ = ['SystemsRolesGrant']
 
 
 class SystemsRolesGrant(SystemsFormatOne, ServiceIdentifier, Username):
-    """Grant a role on an System to a User
-    """
+
+    DESCRIPTION = 'Grant a user role on a System'
+    LEGACY_COMMMAND = 'systems-roles-addupdate'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

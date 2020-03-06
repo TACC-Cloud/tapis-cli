@@ -11,8 +11,10 @@ __all__ = ['SystemsUnpublish']
 
 
 class SystemsUnpublish(SystemsFormatOne, ServiceIdentifier):
-    """Unpublish a public System (requires tenant administrator privileges)
-    """
+
+    DESCRIPTION = 'Unpublish a public System'
+    LEGACY_COMMMAND = 'systems-unpublish'
+
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 
