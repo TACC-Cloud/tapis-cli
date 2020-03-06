@@ -25,7 +25,7 @@ __all__ = [
     'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
     'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
-    'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy'
+    'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy', 'LegacyCommmandHelp'
 ]
 
 
@@ -44,6 +44,19 @@ class OptionNotImplemented(ValueError):
     """
     pass
 
+
+class LegacyCommmandHelp(object):
+    
+    DESCRIPTION = 'Command description'
+    SHOW_LEGACY = True
+    LEGACY_COMMMAND = None
+
+    @property
+    def _description(self):
+        resp = self.DESCRIPTION
+        if self.LEGACY_COMMMAND is not None and self.SHOW_LEGACY:
+            resp = resp + ' ({0})'.format(self.LEGACY_COMMMAND)
+        return resp
 
 class ParserExtender(object):
 

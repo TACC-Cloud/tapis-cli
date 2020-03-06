@@ -2,12 +2,11 @@ from agavepy.agave import AgaveError
 from tapis_cli.clients.http import HTTPFormatOne
 from .bearer import TaccApisBearer
 from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
-                       ServiceIdentifier)
+                       ServiceIdentifier, LegacyCommmandHelp)
 
 
-class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
-    """TACC APIs HTTP+Token Record Display
-    """
+class TaccApisFormatOne(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne, TaccApisBearer):
+
     def get_parser(self, prog_name):
         # Because this class is composed of multiple parents with get_parser
         # and add_common_parser_arguments methods, we call them in preferred
@@ -33,9 +32,8 @@ class TaccApisFormatOne(JsonVerbose, HTTPFormatOne, TaccApisBearer):
         return parsed_args
 
 
-class TaccApisFormatOneNoBearer(JsonVerbose, HTTPFormatOne):
-    """TACC APIs HTTP+Token Record Display
-    """
+class TaccApisFormatOneNoBearer(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne):
+
     def get_parser(self, prog_name):
         # Because this class is composed of multiple parents with get_parser
         # and add_common_parser_arguments methods, we call them in preferred

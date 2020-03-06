@@ -8,6 +8,9 @@ import logging
 
 
 class TaccApiClient(object):
+
+    _description = 'COMMANDO'
+
     # (Agave.__init__ kwarg, ~/.agave/current key, parsed_arg.attr)
     PROPS = [('token', 'access_token', 'access_token'),
              ('refresh_token', 'refresh_token', 'refresh_token'),
