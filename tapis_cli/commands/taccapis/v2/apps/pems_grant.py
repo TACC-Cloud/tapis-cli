@@ -11,8 +11,10 @@ __all__ = ['AppsPemsGrant']
 
 
 class AppsPemsGrant(AppsFormatMany, AppIdentifier, Username):
-    """Grant Permissions on an App to a User
-    """
+
+    DESCRIPTION = 'Grant Permissions on an App to a User'
+    LEGACY_COMMMAND = 'apps-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

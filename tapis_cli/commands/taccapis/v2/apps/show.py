@@ -10,8 +10,10 @@ __all__ = ['AppsShow']
 
 
 class AppsShow(AppsFormatOne, AppIdentifier):
-    """Show details for an App
-    """
+
+    DESCRIPTION = 'Show details for an App'
+    LEGACY_COMMMAND = 'apps-list'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

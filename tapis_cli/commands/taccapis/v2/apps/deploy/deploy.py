@@ -33,8 +33,10 @@ class UploadAppTemplate(UploadJSONTemplate):
 
 class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
-    """Deploy a Tapis app project.
-    """
+
+    DESCRIPTION = 'Deploy an App from a project directory'
+    LEGACY_COMMMAND = 'apps-deploy'
+
     config = {}
     document = None
     results = []

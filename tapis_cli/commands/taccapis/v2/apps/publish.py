@@ -9,8 +9,10 @@ __all__ = ['AppsPublish']
 
 
 class AppsPublish(AppsFormatOne, AppIdentifier):
-    """Publish an App, making it generally usable across the platform
-    """
+
+    DESCRIPTION = 'Publish an App for use by others'
+    LEGACY_COMMMAND = 'apps-publish'
+
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 

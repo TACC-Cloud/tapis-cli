@@ -35,8 +35,9 @@ __all__ = ['AppsInit']
 
 
 class AppsInit(AppsFormatManyUnlimited):
-    """Initialize a new Tapis app project.
-    """
+
+    DESCRIPTION = 'Initialize a new Tapis App project'
+    LEGACY_COMMMAND = 'apps-init'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

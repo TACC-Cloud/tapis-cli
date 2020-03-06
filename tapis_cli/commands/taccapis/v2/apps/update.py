@@ -13,8 +13,10 @@ __all__ = ['AppsUpdate']
 
 
 class AppsUpdate(AppsCreate, AppIdentifier):
-    """Update an existing App
-    """
+
+    DESCRIPTION = 'Update an existing App'
+    LEGACY_COMMMAND = 'apps-addupdate'
+
     def get_parser(self, prog_name):
         parser = super(AppsUpdate, self).get_parser(prog_name)
         parser = AppIdentifier.extend_parser(self, parser)

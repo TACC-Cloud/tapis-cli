@@ -9,8 +9,10 @@ __all__ = ['AppsPemsDrop']
 
 
 class AppsPemsDrop(AppsFormatMany, AppIdentifier):
-    """Drop all granted Permissions from an App
-    """
+
+    DESCRIPTION = 'Drop all granted Permissions from an App'
+    LEGACY_COMMMAND = 'apps-pems-delete'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

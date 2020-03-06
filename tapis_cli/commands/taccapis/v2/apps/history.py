@@ -9,8 +9,10 @@ __all__ = ['AppsHistory']
 
 
 class AppsHistory(AppsFormatMany, AppIdentifier):
-    """Show history of an App
-    """
+    
+    DESCRIPTION = 'Show history for an App'
+    LEGACY_COMMMAND = 'apps-history'
+
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 

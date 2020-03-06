@@ -9,8 +9,10 @@ __all__ = ['AppsDisable']
 
 
 class AppsDisable(AppsFormatOne, AppIdentifier):
-    """Disable usage of an app
-    """
+
+    DESCRIPTION = 'Disable usage of an App'
+    LEGACY_COMMMAND = 'apps-disable'
+
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 
