@@ -8,8 +8,10 @@ __all__ = ['ActorsWorkersDelete']
 
 
 class ActorsWorkersDelete(ActorsFormatOne, ActorIdentifier):
-    """Delete a Worker of an Actor
-    """
+
+    DESCRIPTION = 'Delete the specified Worker'
+    LEGACY_COMMMAND = None
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

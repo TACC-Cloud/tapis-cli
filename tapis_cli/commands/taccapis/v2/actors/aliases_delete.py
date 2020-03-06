@@ -7,8 +7,10 @@ __all__ = ['ActorsAliasesDelete']
 
 
 class ActorsAliasesDelete(ActorsFormatOne):
-    """Delete an Alias
-    """
+
+    DESCRIPTION = 'Delete an Alias'
+    LEGACY_COMMMAND = 'abaco aliases rm'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

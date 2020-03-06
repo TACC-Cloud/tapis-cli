@@ -9,8 +9,10 @@ __all__ = ['ActorsExecsShow']
 
 
 class ActorsExecsShow(ActorsFormatOne, ActorIdentifier):
-    """Show Executions about a specific Actor Execution
-    """
+
+    DESCRIPTION = 'Show details of a specific Execution'
+    LEGACY_COMMMAND = 'abaco executions'
+    
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

@@ -10,8 +10,10 @@ __all__ = ['ActorsAliasesCreate']
 
 
 class ActorsAliasesCreate(ActorsFormatOne, ActorIdentifier):
-    """Add an alias of an actor
-    """
+
+    DESCRIPTION = 'Add an Alias for an Actor'
+    LEGACY_COMMMAND = 'abaco aliases create'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

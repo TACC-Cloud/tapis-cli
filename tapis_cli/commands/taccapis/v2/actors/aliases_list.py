@@ -13,8 +13,10 @@ __all__ = ['ActorsAliasesList']
 
 
 class ActorsAliasesList(ActorsFormatMany, GlobListFilter):
-    """List all current aliases
-    """
+
+    DESCRIPTION = 'List all current Aliases'
+    LEGACY_COMMMAND = 'abaco aliases list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
     FILTERABLE_KEYS = Alias.FILTERABLE_KEYS

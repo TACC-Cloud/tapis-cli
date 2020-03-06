@@ -13,8 +13,10 @@ __all__ = ['ActorsNoncesList']
 
 class ActorsNoncesList(ActorsFormatManyUnlimited, ActorIdentifier,
                        GlobListFilter):
-    """List the current nonces for an actor
-    """
+
+    DESCRIPTION = 'List Nonces for the specified Actor'
+    LEGACY_COMMMAND = None
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
     FILTERABLE_KEYS = Nonce.FILTERABLE_KEYS

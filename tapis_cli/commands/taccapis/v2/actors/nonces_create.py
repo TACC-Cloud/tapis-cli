@@ -10,8 +10,10 @@ __all__ = ['ActorsNoncesCreate']
 
 
 class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
-    """Add a nonce to an actor
-    """
+
+    DESCRIPTION = 'Create a Nonce for the specified Actor'
+    LEGACY_COMMMAND = None
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
 

@@ -10,8 +10,10 @@ __all__ = ['ActorsList']
 
 
 class ActorsList(ActorsFormatManyUnlimited, GlobListFilter):
-    """List available Actors
-    """
+
+    DESCRIPTION = 'List available Actors'
+    LEGACY_COMMMAND = 'abaco list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
     FILTERABLE_KEYS = Actor.FILTERABLE_KEYS

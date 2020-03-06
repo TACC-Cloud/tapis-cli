@@ -10,8 +10,9 @@ __all__ = ['ActorsPemsShow']
 
 
 class ActorsPemsShow(ActorsFormatOne, ActorIdentifier, Username):
-    """Show Permissions on an Actor for a user
-    """
+
+    DESCRIPTION = 'Show specific User Permissions for an Actor'
+    LEGACY_COMMMAND = 'abaco permissions'
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

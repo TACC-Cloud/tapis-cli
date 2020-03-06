@@ -8,8 +8,10 @@ __all__ = ['ActorsNoncesDelete']
 
 
 class ActorsNoncesDelete(ActorsFormatOne, ActorIdentifier):
-    """Delete a Nonce of an Actor
-    """
+
+    DESCRIPTION = 'Delete a Nonce for the specified Actor'
+    LEGACY_COMMMAND = None
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

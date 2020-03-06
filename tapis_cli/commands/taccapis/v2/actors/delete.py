@@ -9,8 +9,10 @@ __all__ = ['ActorsDelete']
 
 
 class ActorsDelete(ActorsFormatOne, ActorIdentifier):
-    """Delete an Actor
-    """
+
+    DESCRIPTION = 'Delete an Actor'
+    LEGACY_COMMMAND = 'abaco rm'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

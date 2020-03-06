@@ -13,8 +13,10 @@ __all__ = ['ActorsWorkersList']
 
 class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
                         GlobListFilter):
-    """List the Workers for a specific Actor
-    """
+
+    DESCRIPTION = 'List Workers for the specified Actor'
+    LEGACY_COMMMAND = 'abaco workers'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
     FILTERABLE_KEYS = Worker.FILTERABLE_KEYS

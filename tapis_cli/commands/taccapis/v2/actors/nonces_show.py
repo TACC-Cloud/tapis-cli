@@ -10,8 +10,10 @@ __all__ = ['ActorsNoncesShow']
 
 
 class ActorsNoncesShow(ActorsFormatOne, ActorIdentifier):
-    """Get the details about a specific nonce for an actor
-    """
+
+    DESCRIPTION = 'Get the details about a specific Nonce'
+    LEGACY_COMMMAND = None
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

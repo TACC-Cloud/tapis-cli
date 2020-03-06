@@ -9,8 +9,10 @@ __all__ = ['ActorsAliasesShow']
 
 
 class ActorsAliasesShow(ActorsFormatOne):
-    """Show details for an Actor Alias
-    """
+
+    DESCRIPTION = 'Show details for an Alias'
+    LEGACY_COMMMAND = 'abaco aliases list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

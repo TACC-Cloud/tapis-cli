@@ -10,8 +10,10 @@ __all__ = ['ActorsPemsGrant']
 
 
 class ActorsPemsGrant(ActorsFormatManyUnlimited, ActorIdentifier, Username):
-    """Grant Permissions on an Actor to a User
-    """
+
+    DESCRIPTION = 'Grant Permissions on the specified Actor'
+    LEGACY_COMMMAND = 'abaco permissions'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

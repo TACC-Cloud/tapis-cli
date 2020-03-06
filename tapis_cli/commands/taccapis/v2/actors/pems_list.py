@@ -11,6 +11,9 @@ __all__ = ['ActorsPemsList']
 class ActorsPemsList(ActorsFormatManyUnlimited, ActorIdentifier):
     """Show Permissions on an Actor
     """
+    DESCRIPTION = 'Show Permissions for the specified Actor'
+    LEGACY_COMMMAND = 'abaco permissions'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

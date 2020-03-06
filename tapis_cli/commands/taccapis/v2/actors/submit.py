@@ -9,11 +9,11 @@ from .models import Message
 __all__ = ['ActorsSubmit']
 
 
-# make level and maxUses as optional arguments
 class ActorsSubmit(ActorsFormatOne, ActorIdentifier):
-    """Send a message to an actor mailbox (asynchronous
-       execution)
-    """
+
+    DESCRIPTION = 'Send an asynchronous message to an Actor'
+    LEGACY_COMMMAND = 'abaco run'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

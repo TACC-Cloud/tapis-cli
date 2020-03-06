@@ -10,8 +10,10 @@ __all__ = ['ActorsExecsLogs']
 
 
 class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier):
-    """Show specific Actor Execution Logs
-    """
+
+    DESCRIPTION = 'Show logs for a specific Execution'
+    LEGACY_COMMMAND = 'abaco logs'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

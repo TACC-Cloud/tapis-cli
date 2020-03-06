@@ -10,8 +10,10 @@ __all__ = ['ActorsPemsRevoke']
 
 
 class ActorsPemsRevoke(ActorsFormatManyUnlimited, ActorIdentifier, Username):
-    """Revoke Permissions on an Actor for a User
-    """
+
+    DESCRIPTION = 'Revoke Permissions on the specified Actor for a User'
+    LEGACY_COMMMAND = 'abaco permissions'
+    
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

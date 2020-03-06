@@ -9,8 +9,10 @@ __all__ = ['ActorsWorkersCreate']
 
 
 class ActorsWorkersCreate(ActorsFormatOne, ActorIdentifier):
-    """Create Workers for a specific Actor
-    """
+
+    DESCRIPTION = 'Add Workers to the specified Actor'
+    LEGACY_COMMMAND = 'abaco workers'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
