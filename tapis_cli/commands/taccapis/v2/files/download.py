@@ -17,8 +17,9 @@ __all__ = ['FilesDownload']
 class FilesDownload(FilesFormatOne, AgaveURI, DownloadDirectoryArg,
                     IncludeFiles, ExcludeFiles, OverwritePolicy,
                     ReportProgress):
-    """Download a Files path to the local host
-    """
+
+    DESCRIPTION = 'Download from Tapis to the local host'
+    LEGACY_COMMMAND = 'files-get'
 
     # TODO - add formatting and sorting options
     def get_parser(self, prog_name):

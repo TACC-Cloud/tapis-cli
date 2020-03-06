@@ -13,8 +13,10 @@ __all__ = ['FilesPemsList']
 
 
 class FilesPemsList(FilesPemsFormatMany, AgaveURI, FileOptions):
-    """List permissions for an specific Files path
-    """
+
+    DESCRIPTION = 'List permissions for an specific Files path'
+    LEGACY_COMMMAND = 'files-pems-list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

@@ -11,8 +11,10 @@ __all__ = ['FilesShow']
 
 
 class FilesShow(FilesFormatOne, AgaveURI, FileOptions):
-    """Show a single Files path
-    """
+
+    DESCRIPTION = 'Show details of a Files path'
+    LEGACY_COMMMAND = 'files-list'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

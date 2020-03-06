@@ -13,8 +13,10 @@ __all__ = ['FilesMakeDir']
 
 
 class FilesMakeDir(FilesFormatOne, AgaveURI, FileOptions):
-    """Create a Files directory
-    """
+
+    DESCRIPTION = 'Create a directory on a System'
+    LEGACY_COMMMAND = 'files-mkdir'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

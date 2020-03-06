@@ -10,8 +10,10 @@ __all__ = ['FilesPemsRevoke']
 
 
 class FilesPemsRevoke(FilesFormatMany, AgaveURI, Username):
-    """Revoke permissions on a Files path for a User
-    """
+
+    DESCRIPTION = 'Revoke permissions on a Files path for a User'
+    LEGACY_COMMMAND = 'files-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

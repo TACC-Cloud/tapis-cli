@@ -13,8 +13,10 @@ __all__ = ['FilesMove']
 
 
 class FilesMove(FilesFormatOne, AgaveURI, FileOptions):
-    """Move a Files path from one location to another on a System
-    """
+
+    DESCRIPTION = 'Move a Files path from one location to another on a System'
+    LEGACY_COMMMAND = 'files-move'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

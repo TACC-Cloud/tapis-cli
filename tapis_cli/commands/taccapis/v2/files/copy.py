@@ -12,8 +12,10 @@ __all__ = ['FilesCopy']
 
 
 class FilesCopy(FilesFormatOne, AgaveURI, FileOptions):
-    """Copy a Files path from one location to another on a System
-    """
+
+    DESCRIPTION = 'Copy a Files path between locations within Tapis'
+    LEGACY_COMMMAND = 'files-copy'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 

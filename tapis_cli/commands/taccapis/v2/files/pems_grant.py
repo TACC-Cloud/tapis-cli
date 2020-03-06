@@ -10,8 +10,10 @@ __all__ = ['FilesPemsGrant']
 
 
 class FilesPemsGrant(FilesFormatMany, AgaveURI, Username):
-    """Grant permissions on a Files path to a User
-    """
+
+    DESCRIPTION = 'Grant permissions on a Files path to a User'
+    LEGACY_COMMMAND = 'files-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
