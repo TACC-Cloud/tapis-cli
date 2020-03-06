@@ -9,8 +9,10 @@ __all__ = ['PostItsCreate']
 
 
 class PostItsCreate(PostItsFormatOne, URL):
-    """Create a new Postit
-    """
+
+    DESCRIPTION = 'Create a new Postit'
+    LEGACY_COMMMAND = 'postits-create'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
