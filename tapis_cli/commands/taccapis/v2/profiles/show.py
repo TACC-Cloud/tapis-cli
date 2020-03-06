@@ -9,8 +9,10 @@ __all__ = ['ProfilesShow']
 
 
 class ProfilesShow(ProfilesFormatOne, Username):
-    """Show a the Profile for a specific user
-    """
+
+    DESCRIPTION = 'Show details for a specific Profile'
+    LEGACY_COMMMAND = 'profiles-list'
+
     VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):

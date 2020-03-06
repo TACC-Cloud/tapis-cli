@@ -10,8 +10,10 @@ __all__ = ['ProfilesSearch']
 
 
 class ProfilesSearch(ProfilesFormatMany):
-    """Search for a Profile by attribute
-    """
+
+    DESCRIPTION = 'Search by attribute for a Profile'
+    LEGACY_COMMMAND = 'profiles-search'
+
     VERBOSITY = Verbosity.LISTING
 
     def get_parser(self, prog_name):
