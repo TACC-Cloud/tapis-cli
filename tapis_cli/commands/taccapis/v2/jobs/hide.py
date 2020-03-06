@@ -9,8 +9,10 @@ __all__ = ['JobsHide']
 
 
 class JobsHide(JobsFormatOne, JobsUUID):
-    """Hide a Job from view
-    """
+
+    DESCRIPTION = 'Hide a Job from view'
+    LEGACY_COMMMAND = 'jobs-hide'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

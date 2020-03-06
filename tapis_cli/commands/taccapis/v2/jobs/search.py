@@ -9,8 +9,10 @@ __all__ = ['JobsSearch']
 
 
 class JobsSearch(JobsFormatMany):
-    """Search Job records
-    """
+
+    DESCRIPTION = 'Search Job records'
+    LEGACY_COMMMAND = 'jobs-search'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
 

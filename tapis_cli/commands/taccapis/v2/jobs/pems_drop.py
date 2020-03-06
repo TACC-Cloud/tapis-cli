@@ -9,8 +9,10 @@ __all__ = ['JobsPemsDrop']
 
 
 class JobsPemsDrop(JobsFormatMany, JobsUUID):
-    """Drop all granted Permissions from a Job
-    """
+
+    DESCRIPTION = 'Drop all granted Permissions from a Job'
+    LEGACY_COMMMAND = 'jobs-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

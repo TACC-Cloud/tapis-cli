@@ -9,8 +9,10 @@ __all__ = ['JobsShow']
 
 
 class JobsShow(JobsFormatOne, JobsUUID):
-    """Show a specific Job
-    """
+
+    DESCRIPTION = 'Show a specific Job'
+    LEGACY_COMMMAND = 'jobs-list'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

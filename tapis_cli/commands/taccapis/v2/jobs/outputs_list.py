@@ -12,8 +12,10 @@ from . import API_NAME, SERVICE_VERSION
 
 
 class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
-    """Lists a Jobs output directory
-    """
+
+    DESCRIPTION = 'Lists output directory for a Jobs'
+    LEGACY_COMMMAND = 'jobs-output-list'
+
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
 

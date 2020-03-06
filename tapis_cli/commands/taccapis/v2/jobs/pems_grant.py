@@ -10,8 +10,10 @@ __all__ = ['JobsPemsGrant']
 
 
 class JobsPemsGrant(JobsFormatMany, JobsUUID, Username):
-    """Grant Permissions on a Job to a User
-    """
+
+    DESCRIPTION = 'Grant Permissions on a Job to a User'
+    LEGACY_COMMMAND = 'jobs-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

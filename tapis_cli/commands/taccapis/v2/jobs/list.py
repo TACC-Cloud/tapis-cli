@@ -8,8 +8,10 @@ __all__ = ['JobsList']
 
 
 class JobsList(JobsFormatMany):
-    """List Job records and status
-    """
+
+    DESCRIPTION = 'List Jobs'
+    LEGACY_COMMMAND = 'jobs-list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
 
