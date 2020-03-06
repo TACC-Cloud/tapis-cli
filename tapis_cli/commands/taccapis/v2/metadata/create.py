@@ -10,8 +10,10 @@ __all__ = ['MetadataCreate']
 
 
 class MetadataCreate(MetadataFormatOne, UploadMetadataFile):
-    """Store Metadata in a new document
-    """
+
+    DESCRIPTION = 'Store Metadata in a new document'
+    LEGACY_COMMMAND = 'metadata-addupdate'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

@@ -9,8 +9,10 @@ __all__ = ['MetadataPemsList']
 
 
 class MetadataPemsList(MetadataFormatMany, MetadataUUID):
-    """List Permissions for a Metadata document
-    """
+
+    DESCRIPTION = 'List Permissions for a Metadata document'
+    LEGACY_COMMMAND = 'metadata-pems-list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

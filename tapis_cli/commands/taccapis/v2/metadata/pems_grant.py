@@ -10,8 +10,10 @@ __all__ = ['MetadataPemsGrant']
 
 
 class MetadataPemsGrant(MetadataFormatMany, MetadataUUID, Username):
-    """Grant Permissions on a Metadata document to a User
-    """
+
+    DESCRIPTION = 'Grant Permissions on a Metadata document to a User'
+    LEGACY_COMMMAND = 'metadata-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

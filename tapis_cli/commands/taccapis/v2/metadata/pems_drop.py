@@ -9,8 +9,10 @@ __all__ = ['MetadataPemsDrop']
 
 
 class MetadataPemsDrop(MetadataFormatMany, MetadataUUID):
-    """Drop all granted Permissions from a Metadata document
-    """
+
+    DESCRIPTION = 'Drop all granted Permissions from a Metadata document'
+    LEGACY_COMMMAND = 'metadata-pems-update'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

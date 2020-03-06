@@ -9,8 +9,10 @@ __all__ = ['MetadataDelete']
 
 
 class MetadataDelete(MetadataFormatOne, MetadataUUID):
-    """Delete a Metadata document by UUID
-    """
+
+    DESCRIPTION = 'Delete a Metadata document by UUID'
+    LEGACY_COMMMAND = 'metadata-delete'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 

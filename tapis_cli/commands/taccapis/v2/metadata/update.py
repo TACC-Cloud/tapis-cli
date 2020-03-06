@@ -10,8 +10,10 @@ from . import API_NAME, SERVICE_VERSION
 
 
 class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
-    """Update an existing Metadata document by UUID
-    """
+
+    DESCRIPTION = 'Update an existing Metadata document by UUID'
+    LEGACY_COMMMAND = 'metadata-addupdate'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
