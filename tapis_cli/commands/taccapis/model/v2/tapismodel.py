@@ -9,6 +9,7 @@ class TapisModel(object):
     """
 
     SEARCH_ARGS = []
+    ARGS_ORDERED = []
     service_id_type = 'Unknown'
 
     format_many = False
@@ -32,7 +33,22 @@ class TapisModel(object):
             self.fields.append(arg)
         return self
 
-    def add_fields(self, fields):
+    def add_fields(self, fields, ordered=[]):
+        """Bulk add multiple searchable fields
+        """
+        fnames = [f[0] for f in fields]
+        # Add ordered
+        for o in ordered:
+            for f in fields:
+                if f[0] == o:
+                    self.add_field(*f)
+                    fields.remove(f)
+        # Add remaining, ordered as sent in fields
+        for f in fields:
+            self.add_field(*f)
+        return self
+
+    def _add_fields(self, fields, ordererd=[]):
         """Bulk add multiple searchable fields
         """
         for f in fields:
@@ -53,7 +69,7 @@ class TapisModel(object):
         pass
 
     def __init__(self):
-        self.add_fields(self.SEARCH_ARGS)
+        self.add_fields(self.SEARCH_ARGS, self.ARGS_ORDERED)
 
     def get_headers(self, verbosity_level=None, formatter='table'):
         if verbosity_level is None:

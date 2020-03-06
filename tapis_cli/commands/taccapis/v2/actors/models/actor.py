@@ -17,8 +17,11 @@ class Actor(TapisModel):
     """
     service_id_type = 'Actor'
     FILTERABLE_KEYS = ['name', 'description', 'image', 'owner']
+    ARGS_ORDERED = ['id', 'name', 'description', 'owner', 'image']
     SEARCH_ARGS = [
         ("createTime", argtype.DATETIME, Verbosity.LISTING_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
+        ("lastUpdateTime", argtype.DATETIME, Verbosity.BRIEF,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("defaultEnvironment", argtype.OBJECT, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
@@ -30,9 +33,7 @@ class Actor(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
-        ("image", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
-         argmod.DEFAULT, None, None, False),
-        ("lastUpdateTime", argtype.DATETIME, Verbosity.LISTING_VERBOSE,
+        ("image", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("link", argtype.STRING, Verbosity.LISTING_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),

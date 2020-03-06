@@ -11,7 +11,7 @@ __all__ = ['Alias']
 class Alias(TapisModel):
     service_id_type = 'Alias'
     FILTERABLE_KEYS = ['owner']
-
+    ARGS_ORDERED = ['alias', 'actorId']
     SEARCH_ARGS = [
         ("actorId", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),

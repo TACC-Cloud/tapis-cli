@@ -17,6 +17,7 @@ class Execution(TapisModel):
     """
     service_id_type = 'Execution'
     FILTERABLE_KEYS = ['finalState', 'status']
+
     SEARCH_ARGS = [
         ("actorId", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
