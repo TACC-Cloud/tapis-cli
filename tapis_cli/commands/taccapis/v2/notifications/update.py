@@ -14,8 +14,10 @@ __all__ = ['NotificationsUpdate']
 
 
 class NotificationsUpdate(NotificationsCreate, NotificationsUUID):
-    """Update a Notification by UUID
-    """
+
+    DESCRIPTION = 'Update a Notification by UUID'
+    LEGACY_COMMMAND = 'notifications-addupdate'
+
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
