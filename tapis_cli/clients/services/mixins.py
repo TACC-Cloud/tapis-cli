@@ -14,7 +14,7 @@ from cliff.command import Command
 from cliff.hooks import CommandHook
 from cliff.app import App
 
-from tapis_cli import constants
+from tapis_cli import constants, settings
 from tapis_cli.display import Verbosity
 from tapis_cli.utils import serializable
 from tapis_cli import project_ini, settings, templating
@@ -54,7 +54,7 @@ class LegacyCommmandHelp(object):
     @property
     def _description(self):
         resp = self.DESCRIPTION
-        if self.LEGACY_COMMMAND is not None and self.SHOW_LEGACY:
+        if self.LEGACY_COMMMAND is not None and self.SHOW_LEGACY and settings.TAPIS_CLI_SHOW_LEGACY_HELP:
             resp = resp + ' ({0})'.format(self.LEGACY_COMMMAND)
         return resp
 
