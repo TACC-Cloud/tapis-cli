@@ -9,8 +9,8 @@ __all__ = ['VariablesList', 'VariablesInit']
 
 
 class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
-    """Show current template variable names and values
-    """
+    DESCRIPTION = 'Show active template variable names and values'
+
     def get_parser(self, prog_name):
         parser = super(VariablesList, self).get_parser(prog_name)
         parser = UploadJSONTemplate.extend_parser(self, parser)
@@ -53,8 +53,8 @@ class VariablesList(TaccApisFormatManyUnlimited, UploadJSONTemplate):
 
 
 class VariablesInit(TaccApisFormatOne):
-    """Create an .ini file to support templating
-    """
+
+    DESCRIPTION = 'Create an .ini file to support templating'
 
     # tapis info vars init <filename>
     def get_parser(self, prog_name):
