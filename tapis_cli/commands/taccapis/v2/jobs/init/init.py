@@ -24,8 +24,9 @@ DEFAULT_JOB_RUNTIME = '01:00:00'
 
 
 class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
-    """Template a Tapis Job document for an App
-    """
+
+    DESCRIPTION = 'Create a Job document for the specified App'
+    LEGACY_COMMMAND = 'jobs-template'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
