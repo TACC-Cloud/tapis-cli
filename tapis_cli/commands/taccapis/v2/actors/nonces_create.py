@@ -20,13 +20,12 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
     def get_parser(self, prog_name):
         parser = super(ActorsNoncesCreate, self).get_parser(prog_name)
         parser = ActorIdentifier.extend_parser(self, parser)
-        parser.add_argument(
-            '--level',
-            metavar='LEVEL',
-            type=str,
-            required=False,
-            default='EXECUTE',
-            help='Optional Permissions level for this \
+        parser.add_argument('--level',
+                            metavar='LEVEL',
+                            type=str,
+                            required=False,
+                            default='EXECUTE',
+                            help='Optional Permissions level for this \
                                   Nonce (default: EXECUTE)')
         parser.add_argument(
             '--max-uses',
@@ -34,7 +33,8 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
             type=int,
             required=False,
             default=-1,
-            help='Optional Max number of times Nonce can be redeemed (default: -1)',
+            help=
+            'Optional Max number of times Nonce can be redeemed (default: -1)',
         )
         return parser
 
