@@ -10,8 +10,8 @@ __all__ = ['NotificationsShow']
 
 class NotificationsShow(NotificationsFormatOne, NotificationsUUID):
 
-    DESCRIPTION = 'Show details of a Notification'
-    LEGACY_COMMMAND = 'notifications-list'
+    HELP_STRING = 'Show details of a Notification'
+    LEGACY_COMMMAND_STRING = 'notifications-list'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD

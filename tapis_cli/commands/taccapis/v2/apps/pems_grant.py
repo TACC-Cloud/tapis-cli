@@ -12,8 +12,8 @@ __all__ = ['AppsPemsGrant']
 
 class AppsPemsGrant(AppsFormatMany, AppIdentifier, Username):
 
-    DESCRIPTION = 'Grant Permissions on an App to a User'
-    LEGACY_COMMMAND = 'apps-pems-update'
+    HELP_STRING = 'Grant Permissions on an App to a User'
+    LEGACY_COMMMAND_STRING = 'apps-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -23,7 +23,7 @@ class AppsPemsGrant(AppsFormatMany, AppIdentifier, Username):
         parser = AppIdentifier.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         parser.add_argument('permission',
-                            metavar='<permission>',
+                            metavar='PERMISSION',
                             choices=Permission.NAMES,
                             help='Permission string ({0})'.format('| '.join(
                                 Permission.NAMES)))

@@ -25,7 +25,7 @@ class NotificationOptions(ParserExtender):
                             '--url',
                             dest='url',
                             required=True,
-                            metavar='<url>',
+                            metavar='URL',
                             help='URL destination for the notification')
 
         parser.add_argument(
@@ -33,7 +33,7 @@ class NotificationOptions(ParserExtender):
             '--event',
             dest='event',
             action='append',
-            metavar='<event>',
+            metavar='EVENT',
             required=True,
             help='Event to subscribe to (can be specified multiple times)')
 
@@ -53,7 +53,7 @@ class NotificationOptions(ParserExtender):
             '--retry-delay',
             dest='retry_delay',
             type=int,
-            metavar='<seconds>',
+            metavar='INT',
             help=
             'Seconds to delay after the first failed notification attempt (max 1 day)'
         )
@@ -61,14 +61,14 @@ class NotificationOptions(ParserExtender):
             '--retry-limit',
             dest='retry_limit',
             type=int,
-            metavar='<int>',
+            metavar='INT',
             help='Maximum number of retries before marking notification failed'
         )
         policy_group.add_argument(
             '--retry-rate',
             dest='retry_rate',
             type=int,
-            metavar='<int>',
+            metavar='INT',
             help=
             'Number of seconds between retries. A value of zero indicates another attempt should be made immediately.'
         )

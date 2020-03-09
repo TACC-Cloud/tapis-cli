@@ -25,8 +25,8 @@ DEFAULT_JOB_RUNTIME = '01:00:00'
 
 class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
 
-    DESCRIPTION = 'Create a Job document for the specified App'
-    LEGACY_COMMMAND = 'jobs-template'
+    HELP_STRING = 'Create a Job document for the specified App'
+    LEGACY_COMMMAND_STRING = 'jobs-template'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -52,22 +52,22 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
             help='Include optional inputs and parameters in template')
         parser.add_argument('--name',
                             dest='job_name',
-                            metavar='<name>',
+                            metavar='NAME',
                             help='Job name')
         parser.add_argument('--queue',
                             dest='queue_name',
-                            metavar='<queue>',
+                            metavar='QUEUE',
                             help='Queue')
         parser.add_argument('--duration',
                             dest='max_run_time',
-                            metavar='<hh:mm:ss>',
-                            help='Maximum run time HH:MM:SS (01:00:00)')
+                            metavar='HH:MM:SS',
+                            help='Maximum run time (01:00:00)')
 
         # nopts = parser.add_mutually_exclusive_group()
-        # nopts.add_argument('--cpus', dest='total_cpu_count', metavar='<int>', help='CPUs')
+        # nopts.add_argument('--cpus', dest='total_cpu_count', metavar='INT', help='CPUs')
         parser.add_argument('--nodes',
                             dest='node_count',
-                            metavar='<int>',
+                            metavar='INT',
                             help='Compute nodes (1)')
 
         aopts = parser.add_mutually_exclusive_group()
@@ -76,8 +76,8 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                            help='Do not archive results')
         aopts.add_argument('--archive-uri',
                            type=str,
-                           metavar='<agave_uri>',
-                           help='Path to archive results (Files URI agave://)')
+                           metavar='AGAVE_URI',
+                           help='Path to archive results (agave://)')
 
         nopts = parser.add_mutually_exclusive_group()
         nopts.add_argument('--no-notify',
@@ -86,14 +86,14 @@ class JobsInit(JobsFormatManyUnlimited, AppIdentifier):
                            help='Do not send job status notifications')
         nopts.add_argument('--notifications-uri',
                            type=str,
-                           metavar='<uri>',
+                           metavar='URI|EMAIL',
                            help='POST URL or email address for notifications')
 
         parser.add_argument('-O',
                             '--output',
                             dest='output',
                             default='',
-                            metavar='<filepath>',
+                            metavar='PATH',
                             help='Output destination (STDOUT)')
 
         return parser

@@ -10,8 +10,8 @@ __all__ = ['JobsUnhide']
 
 class JobsUnhide(JobsFormatOne, JobsUUID):
 
-    DESCRIPTION = 'Unhide a hidden Job'
-    LEGACY_COMMMAND = 'jobs-unhide'
+    HELP_STRING = 'Unhide a hidden Job'
+    LEGACY_COMMMAND_STRING = 'jobs-unhide'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

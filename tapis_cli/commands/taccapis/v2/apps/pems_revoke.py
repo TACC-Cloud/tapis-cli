@@ -11,8 +11,8 @@ __all__ = ['AppsPemsRevoke']
 
 class AppsPemsRevoke(AppsFormatMany, AppIdentifier, Username):
 
-    DESCRIPTION = 'Revoke Permissions on an App for a User'
-    LEGACY_COMMMAND = 'apps-pems-update'
+    HELP_STRING = 'Revoke Permissions on an App for a User'
+    LEGACY_COMMMAND_STRING = 'apps-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

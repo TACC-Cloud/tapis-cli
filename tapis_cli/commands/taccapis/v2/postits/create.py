@@ -10,8 +10,8 @@ __all__ = ['PostItsCreate']
 
 class PostItsCreate(PostItsFormatOne, URL):
 
-    DESCRIPTION = 'Create a new Postit'
-    LEGACY_COMMMAND = 'postits-create'
+    HELP_STRING = 'Create a new Postit'
+    LEGACY_COMMMAND_STRING = 'postits-create'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -24,21 +24,21 @@ class PostItsCreate(PostItsFormatOne, URL):
             '--lifetime',
             dest='lifetime',
             default=DEFAULT_LIFETIME,
-            metavar='<seconds>',
+            metavar='INT',
             help='Lifetime (default: {0} sec)'.format(DEFAULT_LIFETIME))
         parser.add_argument(
             '-m',
             '--max-uses',
             dest='max_uses',
             default=DEFAULT_MAX_USES,
-            metavar='<integer>',
+            metavar='INT',
             help='Maximum redemptions (default: {0})'.format(DEFAULT_MAX_USES))
         parser.add_argument('-M',
                             '--http-method',
                             dest='http_method',
                             choices=HTTP_METHODS,
                             default='GET',
-                            metavar='<method>',
+                            metavar='GET|POST',
                             help='HTTP method for URL (default: GET)')
         # parser.add_argument('-x',
         #                     '--token-username',

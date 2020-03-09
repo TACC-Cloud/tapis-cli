@@ -11,8 +11,8 @@ __all__ = ['JobsPemsRevoke']
 
 class JobsPemsRevoke(JobsFormatMany, JobsUUID, Username):
 
-    DESCRIPTION = 'Revoke Permissions on a Job for a User'
-    LEGACY_COMMMAND = 'jobs-pems-update'
+    HELP_STRING = 'Revoke Permissions on a Job for a User'
+    LEGACY_COMMMAND_STRING = 'jobs-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

@@ -10,8 +10,8 @@ __all__ = ['JobsSubmit']
 
 class JobsSubmit(JobsFormatOne, UploadJSONTemplate):
 
-    DESCRIPTION = 'Submit a new Job'
-    LEGACY_COMMMAND = 'jobs-submit'
+    HELP_STRING = 'Submit a new Job'
+    LEGACY_COMMMAND_STRING = 'jobs-submit'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

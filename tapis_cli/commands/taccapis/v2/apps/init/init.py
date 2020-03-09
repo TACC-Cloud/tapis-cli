@@ -24,7 +24,7 @@ __all__ = ['AppsInit']
 #     pass
 
 # WORKFLOW
-# accept URI, PROJECT, NAME, DESCRIPTION, PATH
+# accept URI, PROJECT, NAME, HELP_STRING, PATH
 # cookiecutter URI PROJECT => directory call NAME
 # cd into NAME
 # write project.ini#app.description
@@ -36,8 +36,8 @@ __all__ = ['AppsInit']
 
 class AppsInit(AppsFormatManyUnlimited):
 
-    DESCRIPTION = 'Initialize a new Tapis App project'
-    LEGACY_COMMMAND = 'apps-init'
+    HELP_STRING = 'Initialize a new Tapis App project'
+    LEGACY_COMMMAND_STRING = 'apps-init'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -58,7 +58,7 @@ class AppsInit(AppsFormatManyUnlimited):
         # Values for configuring the project itself
         parser.add_argument('project_name',
                             type=str,
-                            metavar='<name>',
+                            metavar='STRING',
                             help='App name')
         parser.add_argument('output_dir',
                             metavar='output_directory',
@@ -69,17 +69,17 @@ class AppsInit(AppsFormatManyUnlimited):
         parser.add_argument('--label',
                             type=str,
                             dest='project_label',
-                            metavar='<label>',
+                            metavar='STRING',
                             help='Human-readable label')
         parser.add_argument('--description',
                             type=str,
                             dest='project_description',
-                            metavar='<description>',
+                            metavar='STRING',
                             help='One-sentence description')
         parser.add_argument('--version',
                             type=str,
                             dest='project_version',
-                            metavar='<version>',
+                            metavar='N.N.N',
                             help='Semantic version')
 
         # Coordinates for CookieCutter assets
@@ -88,21 +88,21 @@ class AppsInit(AppsFormatManyUnlimited):
                               type=str,
                               dest='source_repo',
                               default=templates.COOKIECUTTER_URI,
-                              metavar='<uri>',
+                              metavar='URL',
                               help='CookieCutter Repo ({})'.format(
                                   templates.COOKIECUTTER_URI))
         cc_group.add_argument('--checkout',
                               type=str,
                               dest='source_checkout',
                               default=templates.CHECKOUT,
-                              metavar='<checkout>',
+                              metavar='COMMIT',
                               help='Branch/Tag/Commit ({})'.format(
                                   templates.CHECKOUT))
         cc_group.add_argument('--template',
                               type=str,
                               dest='source_dir',
                               default=templates.DIRECTORY,
-                              metavar='<template>',
+                              metavar='TEMPLATE',
                               help='Template name ({})'.format(
                                   templates.DIRECTORY))
 

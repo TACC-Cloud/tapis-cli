@@ -10,8 +10,8 @@ __all__ = ['SystemsHistory']
 
 class SystemsHistory(SystemsHistoryFormatMany, ServiceIdentifier):
 
-    DESCRIPTION = 'Show history for a System'
-    LEGACY_COMMMAND = 'systems-history'
+    HELP_STRING = 'Show history for a System'
+    LEGACY_COMMMAND_STRING = 'systems-history'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

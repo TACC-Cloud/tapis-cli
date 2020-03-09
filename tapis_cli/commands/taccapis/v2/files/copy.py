@@ -13,8 +13,8 @@ __all__ = ['FilesCopy']
 
 class FilesCopy(FilesFormatOne, AgaveURI, FileOptions):
 
-    DESCRIPTION = 'Copy a Files path between locations within Tapis'
-    LEGACY_COMMMAND = 'files-copy'
+    HELP_STRING = 'Copy a Files path between locations within Tapis'
+    LEGACY_COMMMAND_STRING = 'files-copy'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -23,7 +23,7 @@ class FilesCopy(FilesFormatOne, AgaveURI, FileOptions):
         parser = super(FilesCopy, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser.add_argument('destination',
-                            metavar='<destination>',
+                            metavar='DESTINATION',
                             help='Destination path')
         return parser
 

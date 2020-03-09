@@ -11,8 +11,8 @@ __all__ = ['MetadataList']
 
 class MetadataList(MetadataFormatMany):
 
-    DESCRIPTION = 'List Metadata documents'
-    LEGACY_COMMMAND = 'metadata-list'
+    HELP_STRING = 'List Metadata documents'
+    LEGACY_COMMMAND_STRING = 'metadata-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

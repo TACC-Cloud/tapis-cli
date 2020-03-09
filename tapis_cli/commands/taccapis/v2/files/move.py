@@ -14,8 +14,8 @@ __all__ = ['FilesMove']
 
 class FilesMove(FilesFormatOne, AgaveURI, FileOptions):
 
-    DESCRIPTION = 'Move a Files path from one location to another on a System'
-    LEGACY_COMMMAND = 'files-move'
+    HELP_STRING = 'Move a Files path from one location to another on a System'
+    LEGACY_COMMMAND_STRING = 'files-move'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -24,7 +24,7 @@ class FilesMove(FilesFormatOne, AgaveURI, FileOptions):
         parser = super(FilesMove, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
         parser.add_argument('destination',
-                            metavar='<destination>',
+                            metavar='DESTINATION',
                             help='Destination path')
         return parser
 

@@ -10,8 +10,8 @@ __all__ = ['ProfilesShow']
 
 class ProfilesShow(ProfilesFormatOne, Username):
 
-    DESCRIPTION = 'Show details for a specific Profile'
-    LEGACY_COMMMAND = 'profiles-list'
+    HELP_STRING = 'Show details for a specific Profile'
+    LEGACY_COMMMAND_STRING = 'profiles-list'
 
     VERBOSITY = Verbosity.RECORD
 

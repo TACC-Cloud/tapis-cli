@@ -23,8 +23,8 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
                   IncludeFiles, FilesCallbackURI, OverwritePolicy,
                   ReportProgress):
 
-    DESCRIPTION = 'Upload from local host to Tapis'
-    LEGACY_COMMMAND = 'files-upload'
+    HELP_STRING = 'Upload from local host to Tapis'
+    LEGACY_COMMMAND_STRING = 'files-upload'
 
     def get_parser(self, prog_name):
         parser = super(FilesUpload, self).get_parser(prog_name)

@@ -10,8 +10,8 @@ __all__ = ['SystemsPublish']
 
 class SystemsPublish(SystemsFormatOne, ServiceIdentifier):
 
-    DESCRIPTION = 'Publish a System for general use'
-    LEGACY_COMMMAND = 'systems-publish'
+    HELP_STRING = 'Publish a System for general use'
+    LEGACY_COMMMAND_STRING = 'systems-publish'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

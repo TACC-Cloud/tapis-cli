@@ -10,8 +10,8 @@ __all__ = ['PostItsDelete']
 
 class PostItsDelete(PostItsFormatOne, PostItsIdentifier):
 
-    DESCRIPTION = 'Delete a Postit'
-    LEGACY_COMMMAND = 'postits-delete'
+    HELP_STRING = 'Delete a Postit'
+    LEGACY_COMMMAND_STRING = 'postits-delete'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

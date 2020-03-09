@@ -34,8 +34,8 @@ class UploadAppTemplate(UploadJSONTemplate):
 class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                  UploadAppTemplate):
 
-    DESCRIPTION = 'Deploy an App from a project directory'
-    LEGACY_COMMMAND = 'apps-deploy'
+    HELP_STRING = 'Deploy an App from a project directory'
+    LEGACY_COMMMAND_STRING = 'apps-deploy'
 
     config = {}
     document = None
@@ -62,22 +62,22 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         # Docker args
         parser.add_argument('--dockerfile',
                             dest='docker_dockerfile',
-                            metavar='<file>',
+                            metavar='DOCKERFILE',
                             type=str,
                             help='Dockerfile to build app repo')
         parser.add_argument('--docker-namespace',
                             dest='docker_namespace',
-                            metavar='<namespace>',
+                            metavar='NAMESPACE',
                             type=str,
                             help='DockerHub namespace')
         parser.add_argument('--docker-repo',
                             dest='docker_repo',
-                            metavar='<repo>',
+                            metavar='REPO',
                             type=str,
                             help='Docker repo name')
         parser.add_argument('--docker-tag',
                             dest='docker_tag',
-                            metavar='<tag>',
+                            metavar='TAG',
                             type=str,
                             help='Docker repo tag')
         # Workflow control args

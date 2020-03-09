@@ -11,8 +11,8 @@ __all__ = ['FilesPemsDrop']
 
 class FilesPemsDrop(FilesFormatMany, AgaveURI):
 
-    DESCRIPTION = 'Drop all granted permissions from a Files path'
-    LEGACY_COMMMAND = 'files-pems-update'
+    HELP_STRING = 'Drop all granted permissions from a Files path'
+    LEGACY_COMMMAND_STRING = 'files-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

@@ -17,8 +17,8 @@ __all__ = ['MetadataSearch']
 
 class MetadataSearch(MetadataFormatMany, SearchableCommand):
 
-    DESCRIPTION = 'Search for Metadata documents'
-    LEGACY_COMMMAND = 'metadata-list'
+    HELP_STRING = 'Search for Metadata documents'
+    LEGACY_COMMMAND_STRING = 'metadata-list'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

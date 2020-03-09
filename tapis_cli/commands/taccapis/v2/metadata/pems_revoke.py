@@ -11,8 +11,8 @@ __all__ = ['MetadataPemsRevoke']
 
 class MetadataPemsRevoke(MetadataFormatMany, MetadataUUID, Username):
 
-    DESCRIPTION = 'Revoke Permissions on a Metadata document for a User'
-    LEGACY_COMMMAND = 'metadata-pems-update'
+    HELP_STRING = 'Revoke Permissions on a Metadata document for a User'
+    LEGACY_COMMMAND_STRING = 'metadata-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

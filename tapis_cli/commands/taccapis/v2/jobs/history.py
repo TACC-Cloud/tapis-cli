@@ -10,8 +10,8 @@ __all__ = ['JobsHistory']
 
 class JobsHistory(JobsHistoryFormatMany, JobsUUID):
 
-    DESCRIPTION = 'List history of a given job'
-    LEGACY_COMMMAND = 'jobs-history'
+    HELP_STRING = 'List history of a given job'
+    LEGACY_COMMMAND_STRING = 'jobs-history'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

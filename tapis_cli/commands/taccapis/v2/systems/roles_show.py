@@ -11,8 +11,8 @@ __all__ = ['SystemsRolesShow']
 
 class SystemsRolesShow(SystemsFormatOne, ServiceIdentifier, Username):
 
-    DESCRIPTION = 'Show roles on a System for the specified User'
-    LEGACY_COMMMAND = 'systems-roles-list'
+    HELP_STRING = 'Show roles on a System for the specified User'
+    LEGACY_COMMMAND_STRING = 'systems-roles-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

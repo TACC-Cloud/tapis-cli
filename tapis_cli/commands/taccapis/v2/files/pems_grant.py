@@ -11,8 +11,8 @@ __all__ = ['FilesPemsGrant']
 
 class FilesPemsGrant(FilesFormatMany, AgaveURI, Username):
 
-    DESCRIPTION = 'Grant permissions on a Files path to a User'
-    LEGACY_COMMMAND = 'files-pems-update'
+    HELP_STRING = 'Grant permissions on a Files path to a User'
+    LEGACY_COMMMAND_STRING = 'files-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -22,7 +22,7 @@ class FilesPemsGrant(FilesFormatMany, AgaveURI, Username):
         parser = AgaveURI.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         parser.add_argument('permission',
-                            metavar='<permission>',
+                            metavar='PERMISSION',
                             choices=Permission.NAMES,
                             help='Permission string ({0})'.format('| '.join(
                                 Permission.NAMES)))

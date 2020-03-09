@@ -10,8 +10,8 @@ __all__ = ['AppsPemsList']
 
 class AppsPemsList(AppsFormatMany, AppIdentifier):
 
-    DESCRIPTION = 'List Permissions for an specific App'
-    LEGACY_COMMMAND = 'apps-pems-list'
+    HELP_STRING = 'List Permissions for an specific App'
+    LEGACY_COMMMAND_STRING = 'apps-pems-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

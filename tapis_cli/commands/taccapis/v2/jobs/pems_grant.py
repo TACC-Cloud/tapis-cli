@@ -11,8 +11,8 @@ __all__ = ['JobsPemsGrant']
 
 class JobsPemsGrant(JobsFormatMany, JobsUUID, Username):
 
-    DESCRIPTION = 'Grant Permissions on a Job to a User'
-    LEGACY_COMMMAND = 'jobs-pems-update'
+    HELP_STRING = 'Grant Permissions on a Job to a User'
+    LEGACY_COMMMAND_STRING = 'jobs-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -22,7 +22,7 @@ class JobsPemsGrant(JobsFormatMany, JobsUUID, Username):
         parser = JobsUUID.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         parser.add_argument('permission',
-                            metavar='<permission>',
+                            metavar='PERMISSION',
                             choices=Permission.NAMES,
                             help='Permission string ({0})'.format('| '.join(
                                 Permission.NAMES)))

@@ -11,8 +11,8 @@ __all__ = ['MetadataPemsShow']
 
 class MetadataPemsShow(MetadataFormatOne, MetadataUUID, Username):
 
-    DESCRIPTION = 'Show Permissions on a Metadata document for specific User'
-    LEGACY_COMMMAND = 'metadata-pems-list'
+    HELP_STRING = 'Show Permissions on a Metadata document for specific User'
+    LEGACY_COMMMAND_STRING = 'metadata-pems-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

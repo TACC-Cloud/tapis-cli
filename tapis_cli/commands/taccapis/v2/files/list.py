@@ -13,8 +13,8 @@ __all__ = ['FilesList']
 
 class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
 
-    DESCRIPTION = 'List contents of a Files path'
-    LEGACY_COMMMAND = 'files-list'
+    HELP_STRING = 'List contents of a Files path'
+    LEGACY_COMMMAND_STRING = 'files-list'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

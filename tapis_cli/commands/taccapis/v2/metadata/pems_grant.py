@@ -11,8 +11,8 @@ __all__ = ['MetadataPemsGrant']
 
 class MetadataPemsGrant(MetadataFormatMany, MetadataUUID, Username):
 
-    DESCRIPTION = 'Grant Permissions on a Metadata document to a User'
-    LEGACY_COMMMAND = 'metadata-pems-update'
+    HELP_STRING = 'Grant Permissions on a Metadata document to a User'
+    LEGACY_COMMMAND_STRING = 'metadata-pems-update'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -22,7 +22,7 @@ class MetadataPemsGrant(MetadataFormatMany, MetadataUUID, Username):
         parser = MetadataUUID.extend_parser(self, parser)
         parser = Username.extend_parser(self, parser)
         parser.add_argument('permission',
-                            metavar='<permission>',
+                            metavar='PERMISSION',
                             choices=Permission.NAMES,
                             help='Permission string ({0})'.format('| '.join(
                                 Permission.NAMES)))

@@ -19,7 +19,7 @@ class ExcludeFiles(ParserExtender):
             '--exclude',
             dest='exclude_files',
             action='append',
-            metavar='<fileglob>',
+            metavar='GLOB',
             help='Unix-style fileglob (specify multiple times)')
         return parser
 
@@ -34,7 +34,7 @@ class IncludeFiles(ParserExtender):
             '--include',
             dest='include_files',
             action='append',
-            metavar='<fileglob>',
+            metavar='GLOB',
             help='Unix-style fileglob (specify multiple times)')
         return parser
 
@@ -48,7 +48,7 @@ class FilesCallbackURI(ParserExtender):
         parser.add_argument(
             '--callback',
             dest='files_callback_uri',
-            metavar='<uri>',
+            metavar='URI',
             help=
             "A URI to notify when each upload import is complete. Can be an email address or http/s URL. If a URL is given, a GET will be made."
         )

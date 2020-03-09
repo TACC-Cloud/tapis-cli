@@ -13,9 +13,9 @@ __all__ = ['SystemsQueuesList']
 
 class SystemsQueuesList(SystemsFormatMany, ServiceIdentifier):
 
-    DESCRIPTION = 'List virtual queues on a System'
-    LEGACY_COMMMAND = 'systems-queues-list'
-    
+    HELP_STRING = 'List virtual queues on a System'
+    LEGACY_COMMMAND_STRING = 'systems-queues-list'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 

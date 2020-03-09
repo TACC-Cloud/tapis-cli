@@ -14,8 +14,8 @@ __all__ = ['AppsUpdate']
 
 class AppsUpdate(AppsCreate, AppIdentifier):
 
-    DESCRIPTION = 'Update an existing App'
-    LEGACY_COMMMAND = 'apps-addupdate'
+    HELP_STRING = 'Update an existing App'
+    LEGACY_COMMMAND_STRING = 'apps-addupdate'
 
     def get_parser(self, prog_name):
         parser = super(AppsUpdate, self).get_parser(prog_name)

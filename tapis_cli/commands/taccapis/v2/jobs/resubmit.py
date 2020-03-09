@@ -10,8 +10,8 @@ __all__ = ['JobsResubmit']
 
 class JobsResubmit(JobsFormatOne, JobsUUID):
 
-    DESCRIPTION = 'Resubmit a Job using the same inputs and parameters'
-    LEGACY_COMMMAND = 'jobs-resubmit'
+    HELP_STRING = 'Resubmit a Job using the same inputs and parameters'
+    LEGACY_COMMMAND_STRING = 'jobs-resubmit'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

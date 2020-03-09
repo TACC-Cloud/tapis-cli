@@ -11,8 +11,8 @@ __all__ = ['ProfilesSearch']
 
 class ProfilesSearch(ProfilesFormatMany):
 
-    DESCRIPTION = 'Search by attribute for a Profile'
-    LEGACY_COMMMAND = 'profiles-search'
+    HELP_STRING = 'Search by attribute for a Profile'
+    LEGACY_COMMMAND_STRING = 'profiles-search'
 
     VERBOSITY = Verbosity.LISTING
 

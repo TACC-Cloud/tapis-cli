@@ -10,8 +10,8 @@ __all__ = ['NotificationsList']
 
 class NotificationsList(NotificationsFormatMany, OptionalTapisEntityUUID):
 
-    DESCRIPTION = 'List Notifications [by Tapis UUID]'
-    LEGACY_COMMMAND = 'notifications-list'
+    HELP_STRING = 'List Notifications [by Tapis UUID]'
+    LEGACY_COMMMAND_STRING = 'notifications-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING

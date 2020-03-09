@@ -16,8 +16,8 @@ __all__ = ['NotificationsCreate']
 class NotificationsCreate(NotificationsFormatOne, NotificationOptions,
                           UploadNotificationJson, OptionalTapisEntityUUID):
 
-    DESCRIPTION = 'Create a Notification'
-    LEGACY_COMMMAND = 'notifications-addupdate'
+    HELP_STRING = 'Create a Notification'
+    LEGACY_COMMMAND_STRING = 'notifications-addupdate'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

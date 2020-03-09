@@ -10,8 +10,8 @@ __all__ = ['AppsClone']
 
 class AppsClone(AppsFormatOne, AppIdentifier):
 
-    DESCRIPTION = 'Clone an App'
-    LEGACY_COMMMAND = 'apps-clone'
+    HELP_STRING = 'Clone an App'
+    LEGACY_COMMMAND_STRING = 'apps-clone'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

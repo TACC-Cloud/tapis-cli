@@ -9,8 +9,8 @@ __all__ = ['JobsList']
 
 class JobsList(JobsFormatMany):
 
-    DESCRIPTION = 'List Jobs'
-    LEGACY_COMMMAND = 'jobs-list'
+    HELP_STRING = 'List Jobs'
+    LEGACY_COMMMAND_STRING = 'jobs-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING

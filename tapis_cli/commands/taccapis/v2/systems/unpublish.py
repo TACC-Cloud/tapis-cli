@@ -12,8 +12,8 @@ __all__ = ['SystemsUnpublish']
 
 class SystemsUnpublish(SystemsFormatOne, ServiceIdentifier):
 
-    DESCRIPTION = 'Unpublish a public System'
-    LEGACY_COMMMAND = 'systems-unpublish'
+    HELP_STRING = 'Unpublish a public System'
+    LEGACY_COMMMAND_STRING = 'systems-unpublish'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

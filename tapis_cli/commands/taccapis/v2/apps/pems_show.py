@@ -11,8 +11,8 @@ __all__ = ['AppsPemsShow']
 
 class AppsPemsShow(AppsFormatOne, AppIdentifier, Username):
 
-    DESCRIPTION = 'Show Permissions on an App for specific User'
-    LEGACY_COMMMAND = 'apps-pems-list'
+    HELP_STRING = 'Show Permissions on an App for specific User'
+    LEGACY_COMMMAND_STRING = 'apps-pems-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

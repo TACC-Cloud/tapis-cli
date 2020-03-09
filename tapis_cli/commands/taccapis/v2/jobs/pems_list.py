@@ -10,8 +10,8 @@ __all__ = ['JobsPemsList']
 
 class JobsPemsList(JobsFormatMany, JobsUUID):
 
-    DESCRIPTION = 'List Permissions for a Job'
-    LEGACY_COMMMAND = 'jobs-pems-list'
+    HELP_STRING = 'List Permissions for a Job'
+    LEGACY_COMMMAND_STRING = 'jobs-pems-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

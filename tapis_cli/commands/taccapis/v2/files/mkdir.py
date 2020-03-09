@@ -14,8 +14,8 @@ __all__ = ['FilesMakeDir']
 
 class FilesMakeDir(FilesFormatOne, AgaveURI, FileOptions):
 
-    DESCRIPTION = 'Create a directory on a System'
-    LEGACY_COMMMAND = 'files-mkdir'
+    HELP_STRING = 'Create a directory on a System'
+    LEGACY_COMMMAND_STRING = 'files-mkdir'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -25,7 +25,7 @@ class FilesMakeDir(FilesFormatOne, AgaveURI, FileOptions):
         parser = AgaveURI.extend_parser(self, parser)
         parser.add_argument(
             'dir_name',
-            metavar='<dir_name>',
+            metavar='DIRECTORY',
             help='Name of the new directory (relative to <agave_uri>)')
         return parser
 

@@ -16,8 +16,8 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
                           ExcludeFiles, IncludeFiles, OverwritePolicy,
                           ReportProgress):
 
-    DESCRIPTION = 'Download outputs from a Job'
-    LEGACY_COMMMAND = 'jobs-output-get'
+    HELP_STRING = 'Download outputs from a Job'
+    LEGACY_COMMMAND_STRING = 'jobs-output-get'
 
     # TODO - add --cwd option to disable creating job folder
     def get_parser(self, prog_name):

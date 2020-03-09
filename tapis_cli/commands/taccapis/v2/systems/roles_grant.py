@@ -10,8 +10,8 @@ __all__ = ['SystemsRolesGrant']
 
 class SystemsRolesGrant(SystemsFormatOne, ServiceIdentifier, Username):
 
-    DESCRIPTION = 'Grant a user role on a System'
-    LEGACY_COMMMAND = 'systems-roles-addupdate'
+    HELP_STRING = 'Grant a user role on a System'
+    LEGACY_COMMMAND_STRING = 'systems-roles-addupdate'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -23,7 +23,7 @@ class SystemsRolesGrant(SystemsFormatOne, ServiceIdentifier, Username):
 
         parser.add_argument('role',
                             type=str,
-                            metavar='<role>',
+                            metavar='ROLE',
                             choices=SystemRole.NAMES,
                             help='Role ({0})'.format('| '.join(
                                 SystemRole.NAMES)))

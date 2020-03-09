@@ -9,8 +9,8 @@ __all__ = ['ProfilesShowSelf']
 
 class ProfilesShowSelf(ProfilesFormatOne):
 
-    DESCRIPTION = 'Show Profile for the authenticated User'
-    LEGACY_COMMMAND = 'profiles-list'
+    HELP_STRING = 'Show Profile for the authenticated User'
+    LEGACY_COMMMAND_STRING = 'profiles-list'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD

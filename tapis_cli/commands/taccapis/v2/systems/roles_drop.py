@@ -11,8 +11,8 @@ __all__ = ['SystemsRolesDrop']
 
 class SystemsRolesDrop(SystemsFormatMany, ServiceIdentifier):
 
-    DESCRIPTION = 'Drop all granted roles from a System'
-    LEGACY_COMMMAND = 'systems-roles-delete'
+    HELP_STRING = 'Drop all granted roles from a System'
+    LEGACY_COMMMAND_STRING = 'systems-roles-delete'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

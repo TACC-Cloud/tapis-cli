@@ -18,8 +18,8 @@ class FilesDownload(FilesFormatOne, AgaveURI, DownloadDirectoryArg,
                     IncludeFiles, ExcludeFiles, OverwritePolicy,
                     ReportProgress):
 
-    DESCRIPTION = 'Download from Tapis to the local host'
-    LEGACY_COMMMAND = 'files-get'
+    HELP_STRING = 'Download from Tapis to the local host'
+    LEGACY_COMMMAND_STRING = 'files-get'
 
     # TODO - add formatting and sorting options
     def get_parser(self, prog_name):

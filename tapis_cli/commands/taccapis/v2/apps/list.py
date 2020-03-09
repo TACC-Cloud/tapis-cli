@@ -9,14 +9,13 @@ __all__ = ['AppsList']
 
 class AppsList(AppsFormatMany):
 
-    DESCRIPTION = 'List the Apps catalog'
-    LEGACY_COMMMAND = 'apps-list'
+    HELP_STRING = 'List the Apps catalog'
+    LEGACY_COMMMAND_STRING = 'apps-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING
 
     def take_action(self, parsed_args):
-        raise SystemError(self._description)
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.update_payload(parsed_args)

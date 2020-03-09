@@ -10,8 +10,8 @@ __all__ = ['AppsEnable']
 
 class AppsEnable(AppsFormatOne, AppIdentifier):
 
-    DESCRIPTION = 'Restore usage for an App if disabled'
-    LEGACY_COMMMAND = 'apps-enable'
+    HELP_STRING = 'Restore usage for an App if disabled'
+    LEGACY_COMMMAND_STRING = 'apps-enable'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

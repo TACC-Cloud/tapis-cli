@@ -10,8 +10,8 @@ __all__ = ['AppsSearch']
 
 class AppsSearch(AppsFormatMany):
 
-    DESCRIPTION = 'Search the Apps catalog'
-    LEGACY_COMMMAND = 'apps-list'
+    HELP_STRING = 'Search the Apps catalog'
+    LEGACY_COMMMAND_STRING = 'apps-list'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.LISTING

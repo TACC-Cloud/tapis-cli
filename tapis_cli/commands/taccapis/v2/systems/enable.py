@@ -10,8 +10,8 @@ __all__ = ['SystemsEnable']
 
 class SystemsEnable(SystemsFormatOne, ServiceIdentifier):
 
-    DESCRIPTION = 'Return a disabled System to active use'
-    LEGACY_COMMMAND = 'systems-enable'
+    HELP_STRING = 'Return a disabled System to active use'
+    LEGACY_COMMMAND_STRING = 'systems-enable'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

@@ -11,8 +11,8 @@ __all__ = ['PostItsList']
 
 class PostItsList(PostItsFormatMany):
 
-    DESCRIPTION = 'List active Post-Its'
-    LEGACY_COMMMAND = 'postits-list'
+    HELP_STRING = 'List active Post-Its'
+    LEGACY_COMMMAND_STRING = 'postits-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

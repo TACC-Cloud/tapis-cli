@@ -10,8 +10,8 @@ __all__ = ['SystemsDisable']
 
 class SystemsDisable(SystemsFormatOne, ServiceIdentifier):
 
-    DESCRIPTION = 'Remove a System from active use'
-    LEGACY_COMMMAND = 'systems-disable'
+    HELP_STRING = 'Remove a System from active use'
+    LEGACY_COMMMAND_STRING = 'systems-disable'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

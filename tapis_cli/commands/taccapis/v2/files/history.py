@@ -10,8 +10,8 @@ __all__ = ['FilesHistory']
 
 class FilesHistory(FilesFormatMany, AgaveURI):
 
-    DESCRIPTION = 'List history for a Files'
-    LEGACY_COMMMAND = 'files-history'
+    HELP_STRING = 'List history for a Files'
+    LEGACY_COMMMAND_STRING = 'files-history'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD

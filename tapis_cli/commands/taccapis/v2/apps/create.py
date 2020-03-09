@@ -15,8 +15,8 @@ __all__ = ['AppsCreate']
 
 class AppsCreate(AppsFormatOne, WorkingDirectoryArg, UploadJSONTemplate):
 
-    DESCRIPTION = 'Create a new App'
-    LEGACY_COMMMAND = 'apps-addupdate'
+    HELP_STRING = 'Create a new App'
+    LEGACY_COMMMAND_STRING = 'apps-addupdate'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE

@@ -14,8 +14,8 @@ __all__ = ['FilesDelete']
 
 class FilesDelete(FilesFormatOne, AgaveURI, FileOptions, ReportProgress):
 
-    DESCRIPTION = 'Delete a file or directory from Tapis'
-    LEGACY_COMMMAND = 'files-delete'
+    HELP_STRING = 'Delete a file or directory from Tapis'
+    LEGACY_COMMMAND_STRING = 'files-delete'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD

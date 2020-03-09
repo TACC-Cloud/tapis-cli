@@ -10,8 +10,8 @@ __all__ = ['NotificationsDelete']
 
 class NotificationsDelete(NotificationsFormatOne, NotificationsUUID):
 
-    DESCRIPTION = 'Delete a Notification'
-    LEGACY_COMMMAND = 'notifications-delete'
+    HELP_STRING = 'Delete a Notification'
+    LEGACY_COMMMAND_STRING = 'notifications-delete'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD

@@ -10,8 +10,8 @@ __all__ = ['SystemsRolesList']
 
 class SystemsRolesList(SystemsFormatMany, ServiceIdentifier):
 
-    DESCRIPTION = 'List user roles on a System'
-    LEGACY_COMMMAND = 'systems-roles-list'
+    HELP_STRING = 'List user roles on a System'
+    LEGACY_COMMMAND_STRING = 'systems-roles-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

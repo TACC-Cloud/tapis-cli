@@ -11,8 +11,8 @@ from . import API_NAME, SERVICE_VERSION
 
 class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
 
-    DESCRIPTION = 'Update an existing Metadata document by UUID'
-    LEGACY_COMMMAND = 'metadata-addupdate'
+    HELP_STRING = 'Update an existing Metadata document by UUID'
+    LEGACY_COMMMAND_STRING = 'metadata-addupdate'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -23,12 +23,12 @@ class MetadataUpdate(MetadataFormatOne, UploadMetadataFile, MetadataUUID):
         parser.add_argument('-V',
                             '--value',
                             dest='meta_value',
-                            metavar='<record_value>',
+                            metavar='VALUE',
                             help='Value for the document')
         name_group.add_argument('-N',
                                 '--rename',
                                 dest='meta_name',
-                                metavar='<record_name>',
+                                metavar='NEW_NAME',
                                 help='Rename document')
         parser = UploadMetadataFile.extend_parser(self, parser)
         parser = MetadataUUID.extend_parser(self, parser)

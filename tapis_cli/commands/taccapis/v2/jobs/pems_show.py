@@ -11,8 +11,8 @@ __all__ = ['JobsPemsShow']
 
 class JobsPemsShow(JobsFormatOne, JobsUUID, Username):
 
-    DESCRIPTION = 'Show Permissions on a Job for a User'
-    LEGACY_COMMMAND = 'jobs-pems-list'
+    HELP_STRING = 'Show Permissions on a Job for a User'
+    LEGACY_COMMMAND_STRING = 'jobs-pems-list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD

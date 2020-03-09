@@ -12,8 +12,8 @@ __all__ = ['JobsCancel']
 
 class JobsCancel(JobsFormatOne, JobsUUID):
 
-    DESCRIPTION = 'Cancel a running or queued Job'
-    LEGACY_COMMMAND = 'jobs-stop'
+    HELP_STRING = 'Cancel a running or queued Job'
+    LEGACY_COMMMAND_STRING = 'jobs-stop'
 
     VERBOSITY = Verbosity.LISTING
     EXTRA_VERBOSITY = Verbosity.RECORD
