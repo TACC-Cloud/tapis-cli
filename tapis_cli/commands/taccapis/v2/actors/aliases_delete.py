@@ -22,7 +22,7 @@ class ActorsAliasesDelete(ActorsFormatOne, AliasIdentifier):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        alias_id = AliasIdentifier().get_identifier()
+        alias_id = AliasIdentifier().get_identifier(parsed_args)
 
         headers = ['deleted', 'messages']
         deleted = []
