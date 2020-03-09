@@ -13,7 +13,7 @@ API_NAME = 'token'
 class Token(TapisModel):
     """Model of a Tapis application
     """
-    id_display_name = '<access>'
+    id_display_name = 'TOKEN'
 
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable

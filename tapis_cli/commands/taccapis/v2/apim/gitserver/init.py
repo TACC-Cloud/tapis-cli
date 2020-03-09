@@ -47,21 +47,14 @@ class GitServerOpts(ParserExtender):
         """Configures a Command to accept git server config
         """
         git_group = parser.add_argument_group('GitHub Access')
-        # git_group.add_argument('--git-variant',
-        #                     metavar='<variant>',
-        #                     choices=API_TYPES,
-        #                     help='Server variant')
-        # git_group.add_argument('--git-url',
-        #                     metavar='<url>',
-        #                     help='API URL')
         git_group.add_argument('--git-username',
-                               metavar='<username>',
+                               metavar='USERNAME',
                                help='Git username')
         git_group.add_argument('--git-token',
-                               metavar='<token>',
+                               metavar='TOKEN',
                                help='Git personal access token')
         git_group.add_argument('--git-namespace',
-                               metavar='<namespace>',
+                               metavar='NAMESPACE',
                                help='Git namespace')
         return parser
 

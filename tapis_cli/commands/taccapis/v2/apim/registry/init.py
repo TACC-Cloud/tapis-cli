@@ -25,16 +25,16 @@ class RegistryOpts(ParserExtender):
         """
         reg_group = parser.add_argument_group('Registry Access')
         reg_group.add_argument('--registry-url',
-                               metavar='<url>',
+                               metavar='URL',
                                help='Registry URL')
         reg_group.add_argument('--registry-username',
-                               metavar='<username>',
+                               metavar='USERNAME',
                                help='Registry username')
         reg_group.add_argument('--registry-password',
-                               metavar='<password>',
+                               metavar='PASSWORD',
                                help='Registry password')
         reg_group.add_argument('--registry-namespace',
-                               metavar='<namespace>',
+                               metavar='NAMESPACE',
                                help='Registry namespace')
         return parser
 
