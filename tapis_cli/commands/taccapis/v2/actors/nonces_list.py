@@ -14,8 +14,8 @@ __all__ = ['ActorsNoncesList']
 class ActorsNoncesList(ActorsFormatManyUnlimited, ActorIdentifier,
                        GlobListFilter):
 
-    DESCRIPTION = 'List Nonces for the specified Actor'
-    LEGACY_COMMMAND = None
+    HELP_STRING = 'List Nonces for the specified Actor'
+    LEGACY_COMMMAND_STRING = None
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
@@ -23,13 +23,13 @@ class ActorsNoncesList(ActorsFormatManyUnlimited, ActorIdentifier,
 
     def get_parser(self, prog_name):
         parser = super(ActorsNoncesList, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
         parser = GlobListFilter.extend_parser(self, parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         results = self.tapis_client.actors.listNonces(actorId=actor_id)
 
         headers = self.render_headers(Nonce, parsed_args)

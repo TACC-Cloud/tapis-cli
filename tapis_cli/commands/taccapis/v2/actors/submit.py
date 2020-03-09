@@ -11,24 +11,24 @@ __all__ = ['ActorsSubmit']
 
 class ActorsSubmit(ActorsFormatOne, ActorIdentifier):
 
-    DESCRIPTION = 'Send an asynchronous message to an Actor'
-    LEGACY_COMMMAND = 'abaco run'
+    HELP_STRING = 'Send an asynchronous message to an Actor'
+    LEGACY_COMMMAND_STRING = 'abaco run'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(ActorsSubmit, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
         parser.add_argument('message',
-                            metavar='<message>',
+                            metavar='STRING',
                             type=str,
-                            help='The message to send to the actor')
+                            help='The message to send to the Actor')
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         body = {'message': parsed_args.message}
         rec = self.tapis_client.actors.sendMessage(actorId=actor_id, body=body)
         headers = self.render_headers(Message, parsed_args)

@@ -2,28 +2,27 @@ from tapis_cli.display import Verbosity
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatOne
+from .mixins import AliasIdentifier
 
 __all__ = ['ActorsAliasesDelete']
 
 
-class ActorsAliasesDelete(ActorsFormatOne):
+class ActorsAliasesDelete(ActorsFormatOne, AliasIdentifier):
 
-    DESCRIPTION = 'Delete an Alias'
-    LEGACY_COMMMAND = 'abaco aliases rm'
+    HELP_STRING = 'Delete an Actor Alias'
+    LEGACY_COMMMAND_STRING = 'abaco aliases rm'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = super(ActorsAliasesDelete, self).get_parser(prog_name)
-        parser.add_argument('alias',
-                            metavar='<ALIAS>',
-                            help='The id of the alias to delete')
+        parser = AliasIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        alias_id = parsed_args.alias
+        alias_id = AliasIdentifier().get_identifier()
 
         headers = ['deleted', 'messages']
         deleted = []

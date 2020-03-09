@@ -11,20 +11,20 @@ __all__ = ['ActorsShow']
 
 class ActorsShow(ActorsFormatOne, ActorIdentifier):
 
-    DESCRIPTION = 'Show details for an Actor'
-    LEGACY_COMMMAND = 'abaco list'
+    HELP_STRING = 'Show details for an Actor'
+    LEGACY_COMMMAND_STRING = 'abaco list'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(ActorsShow, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(Actor, parsed_args)

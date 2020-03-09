@@ -11,8 +11,8 @@ __all__ = ['ActorsList']
 
 class ActorsList(ActorsFormatManyUnlimited, GlobListFilter):
 
-    DESCRIPTION = 'List available Actors'
-    LEGACY_COMMMAND = 'abaco list'
+    HELP_STRING = 'List available Actors'
+    LEGACY_COMMMAND_STRING = 'abaco list'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE

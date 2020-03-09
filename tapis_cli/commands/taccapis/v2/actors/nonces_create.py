@@ -11,8 +11,8 @@ __all__ = ['ActorsNoncesCreate']
 
 class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
 
-    DESCRIPTION = 'Create a Nonce for the specified Actor'
-    LEGACY_COMMMAND = None
+    HELP_STRING = 'Create a Nonce for the specified Actor'
+    LEGACY_COMMMAND_STRING = None
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.LISTING_VERBOSE
@@ -22,21 +22,20 @@ class ActorsNoncesCreate(ActorsFormatOne, ActorIdentifier):
         parser = ActorIdentifier.extend_parser(self, parser)
         parser.add_argument(
             '--level',
-            metavar='<level>',
+            metavar='LEVEL',
             type=str,
             required=False,
             default='EXECUTE',
-            help='Optional Permissions level associated with this \
-                                  nonce (default is EXECUTE)')
+            help='Optional Permissions level for this \
+                                  Nonce (default: EXECUTE)')
         parser.add_argument(
             '--max-uses',
-            metavar='<maxUses>',
+            metavar='INT',
             type=int,
             required=False,
             default=-1,
-            help='Optional Max number of times nonce can be redeemed',
+            help='Optional Max number of times Nonce can be redeemed (default: -1)',
         )
-
         return parser
 
     def take_action(self, parsed_args):

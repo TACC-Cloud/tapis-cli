@@ -11,29 +11,30 @@ __all__ = ['ActorsPemsGrant']
 
 class ActorsPemsGrant(ActorsFormatManyUnlimited, ActorIdentifier, Username):
 
-    DESCRIPTION = 'Grant Permissions on the specified Actor'
-    LEGACY_COMMMAND = 'abaco permissions'
+    HELP_STRING = 'Grant Permissions on the specified Actor'
+    LEGACY_COMMMAND_STRING = 'abaco permissions'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = super(ActorsPemsGrant, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
-        parser = Username.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
+        parser = Username().extend_parser(parser)
         parser.add_argument('permission',
-                            metavar='<permission>',
+                            metavar='PERMISSION',
                             choices=AbacoPermission.NAMES,
-                            help='Permission string ({0})'.format('| '.join(
+                            help='Permission name ({0})'.format('| '.join(
                                 AbacoPermission.NAMES)))
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
+        user_id = parsed_args.username
         headers = self.render_headers(AbacoPermission, parsed_args)
         permission = parsed_args.permission
-        body = {'user': parsed_args.username, 'level': permission.upper()}
+        body = {'user': user_id, 'level': permission.upper()}
         grant_result = self.tapis_client.actors.updatePermissions(
             actorId=actor_id, body=body)
 

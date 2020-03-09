@@ -11,20 +11,20 @@ __all__ = ['ActorsPemsList']
 class ActorsPemsList(ActorsFormatManyUnlimited, ActorIdentifier):
     """Show Permissions on an Actor
     """
-    DESCRIPTION = 'Show Permissions for the specified Actor'
-    LEGACY_COMMMAND = 'abaco permissions'
+    HELP_STRING = 'Show Permissions for the specified Actor'
+    LEGACY_COMMMAND_STRING = 'abaco permissions'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = super(ActorsPemsList, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         headers = self.render_headers(AbacoPermission, parsed_args)
         results = self.tapis_client.actors.getPermissions(actorId=actor_id)
 

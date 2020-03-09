@@ -13,9 +13,9 @@ __all__ = ['ActorsExecsList']
 class ActorsExecsList(ActorsFormatManyUnlimited, ActorIdentifier,
                       GlobListFilter):
 
-    DESCRIPTION = 'List Executions for a specific Actor'
-    LEGACY_COMMMAND = 'abaco executions'
-    
+    HELP_STRING = 'List Executions for a specific Actor'
+    LEGACY_COMMMAND_STRING = 'abaco executions'
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
     FILTERABLE_KEYS = Execution.FILTERABLE_KEYS

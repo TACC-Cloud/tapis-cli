@@ -3,33 +3,30 @@ from tapis_cli.search import SearchWebParam
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatOne
-from .mixins import ActorIdentifier
+from .mixins import (ActorIdentifier, WorkerIdentifier)
 from .models import Worker
 
 __all__ = ['ActorsWorkersShow']
 
 
-class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier):
+class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier, WorkerIdentifier):
 
-    DESCRIPTION = 'Show details of a specific Worker'
-    LEGACY_COMMMAND = None
-    
+    HELP_STRING = 'Show details for a Worker'
+    LEGACY_COMMMAND_STRING = None
+
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     def get_parser(self, prog_name):
         parser = super(ActorsWorkersShow, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
-        parser.add_argument('workerId',
-                            metavar='workerId',
-                            type=str,
-                            help='The id of worker')
+        parser = ActorIdentifier().extend_parser(parser)
+        parser = WorkerIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        worker_id = parsed_args.workerId
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
+        worker_id = WorkerIdentifier().get_identifier(parsed_args)
         results = self.tapis_client.actors.getWorker(actorId=actor_id,
                                                      workerId=worker_id)
         headers = self.render_headers(Worker, parsed_args)

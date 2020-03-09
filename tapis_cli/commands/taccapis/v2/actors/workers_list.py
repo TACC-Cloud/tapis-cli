@@ -14,8 +14,8 @@ __all__ = ['ActorsWorkersList']
 class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
                         GlobListFilter):
 
-    DESCRIPTION = 'List Workers for the specified Actor'
-    LEGACY_COMMMAND = 'abaco workers'
+    HELP_STRING = 'List Workers for an Actor'
+    LEGACY_COMMMAND_STRING = 'abaco workers'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
@@ -23,26 +23,27 @@ class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
 
     def get_parser(self, prog_name):
         parser = super(ActorsWorkersList, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
-        parser = GlobListFilter.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
+        parser = GlobListFilter().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
+        glob_filt = parsed_args.list_filter
         results = self.tapis_client.actors.listWorkers(actorId=actor_id)
         headers = ["workerId", "status"]
         records = []
         for rec in results:
 
             include = False
-            if parsed_args.list_filter is None:
+            if glob_filt is None:
                 include = True
             else:
                 for k in self.FILTERABLE_KEYS:
-                    if parsed_args.list_filter in rec[k]:
+                    if glob_filt in rec[k]:
                         include = True
-                    elif fnmatches(rec[k], [parsed_args.list_filter]):
+                    elif fnmatches(rec[k], [glob_filt]):
                         include = True
 
             if include:

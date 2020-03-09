@@ -10,17 +10,17 @@ __all__ = ['ActorsWorkersCreate']
 
 class ActorsWorkersCreate(ActorsFormatOne, ActorIdentifier):
 
-    DESCRIPTION = 'Add Workers to the specified Actor'
-    LEGACY_COMMMAND = 'abaco workers'
+    HELP_STRING = 'Add Workers to the specified Actor'
+    LEGACY_COMMMAND_STRING = 'abaco workers'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = super(ActorsWorkersCreate, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
+        parser = ActorIdentifier().extend_parser(parser)
         parser.add_argument('num',
-                            metavar='<num>',
+                            metavar='INT',
                             type=int,
                             help='The number of workers to ensure are running;\
                             Note:Only Admins are authorized to update workers',
@@ -29,7 +29,7 @@ class ActorsWorkersCreate(ActorsFormatOne, ActorIdentifier):
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         num = parsed_args.num
         body = {'num': num}
         create_result = self.tapis_client.actors.addWorker(actorId=actor_id,

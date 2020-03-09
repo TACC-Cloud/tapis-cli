@@ -1,6 +1,6 @@
 import sys
 from tapis_cli.display import Verbosity
-from .mixins import ActorIdentifier
+from .mixins import (ActorIdentifier, ExecutionIdentifier)
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import ActorsFormatManyUnlimited
@@ -9,30 +9,28 @@ from .models import Execution
 __all__ = ['ActorsExecsLogs']
 
 
-class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier):
+class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier,
+                      ExecutionIdentifier):
 
-    DESCRIPTION = 'Show logs for a specific Execution'
-    LEGACY_COMMMAND = 'abaco logs'
+    HELP_STRING = 'Show logs for a specific Execution'
+    LEGACY_COMMMAND_STRING = 'abaco logs'
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
 
     def get_parser(self, prog_name):
         parser = super(ActorsExecsLogs, self).get_parser(prog_name)
-        parser = ActorIdentifier.extend_parser(self, parser)
-        parser.add_argument('executionId',
-                            metavar='executionId',
-                            type=str,
-                            help='The id of execution')
+        parser = ActorIdentifier().extend_parser(parser)
+        parser = ExecutionIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
-        actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        execId = parsed_args.executionId
-        results = self.tapis_client.actors.getExecutionLogs(actorId=actor_id,
-                                                            executionId=execId)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
+        exec_id = ExecutionIdentifier().get_identifier(parsed_args)
+        results = self.tapis_client.actors.getExecutionLogs(
+            actorId=actor_id, executionId=exec_id)
         headers = ['logs']
         logs_result = results.get('logs')
-        print("Logs for execution", execId, "\n", logs_result)
+        print("Logs for execution", exec_id, "\n", logs_result)
         sys.exit(0)

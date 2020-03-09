@@ -1,12 +1,36 @@
 from tapis_cli.clients.services.mixins import (ParserExtender,
                                                ServiceIdentifier)
 
-__all__ = ['ActorIdentifier' 'GlobListFilter']
+__all__ = [
+    'AliasIdentifier', 'ActorIdentifier', 'ExecutionIdentifier',
+    'NonceIdentifier', 'WorkerIdentifier', 'GlobListFilter'
+]
+
+
+class AliasIdentifier(ServiceIdentifier):
+    service_id_type = 'Alias'
+    id_type = 'string'
+    dest = 'alias_id'
 
 
 class ActorIdentifier(ServiceIdentifier):
     service_id_type = 'Actor'
     dest = 'actor_id'
+
+
+class ExecutionIdentifier(ServiceIdentifier):
+    service_id_type = 'Execution'
+    dest = 'execution_id'
+
+
+class NonceIdentifier(ServiceIdentifier):
+    service_id_type = 'Nonce'
+    dest = 'nonce_id'
+
+
+class WorkerIdentifier(ServiceIdentifier):
+    service_id_type = 'Worker'
+    dest = 'worker_id'
 
 
 class GlobListFilter(ParserExtender):
@@ -18,7 +42,7 @@ class GlobListFilter(ParserExtender):
 
     def extend_parser(self, parser):
         parser.add_argument('--filter',
-                            metavar='<string>',
+                            metavar='GLOB',
                             dest='list_filter',
                             help='Filter by {}'.format(','.join(
                                 self.FILTERABLE_KEYS)))
