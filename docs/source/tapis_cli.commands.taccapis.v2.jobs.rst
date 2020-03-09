@@ -12,6 +12,7 @@ Subpackages
 .. toctree::
 
    tapis_cli.commands.taccapis.v2.jobs.helpers
+   tapis_cli.commands.taccapis.v2.jobs.init
    tapis_cli.commands.taccapis.v2.jobs.models
 
 Submodules

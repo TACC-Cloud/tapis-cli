@@ -59,6 +59,13 @@ It is possible to search for tapis Jobs by several criteria. Please consult
 ``tapis jobs search -h`` for guidance.
 
 **************
+Templated Jobs
+**************
+
+.. autoprogram-cliff:: tapis.cli
+   :command: jobs init
+
+**************
 Usage Examples
 **************
 

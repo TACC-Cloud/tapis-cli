@@ -17,8 +17,8 @@ import sys
 
 import pbr.version
 
-sys.path.insert(0, os.path.abspath(
-    os.path.join(os.path.dirname(__file__), '..', '..')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 # -- RTD configuration ----------------------------------------------------
 # sys.path.insert(0, os.path.abspath('.'))
@@ -27,10 +27,10 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 # Cliff options
 autoprogram_cliff_application = 'tapis'
 autoprogram_cliff_ignored = [
-    '--help', '--noindent',
-    '--prefix', '--print-empty',
-    '--max-width', '--fit-width',
-    '--quote', '--no-verify']
+    '--format', '--column', '--sort-column', '--help', '--noindent',
+    '--prefix', '--print-empty', '--max-width', '--fit-width', '--quote',
+    '--no-verify', '--token', '--api-server'
+]
 
 # -- Project information -----------------------------------------------------
 
@@ -54,12 +54,8 @@ release = version_info.release_string()
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
-    'cliff.sphinxext',
-    'sphinx_fontawesome'
+    'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.intersphinx',
+    'sphinx.ext.coverage', 'cliff.sphinxext', 'sphinx_fontawesome'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -88,7 +84,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
-
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -124,12 +119,10 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'TapisCLIdoc'
-
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -155,20 +148,15 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'TapisCLI.tex', 'Tapis CLI Documentation',
-     'Matthew Vaughn', 'manual'),
+    (master_doc, 'TapisCLI.tex', 'Tapis CLI Documentation', 'Matthew Vaughn',
+     'manual'),
 ]
-
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    (master_doc, 'TapisCLI', 'Tapis CLI Documentation',
-     [author], 1)
-]
-
+man_pages = [(master_doc, 'TapisCLI', 'Tapis CLI Documentation', [author], 1)]
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -176,11 +164,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'TapisCLI', 'Tapis CLI Documentation',
-     author, 'TapisCLI', 'One line description of project.',
-     'Miscellaneous'),
+    (master_doc, 'TapisCLI', 'Tapis CLI Documentation', author, 'TapisCLI',
+     'One line description of project.', 'Miscellaneous'),
 ]
-
 
 # -- Options for Epub output -------------------------------------------------
 
@@ -198,7 +184,6 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
-
 
 # -- Extension configuration -------------------------------------------------
 

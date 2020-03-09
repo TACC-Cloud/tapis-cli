@@ -4,24 +4,21 @@ colorama==0.4.3
 configparser==4.0.2
 curlify==2.2.1
 dateparser==0.7.2
-docker==4.2.0
+docker<=4.2.0
 GitPython==3.0.8
-Jinja2==2.11.1
 pathlib2==2.3.5
 pbr==5.4.4
 PyGithub==1.46
 pymongo==3.10.1
-python-dateutil==2.8.1
 python-dotenv==0.11.0
 python-slugify==4.0.0
-requests==2.23.0
-six==1.14.0
 stevedore==1.32.0
 stringcase==1.2.0
 tacc-cookiecutter>=1.7.0.1
 tenacity==6.0.0
 validators==0.14.2
-agavepy@git+https://github.com/TACC/agavepy.git@1_0_0
+agavepy==1.0.0a5
+#agavepy@git+https://github.com/TACC/agavepy.git@1_0_0
 flake8
 pytest==4.6.5 # pinned for Python 2.7.x support
 pytest-cov
