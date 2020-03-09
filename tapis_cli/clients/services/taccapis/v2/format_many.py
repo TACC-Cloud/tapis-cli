@@ -8,8 +8,8 @@ from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
 __all__ = ['TaccApisFormatManyUnlimited', 'TaccApisFormatMany']
 
 
-class TaccApisFormatManyUnlimited(LegacyCommmandHelp, JsonVerbose, HTTPFormatMany, TaccApisBearer):
-
+class TaccApisFormatManyUnlimited(LegacyCommmandHelp, JsonVerbose,
+                                  HTTPFormatMany, TaccApisBearer):
     def get_parser(self, prog_name):
         parser = HTTPFormatMany.get_parser(self, prog_name)
         parser = HTTPFormatMany.add_common_parser_arguments(self, parser)
@@ -28,7 +28,6 @@ class TaccApisFormatManyUnlimited(LegacyCommmandHelp, JsonVerbose, HTTPFormatMan
 
 
 class TaccApisFormatMany(TaccApisFormatManyUnlimited):
-
     def get_parser(self, prog_name):
         # Because this class is composed of multiple parents with get_parser
         # and add_common_parser_arguments methods, we call them in preferred
@@ -40,7 +39,7 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
         p.add_argument('-l',
                        '--limit',
                        dest='limit',
-                       metavar='<int>',
+                       metavar='INT',
                        default=TAPIS_CLI_PAGE_SIZE,
                        type=int,
                        help='Limit to N records (default: {})'.format(
@@ -48,7 +47,7 @@ class TaccApisFormatMany(TaccApisFormatManyUnlimited):
         p.add_argument('-o',
                        '--offset',
                        default=0,
-                       metavar='<int>',
+                       metavar='INT',
                        dest='offset',
                        type=int,
                        help='Skip first N records')

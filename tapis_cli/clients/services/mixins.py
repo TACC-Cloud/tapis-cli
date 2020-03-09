@@ -25,7 +25,8 @@ __all__ = [
     'LocalFilePath', 'Username', 'InvalidIdentifier', 'OptionalLocalFilePath',
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
     'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
-    'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy', 'LegacyCommmandHelp'
+    'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy',
+    'LegacyCommmandHelp'
 ]
 
 
@@ -46,17 +47,37 @@ class OptionNotImplemented(ValueError):
 
 
 class LegacyCommmandHelp(object):
-    
-    DESCRIPTION = 'Command description'
-    SHOW_LEGACY = True
-    LEGACY_COMMMAND = None
+    """Configures a commands to show legacy syntax
+
+    Bash CLI syntax is shown in overview and detailed help responses.
+    This is configurable at class level with SHOW_LEGACY_INTERACTIVE and 
+    RENDER_LEGACY_DOCS booleans. It is also configurable for overview mode 
+    via settings.TAPIS_CLI_SHOW_LEGACY_INTERACTIVE_HELP.
+    """
+
+    SHOW_LEGACY_INTERACTIVE = False
+    RENDER_LEGACY_DOCS = True
+
+    HELP_STRING = 'Command description'
+    # Keep short in case the string is displayed in overview mode
+    LEGACY_COMMMAND_STRING = None
 
     @property
     def _description(self):
-        resp = self.DESCRIPTION
-        if self.LEGACY_COMMMAND is not None and self.SHOW_LEGACY and settings.TAPIS_CLI_SHOW_LEGACY_HELP:
-            resp = resp + ' ({0})'.format(self.LEGACY_COMMMAND)
+        resp = self.HELP_STRING
+        if self.LEGACY_COMMMAND_STRING is not None and (
+                self.SHOW_LEGACY_INTERACTIVE
+                and settings.TAPIS_CLI_SHOW_LEGACY_INTERACTIVE_HELP):
+            resp = resp + ' ({0})'.format(self.LEGACY_COMMMAND_STRING)
         return resp
+
+    def get_epilog(self):
+        if self.LEGACY_COMMMAND_STRING is not None and self.RENDER_LEGACY_DOCS:
+            return 'Replaces legacy CLI command "{0}"\n'.format(
+                self.LEGACY_COMMMAND_STRING)
+        else:
+            return '\n'
+
 
 class ParserExtender(object):
 
@@ -151,8 +172,8 @@ class AgaveURI(ParserExtender):
     def extend_parser(self, parser):
         parser.add_argument('agave_uri',
                             type=str,
-                            metavar='<agave_uri>',
-                            help='Agave files URI (agave://)')
+                            metavar='AGAVE_URI',
+                            help='Files URI (agave://)')
         return parser
 
     @classmethod
@@ -200,25 +221,25 @@ class ServiceIdentifier(ParserExtender):
     # argparse destination
     dest = id_type
 
-    @classmethod
-    def arg_display(cls, id_value):
-        return '<{0}_id>'.format(id_value).lower()
+    # @classmethod
+    def arg_display(self, id_value):
+        return '{0}_id'.format(id_value).lower()
 
-    @classmethod
-    def arg_metavar(cls, id_value):
-        return cls.arg_display(id_value)
+    # @classmethod
+    def arg_metavar(self, id_value):
+        return self.arg_display(id_value)
 
-    @classmethod
-    def arg_help(cls, id_value):
-        if not cls.optional:
-            return '{0} {1}'.format(id_value, cls.id_type)
+    # @classmethod
+    def arg_help(self, id_value):
+        if not self.optional:
+            return '{0} {1}'.format(id_value, self.id_type)
         else:
-            return 'Optional {0} {1}'.format(id_value, cls.id_type)
+            return 'Optional {0} {1}'.format(id_value, self.id_type)
 
     def extend_parser(self, parser):
         id_value = getattr(self, 'service_id_type')
         if id_value is not None:
-            arg_display = '<{0}_id>'.format(id_value).lower()
+            arg_display = '{0}_id'.format(id_value).lower()
         if self.optional:
             nargs = '?'
         else:
@@ -227,7 +248,7 @@ class ServiceIdentifier(ParserExtender):
             parser.add_argument(self.dest,
                                 type=str,
                                 nargs=nargs,
-                                metavar=self.arg_metavar(id_value),
+                                metavar=self.arg_metavar(id_value).upper(),
                                 help=self.arg_help(id_value))
         return parser
 
@@ -250,11 +271,11 @@ class ServiceIdentifier(ParserExtender):
 
 class TapisEntityUUID(ServiceIdentifier):
     service_id_type = 'Tapis Entity'
-    id_type = 'UUID'
+    id_type = 'unique identifer'
 
     @classmethod
     def arg_display(cls, id_value):
-        return '<{0}_uuid>'.format(id_value).lower()
+        return '{0}_uuid'.format(id_value).lower()
 
 
 class OptionalTapisEntityUUID(TapisEntityUUID):
@@ -265,12 +286,11 @@ class RemoteFilePath(ParserExtender):
     """Configures a Command to accept an optional file path
     """
     def extend_parser(self, parser):
-        parser.add_argument(
-            'file_path',
-            default='.',
-            nargs='?',
-            metavar='<file_path>',
-            help='Optional file path relative to output directory')
+        parser.add_argument('file_path',
+                            default='.',
+                            nargs='?',
+                            metavar='FILEPATH',
+                            help='File path relative to output directory')
         return parser
 
 
@@ -279,7 +299,7 @@ class LocalFilePath(ParserExtender):
     """
     def extend_parser(self, parser):
         parser.add_argument('local_file_path',
-                            metavar='<file_path>',
+                            metavar='FILEPATH',
                             help='Path (relative to working directory)')
         return parser
 
@@ -291,7 +311,7 @@ class OptionalLocalFilePath(ParserExtender):
         parser.add_argument(
             'local_file_path',
             nargs='?',
-            metavar='<file_path>',
+            metavar='FILEPATH',
             help='Optional path (relative to working directory)')
         return parser
 
@@ -303,7 +323,7 @@ class WorkingDirectory(ParserExtender):
 
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
-                            metavar='<dir>',
+                            metavar='DIRECTORY',
                             default='.',
                             type=str,
                             help=self.help_string)
@@ -320,7 +340,7 @@ class WorkingDirectoryOpt(WorkingDirectory):
     """
     def extend_parser(self, parser):
         parser.add_argument('working_directory',
-                            metavar='<dir>',
+                            metavar='DIRECTORY',
                             default='.',
                             nargs='?',
                             type=str,
@@ -334,7 +354,7 @@ class WorkingDirectoryArg(WorkingDirectory):
     def extend_parser(self, parser):
         parser.add_argument('-W',
                             dest='working_directory',
-                            metavar='<dir>',
+                            metavar='DIRECTORY',
                             default='.',
                             type=str,
                             help=self.help_string)
@@ -349,7 +369,7 @@ class DownloadDirectoryArg(WorkingDirectoryArg):
     def extend_parser(self, parser):
         parser.add_argument('-W',
                             dest='working_directory',
-                            metavar='<dir>',
+                            metavar='DIRECTORY',
                             default='.',
                             type=str,
                             help=self.help_string)
@@ -373,14 +393,14 @@ class UploadJsonFile(ParserExtender):
             parser.add_argument('-F',
                                 '--file',
                                 dest='json_file_name',
-                                metavar='<file>',
+                                metavar='FILEPATH',
                                 type=str,
                                 help='JSON payload file')
         else:
             parser.add_argument('-F',
                                 '--file',
                                 dest='json_file_name',
-                                metavar='<file>',
+                                metavar='FILEPATH',
                                 default=self.default,
                                 type=str,
                                 help='JSON payload file ({})'.format(
@@ -422,7 +442,7 @@ class UploadJSONTemplate(UploadJsonFile):
         parser = super(UploadJSONTemplate, self).extend_parser(parser)
         parser.add_argument('--ini',
                             dest='ini_file_name',
-                            metavar='<file>',
+                            metavar='FILEPATH',
                             type=str,
                             help='.ini file (project.ini)')
         return parser
@@ -597,7 +617,7 @@ class Username(ParserExtender):
     """
     def extend_parser(self, parser):
         parser.add_argument('username',
-                            metavar='<username>',
+                            metavar='USERNAME',
                             help='{0} username'.format(constants.PLATFORM))
         return parser
 
@@ -608,7 +628,7 @@ class URL(ParserExtender):
     def extend_parser(self, parser):
         parser.add_argument('url',
                             type=str,
-                            metavar='<url>',
+                            metavar='URL',
                             help='Valid URL [http(s)://]')
         return parser
 

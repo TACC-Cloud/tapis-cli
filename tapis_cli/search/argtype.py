@@ -18,15 +18,15 @@ __all__ = ['param_type_repr', 'format_allows_param_type']
 
 def param_type_repr(param_type):
     if param_type == STRING:
-        repr = '<string>'
+        repr = 'str'
     elif param_type == INTEGER:
-        repr = '<int>'
+        repr = 'int'
     elif param_type in (DOUBLE, FLOAT):
-        repr = '<decimal>'
+        repr = 'dec'
     elif param_type == DATETIME:
-        repr = '<date_string>'
+        repr = 'date'
     elif param_type == BOOLEAN:
-        repr = 'True|False'
+        repr = 'bool'
     else:
         repr = ''
     return repr.upper()

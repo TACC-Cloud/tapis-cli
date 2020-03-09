@@ -16,13 +16,13 @@ class TaccApisBearer(TaccApisCommandBase):
         g.add_argument('-H',
                        '--api-server',
                        dest='api_server',
-                       metavar='<url>',
+                       metavar='URL',
                        help="{0} {1}".format(self.constants.PLATFORM,
                                              self.constants.API_SERVER))
         g.add_argument('-z',
                        '--token',
                        dest='access_token',
-                       metavar='<token>',
+                       metavar='TOKEN',
                        help="{0} {1}".format(self.constants.PLATFORM,
                                              self.constants.ACCESS_TOKEN))
         g.add_argument('--no-verify',

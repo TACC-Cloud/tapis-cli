@@ -7,15 +7,15 @@ def add_common_arguments(parser):
     parser.add_argument('-z',
                         '--access-token',
                         dest='access_token',
-                        metavar='<token>',
+                        metavar='TOKEN',
                         type=str,
                         help="Oauth access token")
     parser.add_argument('-H',
                         '--api-server',
                         dest='api_server',
-                        metavar='<uri>',
+                        metavar='URI',
                         type=str,
-                        help="API server base URL")
+                        help="API server")
     return parser
 
 

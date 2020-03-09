@@ -5,8 +5,8 @@ from ...mixins import (AppVerboseLevel, JsonVerbose, UploadJsonFile,
                        ServiceIdentifier, LegacyCommmandHelp)
 
 
-class TaccApisFormatOne(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne, TaccApisBearer):
-
+class TaccApisFormatOne(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne,
+                        TaccApisBearer):
     def get_parser(self, prog_name):
         # Because this class is composed of multiple parents with get_parser
         # and add_common_parser_arguments methods, we call them in preferred
@@ -32,8 +32,8 @@ class TaccApisFormatOne(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne, TaccApis
         return parsed_args
 
 
-class TaccApisFormatOneNoBearer(LegacyCommmandHelp, JsonVerbose, HTTPFormatOne):
-
+class TaccApisFormatOneNoBearer(LegacyCommmandHelp, JsonVerbose,
+                                HTTPFormatOne):
     def get_parser(self, prog_name):
         # Because this class is composed of multiple parents with get_parser
         # and add_common_parser_arguments methods, we call them in preferred
