@@ -15,7 +15,7 @@ class UnknownSetting(InvalidIdentifier):
 class SettingName(ServiceIdentifier):
     @classmethod
     def arg_display(cls, id_value):
-        return '<SETTING>'
+        return 'SETTING_NAME'
 
     @classmethod
     def arg_metavar(cls, id_value):

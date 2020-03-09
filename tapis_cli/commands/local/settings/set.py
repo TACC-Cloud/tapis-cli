@@ -19,7 +19,7 @@ class SettingsSet(FormatOne, SettingName):
         parser = super(SettingsSet, self).get_parser(prog_name)
         parser = SettingName.extend_parser(self, parser)
         parser.add_argument('settings_value',
-                            metavar='<value>',
+                            metavar='VALUE',
                             help='New value for setting')
         return parser
 
