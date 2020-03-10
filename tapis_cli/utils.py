@@ -446,3 +446,13 @@ def num(n):
         return int(n)
     except ValueError:
         return float(n)
+
+
+def reserved_environment_vars():
+    # TODO - remove this after it is pushed out as part of AgavePy 1.0.0
+    return [
+        'MSG', '_abaco_Content-Type', '_abaco_execution_id', '_abaco_username',
+        '_abaco_actor_state', '_abaco_actor_dbid', '_abaco_actor_id',
+        '_abaco_synchronous', '_abaco_jwt_header_name', '_abaco_actor_name',
+        '_abaco_access_token'
+    ]

@@ -1,6 +1,7 @@
 # from tapis_cli.main import PKG_NAME, About, VersionInfo
 import requests
 import curlify
+from json import JSONDecodeError
 from requests.auth import HTTPBasicAuth
 from agavepy.agave import Agave
 from tapis_cli.utils import print_stderr
@@ -85,22 +86,35 @@ class TaccApiDirectClient(object):
         #        resp.raise_for_status()
         return resp.json().get('result', {})
 
-    def post(self, path=None, data=None, content_type=None):
+    def post(self,
+             path=None,
+             data=None,
+             content_type=None,
+             json=None,
+             params=None):
         url = self.build_url(path)
         post_headers = self.headers
         if content_type is not None:
             post_headers['Content-type'] = content_type
-        resp = requests.post(url, data=data, headers=post_headers)
+        resp = requests.post(url,
+                             data=data,
+                             headers=post_headers,
+                             params=params,
+                             json=json)
         show_curl(resp)
         resp = self._raise_for_status(resp)
 
         # Some direct POST actions are management actions that return only a
-        # message. Thus we try to return "result" first, but then fail over
+        # message. Thus we try to return "result" first, then fail over
         # to returning "message" before handling the most annoying case where
         # no response is returned, in which case an empty dict is the
-        # appropriate response.
-        # TODO - Consider adding this logic to get and get_data ^
-        return resp.json().get('result', resp.json().get('message', {}))
+        # appropriate response. If there is no JSON available at all,
+        # return the response body as bytes.
+        try:
+            result = resp.json().get('result', resp.json().get('message', {}))
+        except JSONDecodeError:
+            result = resp.content
+        return result
 
     def post_data_basic(self,
                         data=None,

@@ -8,7 +8,7 @@ import sys
 import validators
 import docker as dockerpy
 
-from agavepy.agave import Agave
+from agavepy.agave import Agave, AgaveError
 
 from cliff.command import Command
 from cliff.hooks import CommandHook
