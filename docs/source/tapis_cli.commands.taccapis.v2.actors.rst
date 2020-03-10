@@ -169,6 +169,14 @@ tapis\_cli.commands.taccapis.v2.actors.pems\_show module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.actors.run module
+-------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.run
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.actors.show module
 --------------------------------------------------
 
