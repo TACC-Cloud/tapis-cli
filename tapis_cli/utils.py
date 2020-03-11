@@ -190,7 +190,7 @@ def prompt_accept(body, default='y', exit_reject=True):
     except Exception:
         raise
 
-    if response.startswith('y'):
+    if isinstance(response, str) and response.startswith('y'):
         return True
     else:
         if exit_reject:
