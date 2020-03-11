@@ -1,6 +1,112 @@
 CHANGES
 =======
 
+* Added a per-service clock offset, settable in any class derived from TapisApiClient via the TIMEZONE string property. Applied this to 'jobs' and validated effectiveness
+* Improved actors docs
+* Implemented 'actors run' as subclass of 'actors submit'. Supports writing to screen as well as an output file
+* Fixed wrong invocation of get\_identifier()
+* Updated docs with new build system
+* YAPF
+* Fixed metavars in tapis auth init
+* Refactor actors positional params to use ServiceIdentifiers so we can implement validation. Also DRYs up the code a bit
+* Settings commands help is updated now
+* Rework mixins to have consistent metavars
+* Removed debug code
+* Removed debugging property
+* Help support for 'tapis jobs init'
+* Added help support for 'tapis info \*' commands
+* Legacy help for postits
+* Legacy help for notification
+* Legacy help for profiles
+* Completed legacy help for metadata
+* Completed legacy help for systems
+* Completed legacy help for abaco commands
+* Completed legacy command set for files
+* Completed legacy command help for jobs
+* Added TAPIS\_CLI\_SHOW\_LEGACY\_HELP to turn off display of legacy commands
+* Completed legacy help for apps commands
+* Implemented LegacyCommmandHelp mixin which lets us remind users what the legacy Bash commands were. We will be able to turn this off with a CLI setting
+* Bump agavepy version to solve version conflicts
+* It is now possible to order fields in a list display by setting TapisModel.ARGS\_ORDERED. If a field is not listed in ARGS\_ORDERED, it will be added to the field set in the order defined by TapisModel.SEARCH\_ARGS -after- fields in ARGS\_ORDERED are added
+* Forgot 'actors list'
+* Since abaco doesn't have limit and skip options in its APIs, replaced ActorsFormatMany with ActorsFormatManyUnlimited to disable those options in the actors CLI commands
+* Completed interactive mode for jobs init
+* WIP - add interactive mode to job templating
+* WIP tapis jobs init command
+* AgavePy from PyPi
+* Moved --no-verify to auth override options
+* utils#prompt now safely exits on Keyboard interrupt
+* Pinned requirements ahead of release
+* Freeze requirements
+* Use forked cookiecutter
+* Formatting
+* Fixed failing unit tests
+* Improved tapis auth init workflow to support switching and do better error reporting
+* Improved tapis apps init and general refresh behavior
+* Initial working of actors execs logs; actors submit
+* Updated to use new top-level Agave.refresh() method for refreshing Oauth token
+* Initial working of actors submit, closes #257,closes #258, closes #259, closes #260, closes #265, closes #269, closes #270, closes #271
+* Added filters to other list commands
+* Remove un-needed import
+* Added filtering to aliases list
+* Refactored the way that FILTERABLE\_KEYS are implemented so that they are accesible in GlobListFilter's help test
+* Moved filter into a named flag for consistency with rest of CLI
+* Added filterable keys to other actors models
+* Implemented filter for actors list. Closes #301
+* Added help links and stub code for supporting multiple Git server variants
+* Pruned out code stubs for clients/services/gitlab and clients/services/registry
+* Implemnted support for tapis jobs stop. Closes #298
+* Regenerate docs
+* Separated CookieCutter options into their own section. Clarified help text for project name, label, version, and description
+* Turned off automatic first commit
+* Added output messages to tapis apps init
+* Removed manual resolution of app exec and deployment systems; Changed default asset directory name to be defined by a module global
+* Added rendering of app.execution\_system and app.deployment\_system to UploadJSONTemplate
+* Targeted AppsInit and AppsDeploy to subclass AppsFormatManyUnlimited which removes --limit and --offset options as they are not relevant to these command outputs
+* Lifting over progress on apps deploy; Add support for default execution and storage system template variables and config settings
+* WIP. Support for TAPIS\_CLI\_PREF\_EXECUTION\_SYSTEM and TAPIS\_CLI\_PREF\_DEPLOYMENT\_SYSTEM
+* turn off debugging
+* Default bundle name is 'assets' now; Allow for empty grants section in app.ini
+* Templating is now more robust to empty config data structures
+* Absence of Dockerfile now forces container build/push workflow actions to be skipped over
+* Githelper functions now return None on exception
+* Initial working of nonces create, aliases create
+* Initial working of nonces list,show,delete
+* Initial working of aliases delete,list,show ; execs list,show ; workers delete,list,show
+* WIP docs for updated tapis auth init. Clarified workflow and added outputs from git and registry server configuration
+* WIP: apps init docs
+* Updated formatting
+* Private settings values are redacted when displayed. They are still stored in plaintext, though, as encryption at rest is an additional scope of work
+* Disable use of .env in current working directory
+* Basic onboarding for Registry and Git Server options added to tapis auth init
+* Fixed issue where I had set a default to an actual bool not its string representation
+* Automate create and commit git repo
+* Moved slugify logic into init so we have knowledge of the project directory name at runtime
+* First pass at getting an apps cookiecutter to work
+* Formatting
+* Removed local copy of cookiecutter template
+* Add cookiecutter dependency from git URL until the new release comes out that supports directories
+* Added settings for specifying Docker c=registry, namespace, username, password to promote automation of registry actions
+* This commit closes #264,closes #263,closes #262
+* Initial working of actors pems list
+* Initial working of actors pems commands
+* Implemented Tapis CoC. Closes #291
+* Added stub for actors in docs
+* Initial working of tapis actors delete
+* Initial working version of tapis actors show
+* Initial working version of tapis actors list
+* WIP docs for adding new commands
+* Added new author. Added reference to RTFD. Bumped dev status classifier
+* Swapped back to using mocks
+* WIP
+* Updated release notes
+* Make showing empty variables optional
+* Working on project docs
+* Fixed error listing variables
+* App name and version are dash-delimited
+* Stub for apps deply in docs
+* First working implementation of tapis apps deploy
+* Docs for a2 release
 * Simplified README a bit since the details can be found in the canonical docs
 * Formatting megapass
 * Added inline links to help docs

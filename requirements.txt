@@ -18,4 +18,3 @@ tacc-cookiecutter>=1.7.0.1
 tenacity==6.0.0
 validators==0.14.2
 agavepy==1.0.0a5
-#agavepy@git+https://github.com/TACC/agavepy.git@1_0_0

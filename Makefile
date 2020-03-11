@@ -69,4 +69,12 @@ locc:
 pypi-release:
 	# Tag
 	python3 setup.py sdist bdist_wheel
-	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	python3 -m twine upload dist/*
+
+clean:
+	rm -rf tapis_cli.egg-info build dist .cache
+	rm -rf tests/__pycache__/
+	rm -rf tests/*.pyc
+	rm -rf .pytest_cache/
+	rm -rf build/*
+	rm -rf dist/*
