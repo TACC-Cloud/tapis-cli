@@ -2,6 +2,7 @@ import datetime
 import json
 import os
 from agavepy.agave import Agave, AgaveError
+from dateutil.tz import gettz
 from tapis_cli.utils import datetime_to_isodate, datetime_to_human
 from .direct import TaccApiDirectClient
 import logging
@@ -23,6 +24,11 @@ class TaccApiClient(object):
              ('expires_in', 'expires_in', 'expires_in'),
              ('expires_at', 'expires_at', 'expires_at')]
 
+    # Configures date rendering when the service returns datetime
+    # results from a different timezone. Value is short name for a
+    # timezone. See https://www.epochconverter.com/timezones
+    TIMEZONE = None
+
     post_payload = dict()
 
     def _get_direct(self, agave_client):
@@ -43,6 +49,13 @@ class TaccApiClient(object):
         # If the value is a date/time and display is a table, render as
         # a human-readable value instead of an ISO-8601 date
         if isinstance(value, datetime.datetime):
+            # Replace timezone in returned date
+            # This works around a current bug in Aloe -
+            # may need to revisit the implementation later
+            if self.TIMEZONE is not None and isinstance(self.TIMEZONE, str):
+                replacement_tz = gettz(self.TIMEZONE)
+                value_orig = value
+                value = value.replace(tzinfo=replacement_tz)
             if self.formatter_default == 'table':
                 # TODO - figure out why this only works for the ShowOne
                 value = datetime_to_human(value)

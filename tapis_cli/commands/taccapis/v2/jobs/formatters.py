@@ -13,7 +13,11 @@ __all__ = [
 
 
 class JobsBase(TaccApisCommandBase):
-    pass
+    # Aloe /jobs return UTC whereas other Agave and Abaco
+    # services return CDT. This overrides value rendering
+    # to account for the difference in implementation
+    # between the services
+    TIMEZONE = 'UTC'
 
 
 class JobsFormatOne(JobsBase, TaccApisFormatOne):
