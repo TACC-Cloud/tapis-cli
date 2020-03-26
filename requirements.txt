@@ -5,7 +5,7 @@ configparser
 curlify
 dateparser
 docker<=4.2.0
-GitPython
+# GitPython
 pathlib2
 pbr
 PyGithub

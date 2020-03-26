@@ -1,5 +1,5 @@
 import docker as dockerpy
-import git
+# import git
 import os
 from cookiecutter.main import cookiecutter
 from slugify import slugify
@@ -150,27 +150,27 @@ class AppsInit(AppsFormatManyUnlimited):
             self.messages.append(('clone', str(exc)))
 
         # Attempt to set up project as git repo
-        try:
-            if settings.TAPIS_CLI_PROJECT_GIT_INIT:
-                r = git.Repo.init(project_path)
-                self.messages.append(('git-init', 'Initialized as git repo'))
-                if settings.TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT:
-                    add_files = os.listdir(project_path)
-                    for af in add_files:
-                        r.index.add([af])
-                    r.index.commit('Automated first commit by Tapis CLI')
-                    self.messages.append(
-                        ('git-init', 'Performed automated first commit'))
-                else:
-                    self.messages.append(
-                        ('git-init', 'Skipped automated first commit'))
-                # Placeholder for create and set remote
-                # Placeholder for push
-            else:
-                self.messages.append(
-                    ('git-init', 'Skipped initializing project as git repo'))
-        except Exception as exc:
-            self.messages.append(('git-init', str(exc)))
+        # try:
+        #     if settings.TAPIS_CLI_PROJECT_GIT_INIT:
+        #         r = git.Repo.init(project_path)
+        #         self.messages.append(('git-init', 'Initialized as git repo'))
+        #         if settings.TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT:
+        #             add_files = os.listdir(project_path)
+        #             for af in add_files:
+        #                 r.index.add([af])
+        #             r.index.commit('Automated first commit by Tapis CLI')
+        #             self.messages.append(
+        #                 ('git-init', 'Performed automated first commit'))
+        #         else:
+        #             self.messages.append(
+        #                 ('git-init', 'Skipped automated first commit'))
+        #         # Placeholder for create and set remote
+        #         # Placeholder for push
+        #     else:
+        #         self.messages.append(
+        #             ('git-init', 'Skipped initializing project as git repo'))
+        # except Exception as exc:
+        #     self.messages.append(('git-init', str(exc)))
 
         headers = ['stage', 'message']
         return (tuple(headers), tuple(self.messages))
