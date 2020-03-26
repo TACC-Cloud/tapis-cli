@@ -14,7 +14,7 @@ class System(TapisModel):
     """Model of a Tapis system
     """
     service_id_type = 'System'
-
+    ARGS_ORDERED = ['id', 'name', 'type', 'default']
     # WARNING - date search apparently does not work on systems so never make datetime fields searchable
     SEARCH_ARGS = [
         # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
@@ -22,7 +22,7 @@ class System(TapisModel):
          argmod.DEFAULT, None, 'links', False),
         ("available", argtype.BOOLEAN, Verbosity.LISTING, argmod.BOOL_DEFAULTS,
          argmod.BOOL_DEFAULT_MOD, None, None, True),
-        ("default", argtype.BOOLEAN, Verbosity.RECORD, argmod.BOOL_DEFAULTS,
+        ("default", argtype.BOOLEAN, Verbosity.BRIEF, argmod.BOOL_DEFAULTS,
          argmod.BOOL_DEFAULT_MOD, None, None, True),
         ("description", argtype.STRING, Verbosity.LISTING,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
@@ -60,7 +60,7 @@ class System(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("site", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
-        ("status", argtype.STRING, Verbosity.BRIEF, argmod.DEFAULTS,
+        ("status", argtype.STRING, Verbosity.LISTING, argmod.DEFAULTS,
          argmod.DEFAULT, ['UP', 'DOWN', 'MAINTENANCE', 'UNKNOWN'], None, True),
         ("storage", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
