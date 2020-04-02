@@ -54,6 +54,7 @@ class JobsOutputsLogs(FilesFormatOne, JobsUUID):
         try:
             download(filename, identifier, dest=ftemp, agave=self.tapis_client)
             filepath = ftemp
+            # https://stackoverflow.com/questions/26692284/how-to-prevent-brokenpipeerror-when-doing-a-flush-in-python
             with open(filepath) as fp:
                 try:
                     for _, line in enumerate(fp):
