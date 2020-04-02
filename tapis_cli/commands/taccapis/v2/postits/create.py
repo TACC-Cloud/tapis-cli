@@ -1,5 +1,5 @@
 from tapis_cli.display import Verbosity
-from tapis_cli.clients.services.mixins import URL
+from tapis_cli.clients.services.mixins import FilesURI
 
 from . import API_NAME, SERVICE_VERSION
 from .models import PostIt, HTTP_METHODS, DEFAULT_LIFETIME, DEFAULT_MAX_USES
@@ -8,7 +8,7 @@ from .formatters import PostItsFormatOne
 __all__ = ['PostItsCreate']
 
 
-class PostItsCreate(PostItsFormatOne, URL):
+class PostItsCreate(PostItsFormatOne, FilesURI):
 
     HELP_STRING = 'Create a new Postit'
     LEGACY_COMMMAND_STRING = 'postits-create'
@@ -18,7 +18,7 @@ class PostItsCreate(PostItsFormatOne, URL):
 
     def get_parser(self, prog_name):
         parser = super(PostItsCreate, self).get_parser(prog_name)
-        parser = URL.extend_parser(self, parser)
+        parser = FilesURI.extend_parser(self, parser)
         parser.add_argument(
             '-L',
             '--lifetime',
@@ -55,8 +55,8 @@ class PostItsCreate(PostItsFormatOne, URL):
         parsed_args = self.preprocess_args(parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
-        URL.validate(self, parsed_args.url)
-        body = {'url': parsed_args.url}
+        http_url = self.get_value(parsed_args, agave=self.tapis_client)
+        body = {'url': http_url}
 
         if parsed_args.lifetime is not None:
             body['lifetime'] = parsed_args.lifetime

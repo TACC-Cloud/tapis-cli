@@ -26,7 +26,7 @@ __all__ = [
     'InvalidValue', 'URL', 'TapisEntityUUID', 'OptionalTapisEntityUUID',
     'UploadJSONTemplate', 'WorkingDirectory', 'WorkingDirectoryOpt',
     'WorkingDirectoryArg', 'DownloadDirectoryArg', 'DockerPy',
-    'LegacyCommmandHelp'
+    'LegacyCommmandHelp', 'FilesURI'
 ]
 
 
@@ -163,48 +163,6 @@ class JsonVerbose(AppVerboseLevel):
             if self.EXTRA_VERBOSITY is not None:
                 self.VERBOSITY = self.EXTRA_VERBOSITY
         return parsed_args
-
-
-class AgaveURI(ParserExtender):
-    """Configures a Command to require a mandatory 'agave uri'
-    positional parameter
-    """
-    def extend_parser(self, parser):
-        parser.add_argument('agave_uri',
-                            type=str,
-                            metavar='AGAVE_URI',
-                            help='Files URI (agave://)')
-        return parser
-
-    @classmethod
-    def parse_url(cls, url):
-        """Parse an Agave files resource URI into storageSystem and filePath
-        """
-        # TODO - Move implementation down to agavepy.utils
-        # Agave URI
-        if url.startswith('agave://'):
-            url = url.replace('agave://', '', 1)
-            parts = url.split('/')
-            return parts[0], '/' + '/'.join(parts[1:])
-        # Agave media URL
-        elif url.startswith('https://'):
-            url = url.replace('https://', '')
-            parts = url.split('/')
-            if parts[1] == 'files' and parts[3] == 'media':
-                return parts[5], '/'.join(parts[6:])
-        else:
-            raise InvalidValue('{0} not a valid Agave URL or URI'.format(url))
-
-    def validate(self, url, permissive=False):
-        try:
-            self.parse_url(url)
-            return True
-        except Exception:
-            if permissive:
-                return False
-            else:
-                raise
-
 
 class ServiceIdentifier(ParserExtender):
     """Configures a Command to require a mandatory 'identifier' positional param
@@ -622,9 +580,18 @@ class Username(ParserExtender):
         return parser
 
 
+class DockerPy:
+    dockerpy = None
+
+    def docker_client_from_env(self):
+        setattr(self, 'dockerpy', dockerpy.from_env())
+
 class URL(ParserExtender):
     """Configures a Command to require a mandatory 'url' positional parameter
     """
+    def get_value(self, parsed_args):
+        return parsed_args.uri
+
     def extend_parser(self, parser):
         parser.add_argument('url',
                             type=str,
@@ -642,9 +609,66 @@ class URL(ParserExtender):
             else:
                 raise
 
+class AgaveURI(ParserExtender):
+    """Configures a Command to require a mandatory 'agave uri'
+    positional parameter
+    """
+    def get_value(self, parsed_args):
+        return parsed_args.agave_uri
 
-class DockerPy:
-    dockerpy = None
+    def extend_parser(self, parser):
+        parser.add_argument('agave_uri',
+                            type=str,
+                            metavar='AGAVE_URI',
+                            help='Files URI (agave://)')
+        return parser
 
-    def docker_client_from_env(self):
-        setattr(self, 'dockerpy', dockerpy.from_env())
+    @classmethod
+    def parse_url(cls, url):
+        """Parse an Agave files resource URI into storageSystem and filePath
+        """
+        # TODO - Move implementation down to agavepy.utils
+        # Agave URI
+        if url.startswith('agave://'):
+            url = url.replace('agave://', '', 1)
+            parts = url.split('/')
+            return parts[0], '/' + '/'.join(parts[1:])
+        # Agave media URL
+        elif url.startswith('https://'):
+            url = url.replace('https://', '')
+            parts = url.split('/')
+            if parts[1] == 'files' and parts[3] == 'media':
+                return parts[5], '/'.join(parts[6:])
+        else:
+            raise InvalidValue('{0} not a valid Agave URI or HTTP URL'.format(url))
+
+    def validate(self, url, permissive=False):
+        try:
+            self.parse_url(url)
+            return True
+        except Exception:
+            if permissive:
+                return False
+            else:
+                raise
+
+class FilesURI(AgaveURI):
+
+    def get_value(self, parsed_args, agave=None):
+        uri = parsed_args.files_uri
+        self.validate(uri)
+        if uri.startswith('agave://'):
+            system, path = self.parse_url(uri)
+        api_server = agave.api_server
+        if not api_server.endswith('/'):
+            api_server = api_server + '/'
+
+        http_uri = '{0}files/v2/media/system/{1}{2}'.format(agave.api_server, system, path)
+        return http_uri
+
+    def extend_parser(self, parser):
+        parser.add_argument('files_uri',
+                            type=str,
+                            metavar='FILES_URI',
+                            help='Files URI (agave://system/path|https://api_server/system/path)')
+        return parser
