@@ -22,7 +22,7 @@ from dateutil.parser import parse
 try:
     from pathlib import Path
 except ImportError:
-    from pathlib2 import Path  # Python 2 backport
+    from pathlib2 import Path    # Python 2 backport
 
 
 def current_time():
@@ -291,10 +291,10 @@ def splitall(path):
     allparts = []
     while 1:
         parts = os.path.split(path)
-        if parts[0] == path:  # sentinel for absolute paths
+        if parts[0] == path:    # sentinel for absolute paths
             allparts.insert(0, parts[0])
             break
-        elif parts[1] == path:  # sentinel for relative paths
+        elif parts[1] == path:    # sentinel for relative paths
             allparts.insert(0, parts[1])
             break
         else:
@@ -456,3 +456,22 @@ def reserved_environment_vars():
         '_abaco_synchronous', '_abaco_jwt_header_name', '_abaco_actor_name',
         '_abaco_access_token'
     ]
+
+
+def to_slug(inp, lowercase=True):
+    """Implements Aloe Slugify.to_slug
+    """
+    # https://bitbucket.org/tacc-cic/aloe/src/master/aloe-jobslib/src/main/java/edu/utexas/tacc/aloe/jobs/utils/Slug.java
+    # Remove single quote characters
+    inp = re.sub("'", '', inp)
+    # Remove non-ASCII characters
+    inp = re.sub(r'[^\x00-\x7F]', '', inp)
+    # Whitespace characters reduced to single -
+    inp = re.sub('[\s]+', '-', inp)
+    inp = re.sub('[^a-zA-Z0-9_]+', '-', inp)
+    inp = re.sub('[-]+', '-', inp)
+    inp = re.sub('^-', '', inp)
+    inp = re.sub('-$', '', inp)
+    if lowercase:
+        inp = inp.lower()
+    return inp

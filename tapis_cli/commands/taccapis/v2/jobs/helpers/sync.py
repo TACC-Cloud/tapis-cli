@@ -30,7 +30,7 @@ from threading import Thread
 logging.getLogger(__name__).setLevel(logging.WARNING)
 logger = logging.getLogger(__name__)
 
-__all__ = ['download']
+__all__ = ['download', 'basic_download']
 
 DEFAULT_SYSTEM_ID = 'data-tacc-sandbox'
 DEFAULT_PAGE_SIZE = 100
@@ -163,6 +163,31 @@ def _download(src,
                 os.rename(tmp_local_filename, local_filename)
             except Exception as err:
                 raise IOError('Rename failed after download', err)
+    except HTTPError as h:
+        handle_http_error(h)
+    except (OSError, IOError) as err:
+        logger.error(str(err))
+        raise
+    except Exception as exc:
+        raise TapisOperationFailed("Download failed: {}".format(exc))
+
+
+def basic_download(src, job_uuid, dest=None, agave=None):
+    client = TaccApiDirectClient(agave)
+    # jobs/v2/9e74b852-0e1f-4363-8c09-5ab9f5299797-007/outputs/media/20190221t174839.out
+    url_path = '{0}/outputs/media'.format(job_uuid)
+    client.setup('jobs', 'v2', url_path)
+    # raise SystemError(client.build_url(src[1:]))
+    try:
+        rsp = client.get_bytes(src)
+        #rsp = agave.jobs.downloadOutput(filePath=src, jobId=job_uuid)
+        if isinstance(rsp, dict):
+            raise TapisOperationFailed("Failed to download {}".format(src))
+        with open(dest, 'wb') as dest_file:
+            for block in rsp.iter_content(2048):
+                if not block:
+                    break
+                dest_file.write(block)
     except HTTPError as h:
         handle_http_error(h)
     except (OSError, IOError) as err:

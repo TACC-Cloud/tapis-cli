@@ -14,6 +14,7 @@ from .status import JobsStatus
 from .submit import JobsSubmit
 from .outputs_list import JobsOutputsList
 from .outputs_download import JobsOutputsDownload
+from .outputs_logs import JobsOutputsLogs
 from .pems_list import JobsPemsList
 from .pems_show import JobsPemsShow
 from .pems_grant import JobsPemsGrant
