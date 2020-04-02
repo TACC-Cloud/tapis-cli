@@ -6,6 +6,7 @@ from tapis_cli.commands.taccapis.model import Permission
 
 from . import API_NAME, SERVICE_VERSION
 from .formatters import AppsFormatMany
+from .helpers.pems import grant
 
 __all__ = ['AppsPemsGrant']
 
@@ -35,12 +36,14 @@ class AppsPemsGrant(AppsFormatMany, AppIdentifier, Username):
 
         headers = self.render_headers(Permission, parsed_args)
         permission = parsed_args.permission
-        body = {
-            'username': parsed_args.username,
-            'permission': permission.upper()
-        }
-        grant_result = self.tapis_client.apps.updateApplicationPermissions(
-            appId=app_id, body=body)
+
+        grant_result = grant(app_id, parsed_args.username, parsed_args.permission.upper(), agave=self.tapis_client)
+        # body = {
+        #     'username': parsed_args.username,
+        #     'permission': permission.upper()
+        # }
+        # grant_result = self.tapis_client.apps.updateApplicationPermissions(
+        #     appId=app_id, body=body)
         results = self.tapis_client.apps.listPermissions(appId=app_id)
 
         records = []
