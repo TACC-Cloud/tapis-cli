@@ -66,17 +66,17 @@ class AppsInit(AppsFormatManyUnlimited):
                             nargs='?',
                             type=str,
                             help='Output directory (optional)')
-        parser.add_argument('--label',
+        parser.add_argument('--app-label',
                             type=str,
                             dest='project_label',
                             metavar='STRING',
                             help='Human-readable label')
-        parser.add_argument('--description',
+        parser.add_argument('--app-description',
                             type=str,
                             dest='project_description',
                             metavar='STRING',
                             help='One-sentence description')
-        parser.add_argument('--version',
+        parser.add_argument('--app-version',
                             type=str,
                             dest='project_version',
                             metavar='N.N.N',
