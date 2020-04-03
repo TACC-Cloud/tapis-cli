@@ -112,3 +112,11 @@ tapis\_cli.settings.registry module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.settings.ssh module
+------------------------------
+
+.. automodule:: tapis_cli.settings.ssh
+   :members:
+   :undoc-members:
+   :show-inheritance:
+

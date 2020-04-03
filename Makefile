@@ -66,7 +66,7 @@ image-release: image
 locc:
 	python scripts/locc.py -recurse tapis_cli
 
-pypi-release:
+pypi-release: clean
 	# Tag
 	python3 setup.py sdist bdist_wheel
 	python3 -m twine upload dist/*

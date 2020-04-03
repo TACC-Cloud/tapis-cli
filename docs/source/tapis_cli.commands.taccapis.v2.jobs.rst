@@ -82,6 +82,14 @@ tapis\_cli.commands.taccapis.v2.jobs.outputs\_list module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.jobs.outputs\_logs module
+---------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.jobs.outputs_logs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.jobs.pems\_drop module
 ------------------------------------------------------
 

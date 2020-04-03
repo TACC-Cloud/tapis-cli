@@ -44,9 +44,9 @@ Output Commands
 .. autoprogram-cliff:: tapis.cli
    :command: jobs outputs *
 
-***************
-Search Commands
-***************
+****************
+Sharing Commands
+****************
 
 .. autoprogram-cliff:: tapis.cli
    :command: jobs pems *
@@ -61,6 +61,10 @@ It is possible to search for tapis Jobs by several criteria. Please consult
 **************
 Templated Jobs
 **************
+
+The ``jobs init`` command can populate a job definition for the designated Tapis app. It can 
+run automatically, relying on default values provided by the app, or interactively, which allows 
+the user to specify each value. 
 
 .. autoprogram-cliff:: tapis.cli
    :command: jobs init

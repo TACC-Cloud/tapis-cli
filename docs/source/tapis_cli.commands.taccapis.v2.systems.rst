@@ -24,6 +24,22 @@ tapis\_cli.commands.taccapis.v2.systems.create module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.systems.default\_set module
+-----------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.systems.default_set
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.commands.taccapis.v2.systems.default\_unset module
+-------------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.systems.default_unset
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.systems.disable module
 ------------------------------------------------------
 
