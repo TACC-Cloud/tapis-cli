@@ -14,7 +14,7 @@ class ActorsUpdate(ActorsBaseClass):
         super().take_action(parsed_args)
 
         headers = self.render_headers(Actor, parsed_args)
-        actor_id = ActorIdentifier.get_identifier(parsed_args)
+        actor_id = ActorIdentifier().get_identifier(parsed_args)
         rec = self.tapis_client.actors.update(actorId=actor_id,
                                               body=self.config)
 
