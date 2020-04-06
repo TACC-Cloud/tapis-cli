@@ -51,8 +51,8 @@ class Actor(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("stateless", argtype.BOOLEAN, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
-        ("status", argtype.STRING, Verbosity.VERY_VERBOSE,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
+        ("status", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, True),
         ("statusMessage", argtype.STRING, Verbosity.VERY_VERBOSE,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("tasdir", argtype.STRING, Verbosity.VERY_VERBOSE,
@@ -65,8 +65,8 @@ class Actor(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, False),
         ("useContainerUid", argtype.BOOLEAN, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
-        ("webhook", argtype.STRING, Verbosity.VERY_VERBOSE,
-         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
+        ("webhook", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
+         argmod.DEFAULT, None, None, True),
         ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]

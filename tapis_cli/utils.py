@@ -22,7 +22,7 @@ from dateutil.parser import parse
 try:
     from pathlib import Path
 except ImportError:
-    from pathlib2 import Path    # Python 2 backport
+    from pathlib2 import Path  # Python 2 backport
 
 
 def current_time():
@@ -291,10 +291,10 @@ def splitall(path):
     allparts = []
     while 1:
         parts = os.path.split(path)
-        if parts[0] == path:    # sentinel for absolute paths
+        if parts[0] == path:  # sentinel for absolute paths
             allparts.insert(0, parts[0])
             break
-        elif parts[1] == path:    # sentinel for relative paths
+        elif parts[1] == path:  # sentinel for relative paths
             allparts.insert(0, parts[1])
             break
         else:
@@ -475,3 +475,19 @@ def to_slug(inp, lowercase=True):
     if lowercase:
         inp = inp.lower()
     return inp
+
+
+def split_string(inp, separator=','):
+    """Split and de-whitespace delimited string
+    """
+    els = str(inp).split(separator)
+    els = [e.strip() for e in els]
+    return els
+
+
+def nrlist(sequence):
+    """Python 2.7 compatible list deduplication
+    """
+    unique = []
+    [unique.append(item) for item in sequence if item not in unique]
+    return unique
