@@ -31,19 +31,11 @@ class ActorsBaseClass(ActorsFormatOne, ActorIdentifier):
         if self.CREATE_ONLY is False:
             parser = ActorIdentifier.extend_parser(self, parser)
 
-        if self.CREATE_ONLY is True:
-            # Require --repo on create for obvious reasons
-            parser.add_argument('--repo',
-                                dest='actor_repo',
-                                type=str,
-                                required=True,
-                                help='Docker image repo for the Actor')
-        else:
-            parser.add_argument('--repo',
-                                dest='actor_repo',
-                                type=str,
-                                required=False,
-                                help='Docker image repo for the Actor')
+        parser.add_argument('--repo',
+                            dest='actor_repo',
+                            type=str,
+                            required=True,
+                            help='Docker image repo for the Actor')
 
         if self.CREATE_ONLY:
             # Allow specification of name on create
@@ -220,8 +212,10 @@ class ActorsBaseClass(ActorsFormatOne, ActorIdentifier):
                 k, v = e.split('=')
                 passed_envs[k] = v
 
-        # This merge order allows passed environment vars to override contents of the file
-        return {**file_envs, **passed_envs}
+        # This merge order would allow passed environment vars to override contents of the file
+        envs = {**file_envs, **passed_envs}
+
+        return envs
 
     @classmethod
     def get_envs_from_file(cls, filename, decryption_key=None):
