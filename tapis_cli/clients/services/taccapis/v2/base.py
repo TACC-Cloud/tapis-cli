@@ -10,6 +10,7 @@ class TaccApisCommandBase(TaccApiClient):
     """A base class for building Tapis API client commands
     """
     constants = constants
+    post_payload = {}
 
     def add_common_parser_arguments(self, parser):
         # print('TaccApisCommandBase.add_common_parser_arguments')

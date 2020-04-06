@@ -29,7 +29,7 @@ class TaccApiClient(object):
     # timezone. See https://www.epochconverter.com/timezones
     TIMEZONE = None
 
-    post_payload = dict()
+    post_payload = {}
 
     def _get_direct(self, agave_client):
         return TaccApiDirectClient(agave_client)

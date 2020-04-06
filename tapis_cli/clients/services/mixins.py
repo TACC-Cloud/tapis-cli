@@ -164,6 +164,7 @@ class JsonVerbose(AppVerboseLevel):
                 self.VERBOSITY = self.EXTRA_VERBOSITY
         return parsed_args
 
+
 class ServiceIdentifier(ParserExtender):
     """Configures a Command to require a mandatory 'identifier' positional param
 
@@ -586,6 +587,7 @@ class DockerPy:
     def docker_client_from_env(self):
         setattr(self, 'dockerpy', dockerpy.from_env())
 
+
 class URL(ParserExtender):
     """Configures a Command to require a mandatory 'url' positional parameter
     """
@@ -608,6 +610,7 @@ class URL(ParserExtender):
                 return False
             else:
                 raise
+
 
 class AgaveURI(ParserExtender):
     """Configures a Command to require a mandatory 'agave uri'
@@ -640,7 +643,8 @@ class AgaveURI(ParserExtender):
             if parts[1] == 'files' and parts[3] == 'media':
                 return parts[5], '/'.join(parts[6:])
         else:
-            raise InvalidValue('{0} not a valid Agave URI or HTTP URL'.format(url))
+            raise InvalidValue(
+                '{0} not a valid Agave URI or HTTP URL'.format(url))
 
     def validate(self, url, permissive=False):
         try:
@@ -652,8 +656,8 @@ class AgaveURI(ParserExtender):
             else:
                 raise
 
-class FilesURI(AgaveURI):
 
+class FilesURI(AgaveURI):
     def get_value(self, parsed_args, agave=None):
         uri = parsed_args.files_uri
         self.validate(uri)
@@ -663,12 +667,15 @@ class FilesURI(AgaveURI):
         if not api_server.endswith('/'):
             api_server = api_server + '/'
 
-        http_uri = '{0}files/v2/media/system/{1}{2}'.format(agave.api_server, system, path)
+        http_uri = '{0}files/v2/media/system/{1}{2}'.format(
+            agave.api_server, system, path)
         return http_uri
 
     def extend_parser(self, parser):
-        parser.add_argument('files_uri',
-                            type=str,
-                            metavar='FILES_URI',
-                            help='Files URI (agave://system/path|https://api_server/system/path)')
+        parser.add_argument(
+            'files_uri',
+            type=str,
+            metavar='FILES_URI',
+            help=
+            'Files URI (agave://system/path|https://api_server/system/path)')
         return parser

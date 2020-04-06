@@ -37,7 +37,10 @@ class AppsPemsGrant(AppsFormatMany, AppIdentifier, Username):
         headers = self.render_headers(Permission, parsed_args)
         permission = parsed_args.permission
 
-        grant_result = grant(app_id, parsed_args.username, parsed_args.permission.upper(), agave=self.tapis_client)
+        grant_result = grant(app_id,
+                             parsed_args.username,
+                             parsed_args.permission.upper(),
+                             agave=self.tapis_client)
         # body = {
         #     'username': parsed_args.username,
         #     'permission': permission.upper()
