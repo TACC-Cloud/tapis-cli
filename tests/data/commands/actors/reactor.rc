@@ -1,0 +1,9 @@
+# Reactor
+REACTOR_NAME=sender
+REACTOR_DESCRIPTION="Reactor to validate message sending behavior."
+REACTOR_ALIAS=demo-sender
+
+# Docker image
+DOCKER_HUB_ORG=sd2e
+DOCKER_IMAGE_TAG=sender
+DOCKER_IMAGE_VERSION=0.1.6
