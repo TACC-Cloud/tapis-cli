@@ -223,7 +223,11 @@ def download(source,
     start_time = seconds()
     # Try to avoid timeouts since walk is already pretty slow
     agave.refresh()
-    all_targets = walk(source, job_uuid=job_uuid, recurse=True, agave=agave)
+    all_targets = walk(source,
+                       job_uuid=job_uuid,
+                       dotfiles=True,
+                       recurse=True,
+                       agave=agave)
     elapsed_walk = seconds() - start_time
 
     msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)

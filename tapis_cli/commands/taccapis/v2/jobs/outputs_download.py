@@ -25,7 +25,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
         parser = JobsUUID.extend_parser(self, parser)
         parser = RemoteFilePath.extend_parser(self, parser)
         parser = OverwritePolicy.extend_parser(self, parser)
-        parser = IncludeFiles.extend_parser(self, parser)
+        # parser = IncludeFiles.extend_parser(self, parser)
         parser = ExcludeFiles.extend_parser(self, parser)
         parser = ReportProgress.extend_parser(self, parser)
         parser.add_argument(
@@ -55,7 +55,7 @@ class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
             identifier,
             destination=dest_dir,
             excludes=parsed_args.exclude_files,
-            includes=parsed_args.include_files,
+            # includes=parsed_args.include_files,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,
             progress=parsed_args.progress,

@@ -35,6 +35,7 @@ class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
         headers = self.render_headers(File, parsed_args)
         recs = listdir(parsed_args.file_path,
                        job_uuid=identifier,
+                       dotfiles=parsed_args.dotfiles,
                        agave=self.tapis_client)
 
         if not isinstance(recs, list):
