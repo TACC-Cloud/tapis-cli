@@ -59,10 +59,10 @@ class FileOptions(ParserExtender):
     """Configures a Command to accept rendering options for a single file
     """
     def extend_parser(self, parser):
-        # parser.add_argument('--all',
-        #                     dest='ls_all',
-        #                     action='store_true',
-        #                     help='Include directory entries whose names begin with a dot.')
+        parser.add_argument('--all',
+                            dest='dotfiles',
+                            action='store_true',
+                            help='Include hidden files')
         # parser.add_argument('--long',
         #                     dest='ls_long',
         #                     action='store_true',

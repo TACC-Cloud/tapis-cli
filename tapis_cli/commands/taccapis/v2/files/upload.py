@@ -36,7 +36,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
         parser = LocalFilePath.extend_parser(self, parser)
         # Arguments:
         #
-        parser = IncludeFiles.extend_parser(self, parser)
+        # parser = IncludeFiles.extend_parser(self, parser)
         parser = ExcludeFiles.extend_parser(self, parser)
         parser = OverwritePolicy.extend_parser(self, parser)
         parser = FilesCallbackURI.extend_parser(self, parser)
@@ -75,7 +75,7 @@ class FilesUpload(FilesFormatOne, AgaveURI, LocalFilePath, ExcludeFiles,
             local_file_path,
             storage_system,
             remote_file_path,
-            includes=parsed_args.include_files,
+            # includes=parsed_args.include_files,
             excludes=parsed_args.exclude_files,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,

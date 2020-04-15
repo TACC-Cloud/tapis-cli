@@ -120,10 +120,11 @@ def _download(src,
     local_filename, tmp_local_filename = _local_temp_filename(
         src, dest, atomic)
 
-    # If includes is specified, check filename against it
-    if not fnmatches(src, includes):
-        raise FileExcludedError(
-            '{0} did not match --include filter'.format(src))
+    # # If includes is specified, check filename against it
+    # raise SystemError(includes)
+    # if not fnmatches(src, includes):
+    #     raise FileExcludedError(
+    #         '{0} did not match --include filter'.format(src))
 
     # Check filename is in the excludes list
     if fnmatches(src, excludes):
@@ -179,7 +180,11 @@ def download(source,
     if progress:
         print_stderr('Walking remote resource...')
     start_time = seconds()
-    all_targets = walk(source, system_id=system_id, recurse=True, agave=agave)
+    all_targets = walk(source,
+                       system_id=system_id,
+                       dotfiles=True,
+                       recurse=True,
+                       agave=agave)
     elapsed_walk = seconds() - start_time
 
     msg = 'Found {0} file(s) in {1}s'.format(len(all_targets), elapsed_walk)
