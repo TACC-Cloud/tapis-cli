@@ -2,6 +2,8 @@
 REACTOR_NAME=sender
 REACTOR_DESCRIPTION="Reactor to validate message sending behavior."
 REACTOR_ALIAS=demo-sender
+REACTOR_STATEFUL = 1
+REACTOR_TOKENS = 1
 
 # Docker image
 DOCKER_HUB_ORG=sd2e
