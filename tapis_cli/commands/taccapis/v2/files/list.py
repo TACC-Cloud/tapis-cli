@@ -35,6 +35,7 @@ class FilesList(FilesFormatMany, AgaveURI, FilesOptions):
         (storage_system, file_path) = self.parse_url(parsed_args.agave_uri)
         headers = self.render_headers(File, parsed_args)
         recs = listdir(file_path,
+                       dotfiles=parsed_args.dotfiles,
                        system_id=storage_system,
                        agave=self.tapis_client)
 

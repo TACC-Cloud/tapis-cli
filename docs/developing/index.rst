@@ -104,6 +104,6 @@ for functionality.
 
 All work should proceed via reported Issues_.
 
-.. _Milestones: https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open
-.. _Issues: https://github.com/TACC-Cloud/tapis-cli-ng/issues
+.. _Milestones: https://github.com/TACC-Cloud/tapis-cli/milestones?direction=asc&sort=due_date&state=open
+.. _Issues: https://github.com/TACC-Cloud/tapis-cli/issues
 

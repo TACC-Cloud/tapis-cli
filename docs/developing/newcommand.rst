@@ -23,5 +23,5 @@ script ``python scripts/github-create-issues.py``.
 
 The **github-create-issues** script requires environment variable 
 ``GITHUB_API_KEY`` to be set to an API key that is authorized to manage the 
-``tapis-cli-ng`` repository, as it will be creating and tagging new issues. 
+``tapis-cli`` repository, as it will be creating and tagging new issues. 
 

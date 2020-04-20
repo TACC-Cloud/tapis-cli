@@ -29,8 +29,8 @@ def grant(app_id,
     try:
         grant_result = agave.apps.updateApplicationPermissions(appId=app_id,
                                                                body=body)
+
         # Grant roles on system(s) as well - I wish we didn't have to do this
-        # TODO - check role on system and be sure it is not higher than USER already!
         if permission.upper() in [
                 'ALL', 'READ_EXECUTE', 'WRITE_EXECUTE', 'EXECUTE'
         ]:
@@ -40,11 +40,21 @@ def grant(app_id,
                     app_def['executionSystem'], app_def['deploymentSystem']
                 ]
                 for s in systems:
-                    role_body = {'username': username, 'role': 'USER'}
+
+                    # Do not overwrite existing role for user
                     try:
-                        agave.systems.updateRole(systemId=s, body=role_body)
+                        existing_role = agave.systems.getRoleForUser(
+                            systemId=s, username=username)['role']
                     except Exception:
-                        pass
+                        existing_role = None
+
+                    if existing_role is None:
+                        role_body = {'username': username, 'role': 'USER'}
+                        try:
+                            agave.systems.updateRole(systemId=s,
+                                                     body=role_body)
+                        except Exception:
+                            pass
         return grant_result
     except Exception:
         if permissive:

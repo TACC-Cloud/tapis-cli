@@ -203,5 +203,5 @@ discover that is not the case.
 
 .. _Jinja2: https://palletsprojects.com/p/jinja/
 
-.. _issue: https://github.com/TACC-Cloud/tapis-cli-ng/issues
+.. _issue: https://github.com/TACC-Cloud/tapis-cli/issues
 

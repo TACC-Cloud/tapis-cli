@@ -23,8 +23,8 @@ Installation
 
 .. code-block:: shell
 
-    $ git clone https://github.com/TACC-Cloud/tapis-cli-ng.git
-    $ cd tapis-cli-ng
+    $ git clone https://github.com/TACC-Cloud/tapis-cli.git
+    $ cd tapis-cli
     $ pip install --upgrade --user .
 
 ***************
@@ -32,12 +32,12 @@ Container Image
 ***************
 
 As an alternative to local installation, the CLI is available as a public
-Docker image ``tacc/tapis-cli-ng:latest`` on DockerHub_:
+Docker image ``tacc/tapis-cli:latest`` on DockerHub_:
 
 .. code-block:: shell
 
     docker run --rm -it -v ${PWD}:/work -v ${HOME}/.agave:/root/.agave \
-        tacc/tapis-cli-ng:latest bash
+        tacc/tapis-cli:latest bash
 
 ********************
 Initialize a Session
@@ -127,14 +127,14 @@ for functionality.
 
 All work should proceed through at least one or more reported Issues_.
 
-.. _Milestones: https://github.com/TACC-Cloud/tapis-cli-ng/milestones?direction=asc&sort=due_date&state=open
-.. _Issues: https://github.com/TACC-Cloud/tapis-cli-ng/issues
+.. _Milestones: https://github.com/TACC-Cloud/tapis-cli/milestones?direction=asc&sort=due_date&state=open
+.. _Issues: https://github.com/TACC-Cloud/tapis-cli/issues
 
 
-.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli-ng.svg?branch=master&style=flat
+.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=master&style=flat
     :alt: build status
     :scale: 100%
-    :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
+    :target: https://travis-ci.org/TACC-Cloud/tapis-cli
 
 .. |docs| image:: https://readthedocs.org/projects/tapis-cli/badge/?version=latest
     :alt: Documentation
@@ -147,6 +147,6 @@ All work should proceed through at least one or more reported Issues_.
     :target: https://zenodo.org/badge/latestdoi/203083094
 
 
-.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli-ng/
+.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli/
 
 .. _Tapis: https://agave.readthedocs.io/en/latest/

@@ -60,32 +60,38 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         parser = UploadAppTemplate.extend_parser(self, parser)
 
         # Docker args
-        parser.add_argument('--dockerfile',
-                            dest='docker_dockerfile',
-                            metavar='DOCKERFILE',
-                            type=str,
-                            help='Dockerfile to build app repo')
-        parser.add_argument('--docker-namespace',
-                            dest='docker_namespace',
-                            metavar='NAMESPACE',
-                            type=str,
-                            help='DockerHub namespace')
-        parser.add_argument('--docker-repo',
-                            dest='docker_repo',
-                            metavar='REPO',
-                            type=str,
-                            help='Docker repo name')
-        parser.add_argument('--docker-tag',
-                            dest='docker_tag',
-                            metavar='TAG',
-                            type=str,
-                            help='Docker repo tag')
+        # parser.add_argument('--dockerfile',
+        #                     dest='docker_dockerfile',
+        #                     metavar='DOCKERFILE',
+        #                     type=str,
+        #                     help='Dockerfile to build app repo')
+        # parser.add_argument('--docker-namespace',
+        #                     dest='docker_namespace',
+        #                     metavar='NAMESPACE',
+        #                     type=str,
+        #                     help='DockerHub namespace')
+        # parser.add_argument('--docker-repo',
+        #                     dest='docker_repo',
+        #                     metavar='REPO',
+        #                     type=str,
+        #                     help='Docker repo name')
+        # parser.add_argument('--docker-tag',
+        #                     dest='docker_tag',
+        #                     metavar='TAG',
+        #                     type=str,
+        #                     help='Docker repo tag')
         # Workflow control args
+
         parser.add_argument('-R',
                             '--dry-run',
                             dest='workflow_dry_run',
                             action='store_true',
                             help='Shortcut: Only build container')
+        parser.add_argument('--ignore-errors',
+                            dest='ignore_errors',
+                            action='store_true',
+                            help="Ignore deployment errors and warnings")
+
         parser.add_argument('--no-build',
                             dest='workflow_no_build',
                             action='store_false',
@@ -110,14 +116,21 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                             dest='workflow_no_create',
                             action='store_false',
                             help="Do not create a Tapis app record")
-        parser.add_argument('--no-grant',
-                            dest='workflow_no_grant',
-                            action='store_false',
-                            help="Do not automatically do permission grant(s)")
+        parser.add_argument(
+            '--no-grant',
+            dest='workflow_no_grant',
+            action='store_false',
+            help="Do not automatically do application permission grant(s)")
+        parser.add_argument(
+            '--no-grant-roles',
+            dest='workflow_no_grant_roles',
+            action='store_false',
+            help="Do not automatically do system role grant(s)")
         parser.add_argument('--display',
                             dest='workflow_display',
                             action='store_true',
                             help="Display rendered app in deployment log")
+
         return parser
 
     def take_action(self, parsed_args):
@@ -133,9 +146,15 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         self.upload = parsed_args.workflow_no_upload
         self.create = parsed_args.workflow_no_create
         self.grant = parsed_args.workflow_no_grant
+        self.grant_roles = parsed_args.workflow_no_grant_roles
         self.display = parsed_args.workflow_display
+        self.ignore_errors = parsed_args.ignore_errors
 
-        # Shortcut
+        # Do not grant system roles if permissions grant is disabled
+        if self.grant is False:
+            self.grant_roles = False
+
+        # --dry-run is a shortcut for setting the following...
         if parsed_args.workflow_dry_run:
             self.build = True
             self.pull = True
@@ -144,19 +163,21 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self.upload = False
             self.create = False
             self.grant = False
+            self.grant_roles = False
             self.display = True
+            self.ignore_errors = False
 
         # By passing a dict, we are able to override the contents of
         # the ini file
-        self.passed_vals = {'docker': {}}
-        if parsed_args.docker_namespace is not None:
-            self.passed_vals['docker'][
-                'namespace'] = parsed_args.docker_namespace
-        if parsed_args.docker_repo is not None:
-            self.passed_vals['docker']['repo'] = parsed_args.docker_repo
-        if parsed_args.docker_tag is not None:
-            self.passed_vals['docker']['tag'] = parsed_args.docker_tag
-        self.config = self.all_key_values(parsed_args, self.passed_vals)
+        # self.passed_vals = {'docker': {}}
+        # if parsed_args.docker_namespace is not None:
+        #     self.passed_vals['docker'][
+        #         'namespace'] = parsed_args.docker_namespace
+        # if parsed_args.docker_repo is not None:
+        #     self.passed_vals['docker']['repo'] = parsed_args.docker_repo
+        # if parsed_args.docker_tag is not None:
+        #     self.passed_vals['docker']['tag'] = parsed_args.docker_tag
+        self.config = self.all_key_values(parsed_args, {})
 
         # Override defaults
         # These allow options to be empty but receive default values from mandatory ones
@@ -231,45 +252,59 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         """Build container
         """
         if self.build:
-            tag = self._repo_tag()
-            dockerfile = self._dockerfile()
-            print_stderr('Building {}'.format(tag))
-            start_time = milliseconds()
-            # TODO - build_args, labels, nocache, quiet, forcerm
-            result = self.dockerpy.images.build(path=self.working_dir,
-                                                tag=tag,
-                                                dockerfile=dockerfile,
-                                                pull=self.pull,
-                                                rm=True)
-            print_stderr('Finished ({} msec)'.format(milliseconds() -
-                                                     start_time))
-            for log_line in result[1]:
-                txt = log_line.get('stream', '').strip()
-                if txt is not None and txt != '':
-                    self.messages.append(
-                        ('build', log_line.get('stream', None)))
+            try:
+                tag = self._repo_tag()
+                dockerfile = self._dockerfile()
+                print_stderr('Building {}'.format(tag))
+                start_time = milliseconds()
+                # TODO - build_args, labels, nocache, quiet, forcerm
+                result = self.dockerpy.images.build(path=self.working_dir,
+                                                    tag=tag,
+                                                    dockerfile=dockerfile,
+                                                    pull=self.pull,
+                                                    rm=True)
+                print_stderr('Finished ({} msec)'.format(milliseconds() -
+                                                         start_time))
+                for log_line in result[1]:
+                    txt = log_line.get('stream', '').strip()
+                    if txt is not None and txt != '':
+                        self.messages.append(
+                            ('build', log_line.get('stream', None)))
 
-        return True
+                return True
+            except Exception as err:
+                if self.ignore_errors:
+                    self.messages.append(('push', str(err)))
+                    return False
+                else:
+                    raise
 
     def _push(self, parsed_args):
         """Push built container
         """
         if self.push:
-            tag = self._repo_tag()
-            print_stderr('Pushing {}'.format(tag))
-            start_time = milliseconds()
-            # TODO - auth_config
-            for log_line in self.dockerpy.images.push(tag,
-                                                      stream=True,
-                                                      decode=True):
-                text_line = log_line.get('status', '').strip()
-                if text_line not in ('Preparing', 'Waiting',
-                                     'Layer already exists', 'Pushing',
-                                     'Pushed', ''):
-                    self.messages.append(('push', text_line))
-            print_stderr('Finished ({} msec)'.format(milliseconds() -
-                                                     start_time))
-        return True
+            try:
+                tag = self._repo_tag()
+                print_stderr('Pushing {}'.format(tag))
+                start_time = milliseconds()
+                # TODO - auth_config
+                for log_line in self.dockerpy.images.push(tag,
+                                                          stream=True,
+                                                          decode=True):
+                    text_line = log_line.get('status', '').strip()
+                    if text_line not in ('Preparing', 'Waiting',
+                                         'Layer already exists', 'Pushing',
+                                         'Pushed', ''):
+                        self.messages.append(('push', text_line))
+                print_stderr('Finished ({} msec)'.format(milliseconds() -
+                                                         start_time))
+                return True
+            except Exception as err:
+                if self.ignore_errors:
+                    self.messages.append(('push', str(err)))
+                    return False
+                else:
+                    raise
 
     def _render(self, parsed_args):
         """Load and render app.json 
@@ -297,6 +332,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                                                        backup_dep_path)))
 
             try:
+                # TODO - only do this if dep_path exists, otherwise an Exception will be raised
                 manage.move(dep_path,
                             system_id=dep_sys,
                             destination=backup_dep_path,
@@ -305,10 +341,13 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                                                          start_time))
                 return True
             except Exception as exc:
-                self.messages.append(('backup', str(exc)))
-                print_stderr('Failed ({} msec)'.format(milliseconds() -
-                                                       start_time))
-                return False
+                if self.ignore_errors:
+                    self.messages.append(('backup', str(exc)))
+                    print_stderr('Failed ({} msec)'.format(milliseconds() -
+                                                           start_time))
+                    return False
+                else:
+                    raise
 
         return True
 
@@ -335,14 +374,18 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                         'Unable to locate asset directory "{}"'.format(
                             self._bundle()))
                 # TODO - incorporate working directory
-                manage.makedirs(dep_path_parent,
-                                system_id=dep_sys,
-                                permissive=True,
-                                agave=self.tapis_client)
-                manage.delete(dep_path,
-                              system_id=dep_sys,
-                              permissive=True,
-                              agave=self.tapis_client)
+                try:
+                    manage.makedirs(dep_path_parent,
+                                    system_id=dep_sys,
+                                    permissive=True,
+                                    agave=self.tapis_client)
+                    manage.delete(dep_path,
+                                  system_id=dep_sys,
+                                  permissive=True,
+                                  agave=self.tapis_client)
+                except Exception as err:
+                    self.messages.append(('upload', str(err)))
+
                 uploaded, skipped, errors, ul_bytes, ec_download = upload.upload(
                     self._bundle(),
                     system_id=dep_sys,
@@ -360,13 +403,20 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     self.messages.append(('upload', u))
                 for e in errors:
                     self.messages.append(('upload', e))
+                if len(errors) > 0:
+                    if self.ignore_errors is False:
+                        raise Exception('Upload failures: {}'.format(
+                            errors.join(';')))
                 return True
 
             except Exception as exc:
-                self.messages.append(('upload', str(exc)))
-                print_stderr('Failed ({} msec)'.format(milliseconds() -
-                                                       start_time))
-                return False
+                if self.ignore_errors:
+                    self.messages.append(('upload', str(exc)))
+                    print_stderr('Failed ({} msec)'.format(milliseconds() -
+                                                           start_time))
+                    return False
+                else:
+                    raise
 
         return True
 
@@ -381,13 +431,16 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                         resp.get('id'), resp.get('revision'))))
                 return True
             except Exception as exc:
-                self.messages.append(('create', exc))
-                return False
+                if self.ignore_errors:
+                    self.messages.append(('create', exc))
+                    return False
+                else:
+                    raise
 
         return True
 
     def _grant(self, parsed_args):
-        """Grant access to designated users
+        """Grant app access to designated users
         """
         if self.grant:
             granted = []
@@ -400,9 +453,14 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                         if pems.grant(self._app_id(),
                                       u,
                                       pem[1],
+                                      grant_system_roles=self.grant_roles,
                                       permissive=False,
                                       agave=self.tapis_client) is not False:
                             self.messages.append(
-                                ('grant', '{} {}'.format(u, pem[1])))
+                                ('grant-app-pems', '{} {}'.format(u, pem[1])))
+                            # Technically this message indicates the attempt not the successful role grant
+                            if self.grant_roles:
+                                self.messages.append(('grant-system-roles',
+                                                      '{} USER'.format(u)))
                             granted.append(u)
         return True

@@ -25,7 +25,7 @@ class FilesDownload(FilesFormatOne, AgaveURI, DownloadDirectoryArg,
     def get_parser(self, prog_name):
         parser = super(FilesDownload, self).get_parser(prog_name)
         parser = AgaveURI.extend_parser(self, parser)
-        parser = IncludeFiles.extend_parser(self, parser)
+        # parser = IncludeFiles.extend_parser(self, parser)
         parser = ExcludeFiles.extend_parser(self, parser)
         parser = DownloadDirectoryArg.extend_parser(self, parser)
         parser = OverwritePolicy.extend_parser(self, parser)
@@ -54,7 +54,7 @@ class FilesDownload(FilesFormatOne, AgaveURI, DownloadDirectoryArg,
             file_path,
             storage_system,
             destination=dest_path,
-            includes=parsed_args.include_files,
+            # includes=parsed_args.include_files,
             excludes=parsed_args.exclude_files,
             force=parsed_args.overwrite,
             sync=parsed_args.sync,

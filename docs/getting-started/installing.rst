@@ -13,19 +13,19 @@ From Source
 
 .. code-block:: shell
 
-    $ git clone https://github.com/TACC-Cloud/tapis-cli-ng.git
-    $ cd tapis-cli-ng
+    $ git clone https://github.com/TACC-Cloud/tapis-cli.git
+    $ cd tapis-cli
     $ pip install --upgrade --user .
 
 Container Image
 ---------------
 
 As an alternative to local installation, the CLI is available as a public
-DockerHub_ image ``tacc/tapis-cli-ng:latest``. Run it like so:
+DockerHub_ image ``tacc/tapis-cli:latest``. Run it like so:
 
 .. code-block:: shell
 
     docker run --rm -it -v ${PWD}:/work -v ${HOME}/.agave:/root/.agave \
-        tacc/tapis-cli-ng:latest bash
+        tacc/tapis-cli:latest bash
 
-.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli-ng
+.. _DockerHub: https://hub.docker.com/r/tacc/tapis-cli

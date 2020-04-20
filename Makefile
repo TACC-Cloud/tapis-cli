@@ -9,7 +9,7 @@ GIT_BRANCH_CLEAN := $(shell echo $(GIT_BRANCH) | sed -e "s/[^[:alnum:]]/-/g")
 
 CLI_BRANCH ?= $(GIT_BRANCH)
 CLI_VERSION ?= "alpha1"
-IMAGE_BASENAME := tapis-cli-ng
+IMAGE_BASENAME := tapis-cli
 DOCKER_ORG ?= tacc
 PUBLIC_DOCKER_IMAGE ?= $(DOCKER_ORG)/$(IMAGE_BASENAME):latest
 
