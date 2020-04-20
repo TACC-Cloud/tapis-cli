@@ -7,7 +7,7 @@ ARG PYTHON_VIRTUALENV_VERSION=16.7.0
 
 LABEL org.label-schema.vendor = "Texas Advanced Computing Center"
 LABEL org.label-schema.name = "TACC Tapis CLI Base"
-LABEL org.label-schema.vcs-url = "https://github.com/TACC-Cloud/tapis-cli-ng"
+LABEL org.label-schema.vcs-url = "https://github.com/TACC-Cloud/tapis-cli"
 LABEL org.label-schema.organization=tacc.cloud
 LABEL cloud.tacc.project="Tapis CLI"
 

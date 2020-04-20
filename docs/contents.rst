@@ -65,10 +65,10 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli-ng.svg?branch=master&style=flat
+.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=master&style=flat
     :alt: Build status
     :scale: 100%
-    :target: https://travis-ci.org/TACC-Cloud/tapis-cli-ng
+    :target: https://travis-ci.org/TACC-Cloud/tapis-cli
 
 .. |docs| image:: https://readthedocs.org/projects/tapis-cli/badge/?version=latest
     :alt: Documentation Status
@@ -79,3 +79,4 @@ Indices and tables
     :alt: Publication Link
     :scale: 100%
     :target: https://zenodo.org/badge/latestdoi/203083094
+    

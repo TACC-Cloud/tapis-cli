@@ -6,7 +6,7 @@ import random
 import tapis_cli
 from github import Github
 
-PROJECT = 'mwvaughn/tapis-cli-ng'
+PROJECT = 'mwvaughn/tapis-cli'
 LABEL_PREFIX = 'service.'
 
 gh = Github(os.environ.get('GITHUB_API_KEY').strip())
