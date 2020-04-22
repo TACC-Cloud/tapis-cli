@@ -28,5 +28,6 @@ from .nonces_delete import ActorsNoncesDelete
 from .nonces_create import ActorsNoncesCreate
 from .submit import ActorsSubmit
 from .run import ActorsRun
+from .deploy import ActorsDeploy
 
 from .manage import ActorsCreate, ActorsUpdate

@@ -89,6 +89,9 @@ directly with the Abaco APIs via ``create``, ``update``, and
 .. autoprogram-cliff:: tapis.cli
    :command: actors delete
 
+.. autoprogram-cliff:: tapis.cli
+   :command: actors deploy
+
 Mailbox
 =======
 

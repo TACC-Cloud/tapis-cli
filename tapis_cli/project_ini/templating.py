@@ -82,20 +82,19 @@ def generate_template_ini(passed_vals=None):
     config['actor'] = {
         'name': '',
         'description': '',
-        'alias': '',
+        'token': True,
         'stateless': True,
-        'hint': '',
         'privileged': False,
-        'use_uid': True,
-        'workers': ''
+        'use_container_uid': False,
+        'hint': '',
+        'link': '',
+        'webhook': ''
     }
     config['docker'] = {
         'dockerfile': 'Dockerfile',
         'namespace': '',
         'repo': '',
-        'tag': '',
-        'build_args': '',
-        'use_commit_hash': False
+        'tag': ''
     }
     config['env'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}

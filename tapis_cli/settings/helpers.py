@@ -2,7 +2,7 @@ import os
 
 ENV_PREFIX = 'TAPIS_CLI'
 BOOLEAN_TRUE_STRINGS = ('true', 'on', 'ok', 'y', 'yes', '1')
-BOOLEAN_FALSE_STRINGS = ('false', 'off', 'n', 'no', '0')
+BOOLEAN_FALSE_STRINGS = ('false', 'off', 'n', 'no', '0', '')
 
 __all__ = [
     'ns_os_environ_get', 'fix_assets_path', 'array_from_string',
