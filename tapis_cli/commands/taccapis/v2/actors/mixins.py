@@ -1,3 +1,4 @@
+import os
 from tapis_cli.utils import reserved_environment_vars
 from tapis_cli.clients.services.mixins import (ParserExtender,
                                                ServiceIdentifier)
