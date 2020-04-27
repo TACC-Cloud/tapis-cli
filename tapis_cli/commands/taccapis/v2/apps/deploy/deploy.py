@@ -177,12 +177,19 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         #     self.passed_vals['docker']['repo'] = parsed_args.docker_repo
         # if parsed_args.docker_tag is not None:
         #     self.passed_vals['docker']['tag'] = parsed_args.docker_tag
+        config = self.get_ini_contents(parsed_args)
+        if config == {}:
+            raise WorkflowFailed('No project configuration found')
         self.config = self.all_key_values(parsed_args, {})
 
-        # Override defaults
-        # These allow options to be empty but receive default values from mandatory ones
-        #
-        # Force a container name to equal app.name if does not exist
+        # Validate minimim viable project configuration
+        APP_KEYS = ['name', 'version']
+        for k in ACTOR_KEYS:
+            if config.get('actor', {}).get(k, None) is None:
+                raise WorkflowFailed(
+                    'app#{0} missing from configuration'.format(k))
+
+        # Construct a container repo name from app if not defined
         if self.config.get('docker', {}).get('repo', None) is None:
             self.config['docker']['repo'] = self.config['app']['name']
         # Force a tag to be app.version if does not exist

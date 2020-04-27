@@ -415,18 +415,19 @@ class IniLoader(ParserExtender):
         return p
 
 
-class UploadJSONTemplate(UploadJsonFile):
-    def extend_parser(self, parser):
-        parser = super(UploadJSONTemplate, self).extend_parser(parser)
-        parser.add_argument('--ini',
-                            dest='ini_file_name',
-                            metavar='FILEPATH',
-                            type=str,
-                            help='.ini file (project.ini)')
-        return parser
+class UploadJSONTemplate(IniLoader):
+    #class UploadJSONTemplate(UploadJsonFile):
+    # def extend_parser(self, parser):
+    #     parser = super(UploadJSONTemplate, self).extend_parser(parser)
+    #     parser.add_argument('--ini',
+    #                         dest='ini_file_name',
+    #                         metavar='FILEPATH',
+    #                         type=str,
+    #                         help='.ini file (project.ini)')
+    #     return parser
 
-    def get_ini_path(self, filename):
-        return project_ini.config_path(filename, self.getwd())
+    # def get_ini_path(self, filename):
+    #     return project_ini.config_path(filename, self.getwd())
 
     # OVERRIDES DO NOT SEEM TO BE WORKING
     def _all_key_values(self, parsed_args, passed_vals):
