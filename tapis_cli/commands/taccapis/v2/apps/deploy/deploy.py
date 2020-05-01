@@ -184,8 +184,8 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
 
         # Validate minimim viable project configuration
         APP_KEYS = ['name', 'version']
-        for k in ACTOR_KEYS:
-            if config.get('actor', {}).get(k, None) is None:
+        for k in APP_KEYS:
+            if config.get('app', {}).get(k, None) is None:
                 raise WorkflowFailed(
                     'app#{0} missing from configuration'.format(k))
 

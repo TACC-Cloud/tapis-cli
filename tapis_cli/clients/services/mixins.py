@@ -415,7 +415,7 @@ class IniLoader(ParserExtender):
         return p
 
 
-class UploadJSONTemplate(IniLoader):
+class UploadJSONTemplate(IniLoader, UploadJsonFile):
     #class UploadJSONTemplate(UploadJsonFile):
     # def extend_parser(self, parser):
     #     parser = super(UploadJSONTemplate, self).extend_parser(parser)
