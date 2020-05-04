@@ -11,6 +11,8 @@ class TaccApisCommandBase(TaccApiClient):
     """
     constants = constants
     post_payload = {}
+    # Extra args that can be passed as **dict to all requests
+    client_extra_args = {}
 
     def add_common_parser_arguments(self, parser):
         # print('TaccApisCommandBase.add_common_parser_arguments')

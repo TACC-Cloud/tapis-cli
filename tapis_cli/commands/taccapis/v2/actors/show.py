@@ -17,6 +17,8 @@ class ActorsShow(ActorsFormatOne, ActorIdentifier):
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
+    ACCEPT_NONCE = True
+
     def get_parser(self, prog_name):
         parser = super(ActorsShow, self).get_parser(prog_name)
         parser = ActorIdentifier().extend_parser(parser)
@@ -28,7 +30,8 @@ class ActorsShow(ActorsFormatOne, ActorIdentifier):
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
 
         headers = self.render_headers(Actor, parsed_args)
-        rec = self.tapis_client.actors.get(actorId=actor_id)
+        rec = self.tapis_client.actors.get(actorId=actor_id,
+                                           **self.client_extra_args)
 
         data = []
         for key in headers:

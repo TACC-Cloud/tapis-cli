@@ -11,6 +11,7 @@ class ActorsRun(ActorsSubmit):
     HELP_STRING = 'Send a message to an Actor and await response'
     LEGACY_COMMMAND_STRING = 'abaco run'
     SYNCHRONOUS_EXECUTION = True
+    ACCEPT_NONCE = True
 
     def get_parser(self, prog_name):
         parser = super(ActorsRun, self).get_parser(prog_name)

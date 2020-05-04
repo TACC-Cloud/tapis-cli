@@ -10,6 +10,7 @@ __all__ = ['ActorsFormatOne', 'ActorsFormatMany', 'ActorsFormatManyUnlimited']
 
 
 class ActorsBase(TaccApisCommandBase):
+    ACCEPT_NONCE = False
     pass
 
 

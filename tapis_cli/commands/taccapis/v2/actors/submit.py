@@ -20,6 +20,7 @@ class ActorsSubmit(ActorsFormatOne, ActorIdentifier, ActorFileOrMessage,
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
     SYNCHRONOUS_EXECUTION = False
+    ACCEPT_NONCE = True
 
     def get_parser(self, prog_name):
         parser = super(ActorsSubmit, self).get_parser(prog_name)
@@ -35,6 +36,8 @@ class ActorsSubmit(ActorsFormatOne, ActorIdentifier, ActorFileOrMessage,
         environment = ActorEnvironmentVariables().process_parsed_args(
             parsed_args)
         environment['_abaco_synchronous'] = self.SYNCHRONOUS_EXECUTION
+        if self.client_extra_args.get('nonce', None) is not None:
+            environment['x-nonce'] = self.client_extra_args['nonce']
         return (body, environment)
 
     def take_action(self, parsed_args):
@@ -43,7 +46,8 @@ class ActorsSubmit(ActorsFormatOne, ActorIdentifier, ActorFileOrMessage,
         msg = self.prepare_message(parsed_args)
         rec = self.tapis_client.actors.sendMessage(actorId=actor_id,
                                                    body=msg[0],
-                                                   environment=msg[1])
+                                                   environment=msg[1],
+                                                   **self.client_extra_args)
         headers = self.render_headers(Message, parsed_args)
         data = []
         for key in headers:
