@@ -51,9 +51,15 @@ class TaccApisBearer(TaccApisCommandBase):
                 client = Agave.restore()
                 self.tapis_client = client
                 self.tapis_client.refresh()
-                self.requests_client = self._get_direct(self.tapis_client)
+                # self.requests_client = self._get_direct(self.tapis_client)
             except Exception:
                 raise AgaveError(constants.TAPIS_AUTH_FAIL)
+
+        try:
+            self.requests_client = self._get_direct(self.tapis_client)
+        except Exception:
+            raise AgaveError(constants.TAPIS_AUTH_FAIL)
+
         return self
 
 
