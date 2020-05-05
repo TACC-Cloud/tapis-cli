@@ -17,6 +17,8 @@ class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier, WorkerIdentifier):
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
 
+    ACCEPT_NONCE = True
+
     def get_parser(self, prog_name):
         parser = super(ActorsWorkersShow, self).get_parser(prog_name)
         parser = ActorIdentifier().extend_parser(parser)
@@ -28,7 +30,8 @@ class ActorsWorkersShow(ActorsFormatOne, ActorIdentifier, WorkerIdentifier):
         actor_id = ActorIdentifier().get_identifier(parsed_args)
         worker_id = WorkerIdentifier().get_identifier(parsed_args)
         results = self.tapis_client.actors.getWorker(actorId=actor_id,
-                                                     workerId=worker_id)
+                                                     workerId=worker_id,
+                                                     **self.client_extra_args)
         headers = self.render_headers(Worker, parsed_args)
         data = []
         for key in headers:

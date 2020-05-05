@@ -17,6 +17,7 @@ class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier,
 
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
+    ACCEPT_NONCE = True
 
     def get_parser(self, prog_name):
         parser = super(ActorsExecsLogs, self).get_parser(prog_name)
@@ -29,7 +30,7 @@ class ActorsExecsLogs(ActorsFormatManyUnlimited, ActorIdentifier,
         actor_id = ActorIdentifier().get_identifier(parsed_args)
         exec_id = ExecutionIdentifier().get_identifier(parsed_args)
         results = self.tapis_client.actors.getExecutionLogs(
-            actorId=actor_id, executionId=exec_id)
+            actorId=actor_id, executionId=exec_id, **self.client_extra_args)
         headers = ['logs']
         logs_result = results.get('logs')
         print("Logs for execution", exec_id, "\n", logs_result)

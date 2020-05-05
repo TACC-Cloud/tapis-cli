@@ -19,6 +19,7 @@ class ActorsExecsList(ActorsFormatManyUnlimited, ActorIdentifier,
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD
     FILTERABLE_KEYS = Execution.FILTERABLE_KEYS
+    ACCEPT_NONCE = True
 
     def get_parser(self, prog_name):
         parser = super(ActorsExecsList, self).get_parser(prog_name)
@@ -29,7 +30,8 @@ class ActorsExecsList(ActorsFormatManyUnlimited, ActorIdentifier,
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier.get_identifier(self, parsed_args)
-        results = self.tapis_client.actors.listExecutions(actorId=actor_id)
+        results = self.tapis_client.actors.listExecutions(
+            actorId=actor_id, **self.client_extra_args)
         # custom headers to print all the execution id and status for a
         # given actor id
         execs_result = results.get('executions')  # returns a list

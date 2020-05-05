@@ -21,6 +21,8 @@ class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
     FILTERABLE_KEYS = Worker.FILTERABLE_KEYS
 
+    ACCEPT_NONCE = True
+
     def get_parser(self, prog_name):
         parser = super(ActorsWorkersList, self).get_parser(prog_name)
         parser = ActorIdentifier().extend_parser(parser)
@@ -31,7 +33,8 @@ class ActorsWorkersList(ActorsFormatManyUnlimited, ActorIdentifier,
         parsed_args = self.preprocess_args(parsed_args)
         actor_id = ActorIdentifier().get_identifier(parsed_args)
         glob_filt = parsed_args.list_filter
-        results = self.tapis_client.actors.listWorkers(actorId=actor_id)
+        results = self.tapis_client.actors.listWorkers(
+            actorId=actor_id, **self.client_extra_args)
         headers = ["workerId", "status"]
         records = []
         for rec in results:

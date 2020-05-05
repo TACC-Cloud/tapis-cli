@@ -18,6 +18,7 @@ class ActorsBaseClass(ActorsFormatOne, ActorIdentifier):
     CREATE_ONLY = False
     VERBOSITY = Verbosity.BRIEF
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
+
     config = {}
 
     def get_parser(self, prog_name):

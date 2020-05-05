@@ -41,7 +41,7 @@ class TaccApisBearer(TaccApisCommandBase):
                            dest='nonce',
                            metavar='NONCE',
                            help="{0} {1}".format(constants.PLATFORM,
-                                                 constants.ACCESS_TOKEN))
+                                                 constants.NONCE))
 
         if self.ALLOW_NO_VERIFY:
             g.add_argument('--no-verify',
