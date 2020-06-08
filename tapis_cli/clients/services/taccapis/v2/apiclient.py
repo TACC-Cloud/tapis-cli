@@ -1,3 +1,4 @@
+import copy
 import datetime
 import json
 import os
@@ -79,8 +80,12 @@ class TaccApiClient(object):
             profile = {}
         for k in ['email', 'username', 'first_name', 'last_name']:
             api[k] = profile.get(k, None)
+
         api['full_name'] = '{0} {1}'.format(api['first_name'],
                                             api['last_name'])
+
+        # Implement legacy 'agave' template variables
+        api['agave'] = copy.copy(api)
 
         # Default storage and execution systems
         api['default_public_storage'] = None
@@ -105,5 +110,5 @@ class TaccApiClient(object):
                         api['default_private_execution'] = s_id
         except Exception:
             pass
-
+        
         return api

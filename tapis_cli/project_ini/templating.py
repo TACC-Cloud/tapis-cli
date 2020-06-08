@@ -58,8 +58,8 @@ def update_config(config={}, values_dict=None, add_keys=False):
                 config[k] = v
             else:
                 raise KeyError('Unknown config section: {0}'.format(k))
-
-        return config
+        
+    return config
 
 
 def generate_template_ini(passed_vals=None):

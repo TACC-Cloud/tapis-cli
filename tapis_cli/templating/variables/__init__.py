@@ -2,7 +2,7 @@ from tapis_cli.utils import dynamic_import
 
 __all__ = ['key_values']
 
-IMPORTS = ['cli', 'date', 'git', 'posix']
+IMPORTS = ['cli', 'date_time', 'git', 'posix']
 
 
 def key_values():

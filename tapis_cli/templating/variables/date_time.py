@@ -32,4 +32,4 @@ def key_values():
     date_time_facts['tz'] = time.strftime("%Z")
     date_time_facts['tz_offset'] = time.strftime("%z")
 
-    return date_time_facts
+    return {'date_time': date_time_facts}
