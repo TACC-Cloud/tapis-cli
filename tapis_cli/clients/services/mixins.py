@@ -101,7 +101,10 @@ class ParserExtender(object):
         """Placeholder to implement validation of a value passed
         via a ParserExtender
         """
-        return True
+        if value is not None:
+            return True
+        else:
+            return False
 
 
 class AppVerboseLevel(ParserExtender):
@@ -212,7 +215,7 @@ class ServiceIdentifier(ParserExtender):
         return parser
 
     def validate_identifier(self, identifier, permissive=True):
-        return self.validate(identifier)
+        return True
 
     def get_identifier(self, parsed_args, validate=False, permissive=False):
         identifier = None
