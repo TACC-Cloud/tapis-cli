@@ -197,7 +197,8 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self.config['docker']['tag'] = self.config['app']['version']
 
         # If Dockerfile is not present, turn off container workflow
-        if not os.path.exists(self._dockerfile()):
+        docker_path = os.path.join(self.working_dir, self._dockerfile())
+        if not os.path.exists(docker_path):
             self.build = False
             self.pull = False
             self.push = False
@@ -245,15 +246,14 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
     def _dockerfile(self):
         """Compute path to application Dockerfile
         """
-        # TODO - handle working directory
         return self.config.get('docker', {}).get('dockerfile', 'Dockerfile')
 
     def _bundle(self):
         """Compute path to application asset bundle
         """
-        # TODO - handle working directory
         # Default to DEFAULT_BUNDLE_NAME
-        return self.config['app'].get('bundle', DEFAULT_BUNDLE_NAME)
+        bundle_path = os.path.join(self.working_dir, DEFAULT_BUNDLE_NAME)
+        return self.config['app'].get('bundle', bundle_path)
 
     def _build(self, parsed_args):
         """Build container
@@ -314,7 +314,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     raise
 
     def _render(self, parsed_args):
-        """Load and render app.json 
+        """Load and render app.json
         """
         self.handle_file_upload(parsed_args, passed_vals=self.config)
         setattr(self, 'document', self.json_file_contents)
@@ -366,7 +366,9 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             dep_sys = self.document['deploymentSystem']
             dep_path = self.document['deploymentPath']
             dep_path_parent = os.path.dirname(dep_path)
-            dep_path_temp = os.path.join(dep_path_parent, self._bundle())
+            # need the bundle basename for the upload/move workflow to work
+            bundle_basename = os.path.basename(os.path.normpath(self._bundle()))
+            dep_path_temp = os.path.join(dep_path_parent, bundle_basename)
 
             print_stderr(
                 'Uploading app asset directory "{0}" to agave://{1}/{2}'.
@@ -380,7 +382,6 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     raise FileNotFoundError(
                         'Unable to locate asset directory "{}"'.format(
                             self._bundle()))
-                # TODO - incorporate working directory
                 try:
                     manage.makedirs(dep_path_parent,
                                     system_id=dep_sys,
@@ -403,7 +404,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                             system_id=dep_sys,
                             destination=dep_path,
                             agave=self.tapis_client)
-                # Rename dep_path_parent/bundle to dep_path
+                #Rename dep_path_parent/bundle to dep_path
                 print_stderr('Finished ({} msec)'.format(milliseconds() -
                                                          start_time))
                 for u in uploaded:
