@@ -1,3 +1,4 @@
+import os
 from dotenv import set_key
 from tapis_cli.mocks import FormatOne
 from tapis_cli import settings
@@ -8,6 +9,13 @@ __all__ = ['SettingsSet', 'settings_set']
 
 def settings_set(setting_name, setting_value):
     env_file = settings.config.find_config()
+    # Create an empty env file since dotenv.set_key fails
+    # if it does not exist
+    if not os.path.exists(env_file):
+        try:
+            open(env_file, 'a').close()
+        except Exception:
+            raise
     set_key(env_file, setting_name, setting_value)
     return True
 
