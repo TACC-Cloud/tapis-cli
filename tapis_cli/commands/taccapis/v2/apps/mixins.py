@@ -15,6 +15,5 @@ class AppIdentifier(ServiceIdentifier):
             if permissive:
                 return False
             else:
-                raise ValueError('No application exists with ID {}'.format(identifier))
-
-
+                raise ValueError(
+                    'No application exists with ID {}'.format(identifier))

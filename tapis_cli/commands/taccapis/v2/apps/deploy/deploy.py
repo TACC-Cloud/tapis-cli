@@ -367,7 +367,8 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             dep_path = self.document['deploymentPath']
             dep_path_parent = os.path.dirname(dep_path)
             # need the bundle basename for the upload/move workflow to work
-            bundle_basename = os.path.basename(os.path.normpath(self._bundle()))
+            bundle_basename = os.path.basename(os.path.normpath(
+                self._bundle()))
             dep_path_temp = os.path.join(dep_path_parent, bundle_basename)
 
             print_stderr(
