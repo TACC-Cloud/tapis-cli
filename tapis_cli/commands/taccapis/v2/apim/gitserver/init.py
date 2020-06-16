@@ -46,7 +46,7 @@ class GitServerOpts(ParserExtender):
     def extend_parser(parser):
         """Configures a Command to accept git server config
         """
-        git_group = parser.add_argument_group('GitHub Access')
+        git_group = parser.add_argument_group('GitHub Access (Optional)')
         git_group.add_argument('--git-username',
                                metavar='USERNAME',
                                help='Git username')

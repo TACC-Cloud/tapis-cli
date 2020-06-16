@@ -23,7 +23,7 @@ class RegistryOpts(ParserExtender):
     def extend_parser(parser):
         """Configures a Command to accept container registry config
         """
-        reg_group = parser.add_argument_group('Registry Access')
+        reg_group = parser.add_argument_group('Container Registry Access (Optional)')
         reg_group.add_argument('--registry-url',
                                metavar='URL',
                                help='Registry URL')
