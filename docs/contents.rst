@@ -65,7 +65,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=master&style=flat
+.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=main&style=flat
     :alt: Build status
     :scale: 100%
     :target: https://travis-ci.org/TACC-Cloud/tapis-cli
