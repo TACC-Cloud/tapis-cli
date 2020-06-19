@@ -64,9 +64,9 @@ The following are **known issues** and will be addressed in future work periods:
 
 ## Installation
 
-04-10-2019 | The latest Docker image build of `master` is now always
+04-10-2019 | The latest Docker image build of `main` is now always
 available as `tacc/tapis-cli:latest` within 15-30 minutes after a commit
-is pushed to `master`. This is now accomplished via a Travis CLI workflow
+is pushed to `main`. This is now accomplished via a Travis CLI workflow
 rather than by manual intervention by the developers.
 
 20-09-2019 | The CLI is installable from git checkout

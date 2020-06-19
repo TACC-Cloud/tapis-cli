@@ -20,7 +20,12 @@ def key_is_private(key):
 
 
 def redact(value):
-    return value[0] + (REDACT_CHAR * (len(value) - 2)) + value[-1]
+    if value is None:
+        return None
+    elif len(value) > 1:
+        return value[0] + (REDACT_CHAR * (len(value) - 2)) + value[-1]
+    else:
+        return value
 
 
 def auto_redact(key, value):

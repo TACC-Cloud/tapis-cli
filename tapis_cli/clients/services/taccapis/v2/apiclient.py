@@ -110,5 +110,5 @@ class TaccApiClient(object):
                         api['default_private_execution'] = s_id
         except Exception:
             pass
-        
+
         return api

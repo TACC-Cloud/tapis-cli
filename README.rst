@@ -131,7 +131,7 @@ All work should proceed through at least one or more reported Issues_.
 .. _Issues: https://github.com/TACC-Cloud/tapis-cli/issues
 
 
-.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=master&style=flat
+.. |build-status| image:: https://travis-ci.org/TACC-Cloud/tapis-cli.svg?branch=main&style=flat
     :alt: build status
     :scale: 100%
     :target: https://travis-ci.org/TACC-Cloud/tapis-cli

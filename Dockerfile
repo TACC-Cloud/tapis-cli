@@ -1,8 +1,8 @@
-FROM ubuntu:cosmic
+FROM ubuntu
 
 ARG CLI_VERSION=latest
-ARG CLI_BRANCH=master
-ARG PYTHON_PIP_VERSION=19.2.3
+ARG CLI_BRANCH=main
+ARG PYTHON_PIP_VERSION=20.1.1
 ARG PYTHON_VIRTUALENV_VERSION=16.7.0
 
 LABEL org.label-schema.vendor = "Texas Advanced Computing Center"
@@ -57,7 +57,7 @@ COPY docker/pip.conf /etc/pip.conf
 
 COPY . /install
 WORKDIR /install
-RUN pip install -q --upgrade .
+RUN pip install -q --upgrade tapis-cli
 
 ENV TAPIS_CACHE_DIR=/root/.agave
 ENV AGAVE_CACHE_DIR=/root/.agave
@@ -67,6 +67,9 @@ ENV TAPIS_CLI_VERSION=$CLI_VERSION
 COPY 'docker/.dockerprompt' /home/.dockerprompt
 
 RUN echo 'source /home/.dockerprompt' >> /root/.bashrc
+
+RUN touch /root/.env && chmod u+rw /root/.env
+
 CMD ["/bin/bash"]
 
 WORKDIR /work

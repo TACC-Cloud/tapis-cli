@@ -8,7 +8,7 @@ GIT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
 GIT_BRANCH_CLEAN := $(shell echo $(GIT_BRANCH) | sed -e "s/[^[:alnum:]]/-/g")
 
 CLI_BRANCH ?= $(GIT_BRANCH)
-CLI_VERSION ?= "alpha1"
+CLI_VERSION ?= "1.0.0"
 IMAGE_BASENAME := tapis-cli
 DOCKER_ORG ?= tacc
 PUBLIC_DOCKER_IMAGE ?= $(DOCKER_ORG)/$(IMAGE_BASENAME):latest
