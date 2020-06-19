@@ -231,15 +231,25 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         """Compute container repo:tag
         """
 
-        # Look for namespace, then default to empty
-        namespace = self.config.get('docker', {}).get('namespace', None)
         # Look for: docker.tag then default to empty
         tag = self.config.get('docker', {}).get('tag', None)
         # Look for docker.repo then default to empty
         repo = self.config.get('docker', {}).get('repo', None)
 
-        if namespace is not None:
-            repo = namespace + '/' + repo
+        # Set docker organization to username, namespace, or organization
+        # if any exist in the ini. Organization takes highest priority
+        for docker_org in ['organization', 'namespace', 'username']:
+            # look for docker org then default to empty
+            org = self.config.get('docker', {}).get(docker_org, None)
+            if org is not None:
+                # Don't redefine if organization already defined
+                if 'organization' in self.config['docker']:
+                    pass
+                else:
+                    self.config['docker']['organization'] = org
+
+        if self.config['docker']['organization'] is not None:
+            repo = self.config['docker']['organization']+ '/' + repo
         if tag is not None:
             repo = repo + ':' + tag
         return repo
