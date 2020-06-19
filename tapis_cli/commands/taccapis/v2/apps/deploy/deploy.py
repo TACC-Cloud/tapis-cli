@@ -1,5 +1,6 @@
 import docker as dockerpy
 import os
+from datetime import datetime
 
 from tapis_cli import settings
 from tapis_cli.utils import (seconds, milliseconds, print_stderr)
@@ -368,8 +369,9 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             dep_path_parent = os.path.dirname(dep_path)
             # need the bundle basename for the upload/move workflow to work
             bundle_basename = os.path.basename(os.path.normpath(self._bundle()))
-            dep_path_temp = os.path.join(dep_path_parent, bundle_basename)
-
+            # add date to make tmpdir unique from bundle and deploymentPath
+            dep_path_temp = os.path.join(dep_path_parent, bundle_basename) \
+                            + datetime.now().strftime("-%Y-%m-%d")
             print_stderr(
                 'Uploading app asset directory "{0}" to agave://{1}/{2}'.
                 format(self._bundle(), dep_sys, dep_path))
@@ -383,28 +385,38 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                         'Unable to locate asset directory "{}"'.format(
                             self._bundle()))
                 try:
-                    manage.makedirs(dep_path_parent,
+                    # need relative destination here because
+                    # agavepy permissions check will fail on '/'
+                    # for public systems
+                    manage.makedirs(os.path.basename(dep_path_temp),
                                     system_id=dep_sys,
                                     permissive=True,
+                                    destination=dep_path_parent,
                                     agave=self.tapis_client)
+                    # clear out destination directory
                     manage.delete(dep_path,
                                   system_id=dep_sys,
                                   permissive=True,
                                   agave=self.tapis_client)
                 except Exception as err:
                     self.messages.append(('upload', str(err)))
-
+                # upload bundle to tmp dir
                 uploaded, skipped, errors, ul_bytes, ec_download = upload.upload(
                     self._bundle(),
                     system_id=dep_sys,
-                    destination=dep_path_parent,
+                    destination=dep_path_temp,
                     progress=True,
                     agave=self.tapis_client)
-                manage.move(dep_path_temp,
+                # move tmp dir bundle to the destination dir
+                manage.move(os.path.join(dep_path_temp, bundle_basename),
                             system_id=dep_sys,
                             destination=dep_path,
                             agave=self.tapis_client)
-                #Rename dep_path_parent/bundle to dep_path
+                # delete tmp dir
+                manage.delete(dep_path_temp,
+                              system_id=dep_sys,
+                              permissive=True,
+                              agave=self.tapis_client)
                 print_stderr('Finished ({} msec)'.format(milliseconds() -
                                                          start_time))
                 for u in uploaded:
