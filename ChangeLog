@@ -1,6 +1,102 @@
 CHANGES
 =======
 
+v1.0.2
+------
+
+* backwards compatibility to populate docker.organization in app.ini from docker namespace, username, or organization
+* resolving merge conflict
+* patch to fix uploads for case that the bundle matches the deploymentPath
+
+v1.0.1
+------
+
+* Mark GitHub and Registry access configuration as optional
+* Empty .env file now created if it does not exist
+* Fixed issue where empty values in settings that need to be redacted caused an IndexError
+* Updated docs to reset release notes for 1.0.0
+
+v1.0.0
+------
+
+* Tweaked Docker image build
+* New authors
+* New author mappings
+* Updated formatting
+* Moved default branch to 'main' from 'master'
+* updating apps deploy to handle working dir option
+
+v1.0.0a11
+---------
+
+* Updated docs
+* Implemented support for legacy agave.\* and date\_time.\* template variables
+* Tapis apps update now validates specified appId as intended
+
+v1.0.0a10
+---------
+
+* Added nonce support to more actors commands. Leaving it off management command until requested
+* Implemented ability to pass nonces to select Tapis actors commands
+* Fixed issue in TaccApisBearer where direct client was not getting initialized when api\_server and/or token were passed
+* Fixed an issue preventing some uses of 'apps deploy'
+* Fixed issue where apps deploy failed to detect missing project.ini. Enforce presence of app name and version in project configuration file for apps deploy
+* Fixed missing import preventing tapis actors submit from working
+
+v1.0.0a9
+--------
+
+* docs
+* Implemented working tapis actors deploy
+* The actorid module implements cacheing of the the current project's actor identifier
+* Implemented reactor.rc loader which can return either a configparser or dict, just like our ini file loader
+* Turn off Docker overrides in apps deploy. Clarify difference between app and system grants in apps deploy help text
+* Migrated repository name to tapis-cli from tapis-cli-ng
+* Job outputs list and download now handle .dotfiles as intended
+* Files list and upload commands now handle dotfiles. Turns out I was not honoring the contents of the --all CLI option. Files upload and download now only have an --exclude option to address the potential for conflict between include and exclude patterns. May be able to solve in future by making them mutually exclusive
+* WIP: Starting actors deploy
+
+v1.0.0a8
+--------
+
+* Tweaks based on user testing
+* Needed to instantiate ActorIdentifier before calling its get\_identifier function
+* Updated docs
+* Formatted code
+* Implemented tapis actors create|update
+
+v1.0.0a7
+--------
+
+* Added support for specifying keys and passwords via CLI in 'systems create' and 'systems update'. Updated docs. Closes #315
+* Added documentation for how we avoid BrokenPipe errors
+* Added tapis jobs outputs log JOB\_UUID command. Closes #312
+* Bump agavepy to latest alpha
+* postits create now accepts (and translates to http) agave:// files URI. Closes #311
+* Apps deploy now grants system roles when granting private app permissions
+* Namespaced version, label, and description options in apps init. This fixes the conflict with tapis --version. Closes #313
+* Implemented support for setting and unsetting default systems
+
+v1.0.0a6
+--------
+
+* Removed codepaths using GitPython for now
+
+v1.0.0a5
+--------
+
+* Requirements work
+
+v1.0.0a4
+--------
+
+* Relaxed requirements
+* Fixed case where prompt\_accept was failing when encountering empty input
+
+v1.0.0a3
+--------
+
+* Prep for PyPi test release
 * Added a per-service clock offset, settable in any class derived from TapisApiClient via the TIMEZONE string property. Applied this to 'jobs' and validated effectiveness
 * Improved actors docs
 * Implemented 'actors run' as subclass of 'actors submit'. Supports writing to screen as well as an output file
@@ -99,6 +195,7 @@ CHANGES
 * Added new author. Added reference to RTFD. Bumped dev status classifier
 * Swapped back to using mocks
 * WIP
+* Create design.md
 * Updated release notes
 * Make showing empty variables optional
 * Working on project docs
