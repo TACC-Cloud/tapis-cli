@@ -12,7 +12,7 @@ from requests.exceptions import HTTPError
 from tapis_cli.display import Verbosity
 from tapis_cli.constants import PLATFORM, TAPIS_AUTH_FAIL, TAPIS_AUTH_REJECT
 from tapis_cli.utils import (fmtcols, prompt, get_hostname, get_public_ip,
-                             get_local_username)
+                             get_local_username, prompt_boolean)
 from tapis_cli.settings import TAPIS_DEFAULT_TENANT_ID, TAPIS_CLI_VERIFY_SSL
 from tapis_cli.settings.helpers import os_environ_get_none
 from tapis_cli import et
@@ -99,6 +99,10 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         # Inject optional password key
         ag_context['password'] = None
 
+        # Ensure context has a setting for 'verify'. Default to env setting
+        if 'verify' not in ag_context:
+            ag_context['verify'] = TAPIS_CLI_VERIFY_SSL
+
         # Read in from parsed_args, updating ag_context
 
         # Process tenant override
@@ -112,6 +116,8 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         parsed_password = getattr(parsed_args, 'password', None)
 
         # Allow tenant id OR api server to be provided, updating ag_context as appropriate
+        # Regarding SSL verification: If the default behavior is to not verify, we will
+        # not do verification when accessing the tenants API
         if parsed_tenant_id is not None:
             if ag_context.get('tenant_id', None) != parsed_tenant_id:
                 # mandate_git_reg = True
@@ -120,7 +126,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                 logger.info('Tenant changed. Credentials will be requested.')
             ag_context['tenant_id'] = parsed_tenant_id
             ag_context['api_server'] = agavepy.tenants.api_server_by_id(
-                ag_context['tenant_id'])
+                ag_context['tenant_id'], verify_ssl=TAPIS_CLI_VERIFY_SSL)
         elif parsed_api_server is not None:
             if ag_context.get('api_server', None) != parsed_api_server:
                 # mandate_git_reg = True
@@ -130,7 +136,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                     'API server changed. Credentials will be requested.')
             ag_context['api_server'] = parsed_api_server
             ag_context['tenant_id'] = agavepy.tenants.id_by_api_server(
-                ag_context['api_server'])
+                ag_context['api_server'], verify_ssl=TAPIS_CLI_VERIFY_SSL)
 
         # If interactive OR cannot establish tenant_id from cache
         # or args, prompt user to select one
@@ -145,7 +151,8 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             th = ['Name', 'Description', 'URL']
             tr = [[t.get('code'),
                    t.get('name'),
-                   t.get('baseUrl')] for t in agavepy.tenants.list_tenants()]
+                   t.get('baseUrl')] for t in agavepy.tenants.list_tenants(
+                       verify_ssl=TAPIS_CLI_VERIFY_SSL)]
             tl = [t[0] for t in tr]
             pt = PrettyTable()
             pt.field_names = ['Name', 'Description', 'URL']
@@ -161,7 +168,18 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                         ag_context['tenant_id']))
             # Look up API server from tenant ID
             ag_context['api_server'] = agavepy.tenants.api_server_by_id(
-                ag_context['tenant_id'])
+                ag_context['tenant_id'], verify_ssl=TAPIS_CLI_VERIFY_SSL)
+
+        # Prompt for SSL verification
+        # From here on out in the workflow the user has indiciated a
+        # specific preference re: SSL verification. So, we will use
+        # their preference when communicating with APIs (clients, profiles)
+        #
+        # NOTE: Switching SSL behaviors might cause timeouts due to stale sessions
+        if interactive:
+            verify_ssl = ag_context.get('verify', TAPIS_CLI_VERIFY_SSL)
+            ag_context['verify'] = prompt_boolean('Verify SSL connections',
+                                                  verify_ssl)
 
         # Process --username argument
         if parsed_username is not None:
@@ -220,7 +238,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                 'api_server': ag_context['api_server'],
                 'username': ag_context['username'],
                 'password': ag_context['password'],
-                'verify': TAPIS_CLI_VERIFY_SSL
+                'verify': ag_context['verify']
             }
             ag = Agave(**create_context)
 
@@ -281,6 +299,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             str(ag.verify)
         ]
 
+        # Extend headers and data with docker and git workflows
         (headers, data) = registry.init.interactive(parsed_args, headers, data,
                                                     mandate_git_reg)
         (headers, data) = gitserver.init.interactive(parsed_args, headers,
