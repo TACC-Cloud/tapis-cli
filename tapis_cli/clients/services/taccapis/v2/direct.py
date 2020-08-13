@@ -18,7 +18,11 @@ class TaccApiDirectClient(object):
     current Swagger spec and which are thus not accessible in
     AgavePy. Examples include the 'search' function, which relies
     on encoding a POST form of search terms into a GET request. The
-    web request is made directly using the ``requests`` library.
+    web request is made directly using the ``requests`` library. 
+    Configuration for SSL verification is inherited from the 
+    ``verify`` property of the passed Agave client to enforce 
+    consistent communications behavior between the two kinds of
+    HTTP client. 
     """
     def __init__(self, agave_client):
         # TODO - Catch when client is missing properties
@@ -30,6 +34,7 @@ class TaccApiDirectClient(object):
         self.api_server = agave_client.api_server
         self.api_key = agave_client.api_key
         self.api_secret = agave_client.api_secret
+        self.verify = agave_client.verify
         self.service_name = None
         self.service_version = None
         self.api_path = None
@@ -56,32 +61,35 @@ class TaccApiDirectClient(object):
 
     def get(self, path=None):
         url = self.build_url(path)
-        resp = requests.get(url, headers=self.headers)
-        show_curl(resp)
+        resp = requests.get(url, headers=self.headers, verify=self.verify)
+        show_curl(resp, verify=self.verify)
         resp = self._raise_for_status(resp)
         #        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def delete(self, path=None):
         url = self.build_url(path)
-        resp = requests.delete(url, headers=self.headers)
-        show_curl(resp)
+        resp = requests.delete(url, headers=self.headers, verify=self.verify)
+        show_curl(resp, verify=self.verify)
         resp = self._raise_for_status(resp)
         #        resp.raise_for_status()
         return resp.json().get('result', {})
 
     def get_bytes(self, path=None):
         url = self.build_url(path)
-        resp = requests.get(url, headers=self.headers)
-        show_curl(resp)
+        resp = requests.get(url, headers=self.headers, verify=self.verify)
+        show_curl(resp, verify=self.verify)
         resp = self._raise_for_status(resp)
         #        resp.raise_for_status()
         return resp
 
     def get_data(self, path=None, params={}):
         url = self.build_url(path)
-        resp = requests.get(url, headers=self.headers, params=params)
-        show_curl(resp)
+        resp = requests.get(url,
+                            headers=self.headers,
+                            params=params,
+                            verify=self.verify)
+        show_curl(resp, verify=self.verify)
         resp = self._raise_for_status(resp)
         #        resp.raise_for_status()
         return resp.json().get('result', {})
@@ -100,8 +108,9 @@ class TaccApiDirectClient(object):
                              data=data,
                              headers=post_headers,
                              params=params,
-                             json=json)
-        show_curl(resp)
+                             json=json,
+                             verify=self.verify)
+        show_curl(resp, verify=self.verify)
         resp = self._raise_for_status(resp)
 
         # Some direct POST actions are management actions that return only a
@@ -128,8 +137,12 @@ class TaccApiDirectClient(object):
         if auth is None:
             auth = (self.api_key, self.api_secret)
 
-        resp = requests.post(url, headers=post_headers, auth=auth, data=data)
-        show_curl(resp)
+        resp = requests.post(url,
+                             headers=post_headers,
+                             auth=auth,
+                             data=data,
+                             verify=self.verify)
+        show_curl(resp, verify=self.verify)
 
         resp = self._raise_for_status(resp)
 
@@ -166,10 +179,10 @@ class TaccApiDirectClient(object):
         return resp
 
 
-def show_curl(response_object):
+def show_curl(response_object, verify=True):
     if TAPIS_CLI_SHOW_CURL:
         try:
-            curl_text = curlify.to_curl(response_object.request)
+            curl_text = curlify.to_curl(response_object.request, verify)
         except Exception as err:
             curl_text = 'Failed to render curl command: {0}'.format(err)
         print_stderr(curl_text)
