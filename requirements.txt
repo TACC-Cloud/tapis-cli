@@ -17,4 +17,4 @@ stringcase
 tacc-cookiecutter
 tenacity
 validators
-agavepy>=1.0.0a8
+git+https://github.com/TACC/agavepy.git@1_0_0
