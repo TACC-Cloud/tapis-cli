@@ -3,8 +3,8 @@ Apps
 ####
 
 Support for the core Tapis applications life cycle is provided by the **apps**
-command set. Extensions to this lifecycle featured in some Tapis tenants,
-such as ``apps init`` and ``apps deploy`` will be added in a future release.
+command set. Extensions to the core API commands, such as ``apps init`` 
+and ``apps deploy`` are also included.
 
 *******
 General

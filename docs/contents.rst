@@ -28,8 +28,8 @@ Welcome to Tapis CLI
    :caption: Command Reference
 
    usage/overview.rst
-   usage/actors.rst
    usage/apim.rst
+   usage/actors.rst
    usage/apps.rst
    usage/config.rst
    usage/files.rst

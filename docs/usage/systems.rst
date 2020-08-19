@@ -2,7 +2,7 @@
 Systems
 #######
 
-Support for the Tapis systems management **systems** is provided by 
+Support for the Tapis resource management **systems** is provided by 
 the **systems** command set. Helper workflows (such as assistance 
 with SSH keys and testing newly created systems) will be added in 
 coming releases.
