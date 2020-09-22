@@ -12,6 +12,7 @@ import pkg_resources
 import re
 import six
 import sys
+from slugify import slugify as slugifyfn
 from requests import get
 from requests.exceptions import ConnectTimeout
 from socket import getfqdn
@@ -22,7 +23,7 @@ from dateutil.parser import parse
 try:
     from pathlib import Path
 except ImportError:
-    from pathlib2 import Path  # Python 2 backport
+    from pathlib2 import Path    # Python 2 backport
 
 
 def current_time():
@@ -291,10 +292,10 @@ def splitall(path):
     allparts = []
     while 1:
         parts = os.path.split(path)
-        if parts[0] == path:  # sentinel for absolute paths
+        if parts[0] == path:    # sentinel for absolute paths
             allparts.insert(0, parts[0])
             break
-        elif parts[1] == path:  # sentinel for relative paths
+        elif parts[1] == path:    # sentinel for relative paths
             allparts.insert(0, parts[1])
             break
         else:
@@ -491,3 +492,22 @@ def nrlist(sequence):
     unique = []
     [unique.append(item) for item in sequence if item not in unique]
     return unique
+
+
+def slugify(text, separator='_'):
+    """Implements a stable slugify function over python-slugify, unicode-slugify, or awesome-slugify
+    """
+    try:
+        # Preferred: python-slugify (https://github.com/un33k/python-slugify)
+        # [This usage also works for awesome-slugify (https://github.com/voronind/awesome-slugify)]
+        return slugifyfn(text, separator=separator)
+    # Thrown when an unexpected keyword argument is encountered
+    except TypeError:
+        try:
+            # Fall back to unicode-slugify (https://github.com/mozilla/unicode-slugify)
+            return slugifyfn(text, ok='_-', spaces=False,
+                             lower=True).replace('-', separator)
+        except Exception:
+            raise
+    except Exception:
+        raise

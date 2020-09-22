@@ -2,7 +2,6 @@ import json
 import os
 import re
 import sys
-from slugify import slugify
 
 from tapis_cli import settings
 from tapis_cli.display import Verbosity
@@ -13,6 +12,7 @@ from tapis_cli.clients.services.mixins import AgaveURI
 from tapis_cli.project_ini.mixins import AppIniArgs, DockerIniArgs, GitIniArgs
 from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt)
 from tapis_cli.commands.taccapis.v2.apps.mixins import AppIdentifier
+from tapis_cli.utils import slugify
 
 from ..formatters import JobsFormatManyUnlimited
 from .. import API_NAME, SERVICE_VERSION
