@@ -22,6 +22,7 @@ from .aliases_show import ActorsAliasesShow
 from .aliases_delete import ActorsAliasesDelete
 from .aliases_list import ActorsAliasesList
 from .aliases_create import ActorsAliasesCreate
+from .aliases_update import ActorsAliasesUpdate
 from .nonces_show import ActorsNoncesShow
 from .nonces_list import ActorsNoncesList
 from .nonces_delete import ActorsNoncesDelete
