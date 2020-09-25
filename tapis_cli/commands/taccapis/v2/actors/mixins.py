@@ -68,6 +68,11 @@ class ActorFileOrMessage(ParserExtender):
                        dest='file_name',
                        metavar='FILEPATH',
                        help='Text file containing Actor message')
+        g.add_argument('-B',
+                       '--binary_message',
+                       dest='binary_file',
+                       metavar='BINARY',
+                       help='Binary message to send to the actor')
         return parser
 
     def handle_file_upload(self, parsed_args):
@@ -82,6 +87,21 @@ class ActorFileOrMessage(ParserExtender):
                 document_source = os.path.join(self.getwd(),
                                                parsed_args.file_name)
             lf = open(document_source, 'r')
+            setattr(self, 'payload', lf.read())
+            return self.payload
+
+    def handle_binary_file_upload(self, parsed_args):
+
+        if parsed_args.message is not None:
+            setattr(self, 'payload', parsed_args.message)
+            return self.payload
+        else:
+            if parsed_args.binary_file == '-':
+                document_source = sys.stdin
+            elif parsed_args.binary_file is not None:
+                document_source = os.path.join(self.getwd(),
+                                               parsed_args.binary_file)
+            lf = open(document_source, 'rb')
             setattr(self, 'payload', lf.read())
             return self.payload
 

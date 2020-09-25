@@ -50,8 +50,8 @@ class LegacyCommmandHelp(object):
     """Configures a commands to show legacy syntax
 
     Bash CLI syntax is shown in overview and detailed help responses.
-    This is configurable at class level with SHOW_LEGACY_INTERACTIVE and 
-    RENDER_LEGACY_DOCS booleans. It is also configurable for overview mode 
+    This is configurable at class level with SHOW_LEGACY_INTERACTIVE and
+    RENDER_LEGACY_DOCS booleans. It is also configurable for overview mode
     via settings.TAPIS_CLI_SHOW_LEGACY_INTERACTIVE_HELP.
     """
 
@@ -397,7 +397,6 @@ class UploadJsonFile(ParserExtender):
             setattr(self, 'json_file_contents', None)
             raise ValueError('{0} was not valid JSON: {1}'.format(
                 parsed_args.json_file_name, exc))
-
 
 class IniLoader(ParserExtender):
     def extend_parser(self, parser):
