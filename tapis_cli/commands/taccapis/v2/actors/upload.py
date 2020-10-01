@@ -32,7 +32,7 @@ class ActorsUpload(ActorsFormatOne, ActorIdentifier, ActorFileOrMessage,
     def prepare_message(self, parsed_args):
         body, environment, headers = {}, {}, {}
         message = self.handle_binary_file_upload(parsed_args)
-        body = {'binary': message}
+        body = message
         headers = {'Content-Type': 'application/octet-stream'}
         environment = ActorEnvironmentVariables().process_parsed_args(
             parsed_args)
