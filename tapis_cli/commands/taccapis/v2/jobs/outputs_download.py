@@ -5,14 +5,14 @@ from tapis_cli.utils import makedirs
 from . import API_NAME, SERVICE_VERSION
 from .mixins import JobsUUID
 from ..files.models import File
-from ..files.formatters import FilesFormatOne
+from .formatters import JobsFormatOne
 from .helpers.sync import download
 from ..files.mixins import ExcludeFiles, IncludeFiles, OverwritePolicy, ReportProgress
 
 __all__ = ['JobsOutputsDownload']
 
 
-class JobsOutputsDownload(FilesFormatOne, JobsUUID, RemoteFilePath,
+class JobsOutputsDownload(JobsFormatOne, JobsUUID, RemoteFilePath,
                           ExcludeFiles, IncludeFiles, OverwritePolicy,
                           ReportProgress):
 

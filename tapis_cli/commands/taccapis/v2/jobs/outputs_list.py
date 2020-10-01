@@ -3,7 +3,7 @@ from tapis_cli.display import Verbosity
 from tapis_cli.clients.services.mixins import RemoteFilePath
 
 from ..files.models import File
-from ..files.formatters import FilesFormatMany
+from .formatters import JobsFormatMany
 from ..files.mixins import FilesOptions
 # Note - this is the jobs-outputs specific listdir!
 from .helpers.walk import listdir
@@ -11,7 +11,7 @@ from .mixins import JobsUUID
 from . import API_NAME, SERVICE_VERSION
 
 
-class JobsOutputsList(FilesFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
+class JobsOutputsList(JobsFormatMany, JobsUUID, FilesOptions, RemoteFilePath):
 
     HELP_STRING = 'Lists output directory for a Jobs'
     LEGACY_COMMMAND_STRING = 'jobs-output-list'
