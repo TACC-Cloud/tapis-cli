@@ -14,3 +14,4 @@ from .pems_show import MetadataPemsShow
 from .pems_grant import MetadataPemsGrant
 from .pems_revoke import MetadataPemsRevoke
 from .pems_drop import MetadataPemsDrop
+from .schema_list import MetadataSchemaList
