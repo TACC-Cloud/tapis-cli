@@ -26,6 +26,7 @@ class SystemsUpdate(SystemsCreate, ServiceIdentifier):
         parsed_args = SystemsFormatOne.preprocess_args(self, parsed_args)
         self.requests_client.setup(API_NAME, SERVICE_VERSION)
         self.handle_file_upload(parsed_args)
+        self.update_json_creds(parsed_args)
 
         headers = headers = SearchableCommand.render_headers(
             self, System, parsed_args)

@@ -68,11 +68,11 @@ class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
         # Add in key arguments
         return parser
 
-    def take_action(self, parsed_args):
-        parsed_args = self.preprocess_args(parsed_args)
-        self.requests_client.setup(API_NAME, SERVICE_VERSION)
-        self.handle_file_upload(parsed_args)
-
+    def update_json_creds(self, parsed_args) -> None:
+        """Updates system login and storage credentials in
+        attr `json_file_contents` with command line arguments from
+        `parsed_args`.
+        """
         json_data = self.json_file_contents
 
         # System storage configuration via parsed_args
@@ -124,6 +124,16 @@ class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
                 if parsed_args.login_password is not None:
                     json_data['login']['auth'][
                         'password'] = parsed_args.login_password
+        return None
+
+
+    def take_action(self, parsed_args):
+        parsed_args = self.preprocess_args(parsed_args)
+        self.requests_client.setup(API_NAME, SERVICE_VERSION)
+        self.handle_file_upload(parsed_args)
+
+        self.update_json_creds(parsed_args)
+        json_data = self.json_file_contents
 
         # Enroll the system
         headers = headers = self.render_headers(System, parsed_args)
