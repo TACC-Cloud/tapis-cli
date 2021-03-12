@@ -67,6 +67,12 @@ class Actor(TapisModel):
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("webhook", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
+        ("cronOn", argtype.BOOLEAN, Verbosity.BRIEF, argmod.BOOL_DEFAULTS,
+         argmod.DEFAULT, None, None, True),
+        ("cronSchedule", argtype.STRING, Verbosity.RECORD,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
+        ("cronNextEx", argtype.STRING, Verbosity.RECORD_VERBOSE,
+         argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("_links", argtype.ARRAY, Verbosity.VERBOSE, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False)
     ]
