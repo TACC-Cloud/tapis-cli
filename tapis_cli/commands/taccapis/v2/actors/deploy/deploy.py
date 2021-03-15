@@ -2,6 +2,7 @@ import docker as dockerpy
 import os
 
 from tapis_cli import settings
+from tapis_cli.settings.helpers import parse_boolean
 from tapis_cli.utils import (seconds, milliseconds, print_stderr)
 from tapis_cli.commands.taccapis.v2.actors.manage.create import ActorsCreate
 from tapis_cli.clients.services.mixins import (WorkingDirectoryArg, IniLoader,
@@ -277,6 +278,27 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                 document['image'] = self._repo_tag()
                 document['force'] = True
                 document['defaultEnvironment'] = self.envs
+
+                # Configure Abaco cron from project.ini
+                cron_schedule = document.pop('cron_schedule', None)
+                cron_status = document.pop('cron_on', None)
+                if cron_schedule is not None and cron_schedule != '':
+                    document['cronSchedule'] = cron_schedule
+                    # Override cron status via ini setting IF a schedule has been set
+                    if cron_status is not None and cron_status != '':
+                        document['cronOn'] = cron_status
+                
+                # Container UID
+                cuid = document.pop('use_container_uid', None)
+                if cuid is not None:
+                    document['useContainerUid'] = parse_boolean(cuid)
+                    
+                # Cast to booleans
+                bool_keys = ['privileged', 'stateless', 'token', 'useContainerUid', 'cronOn']
+                for bk in bool_keys:
+                    bkv = document.pop(bk, None)
+                    if bkv is not None:
+                        document[bk] = parse_boolean(bkv)
 
                 if self.actor_id is None:
                     resp = self.tapis_client.actors.add(body=document)

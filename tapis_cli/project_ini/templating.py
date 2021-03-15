@@ -88,7 +88,9 @@ def generate_template_ini(passed_vals=None):
         'use_container_uid': False,
         'hint': '',
         'link': '',
-        'webhook': ''
+        'webhook': '',
+        'cron_schedule': '',
+        'cron_on': None
     }
     config['docker'] = {
         'dockerfile': 'Dockerfile',
