@@ -63,6 +63,12 @@ def load_config(filename=RC_FILENAME, as_dict=False, permissive=True):
             actor['stateless'] = not (parse_boolean(
                 kvdict['REACTOR_STATEFUL']))
 
+        # Cron features
+        if 'REACTOR_CRON_SCHEDULE' in kvdict:
+            actor['cronSchedule'] = kvdict['REACTOR_CRON_SCHEDULE']
+        if 'REACTOR_CRON_ON' in kvdict:
+            actor['cronOn'] = parse_boolean(kvdict('REACTOR_CRON_ON'))
+
         # Docker configuration
         if 'DOCKER_HUB_ORG' in kvdict:
             docker['namespace'] = kvdict['DOCKER_HUB_ORG']

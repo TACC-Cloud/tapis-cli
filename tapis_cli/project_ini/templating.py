@@ -88,7 +88,9 @@ def generate_template_ini(passed_vals=None):
         'use_container_uid': False,
         'hint': '',
         'link': '',
-        'webhook': ''
+        'webhook': '',
+        'cron_schedule': '',
+        'cron_on': ''
     }
     config['docker'] = {
         'dockerfile': 'Dockerfile',
@@ -96,7 +98,7 @@ def generate_template_ini(passed_vals=None):
         'repo': '',
         'tag': ''
     }
-    config['env'] = {}
+    config['environment'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}
     config['grants'] = {'read': '', 'execute': '', 'update': ''}
     config['job'] = {}

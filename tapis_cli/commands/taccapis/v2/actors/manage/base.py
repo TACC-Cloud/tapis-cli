@@ -136,9 +136,29 @@ class ActorsBaseClass(ActorsFormatOne, ActorIdentifier):
                             type=str,
                             help='URL for event notifications')
 
+        # Cron schedule
+        # See https://tacc-cloud.readthedocs.io/projects/abaco/en/latest/technical/messages.html#cron-schedule
+        parser.add_argument(
+            '--cron-schedule',
+            dest='cron_schedule',
+            metavar='SCHEDULE',
+            type=str,
+            help='Cron schedule (yyyy-mm-dd hh + <int> <time unit>)')
+        # Cron active
+        cg = parser.add_mutually_exclusive_group()
+        cg.add_argument('--cron-on',
+                        dest='cron_on_true',
+                        action='store_true',
+                        help='Actor cron is on')
+        cg.add_argument('--cron-off',
+                        dest='cron_on_false',
+                        action='store_true',
+                        help='Actor cron is off')
+
         parser.add_argument('--force',
                             action='store_true',
                             help='Force Abaco to update Actor container image')
+
         return parser
 
     def get_configuration(self, parsed_args, agave=None):
@@ -196,6 +216,17 @@ class ActorsBaseClass(ActorsFormatOne, ActorIdentifier):
         # Webhook
         if parsed_args.webhook is not None:
             config['webhook'] = parsed_args.webhook
+
+        # Cron schedule
+        cron_schedule = parsed_args.cron_schedule
+        if cron_schedule is not None:
+            config['cronSchedule'] = cron_schedule
+
+        # Cron active
+        if getattr(parsed_args, 'cron_on_true', None) is True:
+            config['cronOn'] = True
+        elif getattr(parsed_args, 'cron_on_false', None) is True:
+            config['cronOn'] = False
 
         return config
 

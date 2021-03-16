@@ -2,6 +2,7 @@ import docker as dockerpy
 import os
 
 from tapis_cli import settings
+from tapis_cli.settings.helpers import parse_boolean
 from tapis_cli.utils import (seconds, milliseconds, print_stderr)
 from tapis_cli.commands.taccapis.v2.actors.manage.create import ActorsCreate
 from tapis_cli.clients.services.mixins import (WorkingDirectoryArg, IniLoader,
@@ -82,7 +83,6 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                             dest='ignore_errors',
                             action='store_true',
                             help="Ignore deployment errors and warnings")
-
         parser.add_argument('--no-build',
                             dest='workflow_no_build',
                             action='store_false',
@@ -95,7 +95,6 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                             dest='workflow_no_push',
                             action='store_false',
                             help="Do not push built container image")
-
         parser.add_argument('--no-create',
                             dest='workflow_no_create',
                             action='store_false',
@@ -104,7 +103,6 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                             dest='workflow_no_cache',
                             action='store_false',
                             help="Do not cache the Tapis actor identifer")
-
         parser.add_argument('--no-grant',
                             dest='workflow_no_grant',
                             action='store_false',
@@ -136,6 +134,10 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             self.grant = False
             self.ignore_errors = False
 
+        # if we don't build we should not push
+        if self.build is False:
+            self.push = False
+
         # Attempt to read from project.ini, then from reactor.rc
         # We do NOT merge them, and project.ini takes precedence
         config = self.get_ini_contents(parsed_args)
@@ -166,7 +168,7 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         else:
             self.actor_id = actorid.read_id()
 
-        # Read in environment vars
+        # Read in environment vars from secrets.json
         self.envs = ActorsCreate.get_envs_from_file(parsed_args.envs_file,
                                                     decryption_key=None)
 
@@ -273,10 +275,44 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         if self.create:
             try:
 
+                # Here, document is the configuration JSON that will be
+                # sent to the actors endpoint. In create/update, we build it
+                # directly, but to accomodate the more declarative form of using 
+                # the .ini file, we have to do a few things differently. 
+                # Specifically, we read in a ConfigParser object then extend and/
+                # or modify it until it the resulting dict is shaped correctly 
+                # to configure an Actor. 
                 document = self.config['actor']
                 document['image'] = self._repo_tag()
+                # Deploy ALWAYS forces an update to the actor
                 document['force'] = True
-                document['defaultEnvironment'] = self.envs
+
+                # Configure Actor's default environment as the right merge
+                # of variables from project.ini[environment] and secrets.json
+                # document['defaultEnvironment'] = self.envs
+                union_envs = {**self.config['environment'], **self.envs}
+                document['defaultEnvironment'] = union_envs
+
+                # Configure Abaco cron from project.ini
+                cron_schedule = document.pop('cron_schedule', None)
+                cron_status = document.pop('cron_on', None)
+                if cron_schedule is not None and cron_schedule != '':
+                    document['cronSchedule'] = cron_schedule
+                    # Override cron status via ini setting IF a schedule has been set
+                    if cron_status is not None and cron_status != '':
+                        document['cronOn'] = cron_status
+                
+                # Container UID
+                cuid = document.pop('use_container_uid', None)
+                if cuid is not None:
+                    document['useContainerUid'] = parse_boolean(cuid)
+                    
+                # Cast to booleans
+                bool_keys = ['privileged', 'stateless', 'token', 'useContainerUid', 'cronOn']
+                for bk in bool_keys:
+                    bkv = document.pop(bk, None)
+                    if bkv is not None:
+                        document[bk] = parse_boolean(bkv)
 
                 if self.actor_id is None:
                     resp = self.tapis_client.actors.add(body=document)

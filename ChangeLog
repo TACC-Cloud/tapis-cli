@@ -1,6 +1,18 @@
 CHANGES
 =======
 
+v1.0.3
+------
+
+* Docs update
+* Bumped AgavePy
+* Change over to agavepy 1.0.0a9
+* Added support for disabling SSL verification duing auth init
+* Added override support for SSL verification
+* Added config var support to disable SSL warnings
+* Move to AgavePy development branch
+* Bump Changelog
+
 v1.0.2
 ------
 

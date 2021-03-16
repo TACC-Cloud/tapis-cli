@@ -112,3 +112,8 @@ def test_projects_ini_generate_template_populated():
     """
     template = project_ini.generate_template_ini({'app': {'name': 'tacotron'}})
     assert template['app']['name'] == 'tacotron'
+
+def test_projects_ini_case_sensitive_load():
+    k = project_ini.load_config('tests/data/project_ini/project.ini', as_dict=True)
+    assert '_VAR_NAME_5' in k['environment']
+    assert 'VAR_NAME_4' in k['environment']
