@@ -6,7 +6,7 @@ class Schema(BaseSchema):
                    'Dockerfile to build current project'),
                   ('username', '', str, 'Container registry username'),
                   ('group', '', str, 'Container registry group'),
-                  ('url', '', str, 'Container registry URL'),
+                  ('registry', '', str, 'Container registry URL'),
                   ('repo', '', str, 'Container repo name'),
                   ('tag', '', str, 'Container repo tag'),
                   ('build_args', '', str, 'Container build arguments'),

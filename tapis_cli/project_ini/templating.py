@@ -96,7 +96,8 @@ def generate_template_ini(passed_vals=None):
         'dockerfile': 'Dockerfile',
         'namespace': '',
         'repo': '',
-        'tag': ''
+        'tag': '',
+        'registry': ''
     }
     config['environment'] = {}
     config['git'] = {'branch': 'master', 'remote': ''}

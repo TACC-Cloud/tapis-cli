@@ -1,5 +1,6 @@
 import docker as dockerpy
 import os
+import urllib.parse
 
 from tapis_cli import settings
 from tapis_cli.settings.helpers import parse_boolean
@@ -191,18 +192,45 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
     def _repo_tag(self):
         """Compute container repo:tag
         """
+        # Look for registry, default to empty
+        registry = self.config.get('docker', {}).get('registry', None)
+        if registry == '':
+            registry = None
+        # Handle registry in URL or hostname form
+        if registry is not None:
+            parsed_url = urllib.parse.urlparse(registry)
+            if parsed_url.netloc != '':
+                registry = parsed_url.netloc
+            elif parsed_url.path != '':
+                registry = parsed_url.path
 
         # Look for namespace, then default to empty
         namespace = self.config.get('docker', {}).get('namespace', None)
+        if namespace == '':
+            namespace = None
+
         # Look for: docker.tag then default to empty
         tag = self.config.get('docker', {}).get('tag', None)
+        if tag == '':
+            tag = None
+
         # Look for docker.repo then default to empty
         repo = self.config.get('docker', {}).get('repo', None)
+        if repo == '':
+            repo = None
+        if repo is None:
+            raise WorkflowFailed('[docker]repo cannot be empty')
 
         if namespace is not None:
+            # namespace/repo
             repo = namespace + '/' + repo
+        if registry is not None:
+            # registry/(namespace/?)repo
+            repo = registry + '/' + repo
         if tag is not None:
+            # (registry/?)(namespace/?)repo(:tag?)
             repo = repo + ':' + tag
+        
         return repo
 
     def _dockerfile(self):
