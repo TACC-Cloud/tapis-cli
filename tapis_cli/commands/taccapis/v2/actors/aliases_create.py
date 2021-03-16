@@ -20,8 +20,8 @@ class ActorsAliasesCreate(ActorsFormatOne, ActorIdentifier, AliasIdentifier):
 
     def get_parser(self, prog_name):
         parser = super(ActorsAliasesCreate, self).get_parser(prog_name)
-        parser = ActorIdentifier().extend_parser(parser)
         parser = AliasIdentifier().extend_parser(parser)
+        parser = ActorIdentifier().extend_parser(parser)
         return parser
 
     def take_action(self, parsed_args):
