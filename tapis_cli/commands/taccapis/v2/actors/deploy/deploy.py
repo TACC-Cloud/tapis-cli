@@ -355,7 +355,7 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                                                           '').split(',')
                 users = [u.strip() for u in users]
                 for u in users:
-                    if u is not '' and u not in granted:
+                    if u != '' and u not in granted:
                         body = {'username': u, 'permission': pem[1]}
                         resp = self.tapis_client.actors.updatePermissions(
                             actorId=self.actor_id, body=body)

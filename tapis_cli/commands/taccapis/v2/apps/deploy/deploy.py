@@ -480,7 +480,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                 users = self.config['grants'].get(pem[0], '').split(',')
                 users = [u.strip() for u in users]
                 for u in users:
-                    if u is not '' and u not in granted:
+                    if u != '' and u not in granted:
                         if pems.grant(self._app_id(),
                                       u,
                                       pem[1],

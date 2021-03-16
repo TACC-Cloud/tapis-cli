@@ -2,7 +2,6 @@ import docker as dockerpy
 # import git
 import os
 from cookiecutter.main import cookiecutter
-from slugify import slugify
 
 from tapis_cli import settings
 from tapis_cli.display import Verbosity
@@ -12,6 +11,7 @@ from tapis_cli.commands.taccapis.v2.apps.create import AppsCreate
 from tapis_cli.clients.services.mixins import (WorkingDirectoryOpt,
                                                UploadJSONTemplate, DockerPy)
 from tapis_cli.commands.taccapis.v2.files.helpers import manage, upload
+from tapis_cli.utils import slugify
 
 from ..formatters import AppsFormatManyUnlimited
 from .. import API_NAME, SERVICE_VERSION
