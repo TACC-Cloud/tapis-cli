@@ -135,6 +135,8 @@ class AppsInit(AppsFormatManyUnlimited):
         # From settings
         extra_context[
             'docker_namespace'] = settings.TAPIS_CLI_REGISTRY_NAMESPACE
+        extra_context[
+            'docker_registry'] = settings.TAPIS_CLI_REGISTRY_URL
 
         # Generate project from template
         try:

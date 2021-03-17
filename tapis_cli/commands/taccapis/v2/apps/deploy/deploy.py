@@ -230,28 +230,45 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
     def _repo_tag(self):
         """Compute container repo:tag
         """
+        # Look for registry, default to empty
+        registry = self.config.get('docker', {}).get('registry', None)
+        if registry == '':
+            registry = None
+        # Handle registry in URL or hostname form
+        if registry is not None:
+            parsed_url = urllib.parse.urlparse(registry)
+            if parsed_url.netloc != '':
+                registry = parsed_url.netloc
+            elif parsed_url.path != '':
+                registry = parsed_url.path
+
+        # Look for namespace, then default to empty
+        namespace = self.config.get('docker', {}).get('namespace', None)
+        if namespace == '':
+            namespace = None
 
         # Look for: docker.tag then default to empty
         tag = self.config.get('docker', {}).get('tag', None)
+        if tag == '':
+            tag = None
+
         # Look for docker.repo then default to empty
         repo = self.config.get('docker', {}).get('repo', None)
+        if repo == '':
+            repo = None
+        if repo is None:
+            raise WorkflowFailed('[docker]repo cannot be empty')
 
-        # Set docker organization to username, namespace, or organization
-        # if any exist in the ini. Organization takes highest priority
-        for docker_org in ['organization', 'namespace', 'username']:
-            # look for docker org then default to empty
-            org = self.config.get('docker', {}).get(docker_org, None)
-            if org is not None:
-                # Don't redefine if organization already defined
-                if 'organization' in self.config['docker']:
-                    pass
-                else:
-                    self.config['docker']['organization'] = org
-
-        if self.config['docker']['organization'] is not None:
-            repo = self.config['docker']['organization']+ '/' + repo
+        if namespace is not None:
+            # namespace/repo
+            repo = namespace + '/' + repo
+        if registry is not None:
+            # registry/(namespace/?)repo
+            repo = registry + '/' + repo
         if tag is not None:
+            # (registry/?)(namespace/?)repo(:tag?)
             repo = repo + ':' + tag
+        
         return repo
 
     def _dockerfile(self):
