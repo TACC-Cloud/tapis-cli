@@ -45,6 +45,7 @@ class AppsInit(AppsFormatManyUnlimited):
     config = None
     document = None
     results = []
+    headers = []
     messages = []
     exceptions = []
     passed_vals = {}
@@ -55,28 +56,33 @@ class AppsInit(AppsFormatManyUnlimited):
 
     def get_parser(self, prog_name):
         parser = super(AppsInit, self).get_parser(prog_name)
+        parser.add_argument('-R',
+                            '--dry-run',
+                            dest='init_dry_run',
+                            action='store_true')
+        rungrp = parser.add_argument_group('Project Parameters')
         # Values for configuring the project itself
-        parser.add_argument('project_name',
+        rungrp.add_argument('project_name',
                             type=str,
                             metavar='STRING',
                             help='App name')
-        parser.add_argument('output_dir',
+        rungrp.add_argument('output_dir',
                             metavar='output_directory',
                             default='.',
                             nargs='?',
                             type=str,
                             help='Output directory (optional)')
-        parser.add_argument('--app-label',
+        rungrp.add_argument('--app-label',
                             type=str,
                             dest='project_label',
                             metavar='STRING',
                             help='Human-readable label')
-        parser.add_argument('--app-description',
+        rungrp.add_argument('--app-description',
                             type=str,
                             dest='project_description',
                             metavar='STRING',
                             help='One-sentence description')
-        parser.add_argument('--app-version',
+        rungrp.add_argument('--app-version',
                             type=str,
                             dest='project_version',
                             metavar='N.N.N',
@@ -109,7 +115,13 @@ class AppsInit(AppsFormatManyUnlimited):
         # Override specific workflow actions
         return parser
 
-    def take_action(self, parsed_args):
+    def _take_action_init(self, parsed_args):
+        # The setup and clone workflow is separated into a function in advance
+        # of adding a separate workflow to fetch and retrieve a catalog of
+        # project templates from the cookie cutter Github repo
+
+        self.headers = ['stage', 'message']
+
         # Load parsed arguments into extra_context for sending
         # to cookiecutter
         extra_context = {}
@@ -119,58 +131,44 @@ class AppsInit(AppsFormatManyUnlimited):
             val = getattr(parsed_args, 'project_' + cv, None)
             if val is not None:
                 extra_context[cv] = val
-                self.messages.append(
-                    ('setup', 'Project {0}: {1}'.format(cv, val)))
 
         # safen name and predict final output path
         extra_context['project_slug'] = slugify(extra_context['name'],
                                                 separator='_')
         project_path = os.path.join(parsed_args.output_dir,
                                     extra_context['project_slug'])
-        self.messages.append(('setup', 'Safened project name: {0}'.format(
-            extra_context['project_slug'])))
         self.messages.append(
             ('setup', 'Project path: {0}'.format(project_path)))
 
         # From settings
         extra_context[
             'docker_namespace'] = settings.TAPIS_CLI_REGISTRY_NAMESPACE
+        # From settings
+        extra_context['docker_registry'] = settings.TAPIS_CLI_REGISTRY_URL
 
-        # Generate project from template
-        try:
-            cookiecutter(parsed_args.source_repo,
-                         no_input=True,
-                         extra_context=extra_context,
-                         output_dir=parsed_args.output_dir,
-                         directory=parsed_args.source_dir,
-                         checkout=parsed_args.source_checkout)
+        for k, v in extra_context.items():
             self.messages.append(
-                ('clone', 'Project path: {0}'.format(project_path)))
-        except Exception as exc:
-            self.messages.append(('clone', str(exc)))
+                ('setup', 'CookieCutter variable {0}={1}'.format(k, v)))
 
-        # Attempt to set up project as git repo
-        # try:
-        #     if settings.TAPIS_CLI_PROJECT_GIT_INIT:
-        #         r = git.Repo.init(project_path)
-        #         self.messages.append(('git-init', 'Initialized as git repo'))
-        #         if settings.TAPIS_CLI_PROJECT_GIT_FIRST_COMMIT:
-        #             add_files = os.listdir(project_path)
-        #             for af in add_files:
-        #                 r.index.add([af])
-        #             r.index.commit('Automated first commit by Tapis CLI')
-        #             self.messages.append(
-        #                 ('git-init', 'Performed automated first commit'))
-        #         else:
-        #             self.messages.append(
-        #                 ('git-init', 'Skipped automated first commit'))
-        #         # Placeholder for create and set remote
-        #         # Placeholder for push
-        #     else:
-        #         self.messages.append(
-        #             ('git-init', 'Skipped initializing project as git repo'))
-        # except Exception as exc:
-        #     self.messages.append(('git-init', str(exc)))
+        if parsed_args.init_dry_run is True:
+            self.messages.append(
+                ('setup', 'Workflow stopped because this is a dry run'))
+        else:
+            # Generate project from template
+            try:
+                cookiecutter(parsed_args.source_repo,
+                             no_input=True,
+                             extra_context=extra_context,
+                             output_dir=parsed_args.output_dir,
+                             directory=parsed_args.source_dir,
+                             checkout=parsed_args.source_checkout)
+                self.messages.append(
+                    ('clone', 'Project path: {0}'.format(project_path)))
+            except Exception as exc:
+                self.messages.append(('clone', str(exc)))
 
-        headers = ['stage', 'message']
-        return (tuple(headers), tuple(self.messages))
+        return True
+
+    def take_action(self, parsed_args):
+        self._take_action_init(parsed_args)
+        return (tuple(self.headers), tuple(self.messages))
