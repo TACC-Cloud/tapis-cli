@@ -1,6 +1,8 @@
 import docker as dockerpy
 # import git
 import os
+import requests
+import urllib.parse
 from cookiecutter.main import cookiecutter
 
 from tapis_cli import settings
@@ -36,11 +38,13 @@ __all__ = ['AppsInit']
 
 class AppsInit(AppsFormatManyUnlimited):
 
-    HELP_STRING = 'Initialize a new Tapis App project'
+    HELP_STRING = 'Initialize a new Tapis App project from a template'
     LEGACY_COMMMAND_STRING = 'apps-init'
 
     VERBOSITY = Verbosity.RECORD
     EXTRA_VERBOSITY = Verbosity.RECORD_VERBOSE
+
+    CATALOG_FILENAME = 'catalog.json'
 
     config = None
     document = None
@@ -56,27 +60,41 @@ class AppsInit(AppsFormatManyUnlimited):
 
     def get_parser(self, prog_name):
         parser = super(AppsInit, self).get_parser(prog_name)
+
+        parser.add_argument('-L',
+                            '--list-templates',
+                            dest='list_templates',
+                            action='store_true',
+                            help='List available templates and quit')
         parser.add_argument('-R',
                             '--dry-run',
                             dest='init_dry_run',
-                            action='store_true')
-        rungrp = parser.add_argument_group('Project Parameters')
+                            action='store_true',
+                            help='Show configuration and quit')
+
+        parser.add_argument('-O',
+                            '--output-dir',
+                            dest='output_dir',
+                            metavar='DIRECTORY',
+                            default='.',
+                            type=str,
+                            help='Output directory (default: .)')
+
         # Values for configuring the project itself
-        rungrp.add_argument('project_name',
+        rungrp = parser.add_argument_group('App Parameters')
+
+        rungrp.add_argument('-N',
+                            '--app-name',
+                            dest='project_name',
+                            default='new_app',
                             type=str,
                             metavar='STRING',
-                            help='App name')
-        rungrp.add_argument('output_dir',
-                            metavar='output_directory',
-                            default='.',
-                            nargs='?',
-                            type=str,
-                            help='Output directory (optional)')
+                            help='App name (default: new_app)')
         rungrp.add_argument('--app-label',
                             type=str,
                             dest='project_label',
                             metavar='STRING',
-                            help='Human-readable label')
+                            help='App human-readable label')
         rungrp.add_argument('--app-description',
                             type=str,
                             dest='project_description',
@@ -86,7 +104,7 @@ class AppsInit(AppsFormatManyUnlimited):
                             type=str,
                             dest='project_version',
                             metavar='N.N.N',
-                            help='Semantic version')
+                            help='App semantic version')
 
         # Coordinates for CookieCutter assets
         cc_group = parser.add_argument_group('Source Template')
@@ -95,7 +113,7 @@ class AppsInit(AppsFormatManyUnlimited):
                               dest='source_repo',
                               default=templates.COOKIECUTTER_URI,
                               metavar='URL',
-                              help='CookieCutter Repo ({})'.format(
+                              help='Templates repository ({})'.format(
                                   templates.COOKIECUTTER_URI))
         cc_group.add_argument('--checkout',
                               type=str,
@@ -109,7 +127,7 @@ class AppsInit(AppsFormatManyUnlimited):
                               dest='source_dir',
                               default=templates.DIRECTORY,
                               metavar='TEMPLATE',
-                              help='Template name ({})'.format(
+                              help='Template ID ({})'.format(
                                   templates.DIRECTORY))
 
         # Override specific workflow actions
@@ -169,6 +187,46 @@ class AppsInit(AppsFormatManyUnlimited):
 
         return True
 
+    def _take_action_list_templates(self, parsed_args):
+        self.headers = ['id', 'name', 'description', 'level']
+        # Compute Github raw file path from cookiecutter repo URL
+        parsed = urllib.parse.urlparse(parsed_args.source_repo)
+        branch = parsed_args.source_checkout
+        cat_url = None
+
+        # Convert https://github.com/TACC-Cloud/cc-tapis-v2-app.git to
+        # https://raw.githubusercontent.com/TACC-Cloud/cc-tapis-v2-app/master/catalog.json
+        if 'github.com' in parsed_args.source_repo:
+            parsed = urllib.parse.urlparse(parsed_args.source_repo)
+            # Strip trailing .git
+            src_path = parsed.path.replace('.git', '')
+            branch = parsed_args.source_checkout
+            # Build URL
+            cat_url = 'https://raw.githubusercontent.com{0}/{1}/{2}'.format(
+                src_path, branch, self.CATALOG_FILENAME)
+        else:
+            raise WorkflowFailed(
+                'Unable to list templates because source is not a Github URL')
+
+        # Fetch catalog.json via HTTP/S
+        try:
+            resp = requests.get(cat_url)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as exc:
+            raise WorkflowFailed(Str(exc))
+
+        for k, v in data.items():
+            self.messages.append((k, v['name'], v['description'], v['level']))
+
+        return True
+
     def take_action(self, parsed_args):
-        self._take_action_init(parsed_args)
+
+        # List templates -OR- start init functions
+        if parsed_args.list_templates:
+            self._take_action_list_templates(parsed_args)
+        else:
+            self._take_action_init(parsed_args)
+
         return (tuple(self.headers), tuple(self.messages))
