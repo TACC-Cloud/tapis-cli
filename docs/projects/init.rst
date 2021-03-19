@@ -1,43 +1,101 @@
-##############
+######################
 Initializing a Project
-##############
+######################
 
-The CLI supports initialization of a skeleton project, which can be expanded upon 
-and further configured by the developer. These projects are based on template 
-source code repositories written using the CookieCutter specification. The 
-steps taken by the CLI to create a skeleton project are the same for each class of 
-project (app, actor, etc.):
+The CLI supports initialization of a skeleton app and actor projects. These are 
+based on templates written using the CookieCutter specification and housed in 
+a public Github repository. 
 
-    1. Clone the relevant template repository into a bare directory, named by the user.
-    2. Write out contents of the repository, filling in contents of template variables known to the CLI
-    3. Initialize the directory as a new Git repository.
-    4. Add the initial set of files and commit to the repository
-    5. Create an instance of the repository on the user's Git server
-    6. Set that repository as the ``remote`` for the current local repository
+*************************
+Initialize an app project
+*************************
 
-*********************
-The source repository
-*********************
+The ``tapis apps init`` command will create a new app for you following the designated 
+template. You may specify some basic details of the initial configuration, such as the 
+app name, human-readable label, verbose description, and semantic version, when 
+creating a new app project. Some details are inherited from the CLI settings, such 
+as your preferred Docker namespace and registry. 
 
-Each kind of project has its own default source repo which contains one or more templates. One of 
-the templates is designated as the **default**.  The idea is that an ``init`` command is run without 
-specifying a repo and/or template, a perfectly servicable skeleton project will be 
-instantiated. Specifying other template names will create projects with different configurations, as 
-defined by the source repository.  More details on the CookieCutter standard, which is used to define 
-repository templates can be found elsewhere in the documentation.  
+Here is an example of creating a new app from the **default** template
 
-The most essential fact for you to know is that you can find out the names of every kind of template 
-for a given source repository from the **Templates** table in the repository's README document. 
+.. code-block:: shell
 
-***************
-Initialize an app
-***************
+    $ tapis apps init --app-name Appy --app-label APPINESS --app-description \
+      "I am appy to see you" --template default
+
+    +-------+---------------------------------------------------------------+
+    | stage | message                                                       |
+    +-------+---------------------------------------------------------------+
+    | setup | Project path: ./appy                                          |
+    | setup | CookieCutter variable name=Appy                               |
+    | setup | CookieCutter variable description=I am appy to see you        |
+    | setup | CookieCutter variable project_slug=appy                       |
+    | setup | CookieCutter variable docker_namespace=sd2e                   |
+    | setup | CookieCutter variable docker_registry=https://index.docker.io |
+    | clone | Project path: ./appy                                          |
+    +-------+---------------------------------------------------------------+
+
+If you want to preflight the values that the ``init`` system is going to use 
+to create a new project, you can pass the ``--dry-run`` command flag. The CLI will 
+run all the setup steps, printing the results to screen, but will not actually 
+create the project.  
+
+Once you have your new app project, you can configure and customize the app by 
+editing its ``project.ini``, ``app.json``, or ``run.sh`` files. You can, if the
+app is container-based, modify the Dockerfile that specifies the app's digital 
+assets, or you can package software and dependencies directly in the app's 
+``assets`` directory. 
+
+You can manually upload the app and register it in the Tapis system using 
+individual CLI commands such as ``tapis files upload`` and ``tapis apps create`` or 
+(probably preferably), you can use the ``tapis apps deploy`` command which bundles all 
+necessary Tapis operations into a simple workflow. 
+
+---------------------
+Finding app templates
+----------------------
+
+You can list the catalog of available templates by passing the ``--list-templates`` 
+command flag:
+
+.. code-block:: shell
+
+    $ tapis app init --list-templates
+    +-----------+--------------+------------------------------------------+----------+
+    | id        | name         | description                              | level    |
+    +-----------+--------------+------------------------------------------+----------+
+    | default   | Default      | Basic code and configuration skeleton    | beginner |
+    | shellrun  | Shell Runner | Run an arbitrary shell command via Tapis | beginner |
+    | wordcount | Word Count   | Simple word counting implementation      | beginner |
+    +-----------+--------------+------------------------------------------+----------+
+
+Pass one of the listed **id** values to the ``--template`` flag when to initialize 
+a new Tapis app based on that template. Further instructions will be included in a 
+README file in the new project directory.
+
+If you have access to an alternate repository of CookieCutter templates (perhaps provided 
+by your Tapis tenant operator) you can specify its URL via the ``--repo`` flag. You can also 
+specifiy a specific commit or branch on the repository via the ``--checkout`` flag. 
+
+***************************
+Initialize an actor project
+***************************
 
 *Coming soon*
 
-*****************
-Initialize an actor
-*****************
 
-*Coming soon*
+*********************
+Template repositories
+*********************
 
+The Tapis CLI uses a public repository containing subdirectories, where each subdirectory is a 
+project template implemented using the **CookieCutter** specification. There is always a template 
+named **default** which the CLI is configured to use if no other template is specified. 
+
+When a project is created from a CookieCutter template, the CLI uses a collection of 
+key-value variables to fill out file names and contents in the new directory. Some of these, 
+as mentioned above, are specified at the command line and some are based on values available 
+via ``tapis config``. 
+
+Details on how to report issues, request improvements, or contribute new templates can be found 
+in the README of each templates repository, and such contributions are welcomed. 
