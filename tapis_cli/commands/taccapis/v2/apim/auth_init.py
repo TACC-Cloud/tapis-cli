@@ -65,6 +65,15 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         parser = RegistryOpts.extend_parser(parser)
         parser = GitServerOpts.extend_parser(parser)
 
+        cntl = parser.add_argument_group("Workflow Options")
+
+        cntl.add_argument('--no-git',
+                          action='store_true',
+                          help='Do not request git server credentials')
+        cntl.add_argument('--no-registry',
+                          action='store_true',
+                          help='Do not request registry credentials')
+
         return parser
 
     def take_action(self, parsed_args):
@@ -191,7 +200,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                 mandate_password = True
                 logger.info('Username changed. Password will be required.')
             ag_context['username'] = parsed_username
-
+        
         # Process --password argument
         if parsed_password is not None:
             ag_context['password'] = parsed_password
@@ -300,10 +309,12 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         ]
 
         # Extend headers and data with docker and git workflows
-        (headers, data) = registry.init.interactive(parsed_args, headers, data,
-                                                    mandate_git_reg)
-        (headers, data) = gitserver.init.interactive(parsed_args, headers,
-                                                     data, mandate_git_reg)
+        if not parsed_args.no_registry:
+            (headers, data) = registry.init.interactive(parsed_args, headers, data,
+                                                        mandate_git_reg)
+        if not parsed_args.no_git:
+            (headers, data) = gitserver.init.interactive(parsed_args, headers,
+                                                        data, mandate_git_reg)
 
         et.phone_home()
         return (tuple(headers), tuple(data))
