@@ -197,6 +197,11 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         # Force a tag to be app.version if does not exist
         if self.config.get('docker', {}).get('tag', None) is None:
             self.config['docker']['tag'] = self.config['app']['version']
+        
+        # Force population of docker config even if we don't build or 
+        # push the container in the current invocation of the deploy
+        # command. 
+        self.docker_repo_string = self._repo_tag()
 
         # If Dockerfile is not present, turn off container workflow
         docker_path = os.path.join(self.working_dir, self._dockerfile())
