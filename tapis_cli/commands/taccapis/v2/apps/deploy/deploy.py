@@ -274,6 +274,21 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             # (registry/?)(namespace/?)repo(:tag?)
             repo = repo + ':' + tag
 
+        # Provide backwards compatibility for {{docker.organization}},
+        # {{docker.namespace}} and {{docker.username}} when templating 
+        # out app.json on deployment
+        #
+        # I am not sure this is the right place to put this long-term since this
+        # will not be availabel to other callers of JSON template rendering but 
+        # lets see if it fixes things for now...
+        if registry is not None:
+            template_namespace = registry + '/' + namespace
+        else:
+            template_namespace = namespace
+        self.config['docker']['organization'] = template_namespace
+        self.config['docker']['username'] = template_namespace
+        self.config['docker']['namespace'] = template_namespace
+
         return repo
 
     def _dockerfile(self):
