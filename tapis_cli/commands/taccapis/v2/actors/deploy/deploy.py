@@ -204,8 +204,12 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             elif parsed_url.path != '':
                 registry = parsed_url.path
 
+        docker_conf = self.config.get('docker', {})
+
         # Look for namespace, then default to empty
-        namespace = self.config.get('docker', {}).get('namespace', None)
+        namespace = docker_conf.get(
+            'organization',
+            docker_conf.get('namespace', docker_conf.get('username', None)))
         if namespace == '':
             namespace = None
 
@@ -230,7 +234,7 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         if tag is not None:
             # (registry/?)(namespace/?)repo(:tag?)
             repo = repo + ':' + tag
-        
+
         return repo
 
     def _dockerfile(self):
@@ -305,11 +309,11 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
 
                 # Here, document is the configuration JSON that will be
                 # sent to the actors endpoint. In create/update, we build it
-                # directly, but to accomodate the more declarative form of using 
-                # the .ini file, we have to do a few things differently. 
+                # directly, but to accomodate the more declarative form of using
+                # the .ini file, we have to do a few things differently.
                 # Specifically, we read in a ConfigParser object then extend and/
-                # or modify it until it the resulting dict is shaped correctly 
-                # to configure an Actor. 
+                # or modify it until it the resulting dict is shaped correctly
+                # to configure an Actor.
                 document = self.config['actor']
                 document['image'] = self._repo_tag()
                 # Deploy ALWAYS forces an update to the actor
@@ -329,14 +333,17 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     # Override cron status via ini setting IF a schedule has been set
                     if cron_status is not None and cron_status != '':
                         document['cronOn'] = cron_status
-                
+
                 # Container UID
                 cuid = document.pop('use_container_uid', None)
                 if cuid is not None:
                     document['useContainerUid'] = parse_boolean(cuid)
-                    
+
                 # Cast to booleans
-                bool_keys = ['privileged', 'stateless', 'token', 'useContainerUid', 'cronOn']
+                bool_keys = [
+                    'privileged', 'stateless', 'token', 'useContainerUid',
+                    'cronOn'
+                ]
                 for bk in bool_keys:
                     bkv = document.pop(bk, None)
                     if bkv is not None:

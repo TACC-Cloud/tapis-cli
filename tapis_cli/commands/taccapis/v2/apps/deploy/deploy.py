@@ -1,5 +1,6 @@
 import docker as dockerpy
 import os
+import urllib.parse
 from datetime import datetime
 
 from tapis_cli import settings
@@ -242,8 +243,12 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             elif parsed_url.path != '':
                 registry = parsed_url.path
 
+        docker_conf = self.config.get('docker', {})
+
         # Look for namespace, then default to empty
-        namespace = self.config.get('docker', {}).get('namespace', None)
+        namespace = docker_conf.get(
+            'organization',
+            docker_conf.get('namespace', docker_conf.get('username', None)))
         if namespace == '':
             namespace = None
 
@@ -268,7 +273,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         if tag is not None:
             # (registry/?)(namespace/?)repo(:tag?)
             repo = repo + ':' + tag
-        
+
         return repo
 
     def _dockerfile(self):
