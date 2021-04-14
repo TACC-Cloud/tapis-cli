@@ -69,20 +69,24 @@ class TaccApiClient(object):
         """
         api = dict()
         # Client data
-        for k in ['username', 'api_server', 'tenant_id', 'api_key']:
+        for k in ['api_server', 'tenant_id', 'api_key']:
             api[k] = getattr(self.tapis_client, k, None)
 
         # Profiles data
         try:
-            profile = self.tapis_client.profiles.list(
-                username=api['username'])[0]
-        except Exception:
-            profile = {}
-        for k in ['email', 'username', 'first_name', 'last_name']:
-            api[k] = profile.get(k, None)
+            try:
+                profile = self.tapis_client.profiles.list(
+                    username=api['username'])[0]
+            except Exception:
+                profile = self.tapis_client.profiles.get()
 
-        api['full_name'] = '{0} {1}'.format(api['first_name'],
-                                            api['last_name'])
+            for k in ['email', 'username', 'first_name', 'last_name']:
+                api[k] = profile.get(k, None)
+            api['full_name'] = '{0} {1}'.format(api['first_name'],
+                                                api['last_name'])
+
+        except Exception:
+            logging.warning('Failed to resolve "username" variable. This is usually a side effect of impersonation under Tapis v2.')
 
         # Implement legacy 'agave' template variables
         api['agave'] = copy.copy(api)
