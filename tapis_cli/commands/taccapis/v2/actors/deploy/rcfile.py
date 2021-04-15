@@ -41,6 +41,12 @@ def load_config(filename=RC_FILENAME, as_dict=False, permissive=True):
                         v = v[:-1]
                     kvdict[k] = v
 
+        # Environment, Job, Git, Grants empty but must exist when reading from an .rc file
+        config['environment'] = {}
+        config['job'] = {}
+        config['git'] = {}
+        config['grants'] = {}
+
         # Actor basic config
         if 'REACTOR_NAME' in kvdict:
             actor['name'] = kvdict['REACTOR_NAME']
