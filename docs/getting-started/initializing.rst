@@ -58,7 +58,6 @@ be prompted for tenant, username, and password required to set up a session.
     +--------------------+---------------------------------+
     | tenant_id          | tacc.prod                       |
     | username           | tacotron                        |
-    | client_name        | _cli-tacc.prod-tacotron-macbook |
     | api_key            | uAShaDfy0vF7hgFcAqx7oeAtO6oa    |
     | access_token       | a31c66cfaa45451c95df6fd473ffd4b |
     | expires_at         | Thu Sep 19 14:08:37 2019        |
@@ -72,6 +71,10 @@ be prompted for tenant, username, and password required to set up a session.
     | git_namespace      | TACOS                           |
     +--------------------+---------------------------------+
 
+.. note::
+   It is possible to bypass display of the first-run display in order to 
+   use Tapis CLI as part of a continuous integration deployment by setting 
+   TAPIS_CLI_NO_PROMPT=1 in the user environment. 
 
 Getting Help
 ------------

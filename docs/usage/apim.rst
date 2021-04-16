@@ -38,6 +38,19 @@ Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
 and may skip a key step. If you get a message ``Tapis client appears invalid``
 re-run with ``tapis auth init --interactive`` and follow the prompts.
 
+*******************************
+Manually Specifying Client Name
+*******************************
+
+The default behavior for Tapis CLI is to generate and manage one Oauth2 client 
+per host you have installed it on. This helps avoid race conditions when you 
+might be using the CLI in two places at once. This is done by naming the client 
+after your local host. However, this can be a problem if you are using Tapis CLI 
+for automation where the hostname may change (such as within Github actions or a 
+Jenkins job). In this case, you can manually specify a client name by passing 
+``--client-name`` along with ``tapis auth init``. Please note the client name 
+must be <= 64 characters and may only contain `A-Za-z0-9` and `. - _`
+
 ********
 Commands
 ********
