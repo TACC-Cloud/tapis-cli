@@ -55,7 +55,16 @@ def exist_firstrun():
 def firstrun():
     """First-run workflow
     """
-    if not exist_firstrun():
+    
+    # TAPIS_CLI_NO_PROMPT allows the CLI to be run without invoking
+    # the firstrun sequence. This is intended for cases such as CICD 
+    # usage of the CLI or for environments where the TACC AUP and 
+    # Tapis platform COC will never apply. It is not implemented as a 
+    # setting to prevent users from setting it.
+    firstrun_bypass = settings.helpers.parse_boolean(
+        os.environ.get('TAPIS_CLI_NO_PROMPT', '0'))
+    
+    if firstrun_bypass is False and not exist_firstrun():
         if settings.TAPIS_CLI_DISPLAY_AUP:
             display_aup()
         if settings.TAPIS_CLI_DISPLAY_COC:
