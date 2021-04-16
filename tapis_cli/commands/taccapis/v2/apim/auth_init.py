@@ -62,6 +62,10 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                             dest='password',
                             help='{0} password'.format(PLATFORM))
 
+        parser.add_argument('--client-name',
+                            dest='client_name',
+                            help='{0} client name. Leave empty to auto-generate.'.format(PLATFORM))
+
         parser = RegistryOpts.extend_parser(parser)
         parser = GitServerOpts.extend_parser(parser)
 
@@ -123,6 +127,8 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         parsed_api_server = getattr(parsed_args, 'api_server', None)
         parsed_username = getattr(parsed_args, 'username', None)
         parsed_password = getattr(parsed_args, 'password', None)
+        # Allow user to specify client name. Caveat emptor, though...
+        parsed_client_name = getattr(parsed_args, 'client_name', None)
 
         # Allow tenant id OR api server to be provided, updating ag_context as appropriate
         # Regarding SSL verification: If the default behavior is to not verify, we will
@@ -235,9 +241,12 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
         ag = None
 
         # Generate client name
-        ag_context['client_name'] = '{0}-{1}-{2}-{3}'.format(
-            CLIENT_PREFIX, ag_context['tenant_id'], ag_context['username'],
-            get_hostname())
+        if parsed_client_name:
+            ag_context['client_name'] = parsed_client_name
+        else:
+            ag_context['client_name'] = '{0}-{1}-{2}-{3}'.format(
+                CLIENT_PREFIX, ag_context['tenant_id'], ag_context['username'],
+                get_hostname())
 
         # No client was loadable from the local system
         if api_key is None or api_key == '':
@@ -292,7 +301,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
 
         # Formulate a table view of key values for current session
         headers = [
-            'tenant_id', 'username', 'client_name', 'api_key', 'access_token',
+            'tenant_id', 'username', 'api_key', 'access_token',
             'expires_at', 'verify'
         ]
         data = [
@@ -301,12 +310,17 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             # unable to accomodate copying properties of an Agave object
             str(ag.tenant_id),
             str(ag.username),
-            str(ag_context['client_name']),
             str(ag.api_key),
             str(ag._token),
             str(ag.expires_at),
             str(ag.verify)
         ]
+
+        # Show client name only if specified. Otherwise, end user really does 
+        # not need to see it
+        if parsed_client_name:
+            headers.append('client_name')
+            data.append(ag_context['client_name'])
 
         # Extend headers and data with docker and git workflows
         if not parsed_args.no_registry:
