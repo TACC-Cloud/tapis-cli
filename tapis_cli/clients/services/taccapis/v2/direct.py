@@ -38,10 +38,10 @@ class TaccApiDirectClient(object):
         self.service_name = None
         self.service_version = None
         self.api_path = None
-        self.headers = {
-            'authorization': 'Bearer {}'.format(token),
-            'user-agent': self.user_agent
-        }
+        self.headers = {'user-agent': self.user_agent}
+        # Only send Bearer if token is provided
+        if token:
+            self.headers['authorization'] = 'Bearer {}'.format(token)
 
     def setup(self, service_name, service_version, api_path=None):
         setattr(self, 'service_version', service_version)
