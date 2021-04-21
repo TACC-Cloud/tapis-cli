@@ -39,6 +39,9 @@ Projects
 ********
 
 .. autoprogram-cliff:: tapis.cli
+   :command: apps init
+
+.. autoprogram-cliff:: tapis.cli
    :command: apps deploy
 
 *******
