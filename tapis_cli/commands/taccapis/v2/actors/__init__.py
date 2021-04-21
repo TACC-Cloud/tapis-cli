@@ -4,6 +4,7 @@
 API_NAME = 'actors'
 SERVICE_VERSION = 'v2'
 
+from .init import ActorsInit
 from .list import ActorsList
 from .show import ActorsShow
 from .delete import ActorsDelete
