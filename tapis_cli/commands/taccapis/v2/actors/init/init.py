@@ -67,18 +67,24 @@ class ActorsInit(ActorsFormatManyUnlimited):
                             '--dry-run',
                             dest='init_dry_run',
                             action='store_true')
-        rungrp = parser.add_argument_group('Project Parameters')
+        parser.add_argument('-O',
+                            '--output-dir',
+                            dest='output_dir',
+                            metavar='DIRECTORY',
+                            default='.',
+                            type=str,
+                            help='Output directory (default: .)')
+
         # Values for configuring the project itself
-        rungrp.add_argument('project_name',
+        rungrp = parser.add_argument_group('Actor Parameters')
+
+        rungrp.add_argument('-N',
+                            '--actor-name',
+                            dest='project_name',
+                            default='new_actor',
                             type=str,
                             metavar='STRING',
-                            help='Actor name')
-        rungrp.add_argument('output_dir',
-                            metavar='output_directory',
-                            default='.',
-                            nargs='?',
-                            type=str,
-                            help='Output directory (optional)')
+                            help='Actor name (default: new_actor)')
         rungrp.add_argument('--actor-label',
                             type=str,
                             dest='project_label',
