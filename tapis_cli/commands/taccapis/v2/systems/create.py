@@ -87,10 +87,12 @@ class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
                                                         None) == 'SSHKEYS':
                 # Override SSH keys
                 if parsed_args.storage_public_key is not None:
-                    pubkey = open(parsed_args.storage_public_key, 'r').read().strip()
+                    pubkey = open(parsed_args.storage_public_key,
+                                  'r').read().strip()
                     json_data['storage']['auth']['publicKey'] = pubkey
                 if parsed_args.storage_private_key is not None:
-                    privkey = open(parsed_args.storage_private_key, 'r').read().strip()
+                    privkey = open(parsed_args.storage_private_key,
+                                   'r').read().strip()
                     json_data['storage']['auth']['privateKey'] = privkey
             elif json_data.get('storage', {}).get('auth',
                                                   {}).get('type',
@@ -112,10 +114,12 @@ class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
                                                       None) == 'SSHKEYS':
                 # Override SSH keys
                 if parsed_args.login_public_key is not None:
-                    pubkey = open(parsed_args.login_public_key, 'r').read().strip()
+                    pubkey = open(parsed_args.login_public_key,
+                                  'r').read().strip()
                     json_data['login']['auth']['publicKey'] = pubkey
                 if parsed_args.login_private_key is not None:
-                    privkey = open(parsed_args.login_private_key, 'r').read().strip()
+                    privkey = open(parsed_args.login_private_key,
+                                   'r').read().strip()
                     json_data['login']['auth']['privateKey'] = privkey
             elif json_data.get('login', {}).get('auth',
                                                 {}).get('type',
@@ -125,7 +129,6 @@ class SystemsCreate(SystemsFormatOne, UploadJSONTemplate):
                     json_data['login']['auth'][
                         'password'] = parsed_args.login_password
         return None
-
 
     def take_action(self, parsed_args):
         parsed_args = self.preprocess_args(parsed_args)

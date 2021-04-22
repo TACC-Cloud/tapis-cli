@@ -18,7 +18,7 @@ class Job(TapisModel):
     service_id_type = 'Job'
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False),
         ("accepted", argtype.DATETIME, Verbosity.RECORD,

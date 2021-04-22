@@ -16,7 +16,7 @@ class Profile(TapisModel):
     service_id_type = 'User'
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("first_name", argtype.STRING, Verbosity.BRIEF, [argmod.EQUALS],
          argmod.DEFAULT, None, None, True),
         ("last_name", argtype.STRING, Verbosity.BRIEF, [argmod.EQUALS],

@@ -161,8 +161,7 @@ class AppsInit(AppsFormatManyUnlimited):
         # From settings
         extra_context[
             'docker_namespace'] = settings.TAPIS_CLI_REGISTRY_NAMESPACE
-        extra_context[
-            'docker_registry'] = settings.TAPIS_CLI_REGISTRY_URL
+        extra_context['docker_registry'] = settings.TAPIS_CLI_REGISTRY_URL
 
         for k, v in extra_context.items():
             self.messages.append(

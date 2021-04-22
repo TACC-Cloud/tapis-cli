@@ -9,7 +9,7 @@ class SystemQueueLoad(System):
     """Model of the load on a Tapis system virtual queue
     """
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("active", argtype.INTEGER, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("backlogged", argtype.INTEGER, Verbosity.LISTING,

@@ -5,8 +5,8 @@ __all__ = []
 
 # Abaco settings
 
-# Agave (legacy) settings
+    # Agave (legacy) settings
 
-# Aloe settings
+    # Aloe settings
 
-# Keys settings
+    # Keys settings

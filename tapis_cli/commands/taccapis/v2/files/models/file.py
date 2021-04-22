@@ -17,7 +17,7 @@ class File(TapisModel):
     payload = dict()
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False),
         ("name", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,

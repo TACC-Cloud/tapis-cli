@@ -8,7 +8,7 @@ __all__ = ['FilePermission']
 class FilePermission(File):
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("username", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,

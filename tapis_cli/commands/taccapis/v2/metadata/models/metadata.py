@@ -16,7 +16,7 @@ class Metadata(TapisModel):
     service_id_type = 'Unique'
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("uuid", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("schemaId", argtype.STRING, Verbosity.RECORD_VERBOSE,

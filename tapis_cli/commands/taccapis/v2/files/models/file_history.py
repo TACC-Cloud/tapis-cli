@@ -8,7 +8,7 @@ __all__ = ['FileHistory']
 class FileHistory(File):
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("status", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("created", argtype.DATETIME, Verbosity.BRIEF, argmod.STRING_DEFAULTS,

@@ -5,7 +5,7 @@ import os
 from dateutil.parser import parse
 from .config import find_config, load_config
 
-_ENV_PATH = load_config()  # noqa
+_ENV_PATH = load_config()    # noqa
 
 from .redact import auto_redact
 

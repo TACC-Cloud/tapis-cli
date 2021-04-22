@@ -16,7 +16,7 @@ class Token(TapisModel):
     id_display_name = 'TOKEN'
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("scope", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("token_type", argtype.STRING, Verbosity.RECORD,

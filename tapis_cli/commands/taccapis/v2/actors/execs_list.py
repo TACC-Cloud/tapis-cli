@@ -34,7 +34,7 @@ class ActorsExecsList(ActorsFormatManyUnlimited, ActorIdentifier,
             actorId=actor_id, **self.client_extra_args)
         # custom headers to print all the execution id and status for a
         # given actor id
-        execs_result = results.get('executions')  # returns a list
+        execs_result = results.get('executions')    # returns a list
         headers = ["executionId", "status"]
 
         records = []

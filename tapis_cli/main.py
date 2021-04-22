@@ -43,7 +43,7 @@ class Tapis_App(App):
     def configure_logging(self):
         """Create logging handlers for any log output."""
 
-        try:  # Python 2.7
+        try:    # Python 2.7
             from logging import NullHandler
         except ImportError:
 

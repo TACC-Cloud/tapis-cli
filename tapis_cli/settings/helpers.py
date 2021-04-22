@@ -48,6 +48,7 @@ def parse_boolean(s):
             warnings.warn('Invalid boolean value %r' % s)
             return False
 
+
 def int_or_none(value):
     if value is None:
         return value

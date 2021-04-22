@@ -17,7 +17,7 @@ class System(TapisModel):
     ARGS_ORDERED = ['id', 'name', 'type', 'default']
     # WARNING - date search apparently does not work on systems so never make datetime fields searchable
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.ARRAY, Verbosity.LISTING, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, 'links', False),
         ("available", argtype.BOOLEAN, Verbosity.LISTING, argmod.BOOL_DEFAULTS,

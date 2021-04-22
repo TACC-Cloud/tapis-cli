@@ -22,10 +22,10 @@ def load_config(filename=None, as_dict=False):
         # Fail gracefully if does not exist
         config = configparser.ConfigParser()
         # Preserve case when reading from ini file - this is needed to support
-        # loading and using the [environments] stanza as shell variables are 
+        # loading and using the [environments] stanza as shell variables are
         # most decidedly case-sensitive!
         # Source: https://stackoverflow.com/a/63067604
-        config.optionxform=str
+        config.optionxform = str
         config.read(filename)
         if as_dict is False:
             return config

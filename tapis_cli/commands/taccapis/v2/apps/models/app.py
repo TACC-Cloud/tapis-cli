@@ -16,8 +16,8 @@ class App(TapisModel):
     service_id_type = 'App'
 
     SEARCH_ARGS = [
-        # WARNING - date search apparently does not work on apps so never make datetime fields searchable
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # WARNING - date search apparently does not work on apps so never make datetime fields searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("id", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("name", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,

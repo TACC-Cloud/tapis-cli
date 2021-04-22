@@ -82,14 +82,15 @@ class TaccApiClient(object):
             except Exception:
                 profile = self.tapis_client.profiles.get()
 
-            
             for k in profile_vars:
                 api[k] = profile.get(k, None)
             api['full_name'] = '{0} {1}'.format(api['first_name'],
                                                 api['last_name'])
 
         except Exception:
-            logging.warning('Failed to resolve variables {0}. This is usually a side effect of impersonation under Tapis v2.'.format(profile_vars))
+            logging.warning(
+                'Failed to resolve variables {0}. This is usually a side effect of impersonation under Tapis v2.'
+                .format(profile_vars))
 
         # Implement legacy 'agave' template variables
         api['agave'] = copy.copy(api)

@@ -29,7 +29,7 @@ class Permission(TapisModel):
     }
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("username", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("permission", argtype.OBJECT, Verbosity.LISTING,
@@ -88,7 +88,7 @@ class AbacoPermission(TapisModel):
     NAMES = ['READ', 'EXECUTE', 'UPDATE', 'NONE']
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("result", argtype.ARRAY, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("message", argtype.OBJECT, Verbosity.LISTING, argmod.STRING_DEFAULTS,

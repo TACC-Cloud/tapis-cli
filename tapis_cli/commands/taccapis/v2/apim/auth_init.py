@@ -62,9 +62,11 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                             dest='password',
                             help='{0} password'.format(PLATFORM))
 
-        parser.add_argument('--client-name',
-                            dest='client_name',
-                            help='{0} client name. Leave empty to auto-generate.'.format(PLATFORM))
+        parser.add_argument(
+            '--client-name',
+            dest='client_name',
+            help='{0} client name. Leave empty to auto-generate.'.format(
+                PLATFORM))
 
         parser = RegistryOpts.extend_parser(parser)
         parser = GitServerOpts.extend_parser(parser)
@@ -206,7 +208,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
                 mandate_password = True
                 logger.info('Username changed. Password will be required.')
             ag_context['username'] = parsed_username
-        
+
         # Process --password argument
         if parsed_password is not None:
             ag_context['password'] = parsed_password
@@ -301,13 +303,13 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
 
         # Formulate a table view of key values for current session
         headers = [
-            'tenant_id', 'username', 'api_key', 'access_token',
-            'expires_at', 'verify'
+            'tenant_id', 'username', 'api_key', 'access_token', 'expires_at',
+            'verify'
         ]
         data = [
-            # Coerce to string to avoid failures where a deepcopy
-            # operation in Python's implementation of tuple() is
-            # unable to accomodate copying properties of an Agave object
+        # Coerce to string to avoid failures where a deepcopy
+        # operation in Python's implementation of tuple() is
+        # unable to accomodate copying properties of an Agave object
             str(ag.tenant_id),
             str(ag.username),
             str(ag.api_key),
@@ -316,7 +318,7 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             str(ag.verify)
         ]
 
-        # Show client name only if specified. Otherwise, end user really does 
+        # Show client name only if specified. Otherwise, end user really does
         # not need to see it
         if parsed_client_name:
             headers.append('client_name')
@@ -324,11 +326,13 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
 
         # Extend headers and data with docker and git workflows
         if not parsed_args.no_registry:
-            (headers, data) = registry.init.interactive(parsed_args, headers, data,
-                                                        mandate_git_reg)
+            (headers,
+             data) = registry.init.interactive(parsed_args, headers, data,
+                                               mandate_git_reg)
         if not parsed_args.no_git:
-            (headers, data) = gitserver.init.interactive(parsed_args, headers,
-                                                        data, mandate_git_reg)
+            (headers,
+             data) = gitserver.init.interactive(parsed_args, headers, data,
+                                                mandate_git_reg)
 
         et.phone_home()
         return (tuple(headers), tuple(data))

@@ -35,9 +35,9 @@ class AuthShow(JsonVerbose, ShowOne):
             'refresh_token'
         ]
         data = [
-            # Coerce to string to avoid failures where a deepcopy
-            # operation in Python's implementation of tuple() is
-            # unable to accomodate copying properties of an Agave object
+        # Coerce to string to avoid failures where a deepcopy
+        # operation in Python's implementation of tuple() is
+        # unable to accomodate copying properties of an Agave object
             ag_context['tenant_id'],
             ag_context['username'],
             ag_context['api_key'],

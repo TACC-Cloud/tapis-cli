@@ -9,7 +9,7 @@ class AppHistory(App):
     """Model of a Tapis system history record
     """
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("id", argtype.STRING, Verbosity.RECORD, argmod.STRING_DEFAULTS,

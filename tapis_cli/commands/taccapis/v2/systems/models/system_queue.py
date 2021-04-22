@@ -9,7 +9,7 @@ class SystemQueue(System):
     """Model of a Tapis system virtual queue
     """
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("_links", argtype.OBJECT, Verbosity.RECORD, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, False),
         ("id", argtype.STRING, Verbosity.LISTING_VERBOSE,

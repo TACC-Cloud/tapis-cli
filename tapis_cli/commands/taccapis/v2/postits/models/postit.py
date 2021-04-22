@@ -23,7 +23,7 @@ class PostIt(TapisModel):
     service_id_type = 'Post-it'
 
     SEARCH_ARGS = [
-        # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
+    # JSON_field, type, verbosity, mods_allowed, default_mod, choices, override_option, searchable
         ("postit", argtype.STRING, Verbosity.BRIEF, argmod.STRING_DEFAULTS,
          argmod.DEFAULT, None, None, True),
         ("remainingUses", argtype.INTEGER, Verbosity.BRIEF,

@@ -197,10 +197,10 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         # Force a tag to be app.version if does not exist
         if self.config.get('docker', {}).get('tag', None) is None:
             self.config['docker']['tag'] = self.config['app']['version']
-        
-        # Force population of docker config even if we don't build or 
+
+        # Force population of docker config even if we don't build or
         # push the container in the current invocation of the deploy
-        # command. 
+        # command.
         self.docker_repo_string = self._repo_tag()
 
         # If Dockerfile is not present, turn off container workflow
@@ -280,11 +280,11 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
             repo = repo + ':' + tag
 
         # Provide backwards compatibility for {{docker.organization}},
-        # {{docker.namespace}} and {{docker.username}} when templating 
+        # {{docker.namespace}} and {{docker.username}} when templating
         # out app.json on deployment
         #
         # I am not sure this is the right place to put this long-term since this
-        # will not be availabel to other callers of JSON template rendering but 
+        # will not be availabel to other callers of JSON template rendering but
         # lets see if it fixes things for now...
         if registry is not None:
             template_namespace = registry + '/' + namespace
