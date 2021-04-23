@@ -70,7 +70,7 @@ def read_tapis_http_error(http_error_object):
     except Exception:
         err_msg = h.response.text
 
-    httperror = 'HTTPError - {} {}; message: {}; status: {}; version: {}; response.content: {}'
+    httperror = '[{}] {}; message: {}; status: {}; version: {}; response.content: {}'
     return httperror.format(code, reason, err_msg, status_msg, version_msg,
                             h.response.content)
 
@@ -80,4 +80,4 @@ def handle_http_error(httperror):
     if httperror.response.status_code == 404:
         raise HTTPNotFoundError(httperror)
     else:
-        raise decorated_http_error
+        raise AgaveError(decorated_http_error)
