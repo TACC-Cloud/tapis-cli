@@ -30,6 +30,8 @@ General Commands
 Sharing Commands
 ****************
 
+Manage access by other users to Tapis metadata that you control.
+
 .. autoprogram-cliff:: tapis.cli
    :command: meta pems *
 
@@ -37,7 +39,7 @@ Sharing Commands
 Search Commands
 ***************
 
-It is possible to search for tapis Metadata by several criteria. Please consult
+Search for Tapis metadata by several criteria. Please consult
 ``tapis meta search -h`` for guidance.
 
 **************

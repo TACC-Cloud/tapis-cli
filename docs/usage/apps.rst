@@ -34,19 +34,11 @@ General
 .. autoprogram-cliff:: tapis.cli
    :command: apps enable
 
-********
-Projects
-********
-
-.. autoprogram-cliff:: tapis.cli
-   :command: apps init
-
-.. autoprogram-cliff:: tapis.cli
-   :command: apps deploy
-
 *******
 Sharing
 *******
+
+Manage access by other users to Tapis apps that you control.
 
 .. autoprogram-cliff:: tapis.cli
    :command: apps pems *
@@ -55,12 +47,14 @@ Sharing
 Search
 ******
 
-It is possible to search for tapis Apps by several criteria. Please consult
+Search for tapis Apps by any of several criteria. Please consult
 ``tapis apps search -h`` for guidance.
 
 **************
 Administration
 **************
+
+Manage global settings for a Tapis app.
 
 .. autoprogram-cliff:: tapis.cli
    :command: apps publish
@@ -68,8 +62,14 @@ Administration
 .. autoprogram-cliff:: tapis.cli
    :command: apps unpublish
 
-**************
-Usage Examples
-**************
+********
+Projects
+********
 
-*Coming soon*
+Create and deploy new apps from a configuration-driven template. 
+
+.. autoprogram-cliff:: tapis.cli
+   :command: apps init
+
+.. autoprogram-cliff:: tapis.cli
+   :command: apps deploy

@@ -24,4 +24,3 @@ tapis\_cli.templating.settings module
    :members:
    :undoc-members:
    :show-inheritance:
-

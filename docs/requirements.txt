@@ -18,7 +18,7 @@ tacc-cookiecutter
 tenacity
 validators
 #git+https://github.com/TACC/agavepy.git@1_0_0
-agavepy==1.0.0a10
+agavepy==1.0.0a11
 flake8
 pytest==4.6.5 # pinned for Python 2.7.x support
 pytest-cov

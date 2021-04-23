@@ -56,4 +56,3 @@ tapis\_cli.commands.taccapis.v2.profiles.show\_self module
    :members:
    :undoc-members:
    :show-inheritance:
-

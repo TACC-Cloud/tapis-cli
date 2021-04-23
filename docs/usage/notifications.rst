@@ -1,15 +1,9 @@
 Notifications
 =============
 
-Tapis notifications can be listed, inspected, and deleted. There is no
+List, inspect, and delete Tapis notifications. There is no
 current support for creating or updating them from the CLI.
 
 .. autoprogram-cliff:: tapis.cli
    :command: notifications *
-
-**************
-Usage Examples
-**************
-
-*Coming soon*
 

@@ -35,4 +35,3 @@ tapis\_cli.commands.taccapis.searchable module
    :members:
    :undoc-members:
    :show-inheritance:
-

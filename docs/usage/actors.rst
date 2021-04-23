@@ -21,9 +21,9 @@ List and inspect all Actors the currently authenticated user can access.
 Messaging
 =========
 
-Send a message to an Actor's mailbox, resulting in an Execution. Via Tapis 
-CLI, it is possible to send a synchronous message and save the response to 
-a file. 
+Send a message to an Actor's mailbox, resulting in an Execution. This can 
+be done asynchronously (default) or synchronously. For the latter case, it 
+is possible to save the result to a file.
 
 .. autoprogram-cliff:: tapis.cli
    :command: actors submit
@@ -92,10 +92,6 @@ directly with the Abaco APIs via ``create``, ``update``, and
 .. autoprogram-cliff:: tapis.cli
    :command: actors deploy
 
-Mailbox
-=======
-
-*Coming soon*
 
 Workers
 =======
@@ -106,3 +102,15 @@ messages.
 
 .. autoprogram-cliff:: tapis.cli
    :command: actors workers *
+
+********
+Projects
+********
+
+Create and deploy new actors from a configuration-driven template. 
+
+.. autoprogram-cliff:: tapis.cli
+   :command: apps init
+
+.. autoprogram-cliff:: tapis.cli
+   :command: apps deploy

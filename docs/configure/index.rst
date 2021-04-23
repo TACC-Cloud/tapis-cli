@@ -36,30 +36,18 @@ One may view the current settings for the Tapis CLI:
 
 Configuration options can be set using ``tapis config set``.
 
-**********
-An Example
-**********
+**************
+Usage Examples
+**************
 
-The number of results returned from list-type commands is defined by the
-variable ``TAPIS_CLI_PAGE_SIZE`` and defaults to **50**. List-type commands
-support a ``--limit`` option, which will be used if specified. If no option
-is passed, the CLI will look for variable ``TAPIS_CLI_PAGE_SIZE`` in the shell
-environment then in a ``.env`` file. Here are ways to configure the page size:
+**Setting the page size for list results**: The number of results returned from 
+list-type commands is defined by the variable ``TAPIS_CLI_PAGE_SIZE`` and 
+defaults to **50**. List-type commands support a ``--limit`` option, which 
+will be used if specified. If no option is passed, the CLI will look for 
+variable ``TAPIS_CLI_PAGE_SIZE`` in the shell environment then in an
+ ``.env`` file. Here are ways to configure the page size:
 
-    - Dynamically, via argument: ``tapis apps list --limit 10``
     - Dynamically, via variable: ``TAPIS_CLI_PAGE_SIZE=10 tapis apps list``
     - For the current shell: ``export TAPIS_CLI_PAGE_SIZE=10``
     - For all future usage: ``tapis apps set TAPIS_CLI_PAGE_SIZE 10``
-
-*****************
-Some Key Settings
-*****************
-
-*Coming soon*
-
-*****************
-Technical Details
-*****************
-
-*Coming soon*
 

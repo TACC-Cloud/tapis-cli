@@ -65,8 +65,8 @@ a project corresponds to a single container repo.
 | use_commit_hash | Use current commit hash as tag      |
 +-----------------+-------------------------------------+
 
-Env
-===
+Environment
+===========
 
 This is a special section where you, the end-user, can add custom 
 option-value pairs for use by the CLI templating engine. Option 
@@ -87,7 +87,7 @@ Bad option names:
 Values must be simple scalars and it should be assumed they will be 
 interpreted as strings.
 
-Using Env in a File
+Using Environment in a File
 -------------------
 
 Here is an example of including a custom option ``value123`` and using it 

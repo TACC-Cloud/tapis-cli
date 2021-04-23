@@ -36,6 +36,8 @@ General Commands
 Sharing Commands
 ****************
 
+Manage access by other users to Tapis systems that you control.
+
 .. autoprogram-cliff:: tapis.cli
    :command: systems roles *
 
@@ -44,12 +46,14 @@ Sharing Commands
 Search Commands
 ***************
 
-It is possible to search for tapis Systems by several criteria. Please consult
+Search for Tapis Systems by several criteria. Please consult
 ``tapis systems search -h`` for guidance.
 
 ***************
 Queues Commands
 ***************
+
+View and interact with queues on a Tapis execution system.
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems queues *
@@ -58,15 +62,11 @@ Queues Commands
 Administrative Commands
 ***********************
 
+Manage global settings for a Tapis system.
+
 .. autoprogram-cliff:: tapis.cli
    :command: systems publish
 
 .. autoprogram-cliff:: tapis.cli
    :command: systems unpublish
-
-**************
-Usage Examples
-**************
-
-*Coming soon*
 

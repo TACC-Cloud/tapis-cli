@@ -24,4 +24,3 @@ tapis\_cli.commands.taccapis.model.base module
    :members:
    :undoc-members:
    :show-inheritance:
-

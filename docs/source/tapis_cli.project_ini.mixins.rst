@@ -24,4 +24,3 @@ tapis\_cli.project\_ini.mixins.app module
    :members:
    :undoc-members:
    :show-inheritance:
-

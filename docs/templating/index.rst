@@ -124,7 +124,7 @@ A Tapis CLI ini file contains one or more stanzas:
 
     - app : variables pertaining to a Tapis app
     - actor : variables pertaining to a Tapis actor
-    - env : general-purpose environment variables
+    - environment : general-purpose environment variables
     - git : variables that pertain to a git repository
     - job : variables pertaining to a Tapis job
     - system : variables pertaining to a Tapis system

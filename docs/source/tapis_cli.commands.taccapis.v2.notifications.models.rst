@@ -16,4 +16,3 @@ tapis\_cli.commands.taccapis.v2.notifications.models.notification module
    :members:
    :undoc-members:
    :show-inheritance:
-

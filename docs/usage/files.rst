@@ -43,11 +43,8 @@ General Commands
 Sharing Commands
 ****************
 
+Manage access by other users to Tapis files and folders that you control.
+
 .. autoprogram-cliff:: tapis.cli
    :command: files pems *
 
-**************
-Usage Examples
-**************
-
-*Coming soon*

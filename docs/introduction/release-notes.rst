@@ -9,6 +9,19 @@ to this is when we add entirely new commands or functions (such as
 integration with GitHub or the like).
 
 **************************
+1.0.4 (04-30-2021)
+**************************
+
+Added
+-----
+
+Changed
+-------
+
+Removed
+-------
+
+**************************
 1.0.0 (06-16-2020)
 **************************
 

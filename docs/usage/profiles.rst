@@ -19,11 +19,5 @@ General Commands
 Search Commands
 ***************
 
-It is possible to search for tapis Profiles by several criteria. Please consult
+Search for Tapis profiles by any of several criteria. Please consult
 ``tapis profiles search -h`` for guidance.
-
-**************
-Usage Examples
-**************
-
-*Coming soon*

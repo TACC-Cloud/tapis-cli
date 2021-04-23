@@ -11,11 +11,6 @@ Planned major features for Tapis CLI are outlined below. Please click the link
 and comment / thumbs-up the corresponding GitHub issue if a feature is a
 priority for you.
 
-****************************************
-Support for Abaco Functions-as-a-Service
-****************************************
-(Github issue)
-
 ***********************
 Integration with GitHub
 ***********************

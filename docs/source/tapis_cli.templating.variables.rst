@@ -40,4 +40,3 @@ tapis\_cli.templating.variables.posix module
    :members:
    :undoc-members:
    :show-inheritance:
-

@@ -14,6 +14,7 @@ Subpackages
 
    tapis_cli.commands.taccapis.v2.actors.deploy
    tapis_cli.commands.taccapis.v2.actors.helpers
+   tapis_cli.commands.taccapis.v2.actors.init
    tapis_cli.commands.taccapis.v2.actors.manage
    tapis_cli.commands.taccapis.v2.actors.models
 
@@ -52,6 +53,14 @@ tapis\_cli.commands.taccapis.v2.actors.aliases\_show module
    :undoc-members:
    :show-inheritance:
 
+tapis\_cli.commands.taccapis.v2.actors.aliases\_update module
+-------------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.aliases_update
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tapis\_cli.commands.taccapis.v2.actors.delete module
 ----------------------------------------------------
 
@@ -80,6 +89,14 @@ tapis\_cli.commands.taccapis.v2.actors.execs\_show module
 ---------------------------------------------------------
 
 .. automodule:: tapis_cli.commands.taccapis.v2.actors.execs_show
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+tapis\_cli.commands.taccapis.v2.actors.execs\_stop module
+---------------------------------------------------------
+
+.. automodule:: tapis_cli.commands.taccapis.v2.actors.execs_stop
    :members:
    :undoc-members:
    :show-inheritance:
@@ -227,4 +244,3 @@ tapis\_cli.commands.taccapis.v2.actors.workers\_show module
    :members:
    :undoc-members:
    :show-inheritance:
-

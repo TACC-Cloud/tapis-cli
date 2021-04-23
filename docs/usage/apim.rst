@@ -31,7 +31,7 @@ context, while changing either tenant or username (or specifying
 ``--interactive`` mode) will re-initialize the host to use the specified
 tenant/username combination.
 
-Explicit configuration switching (``tapis auth switch``) is not (yet) supported.
+Explicit configuration switching (``tapis auth switch``) is not supported.
 
 **NOTE** If you have a configured, but expired Agave client in
 ``~/.agave/current``, the ``init`` command may fail to detect the expiration

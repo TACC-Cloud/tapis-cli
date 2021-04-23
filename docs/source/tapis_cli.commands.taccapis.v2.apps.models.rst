@@ -24,4 +24,3 @@ tapis\_cli.commands.taccapis.v2.apps.models.app\_history module
    :members:
    :undoc-members:
    :show-inheritance:
-

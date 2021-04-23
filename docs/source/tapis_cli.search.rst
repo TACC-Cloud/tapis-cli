@@ -64,4 +64,3 @@ tapis\_cli.search.searcharg module
    :members:
    :undoc-members:
    :show-inheritance:
-

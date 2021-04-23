@@ -24,4 +24,3 @@ tapis\_cli.commands.taccapis.v2.metadata.helpers.name module
    :members:
    :undoc-members:
    :show-inheritance:
-

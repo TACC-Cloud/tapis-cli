@@ -32,4 +32,3 @@ tapis\_cli.commands.taccapis.v2.jobs.models.job\_pem module
    :members:
    :undoc-members:
    :show-inheritance:
-

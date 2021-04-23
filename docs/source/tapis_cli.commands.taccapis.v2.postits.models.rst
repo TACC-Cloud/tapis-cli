@@ -16,4 +16,3 @@ tapis\_cli.commands.taccapis.v2.postits.models.postit module
    :members:
    :undoc-members:
    :show-inheritance:
-

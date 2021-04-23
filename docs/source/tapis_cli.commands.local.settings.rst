@@ -48,4 +48,3 @@ tapis\_cli.commands.local.settings.unset module
    :members:
    :undoc-members:
    :show-inheritance:
-

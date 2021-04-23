@@ -41,12 +41,16 @@ General Commands
 Output Commands
 ***************
 
+View and download outputs from Tapis jobs.
+
 .. autoprogram-cliff:: tapis.cli
    :command: jobs outputs *
 
 ****************
 Sharing Commands
 ****************
+
+Manage access by other users to Tapis jobs that you control.
 
 .. autoprogram-cliff:: tapis.cli
    :command: jobs pems *
@@ -55,7 +59,7 @@ Sharing Commands
 Search Commands
 ***************
 
-It is possible to search for tapis Jobs by several criteria. Please consult
+Search for Tapis Jobs by any of several criteria. Please consult
 ``tapis jobs search -h`` for guidance.
 
 **************
@@ -69,8 +73,3 @@ the user to specify each value.
 .. autoprogram-cliff:: tapis.cli
    :command: jobs init
 
-**************
-Usage Examples
-**************
-
-*Coming soon*

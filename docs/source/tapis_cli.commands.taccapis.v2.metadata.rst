@@ -121,4 +121,3 @@ tapis\_cli.commands.taccapis.v2.metadata.update module
    :members:
    :undoc-members:
    :show-inheritance:
-
