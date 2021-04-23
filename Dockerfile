@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM python:3.7
 
 ARG CLI_VERSION=latest
 ARG CLI_BRANCH=main
@@ -33,20 +33,19 @@ RUN curl -L -sk -o /usr/local/bin/jq "https://github.com/stedolan/jq/releases/do
     && chmod a+x /usr/local/bin/jq
 
 # Python 3
-RUN apt-get -y update && \
-    apt-get -y install --no-install-recommends \
-    python3 \
-    python3-dev \
-    python3-pip \
-    python3-setuptools && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# RUN apt-get -y update && \
+#     apt-get -y install --no-install-recommends \
+#     python3 \
+#     python3-dev \
+#     python3-pip \
+#     python3-setuptools && \
+#     apt-get clean && \
+#     rm -rf /var/lib/apt/lists/*
 
 # Make python3 the default user python
-RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+# RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 RUN pip3 install --quiet --upgrade pip==${PYTHON_PIP_VERSION}
 RUN pip3 install --quiet --upgrade virtualenv==${PYTHON_VIRTUALENV_VERSION}
-
 
 RUN mkdir -p /home
 RUN mkdir -p /work
