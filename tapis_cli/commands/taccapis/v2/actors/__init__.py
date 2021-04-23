@@ -15,6 +15,7 @@ from .pems_show import ActorsPemsShow
 from .execs_show import ActorsExecsShow
 from .execs_list import ActorsExecsList
 from .execs_logs import ActorsExecsLogs
+from .execs_stop import ActorsExecsStop
 from .workers_list import ActorsWorkersList
 from .workers_show import ActorsWorkersShow
 from .workers_delete import ActorsWorkersDelete
