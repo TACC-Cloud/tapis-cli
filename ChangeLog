@@ -1,6 +1,49 @@
 CHANGES
 =======
 
+v1.0.4
+------
+
+* Update CLI image to use python:3.7 base. Bump version string in image ENV
+* Updated usage docs. Rebuilt and reformatted all RST docs
+* Implemented actors execs stop which maps to actors.deleteMessages(). Closes #255
+* Closes #316 - 40x errors now surface correctly
+* Bumped AgavePy to 1.0.0a11
+* YAPF formatting
+* Actor name and output directory must now be specified as options in 'actors init' workflow
+* Fixed merge
+* Closes #355 Bearer is only passed if not None, fixing the use of Nonces by direct clients
+* Fixed issue where users could provide invalid boolean to 'tapis config set' and end up locked out of the CLI without hand-editing the .env file
+* Update docs with CICD use case changes documented
+* It is now possible to specifi --client-name to tapis auth init to manually name and manage a client
+* Allow bypassing first-run workflow by setting TAPIS\_CLI\_NO\_PROMPT=1
+* Fix empty environment, job, git, grants sections when reading from rc file
+* Closes #354 It is not possible to fix the empty profile issue under Tapis v2, but at least the CLI now warns the user that certain variables were not resolved
+* It is not possible to fix the empty profile issue under Tapis v2, but at least the CLI now warns the user that certain variables were not resolved
+* adding actors init command
+* Force docker config to populate even if not building or pushing container
+* Testing temp fix
+* Apps and actors deploy now properly reads [docker] organization, namespace, and username, which have all been used at some point in building 'deploy' tooling
+* Now possible to disable git and registry configs when running auth init. Closes #352
+* Documented apps init
+* Working implementation of 'apps init' with support for listing templates
+* Added support for apps init as per #350
+* Working on it.
+* Implemented [docker]registry field in ini file. Added support to 'actors deploy' for it. Fixed a couple of errors in 'actors deploy' where empty [docker] fields should not have been allowed
+* Swapped actor and alias ID for 'tapis actors aliases create'
+* Added better code documentation. Added support for [environment] stanza in actors deploy workflow. Disable push when not building a new container in actors deploy
+* Bumped changelog
+* Added support for REACTOR\_CRON\_SCHEDULE and REACTOR\_CRON\_ON to reactor.rc file format
+* Can confirm cron features (and, incidentally use\_container\_uid) can be specified in project.ini
+* Implemented create/update for cron features
+* Added slots for cron features from Abaco 1.7
+* Fix SSH key parsing
+* SystemsUpdate can overwrite JSON creds from command line options
+* 1) changed FILES\_UUID to JOBS\_UUID in jobs output 2) changed syntax to supress warnings
+* Added support for aliases update workflow. Closes #331
+* Closes #332 - Replace direct usage of slugify.slugify with a utils#slugify, a shim that supports any of the three Python slugify packages
+* remove strftime(%s) for getting the current time in "epoch" format because it is not supported on Windows
+
 v1.0.3
 ------
 
@@ -394,8 +437,8 @@ v0.2
 * Stubbed in additional metadata commands
 * Added Zenodo badge
 
-0.1
----
+v0.1
+----
 
 * Updated TESTING doc
 * Mailmap
