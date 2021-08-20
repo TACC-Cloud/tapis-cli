@@ -73,12 +73,14 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
 
         cntl = parser.add_argument_group("Workflow Options")
 
-        cntl.add_argument('--no-git',
+        cntl.add_argument('--github',
+                          dest='do_git',
                           action='store_true',
-                          help='Do not request git server credentials')
-        cntl.add_argument('--no-registry',
-                          action='store_true',
-                          help='Do not request registry credentials')
+                          help='Configure Github credentials')
+        cntl.add_argument('--no-dockerhub',
+                          dest='do_docker',
+                          action='store_false',
+                          help='Do not configure DockerHub credentials')
 
         return parser
 
@@ -325,11 +327,11 @@ class AuthInit(CreateTokenFormatOne, RegistryOpts, GitServerOpts):
             data.append(ag_context['client_name'])
 
         # Extend headers and data with docker and git workflows
-        if not parsed_args.no_registry:
+        if parsed_args.do_docker:
             (headers,
              data) = registry.init.interactive(parsed_args, headers, data,
                                                mandate_git_reg)
-        if not parsed_args.no_git:
+        if parsed_args.do_git:
             (headers,
              data) = gitserver.init.interactive(parsed_args, headers, data,
                                                 mandate_git_reg)
