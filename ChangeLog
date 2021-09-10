@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+v1.0.5
+------
+
+* Added archiveOnAppError to the job model. Closes #361
+* Disable default capture of Github config in auth init
+* Updated change log
+
 v1.0.4
 ------
 

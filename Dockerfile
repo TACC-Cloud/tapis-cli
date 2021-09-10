@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM index.docker.io/python:3.7
 
 ARG CLI_VERSION=latest
 ARG CLI_BRANCH=main
