@@ -29,6 +29,8 @@ class Job(TapisModel):
          argmod.DEFAULT, None, None, False),
         ("archive", argtype.BOOLEAN, Verbosity.RECORD, argmod.BOOL_DEFAULTS,
          argmod.DEFAULT, None, None, True),
+        ("archiveOnAppError", argtype.BOOLEAN, Verbosity.RECORD,
+         argmod.BOOL_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("archivePath", argtype.STRING, Verbosity.RECORD,
          argmod.STRING_DEFAULTS, argmod.DEFAULT, None, None, True),
         ("archiveSystem", argtype.STRING, Verbosity.RECORD,
