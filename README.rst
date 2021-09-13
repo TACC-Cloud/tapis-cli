@@ -21,11 +21,21 @@ Documentation: `https://tapis-cli.readthedocs.io/en/latest/ <https://tapis-cli.r
 Installation
 ************
 
+The latest stable release of Tapis CLI is available on PyPi and is the recommended 
+way for most people to install it. 
+
+.. code-block:: shell
+
+    $ pip install tapis-cli
+
+Stable but possibly as-yet unreleased updates are available via the `main` branch 
+of the Tapis CLI GitHub repository. 
+
 .. code-block:: shell
 
     $ git clone https://github.com/TACC-Cloud/tapis-cli.git
     $ cd tapis-cli
-    $ pip install --upgrade --user .
+    $ pip install --user .
 
 ***************
 Container Image
