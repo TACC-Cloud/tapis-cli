@@ -1,5 +1,6 @@
 import docker as dockerpy
 import os
+import requests
 import urllib.parse
 from datetime import datetime
 
@@ -308,11 +309,22 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         bundle_path = os.path.join(self.working_dir, DEFAULT_BUNDLE_NAME)
         return self.config['app'].get('bundle', bundle_path)
 
+    def _dockerpy_test(self):
+        try:
+            self.dockerpy.images.list()
+        except requests.exceptions.ConnectionError:
+            raise SystemError(
+                'Unable to communicate with Docker daemon. Is Docker installed and active?'
+            )
+        except Exception:
+            raise
+
     def _build(self, parsed_args):
         """Build container
         """
         if self.build:
             try:
+                self._dockerpy_test()
                 tag = self._repo_tag()
                 dockerfile = self._dockerfile()
                 print_stderr('Building {}'.format(tag))
@@ -344,6 +356,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
         """
         if self.push:
             try:
+                self._dockerpy_test()
                 tag = self._repo_tag()
                 print_stderr('Pushing {}'.format(tag))
                 start_time = milliseconds()
