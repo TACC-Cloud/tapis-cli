@@ -115,9 +115,10 @@ def _walk(directory_path,
                           page_size=page_size,
                           recurse=recurse,
                           agave=agave)
-        if sort:
-            listing.sort()
-        return listing
+    # Filter out dotfiles and directories if configured
+    if sort:
+        listing.sort()
+    return listing
 
 
 def walk(directory_path,
