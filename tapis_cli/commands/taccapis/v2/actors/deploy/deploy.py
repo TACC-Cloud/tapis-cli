@@ -302,7 +302,7 @@ class ActorsDeploy(ActorsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     text_line = log_line.get('status', '').strip()
                     if text_line not in ('Preparing', 'Waiting',
                                          'Layer already exists', 'Pushing',
-                                         'Pushed', ''):
+                                         'Pushed', 'denied'):
                         self.messages.append(('push', text_line))
                 print_stderr('Finished ({} msec)'.format(milliseconds() -
                                                          start_time))
