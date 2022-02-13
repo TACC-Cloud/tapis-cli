@@ -11,8 +11,6 @@ Welcome to Tapis CLI
    :caption: Introduction
 
    introduction/what-is-tapis-cli
-   introduction/release-notes
-   introduction/roadmap
    introduction/get-in-touch
 
 .. toctree::
@@ -21,7 +19,6 @@ Welcome to Tapis CLI
 
    getting-started/installing
    getting-started/initializing
-   getting-started/tutorials
 
 .. toctree::
    :maxdepth: 1
