@@ -492,7 +492,7 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                 if len(errors) > 0:
                     if self.ignore_errors is False:
                         raise Exception('Upload failures: {}'.format(
-                            errors.join(';')))
+                            ';'.join(errors)))
                 return True
 
             except Exception as exc:
