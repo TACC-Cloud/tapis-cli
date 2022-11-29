@@ -16,6 +16,7 @@ from tapis_cli.commands.taccapis.v2.systems.helpers import default_execution_sys
 from ..formatters import AppsFormatManyUnlimited
 from .. import API_NAME, SERVICE_VERSION
 from ..helpers import pems
+from requests.exceptions import HTTPError
 
 __all__ = ['AppsDeploy']
 
@@ -454,11 +455,24 @@ class AppsDeploy(AppsFormatManyUnlimited, DockerPy, WorkingDirectoryArg,
                     # need relative destination here because
                     # agavepy permissions check will fail on '/'
                     # for public systems
-                    manage.makedirs(os.path.basename(dep_path_temp),
-                                    system_id=dep_sys,
-                                    permissive=True,
-                                    destination=dep_path_parent,
-                                    agave=self.tapis_client)
+                    try:
+                        temp_basename = os.path.basename(dep_path_temp)
+                        manage.makedirs(temp_basename,
+                                        system_id=dep_sys,
+                                        destination=dep_path_parent,
+                                        agave=self.tapis_client)
+                    except HTTPError as err:
+                        # if the 'apps' directory doesn't exist, go down a level
+                        # this gets around an error that arises when deploying a first app
+                        if err.response.status_code == 404:
+                            res = manage.makedirs(os.path.join(os.path.basename(dep_path_parent), temp_basename),
+                                            system_id=dep_sys,
+                                            permissive=True,
+                                            destination=os.path.dirname(dep_path_parent),
+                                            agave=self.tapis_client)
+
+                    except Exception:
+                        pass
                     # clear out destination directory
                     manage.delete(dep_path,
                                   system_id=dep_sys,
